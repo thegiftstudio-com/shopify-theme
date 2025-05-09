@@ -1,0 +1,819 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    
+  <!-- Other head content -->
+
+{% comment %}
+  Preload fonts loaded by giftstudio.css
+{% endcomment %}
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Regular.ttf?v=1687176677" type="font/ttf" crossorigin>
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Light.ttf?v=1687716407" type="font/ttf" crossorigin>
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Bold.ttf?v=1687716407" type="font/ttf" crossorigin>
+
+  <!-- Open Graph Meta Tags -->
+  {% if collection %}
+    <meta property="og:title" content="{{ collection.title }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ collection.url | absolute_url }}" />
+    <meta property="og:image" content="{{ collection.image | img_url: '1200x630' | absolute_url }}" />
+    <meta property="og:description" content="{{ collection.description | strip_html | truncate: 160 }}" />
+  {% else %}
+    <!-- Default OG tags if no collection page -->
+    <meta property="og:title" content="{{ shop.name }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ shop.url }}" />
+    <meta property="og:image" content="{{ shop.logo | img_url: '1200x630' | absolute_url }}" />
+    <meta property="og:description" content="{{ shop.description }}" />
+  {% endif %}
+  
+  <!-- Other meta tags -->
+
+
+    
+{% render 'visually_io_sdk' %}
+
+	<!-- Added by AVADA SEO Suite -->
+	{% include 'avada-seo' %}
+	<!-- /Added by AVADA SEO Suite -->
+    <style>
+      .crisp-client .cc-1brb6[data-website-logo=false][data-last-operator-face=false] .cc-1yy0g .cc-1m2mf .cc-157aw .cc-d73fc[data-is-ongoing=false] .cc-1bvfm{
+        filter: invert(1) !important;
+      }
+      .crisp-client .cc-1brb6[data-full-view=true] .cc-1yy0g .cc-1m2mf .cc-157aw{
+        background:#fff0d9 !important;
+      }
+    </style>
+
+ <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_LnKvR2mt5YicNZSDPE2gdi1tQpXhUOsO8u53GmteDMY',{api_host:'https://us.i.posthog.com', person_profiles: 'identified_only' ,
+                                                                        rate_limiting: {
+        events_per_second: 100,  // Adjust this number
+        events_burst_limit: 1000 // Adjust this number
+    }// or 'always' to create profiles for anonymous users as well
+        })
+
+   posthog.set_config({
+    rate_limiting: {
+        events_per_second: 100,
+        events_burst_limit: 1000
+    }
+})
+
+   
+</script>   
+<!-- Google Tag Manager New -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WBK8GF9W');</script>
+<!-- End Google Tag Manager -->
+
+    
+   <!-- Google Tag Manager -->
+<!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5WTLR8R');</script> -->
+<!-- End Google Tag Manager -->
+    
+{% if request.path contains '/tagged/' %}
+  <meta name="robots" content="noindex">
+ {% endif %}
+<meta name="description" content="{{ page_description | escape }}">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Meta Pixel Code -->
+<script>
+  
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '296471998183075');
+fbq('track', 'PageView');
+  // velocity: added this code so, that it can be accessed from any where required
+  var shop_currency_code = '{{ shop.currency }}'
+</script>
+    <noscript><img height="1" width="1" style="display:none"src="https://www.facebook.com/tr?id=296471998183075&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+ <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '296471998183075');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=296471998183075&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->   
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16490033597">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-16490033597');
+</script>
+
+<!-- Google tag (gtag.js): 16-09-2024 SOC-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16661973980">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-16661973980');
+</script>
+ <!-- Google tag (gtag.js): 16-09-2024 EOC-->
+
+{% comment %}
+    <script fcm_service_path="/cdn/shop/t/30/assets/firebase-messaging-sw.js"
+ src="https://sdk.resu.io/handlers/26670660d1c44fdda7f5cbf5450b523d.sdk"
+defer="defer">
+</script>
+    
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAK1BVZvEzCUQjEMJT47jeGKeJdJNRPhe8",
+    authDomain: "thegiftstudio-14e50.firebaseapp.com",
+    projectId: "thegiftstudio-14e50",
+    storageBucket: "thegiftstudio-14e50.appspot.com",
+    messagingSenderId: "245285340084",
+    appId: "1:245285340084:web:8c8aeb684548bb8e6be8e1",
+    measurementId: "G-541NQDCMZJ"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+{% endcomment %}
+
+    <!-- <script>
+    (function(h,o,u,n,d) {
+        h = h[d] || (h[d] = {q: [], onReady: function(c) { h.q.push(c); }});
+        d = o.createElement(u); d.async = 1; d.src = n;
+        n = o.getElementsByTagName(u)[0]; n.parentNode.insertBefore(d, n);
+    })(window, document, 'script', 'https://www.datadoghq-browser-agent.com/datadog-rum-v4.js', 'DD_RUM');
+
+    DD_RUM.onReady(function() {
+        DD_RUM.init({
+            applicationId: '70ba4bb6-0560-414d-89e6-3f66d7816440',
+            clientToken: 'pub085fc820d44a62aacfcc5052e15f8d1d',
+            site: 'us5.datadoghq.com',
+            service: 'thegiftstudio',
+            env: 'production',
+            version: '1.0.0',
+            sessionSampleRate: 100,
+            sessionReplaySampleRate: 100,
+            trackUserInteractions: true,
+            trackResources: true,
+            trackLongTasks: true,
+            defaultPrivacyLevel: 'mask-user-input',
+        });
+
+        DD_RUM.startSessionReplayRecording();
+    });
+</script> -->
+    <!-- Start CustomFit.ai Intelligent Code -->
+<script type="text/javascript" id="customfitpreinit" data-cfasync="false" >!function(e,t,i,s){var n=t.getElementById("customfitpreinit");if(n){n.insertAdjacentHTML("beforebegin",'<style type="text/css">.customfit-invisible-preinit-block{visibility:hidden !important; opacity:0 !important}</style>');var r=document.querySelector("html");r.classList.add("customfit-invisible-preinit-block"),setTimeout(function(){r.classList.remove("customfit-invisible-preinit-block")},5e3);var c=t.getElementsByTagName("script")[0],o=t.createElement("script");o.id="customfitinit",o.setAttribute("crossorigin","*"),o.async=!0,o.src="https://sdk.customfit.ai/d15964a0-0eed-11f0-aff5-598de9a64df4/cf-js-sdk-min.js",o.type="text/javascript",c.parentNode.insertBefore(o,c),o.onerror=function(){var e=t.getElementById("customfit-invisible-preinit-block");e&&e.parentNode.removeChild(e)}}}(window,document);</script>
+<!-- End CustomFit.ai Intelligent Code -->
+<!-- MS Clarity Code  -->
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "ey8m1hoith");
+</script>
+    <!-- MS Clarity Code  -->
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-Control" content="max-age=3600, public">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {% unless template == 'index' %}
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      {% endunless %}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+  {% render 'schema_tags' %}
+    <title>
+      
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {% comment %}
+{% render 'facebook_og_tags' %}
+      {% render 'twitter_cards' %}
+      {% endcomment %}
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+  
+    {% render 'meta-tags' %}
+   
+
+    <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    {% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      :root {
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
+        --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+
+        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-heading-style: {{ settings.type_header_font.style }};
+        --font-heading-weight: {{ settings.type_header_font.weight }};
+
+        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+        --color-shadow: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+        --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
+        --color-base-background-2: {{ settings.colors_background_2.red }}, {{ settings.colors_background_2.green }}, {{ settings.colors_background_2.blue }};
+        --color-base-solid-button-labels: {{ settings.colors_solid_button_labels.red }}, {{ settings.colors_solid_button_labels.green }}, {{ settings.colors_solid_button_labels.blue }};
+        --color-base-outline-button-labels: {{ settings.colors_outline_button_labels.red }}, {{ settings.colors_outline_button_labels.green }}, {{ settings.colors_outline_button_labels.blue }};
+        --color-base-accent-1: {{ settings.colors_accent_1.red }}, {{ settings.colors_accent_1.green }}, {{ settings.colors_accent_1.blue }};
+        --color-base-accent-2: {{ settings.colors_accent_2.red }}, {{ settings.colors_accent_2.green }}, {{ settings.colors_accent_2.blue }};
+        --payment-terms-background-color: {{ settings.colors_background_1 }};
+
+        --gradient-base-background-1: {% if settings.gradient_background_1 != blank %}{{ settings.gradient_background_1 }}{% else %}{{ settings.colors_background_1 }}{% endif %};
+        --gradient-base-background-2: {% if settings.gradient_background_2 != blank %}{{ settings.gradient_background_2 }}{% else %}{{ settings.colors_background_2 }}{% endif %};
+        --gradient-base-accent-1: {% if settings.gradient_accent_1 != blank %}{{ settings.gradient_accent_1 }}{% else %}{{ settings.colors_accent_1 }}{% endif %};
+        --gradient-base-accent-2: {% if settings.gradient_accent_2 != blank %}{{ settings.gradient_accent_2 }}{% else %}{{ settings.colors_accent_2 }}{% endif %};
+
+        --media-padding: {{ settings.media_padding }}px;
+        --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};
+        --media-border-width: {{ settings.media_border_thickness }}px;
+        --media-radius: {{ settings.media_radius }}px;
+        --media-shadow-opacity: {{ settings.media_shadow_opacity | divided_by: 100.0 }};
+        --media-shadow-horizontal-offset: {{ settings.media_shadow_horizontal_offset }}px;
+        --media-shadow-vertical-offset: {{ settings.media_shadow_vertical_offset }}px;
+        --media-shadow-blur-radius: {{ settings.media_shadow_blur }}px;
+        --media-shadow-visible: {% if settings.media_shadow_opacity > 0 %}1{% else %}0{% endif %};
+
+        --page-width: {{ settings.page_width | divided_by: 10 }}rem;
+        --page-width-margin: {% if settings.page_width == '1600' %}2{% else %}0{% endif %}rem;
+
+        --product-card-image-padding: {{ settings.card_image_padding | divided_by: 10.0 }}rem;
+        --product-card-corner-radius: {{ settings.card_corner_radius | divided_by: 10.0 }}rem;
+        --product-card-text-alignment: {{ settings.card_text_alignment }};
+        --product-card-border-width: {{ settings.card_border_thickness | divided_by: 10.0 }}rem;
+        --product-card-border-opacity: {{ settings.card_border_opacity | divided_by: 100.0 }};
+        --product-card-shadow-opacity: {{ settings.card_shadow_opacity | divided_by: 100.0 }};
+        --product-card-shadow-visible: {% if settings.card_shadow_opacity > 0 %}1{% else %}0{% endif %};
+        --product-card-shadow-horizontal-offset: {{ settings.card_shadow_horizontal_offset | divided_by: 10.0 }}rem;
+        --product-card-shadow-vertical-offset: {{ settings.card_shadow_vertical_offset | divided_by: 10.0 }}rem;
+        --product-card-shadow-blur-radius: {{ settings.card_shadow_blur | divided_by: 10.0 }}rem;
+
+        --collection-card-image-padding: {{ settings.collection_card_image_padding | divided_by: 10.0 }}rem;
+        --collection-card-corner-radius: {{ settings.collection_card_corner_radius | divided_by: 10.0 }}rem;
+        --collection-card-text-alignment: {{ settings.collection_card_text_alignment }};
+        --collection-card-border-width: {{ settings.collection_card_border_thickness | divided_by: 10.0 }}rem;
+        --collection-card-border-opacity: {{ settings.collection_card_border_opacity | divided_by: 100.0 }};
+        --collection-card-shadow-opacity: {{ settings.collection_card_shadow_opacity | divided_by: 100.0 }};
+        --collection-card-shadow-visible: {% if settings.collection_card_shadow_opacity > 0 %}1{% else %}0{% endif %};
+        --collection-card-shadow-horizontal-offset: {{ settings.collection_card_shadow_horizontal_offset | divided_by: 10.0 }}rem;
+        --collection-card-shadow-vertical-offset: {{ settings.collection_card_shadow_vertical_offset | divided_by: 10.0 }}rem;
+        --collection-card-shadow-blur-radius: {{ settings.collection_card_shadow_blur | divided_by: 10.0 }}rem;
+
+        --blog-card-image-padding: {{ settings.blog_card_image_padding | divided_by: 10.0 }}rem;
+        --blog-card-corner-radius: {{ settings.blog_card_corner_radius | divided_by: 10.0 }}rem;
+        --blog-card-text-alignment: {{ settings.blog_card_text_alignment }};
+        --blog-card-border-width: {{ settings.blog_card_border_thickness | divided_by: 10.0 }}rem;
+        --blog-card-border-opacity: {{ settings.blog_card_border_opacity | divided_by: 100.0 }};
+        --blog-card-shadow-opacity: {{ settings.blog_card_shadow_opacity | divided_by: 100.0 }};
+        --blog-card-shadow-visible: {% if settings.blog_card_shadow_opacity > 0 %}1{% else %}0{% endif %};
+        --blog-card-shadow-horizontal-offset: {{ settings.blog_card_shadow_horizontal_offset | divided_by: 10.0 }}rem;
+        --blog-card-shadow-vertical-offset: {{ settings.blog_card_shadow_vertical_offset | divided_by: 10.0 }}rem;
+        --blog-card-shadow-blur-radius: {{ settings.blog_card_shadow_blur | divided_by: 10.0 }}rem;
+
+        --badge-corner-radius: {{ settings.badge_corner_radius | divided_by: 10.0 }}rem;
+
+        --popup-border-width: {{ settings.popup_border_thickness }}px;
+        --popup-border-opacity: {{ settings.popup_border_opacity | divided_by: 100.0 }};
+        --popup-corner-radius: {{ settings.popup_corner_radius }}px;
+        --popup-shadow-opacity: {{ settings.popup_shadow_opacity | divided_by: 100.0 }};
+        --popup-shadow-horizontal-offset: {{ settings.popup_shadow_horizontal_offset }}px;
+        --popup-shadow-vertical-offset: {{ settings.popup_shadow_vertical_offset }}px;
+        --popup-shadow-blur-radius: {{ settings.popup_shadow_blur }}px;
+
+        --drawer-border-width: {{ settings.drawer_border_thickness }}px;
+        --drawer-border-opacity: {{ settings.drawer_border_opacity | divided_by: 100.0 }};
+        --drawer-shadow-opacity: {{ settings.drawer_shadow_opacity | divided_by: 100.0 }};
+        --drawer-shadow-horizontal-offset: {{ settings.drawer_shadow_horizontal_offset }}px;
+        --drawer-shadow-vertical-offset: {{ settings.drawer_shadow_vertical_offset }}px;
+        --drawer-shadow-blur-radius: {{ settings.drawer_shadow_blur }}px;
+
+        --spacing-sections-desktop: {{ settings.spacing_sections }}px;
+        --spacing-sections-mobile: {% if settings.spacing_sections < 24 %}{{ settings.spacing_sections }}{% else %}{{ settings.spacing_sections | times: 0.7 | round | at_least: 20 }}{% endif %}px;
+
+        --grid-desktop-vertical-spacing: {{ settings.spacing_grid_vertical }}px;
+        --grid-desktop-horizontal-spacing: {{ settings.spacing_grid_horizontal }}px;
+        --grid-mobile-vertical-spacing: {{ settings.spacing_grid_vertical | divided_by: 2 }}px;
+        --grid-mobile-horizontal-spacing: {{ settings.spacing_grid_horizontal }}px;
+
+        --text-boxes-border-opacity: {{ settings.text_boxes_border_opacity | divided_by: 100.0 }};
+        --text-boxes-border-width: {{ settings.text_boxes_border_thickness }}px;
+        --text-boxes-radius: {{ settings.text_boxes_radius }}px;
+        --text-boxes-shadow-opacity: {{ settings.text_boxes_shadow_opacity | divided_by: 100.0 }};
+        --text-boxes-shadow-visible: {% if settings.text_boxes_shadow_opacity > 0 %}1{% else %}0{% endif %};
+        --text-boxes-shadow-horizontal-offset: {{ settings.text_boxes_shadow_horizontal_offset }}px;
+        --text-boxes-shadow-vertical-offset: {{ settings.text_boxes_shadow_vertical_offset }}px;
+        --text-boxes-shadow-blur-radius: {{ settings.text_boxes_shadow_blur }}px;
+
+        --buttons-radius: {{ settings.buttons_radius }}px;
+        --buttons-radius-outset: {% if settings.buttons_radius > 0 %}{{ settings.buttons_radius | plus: settings.buttons_border_thickness }}{% else %}0{% endif %}px;
+        --buttons-border-width: {% if settings.buttons_border_opacity > 0 %}{{ settings.buttons_border_thickness }}{% else %}0{% endif %}px;
+        --buttons-border-opacity: {{ settings.buttons_border_opacity | divided_by: 100.0 }};
+        --buttons-shadow-opacity: {{ settings.buttons_shadow_opacity | divided_by: 100.0 }};
+        --buttons-shadow-visible: {% if settings.buttons_shadow_opacity > 0 %}1{% else %}0{% endif %};
+        --buttons-shadow-horizontal-offset: {{ settings.buttons_shadow_horizontal_offset }}px;
+        --buttons-shadow-vertical-offset: {{ settings.buttons_shadow_vertical_offset }}px;
+        --buttons-shadow-blur-radius: {{ settings.buttons_shadow_blur }}px;
+        --buttons-border-offset: {% if settings.buttons_radius > 0 or settings.buttons_shadow_opacity > 0 %}0.3{% else %}0{% endif %}px;
+
+        --inputs-radius: {{ settings.inputs_radius }}px;
+        --inputs-border-width: {{ settings.inputs_border_thickness }}px;
+        --inputs-border-opacity: {{ settings.inputs_border_opacity | divided_by: 100.0 }};
+        --inputs-shadow-opacity: {{ settings.inputs_shadow_opacity | divided_by: 100.0 }};
+        --inputs-shadow-horizontal-offset: {{ settings.inputs_shadow_horizontal_offset }}px;
+        --inputs-margin-offset: {% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_opacity > 0 %}{{ settings.inputs_shadow_vertical_offset | abs }}{% else %}0{% endif %}px;
+        --inputs-shadow-vertical-offset: {{ settings.inputs_shadow_vertical_offset }}px;
+        --inputs-shadow-blur-radius: {{ settings.inputs_shadow_blur }}px;
+        --inputs-radius-outset: {% if settings.inputs_radius > 0 %}{{ settings.inputs_radius | plus: settings.inputs_border_thickness }}{% else %}0{% endif %}px;
+
+        --variant-pills-radius: {{ settings.variant_pills_radius }}px;
+        --variant-pills-border-width: {{ settings.variant_pills_border_thickness }}px;
+        --variant-pills-border-opacity: {{ settings.variant_pills_border_opacity | divided_by: 100.0 }};
+        --variant-pills-shadow-opacity: {{ settings.variant_pills_shadow_opacity | divided_by: 100.0 }};
+        --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
+        --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
+        --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-size: calc(var(--font-body-scale) * 62.5%);
+        height: 100%;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-columns: 100%;
+        min-height: 100%;
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.06rem;
+        line-height: calc(1 + 0.8 / var(--font-body-scale));
+        font-family: var(--font-body-family);
+        font-style: var(--font-body-style);
+        font-weight: var(--font-body-weight);
+      }
+
+      @media screen and (min-width: 750px) {
+        body {
+          font-size: 1.6rem;
+        }
+      }
+    {% endstyle %}
+    {% unless template == 'index' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+      {% endunless %}
+
+    <link rel="preload" href="{{ 'base.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="{{ 'base.css' | asset_url }}">
+    </noscript>
+
+
+    {%- unless settings.type_body_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- endif -%}
+
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    if (Shopify.designMode) {
+      document.documentElement.classList.add('shopify-design-mode');
+    }
+      // fetch('https://hampers.tinglabs.in/fetchapi?action=fetchBundles&shop_url=tgs-revamp.myshopify.com',{
+      //   method: "GET",
+      //   headers: {
+      //     "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+      //   }
+      // }).then(response => response.json()).then(data => {
+      //   localStorage.setItem("all_bundles_data",JSON.stringify(data));
+      // });
+      var totalCartItemsCnt = {{ cart.item_count }};
+    </script>
+
+   
+
+     {% if template == 'product' %}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{% endif %}
+    
+{{ 'giftstudio.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+    {{ 'diwali_page.css' | asset_url | stylesheet_tag }}
+
+    {{ 'valentines-page.css' | asset_url | stylesheet_tag }}
+    {% endcomment %}
+
+    {{ 'slick-theme.min.css' | asset_url | stylesheet_tag }}
+{{ 'slick.css' | asset_url | stylesheet_tag }}
+
+    {% if template == 'product' %}
+    {{ 'jquery-ui.css' | asset_url | stylesheet_tag }}
+{% endif %}
+    
+ {{ 'jquery.js' | asset_url | script_tag }}
+
+    {{ 'slick-min.js' | asset_url | script_tag }}
+
+
+    {% if template == 'product' %}
+    {{ 'jquery-ui-min.js' | asset_url | script_tag }}
+ {% endif %}
+
+    
+    {% if template == 'page.hamper-collections' %}
+    {{ 'jquery-ui-min.js' | asset_url | script_tag }}
+        {{ 'jquery-ui.css' | asset_url | stylesheet_tag }}
+ {% endif %}
+
+
+{% render 'product-gtm.liquid' %}
+      <!-- velocity 10-07-2024: Added the liquid file with all the comming GTM functions. -->
+  {% include 'gtm-functions.liquid' %}
+      <!-- velocity 08-08-2024: Added the liquid file for city selection popup -->
+ 
+
+    <!-- FlexyPe -->
+    <script src="https://static.flexype.in/scripts/flexype-v2.min.js" type="module" defer></script>
+    <style>
+      .flexy-checkout-btn::before {
+        content: "Buy Now";
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #000 !important;
+        padding: 12px 24px;
+        width: 100%;
+        text-align: center;
+      }
+      
+      .flexy-checkout-btn {
+        position: relative;
+        width: 100%;
+        color: transparent;
+        font-size: 18px;
+        background-color: #000 !important;
+        letter-spacing: normal;
+        padding: 12px 24px;
+        cursor: pointer;
+        border: 0;
+      }
+    </style>
+    <!-- FlexyPe -->
+    
+    {% if request.ssl? %}
+      {{ 'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload' | header_tag }}
+    {% endif %}
+    
+  </head>
+
+  <body class="gradient {{ template | replace: '.', '-' | replace: '/', '-' }}-main">
+<!-- Google Tag Manager (noscript) New-->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WBK8GF9W"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WTLR8R"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ "accessibility.skip_to_text" | t }}
+    </a>
+
+    {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="{{ template | replace: '.', '-' | replace: '/', '-' }} content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+    </ul>
+
+    <script>
+      window.shopUrl = '{{ request.origin }}';
+      window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        cart_url: '{{ routes.cart_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
+      };
+
+      window.cartStrings = {
+        error: `{{ 'sections.cart.cart_error' | t }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
+      }
+
+      window.variantStrings = {
+        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+        soldOut: `{{ 'products.product.sold_out' | t }}`,
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
+        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+      }
+
+      window.accessibilityStrings = {
+        imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
+        shareSuccess: `{{ 'general.share.success_message' | t }}`,
+        pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
+        playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
+      }
+    </script>
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+  
+   
+
+    {{ 'giftstudio.js' | asset_url | script_tag }}
+
+    
+
+   {% render 'footer-bar' %}
+
+
+
+      <script>
+   $(document).ready(function() {
+  var data_id = [];
+  
+  $(".bundle_remove_btn").on("click", function(evt) {
+    evt.preventDefault();
+    var itemsList = {};
+    
+    $(".cart_property_product_title").each(function() {
+      var cart_product_id = $(this).attr("data-product-id");
+      cart_product_id = Number(cart_product_id)
+      itemsList[cart_product_id] = 0;
+    });
+    console.log(itemsList)
+fetch('/cart/update.js', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({"updates":itemsList})
+}).then(res => res.json())
+  .then(res => {
+    $(".multi_product_outer").addClass("hide_multi_Product_div");
+    location.reload();
+  });
+    // setTimeout(function() {
+    //     $(".multi_product_outer").addClass("hide_multi_Product_div");
+    //  }, 2500);
+    // location.reload();
+
+  });
+     
+     
+});
+
+$(document).ready(function() {    
+  if ($(".multi_product_outer").find(".cart-item__details").find("a").hasClass("cart_property_product_title")) {
+  $(".multi_product_outer").removeClass("hide_multi_Product_div");
+  }else{
+  $(".multi_product_outer").addClass("hide_multi_Product_div");
+  }
+});
+  var cartDrawerCount = $('cart-drawer-items').find('[data-cart-prod-bundle-id]').length;
+    if(totalCartItemsCnt==cartDrawerCount){
+      $(".cart-count-bubble").find("span:eq(0)").text(1);
+      $(".cart-count-bubble").find("span:eq(1)").text(1+" items");
+    }
+    else{
+      var newCartCnt = totalCartItemsCnt - (cartDrawerCount==0 ? 0 : cartDrawerCount - 1);
+      $(".cart-count-bubble").find("span:eq(0)").text(newCartCnt);
+      $(".cart-count-bubble").find("span:eq(1)").text(newCartCnt+" items");
+    }
+  </script>
+
+  {% comment %}
+   {% include 'smile-initializer' %}
+   {% endcomment %}
+
+       {% render 'replace-cart-popup' %}
+
+<script>	
+  function bindMouseOverToMegaMenu (item) {
+    item.addEventListener("mouseover", () => {
+        item.setAttribute("open", true);
+        
+      
+        item.querySelector(".mega-menu__content").addEventListener("mouseover", () => {
+          item.setAttribute("open", true);
+          
+        });
+        item.querySelector(".mega-menu__content").addEventListener("mouseleave", () => {
+          item.removeAttribute("open");
+          
+        });
+      item.addEventListener("mouseleave", () => {
+        item.removeAttribute("open");
+        
+      });
+    });
+  }
+  let items = document.querySelector(".header__inline-menu").querySelectorAll("details.mega-menu");
+  let summaryItems = document.querySelector(".header__inline-menu").querySelectorAll("summary.header__menu-item");
+  items.forEach(bindMouseOverToMegaMenu);
+  
+</script>
+<!-- Upsell code start by NR  -->
+<script>
+    <!-- Velocity (28-06-2024): Variable to store the instance of setInterval function. This later used to cancel set interval  -->    
+    var botInterval;
+  $(document).ready(function() {
+    <!-- Velocity (28-06-2024): Setting the up the setInterval on  handleChatBotIcon function to handle the availability of chatbot -->    
+    botInterval =  setInterval(handleChatBotIcon, 100);
+  
+    $('body').on('click', '.bundle_add_to_cart_btn', function(event) {
+        event.preventDefault();
+        $(this).find('.custom_spinner').css('display','block');
+        var Bundle_prod_id = $(this).attr('data-bundulproid');
+        addItemToCart(Bundle_prod_id);
+    });
+
+    function addItemToCart(Bundle_prod_id) {
+        data = {
+            items: [{
+                "id": Bundle_prod_id,
+                "quantity": 1
+            }]
+        }
+
+        jQuery.ajax({
+            type: 'POST',
+            url: '/cart/add.js',
+            data: data,
+            dataType: 'json',
+            success: function() {
+                $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
+                    $(".add-to-cart-button .custom_spinner").css("display", "none");
+                    $("cart-drawer.drawer").addClass("active");
+                    if ($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
+                        setTimeout(function() {
+                            location.reload()
+                        }, 900);
+                    $('.btn.bundle_add_to_cart_btn .custom_spinner').css('display', 'none');
+
+                    setTimeout(function() {
+                        var classes = $('body').attr('class').split(' ');
+                        var bodyLocationClass = classes.find(function(className) {
+                            return className.startsWith('location-');
+                        });
+
+                        $('.product_card_wrapper').each(function() {
+                            var draweLocationClass = $(this).attr('class');
+                            if (draweLocationClass.includes(bodyLocationClass)) {
+                                $(this).removeClass('content_hidden');
+                            }
+                        });
+                    }, 500);
+                });
+            }
+        });
+    }
+});
+
+<!-- Velocity (28-06-2024): Function to handle the Crisp chat bot availability only for Kolkata. If the selected city is not Kolkata the Icon will be removed from the page  -->    
+function handleChatBotIcon() {
+  var setLocationText = localStorage.getItem("location-city"); // getting the text of city from local storage //
+  if(document.getElementById("crisp-chatbox") != null) {
+    if(setLocationText != 'Kolkata') {
+      document.getElementById("crisp-chatbox").remove()  
+      clearInterval(botInterval);
+    } else if(setLocationText == 'Kolkata') {
+       clearInterval(botInterval);
+    }
+  }
+}
+</script>
+<!-- Upsell code end by NR  -->    
+
+    <script>
+$(document).ready(function() {
+  var listLength = $('.product-recommendations .grid__item').length;
+  // console.log("Number of <li> elements: " + listLength);
+  if (listLength <= 0) {
+    // Hide the section if length is greater than 0
+    $('.related_products').hide();
+  }
+});
+  </script>
+
+    <script>
+      window.addEventListener('message', handleMessage, false);
+
+function handleMessage(event) {
+    if (event.origin !== "https://formbuilder.hulkapps.com") return;
+
+    if (event.data === "HELLO_PARENT") {
+console.log("event passed");
+        // Add your tracking event code here (e.g., Google Analytics, Facebook Pixel).
+    }
+}
+    </script>
+
+    
+</body>
+</html>

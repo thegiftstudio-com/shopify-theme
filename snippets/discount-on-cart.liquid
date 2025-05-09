@@ -1,0 +1,169 @@
+<div class="discount-code-section">
+  <h2 class="discount-header ">Available Discount Codes</h2>
+  <div class="discount-code-container">
+    <div class="discount-code-info">
+      <p class="discount-code" id="discount-code1"><span>FESTIVE15</span></p>
+      <!-- <p class="discount-code" id="discount-code1"><span>TGS10</span></p> -->
+      <p class="discount-tnc">Flat 15% Off on your purchase above INR 999. Other T&Cs may apply.</p>
+      <!-- <p class="discount-tnc">Flat 10% off on your purchase above INR 999. Other T&Cs may apply.</p> -->
+    </div>
+    <button class="copy-button" id="copy-button1">Copy Code</button>
+  </div>
+ <div class="discount-code-container">
+    <div class="discount-code-info">
+      <p class="discount-code" id="discount-code2"><span>TGS500</span></p>
+      <p class="discount-tnc">Flat Rs. 500 off  on your minimum purchase of Rs. 1499. Other T&Cs may apply.</p>
+    </div>
+    <button class="copy-button" id="copy-button2">Copy Code</button>
+  </div>  
+ <div class="discount-code-container">
+    <div class="discount-code-info">
+      <p class="discount-code" id="discount-code3"><span>TGS1000</span></p>
+      <p class="discount-tnc">Flat Rs. 1000 off on your minimum purchase of Rs. 3999. Other T&Cs may apply.</p>
+    </div>
+    <button class="copy-button" id="copy-button3">Copy Code</button>
+  </div>  
+</div>
+
+<style>
+.discount-code-section {
+  text-align: right;
+  font-family: var(--font-bold);
+}
+
+.discount-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: auto;
+  text-align: left;
+}
+
+ @media screen and (max-width: 750px) {
+   .discount-header {
+     margin-left: 0;
+  text-align: center;
+   }
+ }
+
+.discount-code-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+
+.discount-code-info {
+  text-align: left;
+  margin-right: 10px;
+  width: 65%;
+}
+
+.discount-code,
+.discount-tnc {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  cursor: pointer;
+}
+
+.discount-tnc {
+  color: #666;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.discount-code span{
+  padding: 8px 12px;
+  border: 2px dotted rgba(0,0,0,0.3);
+  border-radius: 25px;
+}
+
+.copy-button {
+  padding: 8px 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  font-family: var(--font-bold);
+  flex:1;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const copyButton1 = document.getElementById("copy-button1");
+  const discountCode1 = document.getElementById("discount-code1");
+
+  const copyButton2 = document.getElementById("copy-button2");
+  const discountCode2 = document.getElementById("discount-code2");
+  
+  const copyButton3 = document.getElementById("copy-button3");
+  const discountCode3 = document.getElementById("discount-code3");
+
+  function copyToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+  }
+
+  copyButton1.addEventListener("click", function() {
+    const codeToCopy = discountCode1.innerText;
+
+    copyToClipboard(codeToCopy);
+
+    copyButton1.innerText = "Copied!";
+    setTimeout(function() {
+      copyButton1.innerText = "Copy Code";
+    }, 1500);
+  });
+
+  discountCode1.addEventListener("click", function() {
+    const codeToCopy = discountCode1.innerText;
+
+    copyToClipboard(codeToCopy);
+
+    discountCode1.innerText = "Copied!";
+    setTimeout(function() {
+      discountCode1.innerText = "DIFY15";
+    }, 1500);
+  });
+
+  copyButton2.addEventListener("click", function() {
+    const codeToCopy = discountCode2.innerText;
+
+    copyToClipboard(codeToCopy);
+
+    copyButton2.innerText = "Copied!";
+    setTimeout(function() {
+      copyButton2.innerText = "Copy Code";
+    }, 1500);
+  });
+  copyButton3.addEventListener("click", function() {
+    const codeToCopy = discountCode3.innerText;
+
+    copyToClipboard(codeToCopy);
+
+    copyButton3.innerText = "Copied!";
+    setTimeout(function() {
+      copyButton3.innerText = "Copy Code";
+    }, 1500);
+  });
+
+  // discountCode2.addEventListener("click", function() {
+  //   const codeToCopy = discountCode2.innerText;
+
+  //   copyToClipboard(codeToCopy);
+
+  //   discountCode2.innerText = "Copied!";
+  //   setTimeout(function() {
+  //     discountCode2.innerText = "STUDIO250";
+  //   }, 1500);
+  // });
+});
+</script>

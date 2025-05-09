@@ -1,0 +1,145 @@
+<div class="page-width">
+  <div class="download_catalogue_btn">
+    <button type="button" class="btn-gift-studio-default cmn_btn" onclick="downloadCatalogue()">
+      Download catalogue
+    </button>
+  </div>
+<script>
+/**
+ * Function to download the catalogue file
+ */
+function downloadCatalogue() {
+    const fileUrl = 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_Wedding_Catalogue_2024.pdf?v=1734428950'; // Replace with the actual file URL
+    const fileName = 'Wedding_Catalogue_2025.pdf'; // Desired file name
+
+    fetch(fileUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch file: ${response.statusText}`);
+            }
+            return response.blob(); // Get the file as a blob
+        })
+        .then(blob => {
+            // Create a temporary link element
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = fileName; // Set the desired file name
+
+            // Trigger the download
+            document.body.appendChild(anchor);
+            anchor.click();
+
+            // Clean up
+            document.body.removeChild(anchor);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error downloading file:', error));
+}
+</script>
+<div class="wedding_form" id="wedding_form">
+  <div id="popup" class="overlay">
+    <div class="popup-info">
+      <button type="button" onclick="closeFunction();" class="close" id="location_close_btn">
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M21 12C21 7.03125 16.9688 3 12 3C7.03125 3 3 7.03125 3 12C3 16.9688 7.03125 21 12 21C16.9688 21 21 16.9688 21 12Z" fill="#FFF0D9"/>
+<path d="M15 15L9 9M9 15L15 9" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+         </button>
+     <div style="margin:0 auto;" class="pxFormGenerator" id="azP0Wt8dusiDOnX-fnFEKA"></div>
+    </div>
+  </div>
+</div>
+  <style>
+    .wedding_form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+   .wedding_form .overlay .popup-info{
+      width:40%;
+     padding:0;
+     background:#fff;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+  .wedding_form .overlay .popup-info {
+    width: 60%;
+  }     
+}
+    @media(max-width:767px){
+        .wedding_form .overlay .popup-info {
+          width: 100%;
+          background:#fff;
+          border-radius:0;
+          top: 15%;
+    bottom: unset;
+        }
+      }
+    .download_catalogue_btn{
+      text-align:center;
+          margin-bottom: 50px;
+    margin-top: 20px;
+    }
+    .btn-gift-studio-default{
+          padding: 10px 30px;
+    font-size: 16px;
+    text-transform: capitalize;
+    }
+  </style>
+          <script>
+            
+            document.getElementById('wedding_form').style.display = 'none';
+            function myFunction() {
+                document.getElementById('wedding_form').style.display = 'flex';
+            }
+
+              function closeFunction() {
+                document.getElementById('wedding_form').style.display = 'none';
+            }
+            
+          </script>
+
+  
+<div class="contact-section">
+      <div class="contact-inside">
+                
+               
+              <picture>
+                <source media="(max-width: 767px)" srcset="https://cdn.shopify.com/s/files/1/0471/2824/8475/files/corporate_mobile.png?v=1617969658">
+              <img src="https://cdn.shopify.com/s/files/1/0471/2824/8475/files/corporate.png?v=1603396281" class="img-responsive form-image">
+              </picture>
+              
+            </div>
+            <div class="contact-inside">
+            <div style="margin:0 auto;" class="pxFormGenerator" id="KNFum_HS3wrC25GXbkyjKg"></div>
+            </div>
+      
+      </div>
+</div>
+
+{% comment %}
+<style>
+  .form-image img {
+    margin-top: -160px;
+  }
+
+  @media(max-width:767px){
+  .contact-section {
+   flex-direction: column;
+  }
+    .form-image img {
+      margin-top: -10px;
+    }
+    .contact-inside {
+     width: 100%;
+  }
+  }
+</style>
+{% endcomment %}

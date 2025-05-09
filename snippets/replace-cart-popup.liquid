@@ -1,0 +1,62 @@
+<div class="replace_cart_sec" id="replace_cart">
+  <div class="tgs-popup-overlay popup_class"></div>
+<div id="tgs-popup" class="popup_class">            
+    <h5>Empty Cart?</h5>
+    <p>Your cart item has different location, do you want to empty the cart?</p>
+    <button id="close-popup" class="tgs-btn">No</button><button id="replace-cart" class="tgs-btn">Empty Cart</button>
+</div>
+</div>
+
+<style>
+    #tgs-popup {
+    display: none;
+    position: fixed;
+    z-index:999;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    background: #fff;
+    padding: 30px;
+}
+  .tgs-popup-overlay{
+    position: fixed;
+    display:none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+  cursor: pointer;
+  }
+
+  #tgs-popup {
+            max-width: 100%;
+            width: 35rem;
+          }
+          #tgs-popup h5 {
+            padding-bottom: 0;
+            font-family: var(--font-subheading);
+            margin: 12px 0;
+            font-size: 22px;
+          }
+          #tgs-popup p {
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            font-family:var(--font-text);
+            line-height: 1.2;
+            font-weight: 400;
+          }
+          .tgs-btn {
+               padding: 10px 0;
+              border-radius: 0.5rem;
+              width: 12rem;
+              font-size: 16px;
+             font-family:var(--font-text);
+          }
+          #close-popup {
+            margin-right: 0.5rem;
+          }
+</style>

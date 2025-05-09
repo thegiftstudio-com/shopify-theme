@@ -1,0 +1,753 @@
+<link rel="stylesheet" href="{{ 'section-main-page.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-main-page.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+    .section-template--18201551274291__main-padding {
+      padding-top: 28px;
+      padding-bottom: 28px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-template--18201551274291__main-padding {
+        padding-top: 21px;
+        padding-bottom: 21px;
+      }
+    }
+    /* product page accordion Start */
+  .row-accordion {
+    display: flex;
+    margin-top: 15px; }
+
+  .row-accordion .col {
+    flex: 1;
+    padding: 0px;
+    /* Accordion styles */ }
+
+  .row-accordion .col .tabs {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 4px 0px rgba(0, 0, 0, 0.3); }
+
+  .row-accordion .col .tab {
+    width: 100%;
+    color: #000;
+    overflow: hidden; }
+
+  .row-accordion .col .tab-label {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background: #fff;
+    font-weight: bold;
+    cursor: pointer;    line-height: 22px;
+    /* Icon */ }
+
+  .row-accordion .col .tab-label:hover {
+    background: #e6e6e6; }
+
+  .row-accordion .col .tab-label::after {
+    content: "\276F";
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    transition: all 0.35s; }
+
+  .row-accordion .col .tab-content {
+    max-height: 0;
+    padding: 0 1em;
+    color: #fff;
+    background: white;
+    transition: all 0.35s; }
+  .row-accordion .col .tab-content ul{
+    margin-top: 0;
+  }
+  .row-accordion .col .tab-close {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    font-size: 0.75em;
+    background: #fff;
+    cursor: pointer; }
+
+  .row-accordion .col .tab-close:hover {
+    background: #e6e6e6; }
+
+  .row-accordion .col input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1; }
+
+  .row-accordion .col input:checked + .tab-label {
+    background: #e6e6e6; }
+
+  .row-accordion .col input:checked + .tab-label::after {
+    transform: rotate(90deg); }
+
+  .row-accordion .col input:checked ~ .tab-content {
+    max-height: 100vh;
+    padding: 1em;
+    color: #000; }
+
+  #bcpo .bcpo-checkboxes input[type="checkbox"] {
+    height: 20px;
+    width: 20px; }
+
+  /* product page accordion End */
+{%- endstyle -%}
+
+<div class="{{ template.suffix }} section-template--18201551274291__main-padding">
+  <div class="template-{{ template.suffix }}__header page-width">
+    <h1 style="font-size:26px;">Frequently Asked Questions</h1>
+    <h3 style="padding:0px;font-weight:700">ORDERS</h3>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck1" type="checkbox">
+            <label for="chck1" class="tab-label">Do I need an Account to place an order?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Yes. But, it takes less than a minute to create an account. With an account shopping becomes easy -
+                  faster checkouts, saved addresses, custom wishlist, order history, and you enjoy preview access to the
+                  newest collection!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck2" type="checkbox"> <label for="chck2" class="tab-label">How to place bulk orders?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Have lots of love to share? We would love to help you! You can call our customer support team on
+                  08880077745 for bulk orders above 10 hampers. Alternativeley, you may request a call-back and we will
+                  reach out to you!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck3" type="checkbox">
+            <label for="chck3" class="tab-label">How do I know that my order has been confirmed?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Once you place an order and make the payment, we will send you a confirmation on your registered email
+                  address and mobile number.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck4" type="checkbox">
+            <label for="chck4" class="tab-label">Can I place an order over call?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  No, You may call us on 08880077745 for any assistance you may require to choose the gifts but orders
+                  are to placed on the website itself.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck5" type="checkbox">
+            <label for="chck5" class="tab-label">How do I reorder from my purchase history?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  It is very easy to re-order from your previous orders. Please visit the 'My Purchases' page and hit
+                  the 'Re-order' button. You can reorder the gifts and send it to the same address or a different one.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck6" type="checkbox">
+            <label for="chck6" class="tab-label">Can I add personalised message to my Gift?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  The combination of our cards and your messages are bound to make your loved ones smile. To add a
+                  personalized message, simply choose a card style and write your message within the character limit. We
+                  love to write these messages down for you!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck7" type="checkbox">
+            <label for="chck7" class="tab-label">What do I need to buy Liquor products?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  You will be asked to confirm that the age of the purchaser and receiver of liquor hampers/products
+                  conform to the legal age requirements as stated in the applicable laws of the State. Our Studio-Santa
+                  will deliver these hampers and products only after verifying the age of the receiver. The receiver
+                  will need to show a valid Goverment ID at the time of delivery.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck8" type="checkbox">
+            <label for="chck8" class="tab-label">What is the Wishlist and how does it work?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We know it can take some time choosing the perfect gift for your special ones. You can use the
+                  wishlist to add gifts and take time to ponder on what your loved ones would love the best. You may
+                  also choose to add out-of-stock products to your Wishlist and we will let you know when that perfect
+                  gift is ready for you to order!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck9" type="checkbox">
+            <label for="chck9" class="tab-label">Can you remove the prices from the articles?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  No one can put a price tag on your love! Yes, we remove all price tags from our products or strike off
+                  the printed prices. Your loved ones will not get to know the price of your gifts in any way.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck10" type="checkbox">
+            <label for="chck10" class="tab-label">I want to pay in cash. What can I do?</label>
+            <div class="tab-content">
+              <ul>
+                <li>We are sorry. We are not accomodating Cash on Delivery as a payment method currently</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck11" type="checkbox">
+            <label for="chck11" class="tab-label">Can I get Same Day Delivery if I pay extra?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Last minute invites? Forgot about the party? Don't worry, we have certain products that are available
+                  for Same day delivery. You may find these in the 'Same Day' tab on the homepage. You will be notified
+                  of the delivery charges at checkout. We usually charge a premium for midnight deliveries only.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck12" type="checkbox">
+            <label for="chck12" class="tab-label"
+              >I have received damaged articles in my hamper. What should I do?</label
+            >
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We make sure that our hampers and products are in the best condition before we send them out for
+                  delivery. However, if you receive a hamper article that is damaged or incorrect, you can call us on
+                  08880077745 or email us at contact@giftstudio.com within 3 hours of delivery
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck13" type="checkbox">
+            <label for="chck13" class="tab-label">Some articles were missing from my hamper. What should I do?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Our hampers go through rigorous quality check processes before they are out for delivery. But if you
+                  are missing some items, you can call our support center team via phone on NB number or email us on
+                  contact@thegiftstudio.com within 3 hours of delivery.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck14" type="checkbox">
+            <label for="chck14" class="tab-label">Can I return the Gift hamper?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  You may raise a request for return through the website or by writing to us on contact@giftstudio.com.
+                  To raise a request via the website, please go to the 'My Purchases' tab in your Account page and raise
+                  the request against the particular order you want to return.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3 style="padding:0px;font-weight:700;margin:20px 0px 0px 0px">PAYMENTS</h3>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck15" type="checkbox">
+            <label for="chck15" class="tab-label">Which payment methods do you accept?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We accept all major national credit cards and national debit cards. We also accept payments via
+                  net-banking and UPI
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck16" type="checkbox">
+            <label for="chck16" class="tab-label">Are the applicable taxes included the in the product price?</label>
+            <div class="tab-content">
+              <ul>
+                <li>Yes, the prices are inclusive of the applicable taxes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck17" type="checkbox">
+            <label for="chck17" class="tab-label">Why was my payment declined?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  The payment may have been declined due to network errors or a mismatch in any information provided by
+                  you. We request you to try again once you have rechecked your connection and information. Please
+                  contact us on 08880077745 in case the problem persists.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck18" type="checkbox">
+            <label for="chck18" class="tab-label">I have been charged incorrectly. What should I do? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We try and make sure that we don't charge you incorrectly. In cases you believe we have made a
+                  mistake, reach out to us on 08880077745 or email us at contact@thegiftstudio.com and let us know the
+                  details. We will take care of the rest!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck19" type="checkbox">
+            <label for="chck19" class="tab-label">Can I get a refund? How long does it take? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We have a no refund policy. However, you may request a refund against return of damaged or partially
+                  incomplete orders by writing to us on
+                  <a href="mailto:contact@thegiftstudio.com">contact@thegiftstudio.com</a> . We will connect with you
+                  and let you know if your request can be accepted or not. Once the refund request has been processed,
+                  you will receive the amount within 7 working days. Please note that the delivery charges will not be
+                  refunded in any case.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3 style="padding:0px;font-weight:700;margin:20px 0px 0px 0px">DELIVERY</h3>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck20" type="checkbox">
+            <label for="chck20" class="tab-label">How much does Delivery cost?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We wish we did not charge you for choosing us to deliver your love. However to ensure your gifts are
+                  delivered in the best condition - we do take a delivery charge. The delivery costs will depend on your
+                  order and distance from our stores. You will be notified of the delivery charges at the Checkout page.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck21" type="checkbox">
+            <label for="chck21" class="tab-label">Who will deliver my Order? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  All gifts are delivered by our very own Studio Santas. They are representatives of The Gift Studio who
+                  take care of your gifts till they reach your loved ones!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck22" type="checkbox"> <label for="chck22" class="tab-label">How can I track my order? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We know you are as excited as us to send these gifts out! Relax, we will keep you covered throughout
+                  the way. We will send you three messages once you place an order. 1. We start with an order
+                  confirmation. 2. We let you know when we have curated and packed your order. 3. You will know when the
+                  gifts are out for delivery - literally on the way!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck23" type="checkbox">
+            <label for="chck23" class="tab-label"
+              >I won't be there for my selected delivery slot. What should I do?
+            </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  Last minute plans? You can call us on 08880077745. We will let our Studio-Santa know where you want to
+                  get the gifts dropped off at - be it your neighbour's or to the security. Don't worry, our
+                  Studio-Santas won't climb down your chimneys! You could also let us know of an alternative time for
+                  the delivery.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck24" type="checkbox">
+            <label for="chck24" class="tab-label">Do I need an ID to receive the hampers?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We would never want to bother you with this, but at times we have to be careful. Our delivery
+                  executive will have to check the ID in case of orders containing liquor bottles to comply with the
+                  legal rules and regulations of the State.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck25" type="checkbox">
+            <label for="chck25" class="tab-label">Can I collect the Gifts myself?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We will be delighted to see you at one of our stores. In case you wish to pick up the gifts yourself,
+                  call us at 08880077745 while placing your order and we will let you know the location for you to visit
+                  and collect the gifts in-person. You may then choose the 'Self-pickup' option during checkout. Please
+                  note this facility will be available for only certain orders.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck26" type="checkbox">
+            <label for="chck26" class="tab-label">What should I do if my order is late?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We believe that there should be no delay in spreading smiles. But if we've kept you waiting, give us a
+                  call on 08880077745 and we will make sure that everything is in order.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck27" type="checkbox">
+            <label for="chck27" class="tab-label"
+              >Do you offer Same day delivery? Can I get same day delivery by paying extra?</label
+            >
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We offer same day deliveries for a limited range of products. You may find the range on clicking the
+                  'Same Day' tab on our homepage. We also offer midnight deliveries at an extra charge provided the
+                  order is placed in time as per the terms and conditions indicated on the product page
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck28" type="checkbox">
+            <label for="chck28" class="tab-label">Why do you ask for recipient's Mobile number?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  To ensure we deliver a seamless exprerience each time we curate a gift for you and your loved ones. We
+                  ask for the recepient's number to coordinate the last-mile delivery. Don't worry if you want the gift
+                  to be a surprise - we will only reach out the recipient at the moment of delivery!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3 style="padding:0px;font-weight:700;margin:20px 0px 0px 0px">RETURNS & REFUNDS</h3>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck29" type="checkbox">
+            <label for="chck29" class="tab-label">Can I return an item without the invoice?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  To raise a return request, please write to us at contact@thegiftstudio.com or call us on 08880077745.
+                  You will need to provide us with the Invoice Number. The Invoice number will be sent to the Mobile
+                  Number and Email address provided to us during the time of order.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck30" type="checkbox">
+            <label for="chck30" class="tab-label">Which articles are non-returnable? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We do not accept returns unless your order is not delivered in full and/or the items are damaged
+                  before it reaches you. In addition, certain product and categories which include perishable goods
+                  cannot be returned as mentioned in the Terms and conditions of these products
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck31" type="checkbox">
+            <label for="chck31" class="tab-label">Can I exchange my purchase for something else? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  You can raise a request for replacement of products in case they reach you in a damaged condition.
+                  However, this will be subject to nature of goods and stock availability. We do not guarantee a
+                  replacement against your request.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck32" type="checkbox">
+            <label for="chck32" class="tab-label">Will I get a complete refund for my returns?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  While raising a request for return of damaged or incomplete orders, you may choose to ask for a
+                  Refund. However, we reserve the right to use our discretion to issue a refund. Kindly note, the
+                  delivery charges will not be refunded in any case.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck33" type="checkbox">
+            <label for="chck33" class="tab-label">When will I receive my Refund?</label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  You may request a refund against return of damaged or partially incomplete orders by writing to us on
+                  contact@thegiftstudio.com. We will connect with you and let you know if your request can be accepted
+                  or not. Once the refund request has been processed and accepted, you will receive the amount within 7
+                  working days. Please note that the delivery charges will not be refunded in any case.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-accordion">
+      <div class="col">
+        <div class="tabs">
+          <div class="tab">
+            <input id="chck34" type="checkbox">
+            <label for="chck34" class="tab-label">I have received the incorrect order. What should I do? </label>
+            <div class="tab-content">
+              <ul>
+                <li>
+                  We do our best to deliver exactly what you ordered. However in cases of inaccuracies, kindly reach out
+                  to us on 08880077745 or write to us at contact@thegiftstudio.com. We will do our best to deliver the
+                  gifts you chose
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

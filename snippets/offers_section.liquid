@@ -1,0 +1,18 @@
+{% assign offers = product.metafields.custom.offers_section.value %}
+{% if offers != blank %}
+<div class="offer_section">
+  <div class="offers_title_sec">
+    <img src="{{ offers.icon }}" alt="title_icon">
+    <h2>{{ offers.title }}</h2>
+  </div>
+  <div class="offers_content">
+    {% assign offersitems = offers.items %}
+    {% for offersitem in offersitems %}
+    <div class="offers_img_cont">
+      <img src="{{ offersitem.img }}" alt="">
+      <p>{{ offersitem.caption }}</p>
+    </div>
+      {% endfor %}
+  </div>
+</div>
+  {% endif %}

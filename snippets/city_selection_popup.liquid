@@ -1,0 +1,866 @@
+<div class="">
+  <div class="city-modal-popup location-popup">
+    <div class="popup-text">
+      <button class="city-modal-close" onclick="mumLocation()">&times;</button>
+      <div class="popup-icon">
+        <img src="{{ 'location-ripple-icon.png' | asset_url }}" alt="location-icon" width="30" height="30">
+      </div>
+      <h2>Let’s Personalize Your Experience!</h2>
+    </div>
+    <div class="city-modal-body">
+      <div class="city-modal-search-area">
+        <div class="city-modal-search-wrapper">
+          <input
+            type="text"
+            name=""
+            maxlength="6"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+            id="pincode"
+            class="city-modal-search"
+            data-field="search-city"
+            placeholder="Enter your delivery pincode"
+          >
+          <p id="pincodeError"></p>
+          <div class="result-container">
+            <ul class="city-modal-search-result" data-list="city-search-list"></ul>
+          </div>
+          <button class="continue-shipping">Continue Shopping</button>
+        </div>
+      </div>
+      <input
+        type="hidden"
+        id="citySelected"
+        data-city=""
+        data-location-tag=""
+        data-tat=""
+        data-perishable=""
+        data-pincode=""
+      >
+      <div id="cityDataContainer" style="display: none;">
+        {% for city_mapping in shop.metaobjects.city_mapping_popup.values %}
+          {% for city in city_mapping.city_mapping_data.value %}
+            <div
+              id="{{ city.city | downcase }}"
+              class="city-data-item"
+              data-city="{{ city['city'] }}"
+              data-location-tag="{{ city['details']['location_tag'] }}"
+              data-tat="{{ city['details']['tat'] }}"
+              data-perishable="{{ city['details']['isPerishable'] }}"
+              data-id="{{ forloop.index0 }}"
+            ></div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="city-modal-overlay"></div>
+<div class="location-popup-overlay">
+  <div class="location-popup-mobile">
+    <!-- Your popup content goes here -->
+    <div class="city-modal-header">
+      <div class="mobile-popup-input city-modal-header-mobile">
+        <button
+          data-btn="close-city-modal"
+
+          id="close-mobile"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-chevron-left"
+            viewBox="0 0 16 16"
+          >
+            <path fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+          </svg>
+        </button>
+        <p class="selected_city_name_mobile_view">Pick a Delivery Location</p>
+      </div>
+    </div>
+    <!-- <h2 class="mobile-popup-input" style="color:black">Select Delivery Location</h2> -->
+    <div class="city-modal-search-wrapper">
+      <input
+        type="text"
+        name=""
+        maxlength="6"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+        id="pincode-mobile"
+        class="city-modal-search"
+        data-field="search-city-mobile"
+        placeholder="Enter your delivery city or pincode"
+      >
+      <ul class="city-modal-search-result" data-list="city-search-list-mobile"></ul>
+    </div>
+    <!-- Add back button, search field, etc. -->
+  </div>
+</div>
+<script>
+ 
+
+      function cityChange(city, location, tat, isPerishable, pincode) {
+  $('#citySelected')
+    .attr('data-city', city)
+    .attr('data-location-tag', location)
+    .attr('data-tat', tat)
+    .attr('data-pincode', pincode)
+    .attr('data-perishable', isPerishable);
+$('#pincode').val(pincode+', '+city);
+        document.querySelector('.location-popup-overlay').classList.remove('show');
+         $('.city-modal-popup').addClass('active');
+      $('.city-modal-overlay').addClass('active');
+        document.querySelector('[data-list="city-search-list"]').innerHTML ="";
+  console.log(`City set: ${city}, Location: ${location}, TAT: ${tat}, Perishable: ${isPerishable}, Pincode: ${pincode}`);
+}  
+$(document).ready(function() {
+  $('#pincode').on("keyup", function () {
+    document.getElementById("pincodeError").innerText = "";
+     $('#citySelected')
+        .attr('data-city', "")
+        .attr('data-location-tag', "")
+        .attr('data-tat', "")
+        .attr('data-pincode', "")
+        .attr('data-perishable', "");
+        
+    const pincode_val = $(this).val();
+    var data = {};
+    if (isNaN(pincode_val)) {
+      push_pincode_error(pincode_val, 'Please enter a numeric pincode');
+        document.getElementById("pincodeError").innerText = "Please enter a numeric pincode";
+      return ;
+    }
+      if(pincode_val.length >= 4){
+if (!isNaN(pincode_val)) {
+        // Set the pincode if it's a valid number
+        data.pincode = pincode_val;
+                    if(pincode_val.length == 6){
+
+  // To push the event when the user enters the 6 digits of the pincode
+        userStartedPincodeEnter(pincode_val);
+                    }
+    } else {
+        // Set the city name if it's not a valid number (i.e., not a pincode)
+        data.city = pincode_val;
+    }
+      
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://hampers.tinglabs.in/pincode_suggestion',
+            data: data,
+            dataType: 'json',
+            headers: {
+                "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+            },
+            success: function (data) {
+                // console.log(data);
+                
+                // Check if the response indicates successful data retrieval
+                if (data.status === true && data.matching_pincodes.length > 0) {
+                    // Create a list of matched pincodes and their cities
+                    let suggestions = data.matching_pincodes.slice(0, 5).map(function(item) {
+                        const cityId = item.city.toLowerCase().replace(/\s+/g, '-'); // safe ID format
+                        const location = "location-" + item.primary_warehouse;
+                        return `
+                            <li>
+                                <a href="#" class="${cityId}-city-selection" 
+                                   onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
+                                   ${item.pincode}, ${item.city}
+                                </a>
+                            </li>
+                        `;
+                    }).join("");
+
+                    // Update the city search list with the matching pincodes
+                    document.querySelector('[data-list="city-search-list"]').innerHTML = suggestions;
+                } else {
+                  if(pincode_val.length == 6){
+                  push_pincode_error(pincode_val, 'No results found');
+                  }
+                    // If no matching pincodes are found, show a "No results found" message
+                    document.querySelector('[data-list="city-search-list"]').innerHTML =
+                        `<li class='no-result-found'>No results found</li>`;
+                }
+            },
+            error: function (xhr, status, error) {
+                                push_pincode_error(pincode_val, 'Error fetching results');
+
+                // Handle error case
+                console.log("Error fetching pincode suggestions:", error);
+                document.querySelector('[data-list="city-search-list"]').innerHTML =
+                    `<li class='no-result-found'>Error fetching results</li>`;
+            }
+        });
+      }else{
+      // Clear the suggestions when the input is less than 4 characters (e.g., if the user deletes the pincode)
+      document.querySelector('[data-list="city-search-list"]').innerHTML = '';
+      }
+  });
+});
+
+
+  
+$(document).ready(function() {
+    $('#pincode-mobile').on("keyup", function () {
+        $('#citySelected')
+            .attr('data-city', "")
+            .attr('data-location-tag', "")
+            .attr('data-tat', "")
+            .attr('data-pincode', "")
+            .attr('data-perishable', "");
+        
+        const pincode_val = $(this).val();
+    var data = {};
+      if(pincode_val.length >= 4){
+if (!isNaN(pincode_val)) {
+        // Set the pincode if it's a valid number
+        data.pincode = pincode_val;
+        // To push the event when the user enters the first 4 digits of the pincode
+        userStartedPincodeEnter(pincode_val);
+    } else {
+        // Set the city name if it's not a valid number (i.e., not a pincode)
+        data.city = pincode_val;
+    }
+      
+        // Check if pincode is numeric and at least 4 digits (for suggestions)
+            $.ajax({
+                type: 'POST',
+                url: 'https://hampers.tinglabs.in/pincode_suggestion',
+                data: data,
+                dataType: 'json',
+                headers: {
+                    "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+                },
+                success: function (data) {
+                    console.log(data);
+                    
+                    // Check if the response contains matching pincodes
+                    if (data.status === true && data.matching_pincodes.length > 0) {
+                        // Display only the first 5 matching pincodes and their cities
+                        let suggestions = data.matching_pincodes.slice(0, 5).map(function(item) {
+                            const cityId = item.city.toLowerCase().replace(/\s+/g, '-'); // safe ID format
+                            const location = "location-" + item.primary_warehouse;
+                            return `
+                                <li>
+                                    <a href="#" class="${cityId}-city-selection" 
+                                       onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
+                                       ${item.pincode}, ${item.city}
+                                    </a>
+                                </li>
+                            `;
+                        }).join("");
+
+                        // Update the city search list with the matching pincodes and cities
+                        document.querySelector('[data-list="city-search-list-mobile"]').innerHTML = suggestions;
+                    } else {
+                        // If no matching pincodes are found, show a "No results found" message
+                        document.querySelector('[data-list="city-search-list-mobile"]').innerHTML =
+                            `<li class='no-result-found'>No results found</li>`;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error case
+                    console.log("Error fetching pincode suggestions:", error);
+                    document.querySelector('[data-list="city-search-list-mobile"]').innerHTML =
+                        `<li class='no-result-found'>Error fetching results</li>`;
+                }
+            });
+      }else{
+      // Clear the suggestions when the input is less than 4 characters (e.g., if the user deletes the pincode)
+      document.querySelector('[data-list="city-search-list"]').innerHTML = '';
+      }
+        
+    });
+});
+ function closePopup() {
+  document.querySelector('.location-popup-overlay').classList.remove('show');
+     $('.city-modal-popup').addClass('active');
+}
+ $('#close-mobile').on('click',closePopup);
+  
+  //Mobile functionality Code end
+  
+ $('.continue-shipping').on('click', function () {
+    var citySelected = $('#citySelected');
+
+    var cityName = citySelected.attr('data-city');
+    var location = citySelected.attr('data-location-tag');
+    var tat = citySelected.attr('data-tat');
+    var pincode = citySelected.attr('data-pincode');
+    var isPerishable = citySelected.attr('data-perishable');
+  if (!cityName || cityName.trim() === "") {
+        var pincodeInput = $('#pincode');
+
+        // Add red border and shake effect
+        pincodeInput.css('border', '2px solid red');
+
+        // Optional: shake effect using jQuery UI if included
+        if (pincodeInput.effect) {
+            pincodeInput.effect('shake');
+        } else {
+            // fallback shake with CSS class
+            pincodeInput.addClass('shake');
+
+            // remove class after animation (assumes .shake is defined in CSS)
+            setTimeout(function () {
+                pincodeInput.removeClass('shake');
+            }, 500);
+        }
+
+        // Focus the input field
+        pincodeInput.focus();
+        return; // stop further execution
+    }
+    cityChangePopup(cityName, location, tat,isPerishable,pincode);
+});
+
+
+  function positionPopupToElement() {
+    const targetElement = document.querySelector('.location_sec'); // Change to your actual class or ID
+    const popup = document.querySelector('.location-popup');
+
+   if (targetElement && popup) {
+    if (window.innerWidth < 700) {
+      popup.style.position = 'fixed';
+      popup.style.top = '';
+      popup.style.left = '0';
+      popup.style.bottom = '0'; // Stick to bottom
+      // popup.style.height = '255px'; // Set height
+      popup.style.borderTopLeftRadius = '12px';
+      popup.style.borderTopRightRadius = '12px';
+      popup.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.2)';
+    } else {
+      const rect = targetElement.getBoundingClientRect();
+      popup.style.position = 'fixed';
+      popup.style.top = `${rect.bottom + 10}px`; // 10px below the element
+      popup.style.left = `${rect.left}px`;
+    }
+  }
+  }
+
+  window.addEventListener('load', positionPopupToElement);
+  window.addEventListener('resize', positionPopupToElement);
+</script>
+<style>
+            #location_filter,
+      #popup {
+        display: none !important;
+      }
+
+      .intercom-borderless-frame.intercom-with-namespace-1z08j6f.e1dl9bzv0 {
+        display: none !important;
+      }
+
+      body {
+        /* overflow: hidden !important; */
+      }
+
+      /* Main Code Starts */
+      .city-modal-popup {
+        position: fixed;
+        /* top: 110px; */
+        right: 12%;
+        z-index: 999999999;
+        background-color: white;
+        width:450px;
+        max-width: 975px;
+        border-radius: 10px;
+        text-align:center;
+      }
+
+      .city-modal-popup:not(.active) {
+        display: none !important;
+      }
+      .city-modal-popup .city-modal-header {
+          min-height: 20px;
+          position: relative;
+          text-align: center;
+          margin-bottom: 10px;
+      }
+       .city-modal-close {
+        position: absolute;
+            top: 5px;
+            right: 5px;
+        background-color: transparent;
+        color: #4f4f4f;
+        border: none;
+        font-size: 30px;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+      }
+  #pincodeError{
+        color: red;
+    padding-left: 75px;
+    text-align: left;
+  }
+          .city-modal-header-text {
+            margin: 0 !important;
+              color:black;
+          }
+          .selected_city_name_mobile_view{
+            margin: 0 !important;
+              color:black;
+          }
+            .top-citites__title{
+              color:black;
+          }
+      .city-modal-popup .city-modal-header .city-modal-header-mobile {
+        display: none;
+      }
+      .city-modal-popup .city-modal-body {
+        padding: 0 ;
+        max-height: calc(100vh - 100px);
+      }
+      .popup-text{
+        background-color: #FFF0D9;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding-top: 10px;
+      }
+
+        .location-popup h2 {
+          margin: 0;
+          font-size: 20px;
+          color: #222;
+          font-weight:600px;
+        }
+
+        .location-popup p {
+              font-weight: 100;
+          font-size: 14px;
+          color: #555;
+          margin: 0;
+        }
+    .location-popup .continue-shipping {
+          padding: 12px 24px;
+          background-color: #000;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+      width:90%;
+      margin-top:10px;
+        }
+
+        .location-popup button:hover {
+          background-color: #333;
+        }
+      /* .city-modal-popup .city-modal-body::-webkit-scrollbar {
+        display: none;
+      } */
+      .city-modal-popup .city-modal-body .city-modal-search-area {
+        margin-bottom: 30px;
+        position: sticky;
+        top: 0;
+      }
+      .city-modal-search-wrapper {
+        position: relative;
+      }
+       .city-modal-search {
+        width: 90%;
+        margin:20px;
+        padding: 13px 10px;
+        border: 2px solid #dddddd;
+        border-radius: 10px;
+        margin-bottom:0;
+        font-size: 14px;
+        font-weight: 400;
+        outline: none !important;
+        box-shadow: none !important;
+        padding-left: 55px;
+        background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Vector_1.png?v=1745317936');
+        background-repeat: no-repeat;
+        background-position: 15px center;
+        background-size: 20px auto;
+
+      }
+    .city-modal-search-wrapper::after {
+        content: "";
+        position: absolute;
+        top: 30px;
+        left: 70px;
+        border-right: 3px solid #e0e0e0;
+        height: 30px;
+        border-radius: 2px;
+      }
+
+      .city-modal-search-wrapper .city-modal-search::-moz-placeholder {
+        color: #828282;
+      }
+       .city-modal-search-wrapper .city-modal-search::placeholder {
+        color: #828282;
+      }
+       .city-modal-search-wrapper .city-modal-search-result {
+        width: 90%;
+        list-style: none;
+        margin-left: 21px;
+      margin-right: 21px;
+      margin-top: 0;
+        padding: 0;
+        background-color: #fff;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      .city-modal-search-wrapper .city-modal-search-result li {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      .city-modal-search-wrapper .city-modal-search-result li.no-result-found {
+        padding: 4px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        color: tomato;
+      }
+      .city-modal-search-wrapper .city-modal-search-result li a {
+        display: block;
+        padding: 4px 10px;
+        text-decoration: none;
+        color: #000000;
+        font-size: 12px;
+        font-weight: 400;
+        width:100%;
+        text-align:left;
+      }
+      .city-modal-search-wrapper .city-modal-search-result li a:hover {
+        background-color: #f5f5f5;
+      }
+      .city-modal-popup .city-modal-body .city-modal-notation ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(3, 33.33%);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .city-modal-popup .city-modal-body .city-modal-notation ul li {
+        padding: 0 5px;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-citites__title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper {
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper .no-data-found-top-cities {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: tomato;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper .no-data-found-top-cities:not(.active) {
+        display: none !important;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper ul {
+        display: grid;
+        grid-template-columns: repeat(10, 10%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper ul li {
+        padding: 0 10px;
+      }
+      .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper ul li.hide-list-item {
+        display: none !important;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list {
+        margin-top: 40px;
+        max-height: 600px;
+        transition: all 1s linear;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list.hide-list {
+        max-height: 0px;
+        overflow: hidden;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__title {
+        text-align: center;
+        color: #7a7a7a;
+        font-weight: 500;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper {
+        max-height: 180px;
+        overflow: auto;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper .no-data-found-other-cities {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: tomato;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper .no-data-found-other-cities:not(.active) {
+        display: none !important;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul {
+        display: grid;
+        grid-template-columns: repeat(5, 20%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li {
+        padding-right: 10px;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li.hide-list-item {
+        display: none !important;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a {
+        color: rgba(0, 0, 0, 0.8) !important;
+        text-decoration: none;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+      }
+      .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a.selected, .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a:hover {
+        text-decoration: underline;
+      }
+      .city-modal-popup .city-modal-body .toggle-cities-list__wrapper {
+        text-align: center;
+      }
+      .city-modal-popup .city-modal-body .toggle-cities-list__wrapper .toggle-cities-list-btn {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        color: #7a7a7a;
+        font-weight: 400;
+        font-size: 16px;
+      }
+
+      .city-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99999999;
+        display: block !important;
+      }
+      .city-modal-overlay:not(.active) {
+        display: none !important;
+      }
+
+      .top-cities__card {
+        display: block;
+        text-decoration: none;
+        color: #000;
+        transition: all 1s ease-in-out;
+      }
+      .top-cities__card:hover .top-cities__img-area img, .top-cities__card.selected .top-cities__img-area img {
+        border-color: #0c0e0d;
+      }
+      .top-cities__card .top-cities__img-area img {
+        border-radius: 50%;
+        border: 2px solid transparent;
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .top-cities__card .top-cities__title {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0 5px;
+        margin: 0;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .notation-card .notation-card__icon-area {
+        margin-bottom: 5px;
+      }
+      .notation-card .notation-card__icon-area img {
+        display: block;
+        width: 35px;
+        height: 35px;
+        -o-object-fit: contain;
+           object-fit: contain;
+        -o-object-position: center;
+           object-position: center;
+        margin: 0 auto;
+      }
+      .notation-card .notation-card__title {
+        text-align: center;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+        color:black;
+      }
+
+      @media (max-width: 1024px) {
+        .city-modal-popup {
+          max-width: 363px;
+          width: 98%;
+        }
+      }
+      @media (max-width: 565px) {
+        .top-cities__card:not(.selected):hover .top-cities__img-area img {
+          border-color: transparent;
+        }
+        .city-modal-header-text {
+              display: none;
+            }
+        .city-modal-popup {
+          max-width:100%;
+          width: 100%;
+          border-radius: 0;
+
+          left: 0;
+          transform: none;
+        }
+        .city-modal-popup .city-modal-header {
+          text-align: unset;
+          padding: 15px;
+          margin-bottom: 0;
+        }
+        .city-modal-popup .city-modal-header .city-modal-close {
+          display: none !important;
+        }
+         .city-modal-header .city-modal-header-mobile {
+          display: flex;
+          position: relative;
+          align-items: center;
+        }
+        .city-modal-header .city-modal-header-mobile button {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 40px;
+          height: 40px;
+          border-width: 0px, 0px, 0px, 0px;
+          border: 0px solid #e8ecf4;
+          border-radius: 12px;
+          background-color: #fff0d9;
+          margin-right: 15px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+         .city-modal-header .city-modal-header-mobile p {
+          margin: 0 auto !important;
+          text-align: center;
+          width: calc(100% - 90px);
+          padding: 6px 0;
+        }
+        .city-modal-popup .city-modal-body {
+          max-height: none;
+
+        }
+        /* .city-modal-popup .city-modal-body .city-modal-search-area .city-modal-search-wrapper .city-modal-search-result {
+          display: none !important;
+        } */
+         .city-modal-search-wrapper .city-modal-search::placeholder {
+          color: #828282;
+        }
+        .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper ul {
+          grid-template-columns: repeat(4, 25%);
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list {
+          max-height: none !important;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__title {
+          font-size: 16px;
+          font-weight: 500;
+          text-align: left;
+          color: #000;
+          margin-bottom: 5px;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper {
+          max-height: none;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul {
+          grid-template-columns: 100%;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li {
+          border-bottom: 1px solid #fff;
+          padding-right:0px;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a {
+          font-size: 14px !important;
+          display: block;
+          padding: 6px 0;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a.selected {
+          text-decoration: none;
+          position:relative;
+          padding-right:20px;
+        }
+        .city-modal-popup .city-modal-body .city-modal-other-cities-list .other-cities-list__wrapper ul li a.selected::after {
+          content: "";
+          width: 12px;
+          height: 12px;
+          display: inline-block;
+          background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/></svg>');
+          background-repeat: no-repeat;
+          background-size: 12px auto;
+          background-position: center;
+          margin-right: 8px;
+          position: absolute;
+          right: 2px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .city-modal-popup .city-modal-body .toggle-cities-list__wrapper {
+          display: none;
+        }
+        .notation-card .notation-card__title {
+          font-size: 10px;
+        }
+      }
+      @media (max-width: 360px) {
+        .city-modal-popup .city-modal-body .city-modal__top-citites .top-cities__grid-wrapper ul {
+          grid-template-columns: repeat(3, 33.33%);
+        }
+      }
+    .location-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    pointer-events: none;
+      display:none;
+  }
+
+  .location-popup-overlay.show {
+        z-index: 999999999;
+        top: auto;
+    bottom: 0;
+    height: 300px;
+    display:block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .location-popup-mobile {
+    height: 100%;
+  }
+  .mobile-popup-input{
+     margin:0;
+    padding:10px 10px;
+    background:#FFF0D9;
+    text-align:center;
+
+  }
+
+  @media (min-width: 700px) {
+    .location-popup-overlay {
+      display: none; /* Hide popup on large screens */
+    }
+  }
+
+      /* Main Code Ends *//*# sourceMappingURL=index.css.map */
+</style>

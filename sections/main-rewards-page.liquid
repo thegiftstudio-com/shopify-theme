@@ -1,0 +1,139 @@
+<link rel="stylesheet" href="{{ 'section-main-page.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-rte.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-main-page.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  .rewards-card{padding: 2rem; border: 3px solid var(--color_cream); margin: 2rem; border-radius: 3rem;height: 90%;}
+  .rewards-card-heading{text-align: center;font-weight: bold;margin:0;}
+  #rewards-program h1{
+    text-align: center;
+  }
+  .rewards-card-body{
+    font-weight:400;
+  }
+  .rewards-card-body p{
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+{%- endstyle -%}
+
+<div class="page-width section-{{ section.id }}-padding">
+  {% comment %}
+    <h1 class="main-page-title page-title h0">
+      {{ page.title | escape }}
+    {{ page.content }}
+    </h1>
+  {% endcomment %}
+  <div class="rte">
+    <div id="rewards-program">
+      <h1 class="font_xxl font_subheading">Learn About Our Rewards Program</h1>
+      <ul class="grid grid--1-col-tablet-down grid--3-col-desktop" role="list">
+        <li class="grid__item">
+          <div class="rewards-card">
+            <h2 class="rewards-card-heading"><b>EARN</b></h2>
+            <div class="rewards-card-body">
+              <p>How to earn Studio Reward Points:</p>
+              <ol>
+                <li>
+                  Place an order -<br>
+                  <span>1 Studio Point for every ₹&nbsp;1 spent</span>
+                </li>
+                <li>
+                  Like us on Facebook –<br>
+                  <span>To earn 250 studio points</span>
+                </li>
+                <li>
+                  Follow us on Instagram –<br>
+                  <span>To earn 500 studio points</span>
+                </li>
+                <li>
+                  Celebrate a Birthday -<br>
+                  <span>1000 studio points</span>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </li>
+        <li class="grid__item">
+          <div class="rewards-card">
+            <h2 class="rewards-card-heading">REDEEM</h2>
+            <div class="rewards-card-body">
+              <p>How to Redeem Points?</p>
+              <p>
+                Get exclusive coupons on reaching milestones and redeem them at the checkout!
+              </p>
+              <!-- <p>Ways to Redeem:</p>
+              <ul>
+                <li>₹1,000 off coupon for 10000 Studio Points</li>
+                <li>₹2,000 off coupon for 20000 Studio Points</li>
+              </ul> -->
+            </div>
+          </div>
+        </li>
+        <li class="grid__item">
+          <div class="rewards-card">
+            <h2 class="rewards-card-heading">REFER</h2>
+            <div class="rewards-card-body">
+              <p>How to Refer?</p>
+              <ul>
+                <li>
+                  Become a member & share the referral link with your friend to unlock exclusive rewards for both. Give
+                  your friends a reward and claim your own when they make a purchase
+                </li>
+                <li>They get ₹500 off coupon</li>
+                <li>You get 5000 Studio Points</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

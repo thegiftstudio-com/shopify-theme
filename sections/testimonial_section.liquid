@@ -1,0 +1,227 @@
+<style>
+.testimonial_section .title-wrapper-with-link {
+  justify-content: center;
+  margin: 5rem 0 4rem;
+}
+.testimonial_section .title-wrapper-with-link h2{
+  margin-bottom:0;
+}
+.testimonial_section .testimonial_description{
+  margin: 0;
+  font-weight: 400;
+  text-align:center;
+}
+.testimonial_section .title-wrapper-with-link h2 {
+    margin-bottom: 0;
+} 
+.testimonial_info{
+  font-weight:400;
+}
+.testimonial_sec{
+  background: var(--color_black);
+  padding: 60px 40px 30px;
+  border-radius: 15px;
+  position:relative;
+  margin: 50px 8px 0;
+  height:300px;
+}
+.inverted_commas_section{
+  position: absolute;
+  top: -30px;
+}
+
+@media(max-width:767px){
+  .testimonial_section .title-wrapper-with-link {
+    margin: 3rem 0 3rem;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .testimonial_section .category_description{
+    padding: 0 20px;
+  }
+  .testimonial_sec{
+    max-width: 300px !important;
+    width: 100% !important;
+    margin: 25px 8px 0;
+  }
+  .testimonial_inner_sec{
+    touch-action: manipulation;
+  }
+  .inverted_commas_section svg{
+    width: 50px;
+  }
+}
+   @media (min-width: 768px) and (max-width: 1023px) {
+   .testimonial_section .title-wrapper-with-link{
+      align-items: center;
+   }
+ }
+  
+</style>
+      
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+      
+      <section class="testimonial_section section_margin section-{{ section.id }}-padding page-width {{ section.settings.custom_class }}">
+        {%- unless section.settings.title == blank -%}
+      <div class="title-wrapper-with-link title-wrapper--no-top-margin" {% if section.settings.subtitle != blank %}style="flex-direction:column;"{% endif %}>
+        <h2 id="SectionHeading-{{ section.id }}" class="collection-list-title h1 center font_xxl">
+          {{ section.settings.title }}
+        </h2>
+        
+
+        {%- if section.settings.show_view_all and show_mobile_slider -%}
+          <a
+            href="{{ routes.collections_url }}"
+            id="ViewAll-{{ section.id }}"
+            class="link underlined-link large-up-hide"
+            aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+          >
+            {{- 'sections.collection_list.view_all' | t -}}
+          </a>
+        {%- endif -%}
+          <p class="testimonial_description font_lg">{{ section.settings.subtitle }}</p>
+      </div>
+    {%- endunless -%}
+         <div class="testimonial_inner_sec testimonial_slider grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col grid--{{ section.settings.columns_mobile }}-col-tablet-down">
+           {%- for block in section.blocks -%}
+            <div class="testimonial_sec grid__item {{ block.settings.city_hide }}">
+              <div class="inverted_commas_section">
+                {% render 'inverted_commas' %}
+              </div>
+               <div class="testimonial_info color_white font_md">{{ block.settings.testimonial_info }}</div>
+               <p class="testimonial_name font_lg font_bold color_dark_cream">{{ block.settings.testimonial_name }}</p>
+              <p class="testimonial_city font_sm font_light color_white font_weight_400">{{ block.settings.testimonial_city }}</p>
+            </div>
+            {% endfor %} 
+         </div>
+        <div class="progress progress_green progress3 small-hide">
+          <div class="progress_bar"></div>
+        </div>
+      </section>
+
+
+
+{% schema %}
+  {
+    "name": "Testimonial section",
+    "settings": [
+      {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Add Custom Class"
+      },
+      {
+      "type": "text",
+      "id": "title",
+      "default": "Collections",
+      "label": "Heading"
+    },
+       {
+      "type": "text",
+      "id": "subtitle",
+      "label": "SubHeading"
+    },
+      {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+      {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 column"
+        },
+        {
+          "value": "3",
+          "label": "3 column"
+        }
+      ],
+      "default": "1",
+      "label": "Number of columns on mobile"
+    },
+      {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+    ],
+      "blocks": [
+        {
+          "type": "Text",
+          "name": "Text Block",
+          "settings":
+          [
+            {
+              "type": "text",
+              "id": "city_hide",
+              "label": "Add City Hide Class"
+            },
+            {
+              "type": "richtext",
+              "id": "testimonial_info",
+              "label": "Add Testimonial Info"
+            },
+            {
+              "type": "text",
+              "id": "testimonial_name",
+              "label": "Add Name"
+            },
+            {
+              "type": "text",
+              "id": "testimonial_city",
+              "label": "Add City"
+            }
+          ]
+        }
+    ],
+   "presets": [
+      {
+        "name": "Testimonial section"
+      }
+  ] 
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

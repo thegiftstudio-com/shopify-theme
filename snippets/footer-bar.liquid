@@ -1,0 +1,205 @@
+<div class="footer-bar shopify-section">
+    <ul class="footer-list">
+      <li>
+        <a class="footer-home footer_link" href="/">{% render 'home_icon' %}</a>
+
+      </li>
+      <li>
+        <a class="footer_link" href="#">{% render 'search_sec' %}</a>
+      </li>
+      <li>
+
+    
+      <div class="select_city_sec" onClick="changeCity()">
+      
+          <div class="city_change">
+           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+<mask id="mask0_1334_2089" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+<rect width="25" height="25" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1334_2089)">
+<path d="M12.4998 12.4999C13.0728 12.4999 13.5632 12.2959 13.9712 11.8879C14.3792 11.48 14.5832 10.9895 14.5832 10.4166C14.5832 9.84367 14.3792 9.35322 13.9712 8.94523C13.5632 8.53724 13.0728 8.33325 12.4998 8.33325C11.9269 8.33325 11.4365 8.53724 11.0285 8.94523C10.6205 9.35322 10.4165 9.84367 10.4165 10.4166C10.4165 10.9895 10.6205 11.48 11.0285 11.8879C11.4365 12.2959 11.9269 12.4999 12.4998 12.4999ZM12.4998 22.9166C9.7047 20.5381 7.61702 18.3289 6.23682 16.289C4.85661 14.249 4.1665 12.361 4.1665 10.6249C4.1665 8.02075 5.00418 5.9461 6.67952 4.40096C8.35487 2.85582 10.295 2.08325 12.4998 2.08325C14.7047 2.08325 16.6448 2.85582 18.3201 4.40096C19.9955 5.9461 20.8332 8.02075 20.8332 10.6249C20.8332 12.361 20.1431 14.249 18.7629 16.289C17.3826 18.3289 15.295 20.5381 12.4998 22.9166Z" fill="#FFF0D9"/>
+</g>
+</svg>        
+          </div>
+    </div>
+    
+      </li>
+      
+      <li>
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="footer_link header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+          {% render 'account_icon' %}
+          <span class="visually-hidden">
+            {%- liquid
+              if customer
+                echo 'customer.account_fallback' | t
+              else
+                echo 'customer.log_in' | t
+              endif
+            -%}
+           
+          </span>
+
+        </a>
+      </li>
+      <li>
+        <a class="footer_link" href="https://wa.me/919147321916?text=Hi">{% render 'whatsapp_icon' %}</a>
+      </li>
+    </ul>
+  </div>
+
+<style>
+  .footer-bar{
+    position:relative;
+    transition: all 0.3s ease-in-out;
+  }
+  .footer-bar.fixed {
+  position: fixed;
+  bottom: 0;
+  z-index: 9;
+  width: 100%;
+  display: block;
+    
+}
+.footer-bar .footer-list {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 2px 25px;
+  margin-bottom: 0;
+  background: #191919;
+  align-items: baseline;
+}
+
+.footer-bar .footer-list li {
+  list-style: none;
+}
+
+.footer-bar i {
+  color: #fff;
+  font-size: 25px;
+}
+
+  .footer-bar .select_city_sec svg{
+    padding: 0;
+    margin: 0;
+    width: 22px;
+    height: 22px;
+  }
+.footer-bar .footer_icon {
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 12px;
+  margin-top: 2px;
+}
+.footer-bar .header__icon--cart link svg {
+  width: 100px;
+  height: 100px;
+}
+
+.footer-bar .header__search .header__icon svg {
+  color: #fff;
+}
+.footer-bar ul li:last-child .footer_icon {
+  margin-top: 8px;
+}
+
+.footer-bar .tt-badge-cart {
+  color: #000;
+  background: #fff;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 16px;
+  font-family: "Poppins";
+  line-height: 20px;
+  font-weight: bolder;
+}
+
+.footer-bar .search-modal {
+  min-height: auto;
+  height: auto;
+}
+
+.footer-bar .modal__content {
+  position: fixed;
+  bottom: unset;
+  padding: 12px 0;
+}
+
+.footer-bar .search__input.field__input:focus {
+  box-shadow: none;
+}
+
+@media (min-width: 1023px) {
+  .footer-bar {
+    display: none;
+  }
+}
+
+
+
+</style>
+
+  {% unless template == 'index' %}
+    <style>
+  @media (max-width: 1023px) {    
+      .footer-bar {
+  position: fixed;
+  bottom: 0;
+  z-index: 9;
+  width: 100%;
+  display: block;
+      }
+  }
+    </style>
+    {% endunless %}
+
+  
+  {% if template == 'index' %}
+    
+  <script>
+    $(document).ready(function() {
+
+      
+  //sticky footer bar start here //
+   var outerW = $(window).outerWidth();
+
+  if(outerW < 767){
+    
+  var stickyDiv = $(".footer-bar");
+  var offset = $(window).scrollTop() + $(window).height() - stickyDiv.outerHeight() - 90;  
+    
+   
+    
+  $(window).scroll(function() {
+    if ($(window).scrollTop() > offset) {
+      stickyDiv.addClass("fixed");
+      $(".overlay .popup-info").css("bottom", "45px");
+    } else {
+      stickyDiv.removeClass("fixed");
+      $(".overlay .popup-info").css("bottom", "0");
+    }
+
+   
+  });
+
+    
+     
+  }
+   
+  //sticky footer bar ends here //
+      
+    });
+    
+  </script>
+{% endif %}
+<script>
+  $(document).ready(function() {
+    $('.footer-bar .select_city_sec').on('click', function(){
+      $(".overlay .popup-info").css("bottom", "45px");
+    });
+  });
+</script>

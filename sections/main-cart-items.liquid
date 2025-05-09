@@ -1,0 +1,1728 @@
+{{ 'component-cart.css' | asset_url | stylesheet_tag }}
+{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
+{{ 'component-totals.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'custom_main-cart-items.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+  .hide_bundle_id_product{
+    content-visibility: hidden !important;
+    display:none !important;
+  }
+
+  .hide_multi_Product_div{
+    display:none;
+  }
+
+    .time-slots-sec{
+      display:none;
+    }
+    .location-kolkata .time-slots-sec{
+      display:block;
+    }
+    .phone_no_sec p, .time-slots-sec p{
+    display: flex;
+      flex-direction: column;
+      width: 36rem;
+  }
+    .phone_no_sec label{
+          line-height: 1.2;
+          margin-bottom:10px;
+    }
+    .phone_disclaimer_txt{
+      color:red;
+      font-size:11px;
+    }
+    #your-number,  #time-slot{
+          border: none;
+      background: #f4f4f4;
+      padding-left: 5px;
+      position: relative;
+      z-index: 1;
+      height: 30px;
+    }
+      @media(max-width:767px){
+      .phone_no_sec p, .time-slots-sec p{
+        width:100%;
+      }
+        .cart .valentine_heading_line img{
+          max-width:100%;
+        }
+        .phone_no_sec label {
+      margin-bottom: 5px;
+  }
+    }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+
+    .product-line {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the title and delete icon */
+  }
+
+  .product-option {
+    text-decoration: none;
+    color: #000; /* Customize the title's color */
+  }
+
+  .button--tertiary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+{%- endstyle -%}
+
+<script>
+  var max_allowed_hamper = 5; // Default value
+  
+  
+  // Velocity: Functions to handle BYOH quantity changes
+  $(document).ready(function () {
+    // Close popup and reload the page
+    $('#closePopupButton').on('click', function (event) {
+        event.preventDefault(); // Prevent default action (if any, like form submission or navigation)
+        $('#outOfStockPopup').hide();
+        window.location.reload(); // Explicitly reloads the page
+    });
+
+    // Increase quantity when + button is clicked
+    $('.byoh_quantity__button--increase').on('click', function (event) {
+      
+        if(parseInt($(".byoh_quantity__input").val()) + 1> max_allowed_hamper){
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default action, if any
+        adjustHamperQuantity($(this).closest('.quantity'), 1);
+    });
+
+    // Decrease quantity when - button is clicked
+    $('.byoh_quantity__button--decrease').on('click', function (event) {
+       if(parseInt($(".byoh_quantity__input").val())-1 > max_allowed_hamper){
+         var currentValue = parseInt($(".byoh_quantity__input").val(), 10) || 1; // Default to 1 if the value is invalid
+          if (currentValue > 1) { // Prevent values below 1
+            $(".byoh_quantity__input").val(currentValue - 1);
+          }
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default action, if any
+        adjustHamperQuantity($(this).closest('.quantity'), -1);
+    });
+
+    // Handle manual input change
+    $('.byoh_quantity__input').on('change', function (event) {
+       if(parseInt($(".byoh_quantity__input").val()) > max_allowed_hamper){
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default behavior (e.g., form submission on Enter key)
+        adjustHamperQuantity($(this).closest('.quantity'), 0, 1);
+    });
+
+    // Validate input to allow only numeric values and prevent leading zeros
+    $('.byoh_quantity__input').on('input', function (event) {
+        event.preventDefault(); // Prevent default behavior, if any (like pasting invalid content)
+        this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+    });
+});
+
+
+  // Function to adjust the quantity
+  function adjustHamperQuantity(quantityContainer, change, manual_input = 0) {
+    let hamperId = quantityContainer.data('hamper-id');
+    let quantityInput = quantityContainer.find('.byoh_quantity__input');
+    let currentQuantity = parseInt(quantityInput.val(), 10);
+    let newQuantity = currentQuantity + change;
+
+    // Ensure quantity does not drop below 1
+    if (newQuantity < 1) return;
+
+    // Update the quantity input display
+    quantityInput.val(newQuantity);
+
+    // Update each product quantity within the hamper based on the new hamper quantity
+    updateHamperProductQuantities(hamperId, newQuantity);
+    return false;
+  }
+
+  // Function to update product quantities within the hamper
+  function updateHamperProductQuantities(bundleId, hamperQuantity) {
+    let itemsToUpdate = [];
+    let outOfStockMessages = [];
+    let productOutOfStock = false;
+    let productNameOutOfStock = '';
+
+    // Loop through each product within the hamper
+    $('.byoh_cart-item__details a').each(function (index) {
+      if (index === 0) return true; // Skip the first item if needed
+      let availbale_quantity = 0;
+      let setLocation = localStorage.getItem("location");
+
+      // Determine available inventory based on location
+      if (setLocation === 'location-mumbai') {
+        availbale_quantity = $(this).data('mumbai-inventory');
+      } else if (setLocation === 'location-kolkata') {
+        availbale_quantity = $(this).data('kolkata-inventory');
+      } else if (setLocation === 'location-gurgaon') {
+        availbale_quantity = $(this).data('gurgaon-inventory');
+      }
+
+      let productId = $(this).data('product-id');
+      let baseQuantity = parseInt($(this).data('base-quantity'), 10);
+      let newProductQuantity = baseQuantity * hamperQuantity;
+
+      // Check for out-of-stock condition
+      if (parseInt(newProductQuantity) > parseInt(availbale_quantity)) {
+        productOutOfStock = true;
+        productNameOutOfStock += `<li>${$(this).data('product-title')}</li>`;
+      }
+      if(productId && newProductQuantity){
+         itemsToUpdate.push({
+          id: productId,
+          quantity: newProductQuantity,
+        });
+      }
+    });
+
+    // Show popup if any product is out of stock
+    if (productOutOfStock) {
+      
+      $('#outOfStockList').html(productNameOutOfStock);
+      $('#outOfStockPopup').show();
+      return false;
+    }
+
+    // Attempt to update the cart with new quantities
+    function attemptUpdateWithRotation() {
+      console.log("Attempting cart update with payload:", itemsToUpdate);
+
+      $.ajax({
+        type: 'POST',
+        url: '/cart/update.js',
+        data: JSON.stringify({
+          updates: itemsToUpdate.reduce((obj, item) => {
+            obj[item.id] = item.quantity;
+            return obj;
+          }, {}),
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+          console.log("Cart updated successfully:", response);
+          window.location.reload(); // Reload the page on success
+        },
+        error: function (xhr) {
+          console.log("Cart update error:", xhr);
+
+          if (xhr.status === 422) {
+            let errorMessage = xhr.responseJSON && xhr.responseJSON.message
+              ? xhr.responseJSON.message
+              : "An unknown error occurred.";
+
+            let productName = errorMessage.match(/You can't add more (.*?) to the cart/);
+            productName = productName ? productName[1] : "An item";
+            outOfStockMessages.push(`${productName} is not available in the requested quantity.`);
+
+            itemsToUpdate.push(itemsToUpdate.shift()); // Rotate items array
+
+            if (outOfStockMessages.length < itemsToUpdate.length) {
+              attemptUpdateWithRotation();
+            } else {
+              alert(outOfStockMessages.join("\n"));
+            }
+          } else {
+            alert("An unknown error occurred while updating the cart.");
+          }
+        },
+      });
+    }
+
+    // Start the update process
+    attemptUpdateWithRotation();
+  }
+</script>
+
+<style>
+    #outOfStockPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+  }
+
+  .popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0d9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    text-align: center;
+  }
+
+  .popup-content h2 {
+    margin-bottom: 10px;
+  }
+
+  .popup-content ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .popup-content ul li {
+    margin: 5px 0;
+  }
+
+  #closePopupButton {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #closePopupButton:hover {
+    background: #0056b3;
+  }
+
+    .tooltip-container {
+    position: relative;
+    display: inline-block; /* Ensures the tooltip aligns with the element */
+  }
+
+  .tooltip-message {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 120%; /* Position above the element */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333; /* Tooltip background */
+    color: #fff; /* Tooltip text color */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+  }
+
+  .tooltip-container:hover .tooltip-message {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+
+<div id="outOfStockPopup" style="display: none;">
+  <div class="popup-overlay"></div>
+  <div class="popup-content">
+    <h2>Out of Stock</h2>
+    <p>The following products are not available in the requested quantity:</p>
+    <ol id="outOfStockList" style="text-align: left;"></ol>
+    <button id="closePopupButton">Close</button>
+  </div>
+</div>
+{% assign easyecom_delivery_date = '' %}
+
+{%- unless settings.cart_type == 'drawer' -%}
+  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+{% for item in cart.items %}
+  {% if item.product.tags contains '1-day' %}
+  {% endif %}
+{% endfor %}
+<cart-items class="page-width{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}">
+  <div class="title-wrapper-with-link">
+    <h1 class="title font_heading title--primary">{{ 'sections.cart.title' | t }}</h1>
+    {% comment %}
+      <a href="/collections/curated-hampers" class="underlined-link">{{ 'general.continue_shopping' | t }}</a>
+    {% endcomment %}
+  </div>
+
+  <div class="cart__warnings">
+    <h1 class="cart__empty-text font_heading">{{ 'sections.cart.empty' | t }}</h1>
+    <a href="/" class="cmn_btn button">
+      <!-- <a href="/collections/curated-hampers" class="cmn_btn button"> -->
+      {{ 'general.continue_shopping' | t }}
+    </a>
+
+    {%- if shop.customer_accounts_enabled and customer == null -%}
+      <h2 class="cart__login-title">{{ 'sections.cart.login.title' | t }}</h2>
+      <p class="cart__login-paragraph">
+        {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
+      </p>
+    {%- endif -%}
+  </div>
+  <!-- velocity: defined this variable to get the BYOH hamper quantity -->
+  {% assign base_quantity_byoh = 1 %}
+
+  <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
+    <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
+      <div class="js-contents">
+        {%- if cart != empty -%}
+          <table class="cart-items">
+            <caption class="visually-hidden">
+              {{ 'sections.cart.title' | t }}
+            </caption>
+            <thead>
+              <tr>
+                <th class="caption-with-letter-spacing" colspan="2" scope="col">
+                  {{ 'sections.cart.headings.product' | t }}
+                </th>
+                <th class="medium-hide large-up-hide right caption-with-letter-spacing" colspan="1" scope="col">
+                  {{ 'sections.cart.headings.total' | t }}
+                </th>
+                <th class=" small-hide caption-with-letter-spacing" colspan="1" scope="col">Price</th>
+                <th class="cart-items__heading--wide small-hide caption-with-letter-spacing" colspan="1" scope="col">
+                  {{ 'sections.cart.headings.quantity' | t }}
+                </th>
+                <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">
+                  {{ 'sections.cart.headings.total' | t }}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- [custom code] -->
+
+              <tr class="cart-item multi_product_outer BYOHCartBundle hide_multi_Product_div" id="CartItem-0">
+                <td class="cart-item__media">
+                  <a href="#" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
+                  <div class="cart-item__image-container gradient global-media-settings">
+                    <img
+                      src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/18909Assorted_560x_d30e342d-07c2-445b-b952-36b109921f9d.jpg?v=1679995986"
+                      class="cart-item__image"
+                      alt=""
+                      loading="lazy"
+                      width="150"
+                      height="150"
+                      data-cart-bundle-image
+                    >
+                  </div>
+                </td>
+
+                <td class="cart-item__details byoh_cart-item__details">
+                  <a
+                    href="/pages/hamper-collections?bundle_id=1015&edit_hamper=1"
+                    class="cart-item__name h4"
+                    id="bundle_prod_title_cart_page"
+                  >
+                    Custom Hamper
+                  </a>
+                  {% assign byoh_delivery_date = '' %}
+                  {%- for item in cart.items -%}
+                    <!--
+                      locationwise:-
+                      mumbai{{ item.product.metafields.custom.mumbai_inventory }}
+                      gurgaon{{ item.product.metafields.custom.gurgaon_inventory }}
+                      kolkata{{ item.product.metafields.custom.kolkata_inventory }}
+                    -->
+                    {% for p in item.properties %}
+                      {% if p.first == 'Delivery date' %}
+                        {% assign byoh_delivery_date = p.last %}
+                        {% assign easyecom_delivery_date = p.last %}
+                      {% endif %}
+                      {% if p.first == 'bundle_id' %}
+                        <div class="product-line">
+                          <a
+                            href="#"
+                            class="product-option cart_property_product_title"
+                            data-product-title="{{ item.product.title | escape }}"
+                            data-kolkata-inventory="{{ item.product.metafields.custom.kolkata_inventory }}"
+                            data-mumbai-inventory="{{ item.product.metafields.custom.mumbai_inventory }}"
+                            data-gurgaon-inventory="{{ item.product.metafields.custom.gurgaon_inventory }}"
+                            data-product-id="{{ item.variant.id }}"
+                            data-base-quantity="{{ item.properties['base_quantity'] }}"
+                            data-cart-prod-bundle-id="{{ p.last }}"
+                            data-cart-prod-bundle-name="{{ item.properties['bundle_name'] }}"
+                            data-cart-prod-type="{{ item.properties.product_type }}"
+                          >
+                            {{ item.product.title | escape }}
+                          </a>
+                          {% if item.properties.product_type != 'box' %}
+                            <cart-remove-button
+                              id="Remove-{{ item.index | plus: 1 }}"
+                              data-index="{{ item.index | plus: 1 }}"
+                              data-quantity-variant-id="{{ item.variant.id }}"
+                            >
+                              <a
+                                href="{{ item.url_to_remove }}"
+                                class="button button--tertiary"
+                                aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}"
+                              >
+                                {% render 'icon-remove' %}
+                              </a>
+                            </cart-remove-button>
+                          {% endif %}
+                        </div>
+                        {% assign base_quantity = item.properties.base_quantity %}
+                        {% assign quantity = item.quantity %}
+
+                        {% if base_quantity != 0 %}
+                          {% assign base_quantity_byoh = quantity | divided_by: base_quantity %}
+                        {% else %}
+                          {% assign base_quantity_byoh = 1 %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+
+                  <p style="font-weight: 300;">Delivery Date: {{ byoh_delivery_date }}</p>
+                </td>
+
+                <td class="cart-item__totals right medium-hide large-up-hide">
+                  <div class="loading-overlay hidden">
+                    <div class="loading-overlay__spinner">
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        class="spinner"
+                        viewBox="0 0 66 66"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="cart-item__price-wrapper">
+                    {% assign total_custom_price = 0 %}
+                    {% for item in cart.items %}
+                      {% for p in item.properties %}
+                        {% if p.first == 'bundle_id' %}
+                          {% assign custom_price = item.final_line_price %}
+                          {% assign total_custom_price = total_custom_price | plus: custom_price %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                    <span class="price price--end price_custom" data-custom-price="{{ total_custom_price | money }}">
+                      {{ total_custom_price | money }}
+                    </span>
+                  </div>
+                </td>
+
+                <td class="small-hide">
+                  {% assign total_custom_price = 0 %}
+                  {% for item in cart.items %}
+                    {% for p in item.properties %}
+                      {% if p.first == 'bundle_id' %}
+                        {% assign custom_price = item.final_line_price %}
+                        {% assign total_custom_price = total_custom_price | plus: custom_price %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+                  <span class="price price--end price_custom" data-custom-price="{{ total_custom_price | money }}">
+                    {{ total_custom_price | money }}
+                  </span>
+                </td>
+
+                <td class="cart-item__quantity">
+                  <div class="cart-item__quantity-wrapper">
+                    <label class="visually-hidden" for="Quantity-1"> Quantity </label>
+                    <!-- BYOH product quantity line -->
+                    <quantity-input class="quantity cart-quantity byoh_quantity">
+                      <button
+                        class="quantity__button byoh_quantity__button--decrease"
+                        type="button"
+                        aria-label="Decrease quantity"
+                      >
+                        <span class="visually-hidden">Decrease Quantity</span>
+                        {% render 'icon-minus' %}
+                      </button>
+
+                      <input
+                        class="quantity__input byoh_quantity__input"
+                        data-quantity-variant-id="44337043177779"
+                        type="number"
+                        name="updatesssas"
+                        value="{{ base_quantity_byoh }}"
+                        data-cart-quantity="1"
+                        min="1"
+                        step="1"
+                        aria-label="Quantity for Shit Got Real"
+                        id="Quantity-1"
+                        data-index="1"
+                      >
+
+                      <button
+                        class="quantity__button byoh_quantity__button--increase"
+                        type="button"
+                        aria-label="Increase quantity"
+                      >
+                        <span class="visually-hidden">Increase Quantity</span>
+                        {% render 'icon-plus' %}
+                      </button>
+                    </quantity-input>
+                    <!-- BYOH product quantity line -->
+                    <cart-edit-button id="Edit-1" data-index="1" data-custom-bundle-prod="1" class="tooltip-container">
+                      <a
+                        href="/pages/hamper-collections?bundle_id=1015&edit_hamper=1"
+                        class="button button--tertiary bundle_edit_btn"
+                        aria-label="Edit Item"
+                        style="min-width: 0;"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-pencil"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                      </a>
+                      <span class="tooltip-message">Edit Hamper Content</span>
+                    </cart-edit-button>
+
+                    <!-- BYOH product quantity line -->
+                    <cart-remove-button
+                      id="Remove-1"
+                      data-index="1"
+                      data-custom-bundle-prod="1"
+                      style="margin-left: 0;margin-top: 0;"
+                    >
+                      <a href="#" class="button button--tertiary bundle_remove_btn" aria-label="Remove Shit Got Real">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                          focusable="false"
+                          class="icon icon-remove"
+                        >
+                          <path d="M14 3h-3.53a3.07 3.07 0 00-.6-1.65C9.44.82 8.8.5 8 .5s-1.44.32-1.87.85A3.06 3.06 0 005.53 3H2a.5.5 0 000 1h1.25v10c0 .28.22.5.5.5h8.5a.5.5 0 00.5-.5V4H14a.5.5 0 000-1zM6.91 1.98c.23-.29.58-.48 1.09-.48s.85.19 1.09.48c.2.24.3.6.36 1.02h-2.9c.05-.42.17-.78.36-1.02zm4.84 11.52h-7.5V4h7.5v9.5z" fill="currentColor"></path>
+                          <path d="M6.55 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5zM9.45 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5z" fill="currentColor"></path>
+                        </svg>
+                      </a>
+                    </cart-remove-button>
+                  </div>
+                  <div class="cart-item__error" id="Line-item-error-1" role="alert">
+                    <small class="cart-item__error-text"></small>
+                    <svg aria-hidden="true" focusable="false" class="icon icon-error" viewBox="0 0 13 13">
+                        <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"></circle>
+                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"></circle>
+                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"></path>
+                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+                      </path>
+                    </svg>
+                  </div>
+                </td>
+
+                <td class="cart-item__totals right small-hide">
+                  <div class="loading-overlay hidden">
+                    <div class="loading-overlay__spinner">
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        class="spinner"
+                        viewBox="0 0 66 66"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div class="cart-item__price-wrapper">
+                    {% assign total_custom_price = 0 %}
+                    {% for item in cart.items %}
+                      {% for p in item.properties %}
+                        {% if p.first == 'bundle_id' %}
+                          {% assign custom_price = item.final_line_price %}
+                          {% assign total_custom_price = total_custom_price | plus: custom_price %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                    <span class="price price--end price_custom" data-custom-price="{{ total_custom_price | money }}">
+                      {{ total_custom_price | money }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- [custom code] -->
+
+              {%- for item in cart.items -%}
+                {% if item.product.tags contains 'same-day' and item.product.tags contains 'location-roi' %}
+                  {% assign number = 5 %}
+                {% else %}
+                  {% if item.product.tags contains 'same-day' or item.product.tags contains '3PM' %}
+                    {% assign number = 0 %}
+                  {% endif %}
+                  {% if item.product.tags contains '1-day' %}
+                    {% assign number = 1 %}
+                  {% endif %}
+                  {% if item.product.tags contains '2-days' %}
+                    {% assign number = 2 %}
+                  {% endif %}
+                  {% if item.product.tags contains '3-days' %}
+                    {% assign number = 3 %}
+                  {% endif %}
+                  {% if item.product.tags contains '4-days' %}
+                    {% assign number = 4 %}
+                  {% endif %}
+                  {% if item.product.tags contains '5-days' %}
+                    {% assign number = 5 %}
+                  {% endif %}
+                  {% if item.product.tags contains '6-days' %}
+                    {% assign number = 6 %}
+                  {% endif %}
+                  {% if item.product.tags contains '7-days' %}
+                    {% assign number = 7 %}
+                  {% endif %}
+                  {% if item.product.tags contains '8-days' %}
+                    {% assign number = 8 %}
+                  {% endif %}
+                  {% if item.product.tags contains '10-days' %}
+                    {% assign number = 10 %}
+                  {% endif %}
+                  {% if item.product.tags contains '12-days' %}
+                    {% assign number = 12 %}
+                  {% endif %}
+                  {% if item.product.tags contains '13-days' %}
+                    {% assign number = 13 %}
+                  {% endif %}
+                  {% if item.product.tags contains '4PM-Order' %}
+                    {% assign number = -2 %}
+                  {% endif %}
+                {% endif %}
+                <script>
+                   var productTags = {{ item.product.tags | json }};
+                  // console.log('productTags:', productTags)
+                </script>
+                {% assign product_warehouse = 'mumbai' %}
+                <tr
+                  class="custom_tag_find tgs-product-item cart-item {{ item.product.tags | join: " " }} {% for p in item.properties %}{% if p.first == 'bundle_id' %}hide_bundle_id_product{% endif %}{% endfor %} {% if item.product.tags contains 'express-delivery' %}expressDelivery{% endif %} "
+                  id="CartItem-{{ item.index | plus: 1 }}"
+                  data-tagNumber="{{ number }}"
+                >
+                  <!-- velocity: 18-07-2024 Added the beloe hidden field to pass the value to GTM -->
+                  <input type="hidden" id="line_product_id_{{ item.index | plus: 1 }}" value="{{ item.product.id }}">
+                  <input
+                    type="hidden"
+                    id="line_product_name_{{ item.index | plus: 1 }}"
+                    value="{{ item.product.title }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_brand_{{ item.index | plus: 1 }}"
+                    value="{{ item.product.vendor }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_quantity_{{ item.index | plus: 1 }}"
+                    value="{{ item.quantity }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_price_{{ item.index | plus: 1 }}"
+                    value="{{ item.product.price | money_without_currency }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_type_{{ item.index | plus: 1 }}"
+                    value="{{ item.product.type }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_sku_{{ item.index | plus: 1 }}"
+                    value="{{ item.product.selected_or_first_available_variant.sku | replace: "'", "" | replace: '"', "" }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_variant_id_{{ item.index | plus: 1 }}"
+                    value="{{ item.variant.id }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_variant_title_{{ item.index | plus: 1 }}"
+                    value="{{ item.variant.title }}"
+                  >
+                  <input
+                    type="hidden"
+                    id="line_product_category_{{ item.index | plus: 1 }}"
+                    value="{{ item.collections.first.title }}"
+                  >
+                  <input type="hidden" id="product_url_{{ item.index | plus: 1 }}" value="{{ item.url }}">
+
+                  {% assign variant_id = item.variant.id | downcase %}
+
+                  {% assign gurgaon_variant_inventory = item.product.metafields.custom.gurgaon_variant_inventory %}
+                  {% assign kolkata_variant_inventory = item.product.metafields.custom.kolkata_variant_inventory %}
+                  {% assign mumbai_variant_inventory = item.product.metafields.custom.mumbai_variant_inventory %}
+
+                  {% assign locations = 'gurgaon,kolkata,mumbai' | split: ',' %}
+
+                  {% for location in locations %}
+                    {% if location == 'gurgaon' %}
+                      {% assign inventory_data = gurgaon_variant_inventory | default: '{}' %}
+                    {% elsif location == 'kolkata' %}
+                      {% assign inventory_data = kolkata_variant_inventory | default: '{}' %}
+                    {% elsif location == 'mumbai' %}
+                      {% assign inventory_data = mumbai_variant_inventory | default: '{}' %}
+                    {% endif %}
+
+                    {% assign inventory_data = inventory_data
+                      | replace: '{', ''
+                      | replace: '}', ''
+                      | replace: '"', ''
+                    %}
+                    {% assign inventory_pairs = inventory_data | split: ',' %}
+
+                    {% assign inventory_value = 0 %}
+
+                    {% for pair in inventory_pairs %}
+                      {% assign key_value = pair | split: ':' %}
+                      {% assign current_variant_id = key_value[0] | strip | downcase %}
+                      {% assign current_inventory = key_value[1] | strip %}
+
+                      {% if current_variant_id == variant_id %}
+                        {% assign inventory_value = current_inventory %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% comment %} Debugging: Check if the correct variant ID is being matched {% endcomment %}
+
+                    <input
+                      name="inventory_location_{{ location }}_{{ variant_id }}"
+                      type="hidden"
+                      id="inventory_location_{{ location }}_{{ variant_id }}"
+                      class="product_warehouse_available_quantity product_warehouse_available_quantity_{{ location }}_{{ variant_id }}_{{ item.index | plus: 1 }}"
+                      value="{{ inventory_value }}"
+                    >
+                  {% endfor %}
+
+                  {%- for property in item.properties -%}
+                    {% if property.first == 'Delivery Time Slot' and property.last != '' %}
+                      {% assign delivery_time_slot = property.last %}
+                    {% endif %}
+                    {% if property.first == 'Delivery date' and p.last != '' %}
+                      {% assign easyecom_delivery_date = property.last %}
+                    {% endif %}
+
+                    {%- if property.first == 'product_warehouse_tat' -%}
+                      <input
+                        class="{{ property.first }}_{{ item.index | plus: 1 }} {{ property.first }}_{{ item.variant.id }}"
+                        value="{{ property.last }}"
+                        type="hidden"
+                      >
+                    {%- endif -%}
+                    {%- if property.first == 'product_warehouse_available_quantity' -%}
+                      <input
+                        class="{{ property.first }}_{{ item.index | plus: 1 }} {{ property.first }}_{{ item.variant.id }}"
+                        value="{{ property.last }}"
+                        type="hidden"
+                      >
+                    {%- endif -%}
+                    {%- if property.first == 'product_warehouse' -%}
+                      <input
+                        class="{{ property.first }}_{{ item.index | plus: 1 }} {{ property.first }}_{{ item.variant.id }}"
+                        value="{{ property.last }}"
+                        type="hidden"
+                      >
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {% assign pincode = 0 %}
+                  {%- for property in item.properties -%}
+                    {%- assign property_first_char = property.first | slice: 0 -%}
+                    {%- if property.last != blank and property_first_char != '_' -%}
+                      {% if property.first == 'Pincode' %}
+                        {% assign pincode = property.last %}
+                      {% endif %}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <input type="hidden" id="line_product_pincode_{{ item.index | plus: 1 }}" value="{{ pincode }}">
+                  <!-- velocity: 18-07-2024 Added the beloe hidden field to pass the value to GTM. Code ends -->
+
+                  {% if item.product.tags contains 'Liquor' %}
+                    <style>
+                              #main-cart-items .Champagne-Cream-Bag cart-remove-button,
+                      #main-cart-items .Azure-blue-bag cart-remove-button,
+                      #main-cart-items .Wooden-box cart-remove-button{
+                                    display:none !important;
+                                }
+                    </style>
+                  {% endif %}
+                  <td class="cart-item__media">
+                    {% if item.image %}
+                      {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+                      <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
+                      <div class="cart-item__image-container gradient global-media-settings">
+                        <img
+                          src="{{ item.image | image_url: width: 300 }}"
+                          class="cart-item__image"
+                          alt="{{ item.image.alt | escape }}"
+                          loading="lazy"
+                          width="150"
+                          height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
+                        >
+                      </div>
+                    {% endif %}
+                  </td>
+
+                  <td class="cart-item__details">
+                    {%- if settings.show_vendor -%}
+                      <p class="caption-with-letter-spacing">{{ item.product.vendor }}</p>
+                    {%- endif -%}
+
+                    <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
+                    {% comment %}
+                      {%- if item.original_price != item.final_price -%}
+                        <div class="cart-item__discounted-prices">
+                          <span class="visually-hidden">
+                            {{ 'products.product.price.regular_price' | t }}
+                          </span>
+                          <s class="cart-item__old-price product-option">
+                            {{- item.original_price | money -}}
+                          </s>
+                          <span class="visually-hidden">
+                            {{ 'products.product.price.sale_price' | t }}
+                          </span>
+                          <strong class="cart-item__final-price product-option">
+                            {{ item.final_price | money }}
+                          </strong>
+                        </div>
+                      {%- else -%}
+                        <div class="product-option">
+                          {{ item.original_price | money }}
+                        </div>
+                      {%- endif -%}
+                    {% endcomment %}
+                    <div class="product-option">
+                      {{ item.original_price | money }}
+                    </div>
+                    {%- if item.product.has_only_default_variant == false
+                      or item.properties.size != 0
+                      or item.selling_plan_allocation != null
+                    -%}
+                      <dl>
+                        {%- if item.product.has_only_default_variant == false -%}
+                          {%- for option in item.options_with_values -%}
+                            <div class="product-option">
+                              <dt>{{ option.name }}:</dt>
+                              <dd>{{ option.value }}</dd>
+                            </div>
+                          {%- endfor -%}
+                        {%- endif -%}
+
+                        {%- for property in item.properties -%}
+                          {%- assign property_first_char = property.first | slice: 0 -%}
+
+                          {%- if property.first != 'product_warehouse_tat'
+                            and property.first != 'product_warehouse'
+                            and property.first != 'product_warehouse_available_quantity'
+                            and property.last != blank
+                            and property_first_char != '_'
+                          -%}
+                            <div class="product-option">
+                              <dt>{{ property.first }}:</dt>
+                              <dd>
+                                {%- if property.last contains '/uploads/' -%}
+                                  <a href="{{ property.last }}" class="link" target="_blank">
+                                    {{ property.last | split: '/' | last }}
+                                  </a>
+                                {%- else -%}
+                                  {{ property.last }}
+                                {%- endif -%}
+                              </dd>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </dl>
+
+                      <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                    {%- endif -%}
+                    {% comment %}
+                      <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                        {%- for discount in item.discounts -%}
+                          <li class="discounts__discount">
+                            {%- render 'icon-discount' -%}
+                            {{ discount.title }}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {% endcomment %}
+                  </td>
+
+                  <td class="cart-item__totals right medium-hide large-up-hide">
+                    <div class="loading-overlay hidden">
+                      <div class="loading-overlay__spinner">
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="spinner"
+                          viewBox="0 0 66 66"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="cart-item__price-wrapper">
+                      {% comment %}
+                        {%- if item.original_line_price != item.final_line_price -%}
+                          <dl class="cart-item__discounted-prices">
+                            <dt class="visually-hidden">
+                              {{ 'products.product.price.regular_price' | t }}
+                            </dt>
+                            <dd>
+                              <s class="cart-item__old-price price price--end">
+                                {{ item.original_line_price | money }}
+                              </s>
+                            </dd>
+                            <dt class="visually-hidden">
+                              {{ 'products.product.price.sale_price' | t }}
+                            </dt>
+                            <dd class="price price--end">
+                              {{ item.final_line_price | money }}
+                            </dd>
+                          </dl>
+                        {%- else -%}
+                          <span class="price price--end">
+                            {{ item.original_line_price | money }}
+                          </span>
+                        {%- endif -%}
+                      {% endcomment %}
+                      <span class="price price--end">
+                        {{ item.original_line_price | money }}
+                      </span>
+                      {%- if item.variant.available and item.unit_price_measurement -%}
+                        <div class="unit-price caption">
+                          <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+                          {{ item.variant.unit_price | money }}
+                          <span aria-hidden="true">/</span>
+                          <span class="visually-hidden"
+                            >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
+                          >
+                          {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+                            {{- item.variant.unit_price_measurement.reference_value -}}
+                          {%- endif -%}
+                          {{ item.variant.unit_price_measurement.reference_unit }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </td>
+
+                  <td class="small-hide">
+                    {% comment %}
+                      {%- if item.original_line_price != item.final_line_price -%}
+                              <dl class="cart-item__discounted-prices">
+                                <dt class="visually-hidden">
+                                  {{ 'products.product.price.regular_price' | t }}
+                                </dt>
+                                <dd>
+                                  <s class="cart-item__old-price price price--end">
+                                    {{ item.original_line_price | money }}
+                                  </s>
+                                </dd>
+                                <dt class="visually-hidden">
+                                  {{ 'products.product.price.sale_price' | t }}
+                                </dt>
+                                <dd class="price price--end">
+                                  {{ item.final_line_price | money }}
+                                </dd>
+                              </dl>
+                            {%- else -%}
+                              <span class="price price--end">
+                                {{ item.original_line_price | money }}
+                              </span>
+                            {%- endif -%}
+                    {% endcomment %}
+                    <span class="price price--end">
+                      {{ item.original_line_price | money }}
+                    </span>
+                  </td>
+
+                  <td class="cart-item__quantity">
+                    <div class="cart-item__quantity-wrapper">
+                      <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
+                        {{ 'products.product.quantity.label' | t }}
+                      </label>
+                      <quantity-input class="quantity cart-quantity">
+                        <button class="quantity__button no-js-hidden" name="minus" type="button">
+                          <span class="visually-hidden">
+                            {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
+                          </span>
+                          {% render 'icon-minus' %}
+                        </button>
+                        <input
+                          class="quantity__input"
+                          data-quantity-variant-id="{{ item.variant.id }}"
+                          type="number"
+                          name="updates[]"
+                          value="{{ item.quantity }}"
+                          {% # theme-check-disable %}
+                          data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
+                          min="{{ item.variant.quantity_rule.min }}"
+                          {% if item.variant.quantity_rule.max != null %}
+                            max="{{ item.variant.quantity_rule.max }}"
+                          {% endif %}
+                          step="{{ item.variant.quantity_rule.increment }}"
+                          {% # theme-check-enable %}
+                          aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
+                          id="Quantity-{{ item.index | plus: 1 }}"
+                          data-index="{{ item.index | plus: 1 }}"
+                        >
+                        <button class="quantity__button no-js-hidden" name="plus" type="button">
+                          <span class="visually-hidden">
+                            {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
+                          </span>
+                          {% render 'icon-plus' %}
+                        </button>
+                      </quantity-input>
+
+                      <cart-remove-button
+                        id="Remove-{{ item.index | plus: 1 }}"
+                        data-index="{{ item.index | plus: 1 }}"
+                        data-quantity-variant-id="{{ item.variant.id }}"
+                      >
+                        <a
+                          href="{{ item.url_to_remove }}"
+                          class="button button--tertiary"
+                          aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}"
+                        >
+                          {% render 'icon-remove' %}
+                        </a>
+                      </cart-remove-button>
+                    </div>
+                    <div class="cart-item__error" id="Line-item-error-{{ item.index | plus: 1 }}" role="alert">
+                      <small class="cart-item__error-text"></small>
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        class="icon icon-error"
+                        viewBox="0 0 13 13"
+                      >
+                        <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
+                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
+                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
+                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
+                      </svg>
+                    </div>
+                  </td>
+
+                  <td class="cart-item__totals right small-hide">
+                    <div class="loading-overlay hidden">
+                      <div class="loading-overlay__spinner">
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="spinner"
+                          viewBox="0 0 66 66"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="cart-item__price-wrapper">
+                      {% comment %}
+                        {%- if item.original_line_price != item.final_line_price -%}
+                          <dl class="cart-item__discounted-prices">
+                            <dt class="visually-hidden">
+                              {{ 'products.product.price.regular_price' | t }}
+                            </dt>
+                            <dd>
+                              <s class="cart-item__old-price price price--end">
+                                {{ item.original_line_price | money }}
+                              </s>
+                            </dd>
+                            <dt class="visually-hidden">
+                              {{ 'products.product.price.sale_price' | t }}
+                            </dt>
+                            <dd class="price price--end">
+                              {{ item.final_line_price | money }}
+                            </dd>
+                          </dl>
+                        {%- else -%}
+                          <span class="price price--end">
+                            {{ item.original_line_price | money }}
+                          </span>
+                        {%- endif -%}
+                      {% endcomment %}
+                      <span class="price price--end">
+                        {{ item.original_line_price | money }}
+                      </span>
+                      {%- if item.variant.available and item.unit_price_measurement -%}
+                        <div class="unit-price caption">
+                          <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+                          {{ item.variant.unit_price | money }}
+                          <span aria-hidden="true">/</span>
+                          <span class="visually-hidden"
+                            >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
+                          >
+                          {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+                            {{- item.variant.unit_price_measurement.reference_value -}}
+                          {%- endif -%}
+                          {{ item.variant.unit_price_measurement.reference_unit }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
+    <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">
+      {{ 'accessibility.loading' | t }}
+    </p>
+
+    <div class="error_message_ctm">
+      <span class="error_msg">Please select delivery date.</span>
+    </div>
+
+    <div class="delivery_button_wrapper">
+      <p class="select_delivery_type">Select Delivery Type:</p>
+      <div class="button_wrapp">
+        <div class="first_btn">
+          <a class="first_btn_click">Standard Delivery</a>
+          <p class="delivery_option">FREE</p>
+        </div>
+        <div class="second_btn">
+          <a id="add-to-cart-button0" class="second_btn_click">Express Delivery</a>
+          <p class="delivery_option">₹150</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart_delivery_date">
+      <div class="phone_no_sec">
+        <p class="cart-attribute__field">
+          <!--
+            <label for="your-number">Sender's Phone no.<br><span class="phone_disclaimer_txt">(*All order related communication will be sent to this no.)</span><br></label>
+            <input required class="required"  id="your-number" type="text" name="attributes[Phone Number]" value="{{ cart.attributes["Phone Number"] }}"  maxlength="10" >
+          -->
+          <input
+            type="hidden"
+            class="easyecom_delivery_date"
+            name="attributes[Delivery Date]"
+            value="{{ easyecom_delivery_date }}"
+          >
+          <input
+            type="hidden"
+            class="delivery_time_slot"
+            name="attributes[Delivery Time Slot]"
+            value="{{ delivery_time_slot }}"
+          >
+        </p>
+        <p id="phone-error-message" style="color: red;"></p>
+      </div>
+    </div>
+
+    <input type="hidden" id="byoh_card_message" type="text" name="attributes[Card Message]" value="">
+  </form>
+</cart-items>
+
+<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.min.css"> -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.min.css">
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+<script>
+    if (document.querySelector('a.cart_property_product_title[data-cart-prod-type="addon"]')) {
+       $("#byoh_card_message").val(localStorage.getItem("BYOHCardMsg"));
+      console.log("An element with data-cart-prod-type='addon' exists on the page.");
+    } else {
+      localStorage.setItem("BYOHCardMsg","")
+        console.log("No element with data-cart-prod-type='addon' found.");
+    }
+
+
+  $("#bundle_prod_title").html($('[data-cart-prod-bundle-name]').data("cart-prod-bundle-name"));
+  $("#bundle_prod_title_cart_page").html($('[data-cart-prod-bundle-name]').data("cart-prod-bundle-name"));
+  var all_bundles_data = localStorage.getItem("all_bundles_data");
+  if(all_bundles_data!=null){
+    all_bundles_data = JSON.parse(all_bundles_data);
+    for(var i=0;i<all_bundles_data.length;i++){
+      var currentBundle = all_bundles_data[i];
+      if(currentBundle['bundle_id']==$('[data-cart-prod-bundle-id]').data("cart-prod-bundle-id")){
+        if(!currentBundle['bundle_image'].includes("placehold")){
+          $('[data-cart-bundle-image]').attr("src",currentBundle['bundle_image']);
+        }
+        break;
+      }
+    }
+  }
+
+  $( document ).on( "click", ".cart__checkout-button", function(e) {
+    e.preventDefault();
+
+
+  var globalUserLocation = localStorage.getItem("location");
+
+  // if(globalUserLocation == "location-kolkata"){
+  //     var selectField = document.getElementById('time-slot').value;
+  //   var selectedOptionText = $('#time-slot option[value]:selected').text();
+  //            if($('#time-slot option[value]:selected').text()==''){
+  //               document.getElementById("time-slot-error").innerText = "Please select a time slot.";
+  //                 return false;
+  //             } else {
+  //               // velocity: 16-07-2024 Saving the added phone number in the local storage
+  //               localStorage.setItem("delivery-time-slot",$('#time-slot option[value]:selected').text());
+  //             }
+  // }
+
+     // if($('#delivery_date1').val()){
+     //            // velocity: 16-07-2024 Saving the added delivery date in the local storage
+     //            localStorage.setItem("delivery-date",$('#delivery_date1').val());
+     //          }
+
+
+    // var inputField = document.getElementById('your-number').value;
+    //           if (inputField == "") {
+    //              document.getElementById("phone-error-message").innerText = "Please Enter mobile number.";
+    //               return false;
+    //           } else {
+    //             // velocity: 16-07-2024 Saving the added phone number in the local storage
+    //             localStorage.setItem("cache-phone",inputField);
+    //           }
+
+    var bundle_id = $('[data-cart-prod-bundle-id]').data("cart-prod-bundle-id"),
+      bundle_name = $('[data-cart-prod-bundle-name]').data("cart-prod-bundle-name"),
+      BYOHDiscCode = localStorage.getItem("BYOHDiscountCode"),
+      BYOHCardMessage = localStorage.getItem("BYOHCardMsg"),
+      BYOHDelDate = $("#delivery_date1").val();
+    if($('[data-cart-prod-bundle-id]').length){
+      // if (!selected) {
+      //   $('.error_message_ctm').css("display","flex");
+      //   return false;
+      // }
+      $(".cart__checkout-button").prop("disabled",true)
+      //   handleBeginCheckout();
+      // return;
+      $.ajax({
+        type: 'GET',
+        url: '/cart.json',
+        dataType: 'json',
+        success: function(data) {
+          data["card_message_mobile"] = "";
+          data["card_message_desktop"] = BYOHCardMessage;
+          $.ajax({
+            type: 'POST',
+            headers: {
+              "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+            },
+            url: 'https://hampers.tinglabs.in/fetchapi?action=createOrder&shop_url=tgs-revamp.myshopify.com&code='+BYOHDiscCode+'&bundle_id='+bundle_id+'&bundle_name='+bundle_name+'&delDate='+BYOHDelDate + "&_="+new Date().getTime(),
+            data: JSON.stringify(data),
+            success: function(data) {
+              //velocity: 16-07-2024 Calling the function to send the begin checkout event to GTM.
+              handleBeginCheckout();
+               // handleBeginCheckout(data);
+            }
+          });
+        }
+      });
+    }
+    else{
+      // if (selected) {
+        //velocity: 16-07-2024 Calling the function to send the begin checkout event to GTM.
+        handleBeginCheckout();
+        // $("#BYOHCheckout").click();
+      // } else {
+      //   $('.error_message_ctm').css("display","flex");
+      // }
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(async function() {
+
+    // Function to get current date and time
+    async function getCurrentDateTime() {
+      try {
+        const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Kolkata');
+        const data = await response.json();
+
+        if (response.ok) {
+          const dateTimeString = data.datetime;
+          const currentDateTime = new Date(dateTimeString);
+          return currentDateTime;
+        } else {
+          throw new Error('Unable to fetch current date and time.');
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+        return null;
+      }
+    }
+
+    // Get current date and time
+    var currentDateTime = await getCurrentDateTime();
+  // console.log(currentDateTime + ":currentDateTime before");
+    if (currentDateTime === null) {
+      currentDateTime = new Date();
+    }
+    // console.log(currentDateTime + ":currentDateTime after");
+    // Set cutoff time at 12:00 PM
+    var cutoffTime = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 12, 0, 0);
+    var cutoffTimeNoon = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
+    var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
+
+    var threePmtag = $.inArray('3PM', productTags) !== -1;
+    // console.log('threePmtag:', threePmtag)
+  var utcDatetime = new Date(currentDateTime);
+              var year = utcDatetime.getFullYear();
+              var month = utcDatetime.getMonth() + 1;
+              var day = utcDatetime.getDate();
+    if ($('.custom_tag_find').length == 0) {
+      $('.cart_delivery_date').hide();
+    }
+
+    $('.express_dilevery_price').hide();
+    $("#delivery_date1").datepicker({
+
+      // Your date picker options here
+      autoSize: true,
+      minDate: currentDateTime,
+      dateFormat: 'dd/mm/yy',
+
+    });
+
+
+
+    var elements = document.querySelectorAll(".custom_tag_find");
+    let highestTagNumber = -3;
+    var d_flag = 0;
+
+    elements.forEach((element) => {
+      const tagNumber = parseInt(element.getAttribute("data-tagnumber"));
+      // console.log("loop: " + element.getAttribute("data-tagnumber"));
+      if (tagNumber > highestTagNumber) {
+        highestTagNumber = tagNumber;
+      }
+    });
+    // Velocity: Added a Code to pass the city-tat to enable the calendar dates.
+    var cityTat = localStorage.getItem("city-tat");
+    if(parseInt(cityTat) > 0) {
+      if(parseInt(highestTagNumber) > 0) {
+        highestTagNumber = parseInt(highestTagNumber) + parseInt(cityTat);
+      } else {
+        highestTagNumber = parseInt(cityTat);
+      }
+    }
+
+    // console.log("Highest Tag Number:", highestTagNumber);
+    let minDates = "+" + highestTagNumber + "d";
+
+    if (highestTagNumber == '-3') {
+      var oneDays = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+1));
+
+       // velocity: Defined the 2 PM time variable as it was not defined and the JS was breaking here. The logic remains the same, there is no change in the same.
+      var cutoffTimetwoPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 14, 0, 0); // 2:00 PM
+
+      if (currentDateTime < cutoffTimetwoPm) {
+        // console.log("cut time : ", cutoffTimetwoPm);
+        // console.log("2 ke pahle :", currentDateTime)
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: currentDateTime,
+          dateFormat: 'dd/mm/yy'
+        });
+      } else {
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: oneDays,
+          dateFormat: 'dd/mm/yy'
+        });
+      }
+    }
+
+   else if (highestTagNumber == '-2') {
+      var oneDays = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+1));
+
+      if (currentDateTime < cutoffTimeNoon) {
+        // console.log("cut time : ", cutoffTimeNoon);
+        // console.log("4 ke pahle :", currentDateTime)
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: currentDateTime,
+          dateFormat: 'dd/mm/yy'
+        });
+      } else {
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: oneDays,
+          dateFormat: 'dd/mm/yy'
+        });
+      }
+    }
+    else if (highestTagNumber == '-1') {
+      // $( "#delivery_date1" ).datepicker( "destroy" );
+      // $("#delivery_date1").datepicker({
+      //   minDate: 0,
+      //   dateFormat: 'dd/mm/yy'
+      // });
+    } else if (highestTagNumber == '0') {
+    var oneDays = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+1));
+      // console.log("cutoffTime : ", cutoffTime , " | currentDateTime : ",currentDateTime , " | oneDays : ", oneDays);
+      if(threePmtag){
+
+        if (currentDateTime < cutoffTimethreePm) {
+          $("#delivery_date1").datepicker("destroy");
+          $("#delivery_date1").datepicker({
+            minDate: currentDateTime,
+            dateFormat: 'dd/mm/yy'
+          });
+            } else {
+            $("#delivery_date1").datepicker("destroy");
+            $("#delivery_date1").datepicker({
+              minDate: oneDays,
+              dateFormat: 'dd/mm/yy'
+            });
+        }
+      }
+      else{
+
+        if (currentDateTime < cutoffTime) {
+
+          $("#delivery_date1").datepicker("destroy");
+          $("#delivery_date1").datepicker({
+            minDate: currentDateTime,
+            dateFormat: 'dd/mm/yy'
+          });
+        } else {
+          $("#delivery_date1").datepicker("destroy");
+          $("#delivery_date1").datepicker({
+            minDate: oneDays,
+            dateFormat: 'dd/mm/yy'
+          });
+        }
+      }
+
+
+    } else if (highestTagNumber == '1') {
+      if (currentDateTime < cutoffTime) {
+        var oneDays = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+1));
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: oneDays,
+          dateFormat: 'dd/mm/yy'
+        });
+      } else {
+           var twoDays = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+2));
+        $("#delivery_date1").datepicker("destroy");
+        $("#delivery_date1").datepicker({
+          minDate: twoDays,
+          dateFormat: 'dd/mm/yy'
+
+        });
+      }
+    } else {
+      var minDatess = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), (currentDateTime.getDate()+highestTagNumber));
+      $("#delivery_date1").datepicker("destroy");
+      $("#delivery_date1").datepicker({
+        minDate:minDatess,
+        dateFormat: 'dd/mm/yy'
+
+      });
+    }
+  $("#delivery_date1").attr("disabled",false);
+  });
+</script>
+
+<!-- Do not Edit -->
+<script
+  type="text/javascript"
+>
+  var selected;
+    $(function() {
+  $("#delivery_date1").datepicker({ dateFormat: "dd-mm-yy" });
+  $("#delivery_date1").on("change", function() {
+    selected = $(this).val();
+    // alert(selected);
+    let delivery_date = selected.split('/');
+    $('select#time-slot option').removeAttr('disabled');
+    let currentTime = new Date();
+    let currentDate = currentTime.getDate();
+    let currentMonth = currentTime.getMonth() + 01;
+    if(currentDate == delivery_date[0] && delivery_date[1] == currentMonth){
+      let currentHour = currentTime.getHours();
+      if(currentHour < 9){
+        // All slots available at this time
+      }else if(currentHour < 12){
+        $('select#time-slot option[value="9am-12pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value=""]').prop('selected','selected');
+      }else if(currentHour < 15){
+        $('select#time-slot option[value="9am-12pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value="12pm-3pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value=""]').prop('selected','selected');
+      }else if(currentHour < 18){
+        $('select#time-slot option[value="9am-12pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value="12pm-3pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value="3pm-6pm"]').prop('disabled','disabled');
+        $('select#time-slot option[value=""]').prop('selected','selected');
+      }else{
+        $('select#time-slot option').prop('disabled','disabled');
+        $('select#time-slot option[value=""]').prop('selected','selected');
+        $('select#time-slot option[value=""]').removeAttr('disabled');
+      }
+    }else{
+      console.log("not matched!");
+    }
+  });
+       $('.error_message_ctm').hide()
+  // $('.cart__checkout-button').click(function(e) {
+  //   if (selected) {
+  //     window.location.href = 'https://thegiftstudio.com/checkouts/c/95f364e5d9ef2f5623005b7a8e36763d/information';
+  //   } else {
+  //     $('.error_message_ctm').css("display","flex")
+  //     // $('.select_delivery_type').after(`<span class="error_msg">Please select delivery type and date</span>`);
+  //     e.preventDefault();
+  //   }
+  // });
+});
+
+// function addItemToCart() {
+//   var data = {
+//     "id": 45471204802867,
+//     "quantity": 1
+//   };
+
+//   $.ajax({
+//     type: 'POST',
+//     url: '/cart/add.js',
+//     data: data,
+//     dataType: 'json',
+//     success: function(response) {
+//       // console.log("Product added");
+//       updateCartData();
+//     }
+//   });
+//   // $('.express_dilevery_price').show();
+// }
+// function removeItemFromCart() {
+  
+//   var data = {updates: {
+//     45471204802867: 0
+//   }};
+
+//   $.ajax({
+//     type: 'POST',
+//     url: '/cart/update.js',
+//     data: data,
+//     dataType: 'json',
+//     success: function(response) {
+//       // console.log("Product removed");
+//          localStorage.setItem('Express_Delivery', 'false');
+//      updateCartData();
+//     }
+//   });
+// }
+  
+// function updateCartData() {
+//   $.ajax({
+//     type: 'GET',
+//     url: '/cart.js',
+//     dataType: 'json',
+//     success: function(response) {
+//       console.log("Cart data updated");
+//       // Process the updated cart data here
+//       console.log(response); // Example: log the cart data to the console
+
+//       // Update the subtotal value element if it exists
+//       var newPrice = response.total_price / 100;
+//       var subtotalElement = $('.totals__subtotal-value1');
+//       if (subtotalElement.length > 0) {
+//         subtotalElement.text('₹' + newPrice);
+//       } else {
+//         console.log("Subtotal element not found");
+//       }
+//     },
+//     error: function(xhr, status, error) {
+//       console.log("Error updating cart data:", error);
+//     }
+//   });
+// }
+
+
+// $(window).on('load', function() {
+//  removeItemFromCart();
+//   });
+$('cart-remove-button').on('click', function() {
+  setTimeout(function() {
+    location.reload();
+  }, 1000);
+});
+  
+ 
+
+  // $('.quantity__button').on('click', function() {
+   
+  //    setTimeout(function() {
+  //  $('.express_dilevery_price').hide();
+  //   },1500);
+  // })
+</script>
+<!-- Do not Edit -->
+{% schema %}
+{
+  "name": "t:sections.main-cart-items.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+{% assign questabs = product.metafields.custom.custom_game.value %}
+{% assign colorName = "" %}
+<div class="custom_game">
+  <p class="main_ques"> Please fill up the questionaire</p>
+  <div class="ques_ans">
+     {% assign quesfaqs = questabs.faqs %}
+                          {% for quesfaq in quesfaqs %}
+                  
+                            <p>
+                         <label class="custom_game_ques" for="custom-message{{ quesfaq.nos }}">{{ quesfaq.ques }}</label><br>
+                              <span class="ans_sec" >
+                                <span>Answer:</span>
+                               
+                                <textarea type="text" class="error-message custom_game_input" id="custom-message{{ quesfaq.nos }}" name="properties[{{ quesfaq.nos }}.{{ quesfaq.ques }}]" required></textarea>
+
+                              </span>
+                            </p>
+                            {% endfor %}
+  
+
+  </div>
+</div>

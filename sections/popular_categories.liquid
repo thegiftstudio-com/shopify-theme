@@ -1,0 +1,476 @@
+
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+<style>
+.populer_section{
+  position:relative;
+}
+   .populer_slider {
+  /* margin-left: -12px; */
+       column-gap: 0;} 
+  .populer_section  .slider--desktop .slider__slide:first-child,
+  .category_list  .slider--desktop .slider__slide:first-child{
+    margin-left:0 !important;
+  }
+  @media (min-width: 0px) and (max-width: 767px) {
+     .category_list, .populer_section {
+      padding: 0 0px 0 15px; 
+     padding-top: 35px !important;
+     padding-bottom: 10px !important;} }
+    .section_heading {
+    padding-bottom: 0;
+    margin: 0;
+       font-size: 40px;}
+    @media (min-width: 0px) and (max-width: 767px) {
+        .section_heading {
+        padding-bottom: 0;
+    margin: 0;    font-size: 20px;
+    text-align: center;
+    line-height: 1; } }
+   .section_heading br {
+      display: none; }
+      @media (min-width: 0px) and (max-width: 767px) {
+          .section_heading br {
+          display: block; } }
+    .populer_inner_sec {
+    /* margin-left: -10px;  */
+    }
+      .populer_inner_sec .populer_slider .populer_sec {
+      padding: 0 15px;
+         cursor: pointer;}
+        .populer_inner_sec .populer_slider .populer_sec .image_text_sec {
+        position: relative; }
+        .populer_inner_sec .populer_slider .populer_sec .image_sec img {
+        border-radius: 8px;
+           height: 100%;
+    width: 100%;}
+        .populer_inner_sec .populer_slider .populer_sec .text_area {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        bottom: 9px;
+        /* background: linear-gradient(0deg,rgba(0,0,0,.5) 17%,rgba(255,255,255,0) 40%); */
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+        padding-bottom: 20px;
+        text-align: center;
+       border-radius:8px;}
+          .populer_inner_sec .populer_slider .populer_sec .text_area p {
+          font-family: var(--font-text); 
+             text-transform: uppercase;
+    margin-bottom: -5px;
+         line-height:1.2;}
+      .populer_inner_sec .populer_slider .slick-prev,
+    .populer_inner_sec .populer_slider .slick-next {
+      top: -35%;
+      width: auto;
+      height: auto;
+      transform: translate(50%, 50%);
+      mix-blend-mode: color-dodge; }
+      @media (min-width: 0px) and (max-width: 767px) {
+          .populer_inner_sec .populer_slider .slick-prev,
+         .populer_inner_sec .populer_slider .slick-next {
+          top: -30%;
+          width: 25px; } }
+      .populer_inner_sec .populer_slider .slick-prev {
+      left: calc(100vw - var(--container_left_space) - 200px); }
+      @media (min-width: 0px) and (max-width: 767px) {
+          .populer_inner_sec .populer_slider .slick-prev {
+          right: 70px;
+          left: unset; } }
+      @media (min-width: 768px) and (max-width: 1199px) {
+        .populer_inner_sec .populer_slider .slick-prev {
+          left: calc(100vw - var(--container_left_space) - 120px); } }
+     .populer_inner_sec .populer_slider .slick-next {
+      z-index: 1;
+      left: calc(100vw - var(--container_left_space) - 150px); }
+      @media (min-width: 0px) and (max-width: 767px) {
+         .populer_inner_sec .populer_slider .slick-next {
+          right: 30px;
+          left: unset; } }
+      @media (min-width: 768px) and (max-width: 1199px) {
+         .populer_inner_sec .populer_slider .slick-next {
+          left: calc(100vw - var(--container_left_space) - 70px); } }
+
+  .title_arrow_sec{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 37px;
+    position:relative;
+  }
+
+  @media(min-width:1023px){
+    .products-sec .slider-button--prev{
+          left: -39% !important;
+    }
+    .products-sec .slider-button--next{
+      right: -5% !important;
+    }
+  }
+
+  @media(min-width:767px){
+     .slider--desktop .slider__slide:first-child {
+    margin-left: var(--desktop-margin-left-first-item) !important;
+    scroll-margin-left: var(--desktop-margin-left-first-item) !important;
+  }
+  }
+ 
+  @media(max-width:767px){
+    .populer_slider{
+          column-gap: 15px;
+      overflow-y:hidden;
+    }
+    .title_arrow_sec{
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+     .populer_inner_sec .populer_slider .populer_sec{
+      padding:0;
+    }
+     .populer_inner_sec .populer_slider .populer_sec .text_area p{
+      margin-bottom: 12px;
+    font-size: 12px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+      .populer_inner_sec .populer_slider .populer_sec{
+        width: calc(30% - var(--grid-desktop-horizontal-spacing) - 3rem) !important;
+}
+     .populer_inner_sec .populer_slider .populer_sec .text_area p{
+      margin-bottom: 12px;
+    }
+  }
+
+
+.category_list .slider-mobile-gutter {
+      padding: 0 5rem;
+  max-width: var(--page-width);
+    margin: 0 auto;
+}
+
+ .category_list .slider--desktop .slider__slide:first-child{
+   margin-left: 0 !important;
+ }
+
+ .category_list .title_arrow_sec{
+   padding:0 !important;
+ }
+
+ .category_list .slider-button--prev{
+        position: absolute;
+    left: 0;
+    top: 50%;
+  }
+
+  .category_list .slider-button--next{
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
+
+.category_list .populer_inner_sec .populer_slider .populer_sec .text_area{
+  background:transparent;
+  position:static;
+}
+.category_list .populer_inner_sec .populer_slider .populer_sec .text_area p{
+  color:#000;
+  margin-top:0;
+}
+
+  @media(max-width:767px){
+
+.category_list .slider-mobile-gutter {
+      padding: 0 0rem;
+}
+    
+   .category_list .populer_inner_sec .populer_slider .populer_sec{
+      width: calc(33% - var(--grid-mobile-horizontal-spacing) - 3rem) !important;
+    }
+        
+  }
+  
+ .curated_category_sec .left_flower,
+  .curated_category_sec .right_flower,
+  .curated_category_sec .valentine_heading_line{
+    display:none;
+  }
+  .curated_category_sec .populer_slider{
+    /* padding:0 5rem; */
+  }
+  .curated_category_sec .text_area{
+    position:static !important;
+  }
+  .curated_category_sec .text_area p{
+    color: var(--color_black);
+    margin:0;
+  }
+  .curated_category_sec .slider-button{
+    position: absolute;
+    bottom: 40%;
+  }
+  .curated_category_sec .slider-button--prev{
+    left:70px;
+  }
+  .curated_category_sec .slider-button--next{
+    right:50px;
+  }
+@media screen and (min-width: 990px){
+    .curated_category_sec .slider--desktop .slider__slide:first-child {
+        margin-left: 0 !important;
+        scroll-margin-left: 0 !important;
+    }
+  .curated_category_sec .slider--desktop:after{
+      padding-left: 0;
+  }
+}
+   
+</style>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+{%- liquid
+
+    assign columns_desktop_int = section.settings.columns_desktop | plus: 0
+    
+  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
+  assign show_mobile_slider = false
+  if section.settings.swipe_on_mobile and section.blocks.size > columns_mobile_int
+    assign show_mobile_slider = true
+  endif
+
+   assign show_desktop_slider = false
+  if section.settings.enable_desktop_slider and section.blocks.size > columns_desktop_int
+    assign show_desktop_slider = true
+  endif
+-%}
+
+<section class="{{ section.settings.custom_class }} section_margin section-{{ section.id }}-padding">
+    <!-- Left flower image with srcset -->
+    <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left_side-flower-small.png?v=1707127526" 
+         srcset="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left_side-flower-small.png?v=1707127526&width=150 150w,
+                 https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left_side-flower-small.png?v=1707127526&width=300 300w" 
+         sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+         alt="Valentine Flower" 
+         class="left_flower valentine" 
+         loading="lazy" 
+         width="300" 
+         height="300">
+    
+    <!-- Right flower image with srcset -->
+    <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right_side_flower-small.png?v=1707127532" 
+         srcset="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right_side_flower-small.png?v=1707127532&width=150 150w,
+                 https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right_side_flower-small.png?v=1707127532&width=300 300w" 
+         sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+         alt="Valentine Flower" 
+         class="right_flower valentine" 
+         loading="lazy" 
+         width="300" 
+         height="300">
+  
+ 
+         <div class="populer_inner_sec">
+           <slider-component class="slider-mobile-gutter {% if show_desktop_slider %} slider-component-desktop{% endif %}">
+           <div class="title_arrow_sec page-width">
+         <h3 class="section_heading font_heading">
+         {{ section.settings.category_title }}
+         </h3>
+    <div class="valentine_heading_line valentine">
+      <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749"
+           srcset="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=320 320w,
+             https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=480 480w,
+             https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=640 640w,
+             https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=846 846w"
+           sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 846px"
+           alt="Decorative Line Design"
+           width="846"
+           height="40"
+           loading="lazy">
+    </div>
+  </div>
+             <div id="Slider-{{ section.id }}" class="populer_slider page-width grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down {% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}">
+              {%- for block in section.blocks -%}
+               <div id="Slide-{{ section.id }}-{{ forloop.index }}" class="populer_sec {{ block.settings.city_hide }} collection-list__item grid__item {% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}" onclick="window.location.href='{{ block.settings.card_url }}';">
+                  <div class="image_text_sec">
+                     <div class="image_sec">
+                        <img
+                         srcset="{{ block.settings.coll_img | img_url: '300x' }} 300w,
+                           {{ block.settings.coll_img | img_url: '400x' }} 400w,
+                           {{ block.settings.coll_img | img_url: '500x' }} 500w"
+                         src="{{ block.settings.coll_img | img_url: '300x' }}"
+                         sizes="(max-width: 768px) 141px, 231px"
+                         alt="{{ block.settings.coll_title | escape }}"
+                         width="{{ block.settings.coll_img.width }}"
+                         height="{{ block.settings.coll_img.height }}"
+                         loading="lazy"
+                         decoding="async"
+                         >
+                        </div>
+                        <div class="text_area">
+                           <p class="color_white text_sm">{{ block.settings.coll_title }}</p>
+                        </div>
+                  </div>
+                  
+               </div>
+               {% endfor %}
+
+              
+            </div>
+             {%- if show_mobile_slider or show_desktop_slider -%}
+        <div class="slider-buttons no-js-hidden small-hide">
+          <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}">
+            <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
+      </button>
+<!--           <div class="slider-counter caption">
+            <span class="slider-counter--current">1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+            <span class="slider-counter--total">{{ section.blocks.size }}</span>
+          </div> -->
+          <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">
+            <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
+          </button>
+          
+        </div>
+             {% comment %}
+      <div class="slideshow__control-wrapper">
+            {%- for block in section.blocks -%}
+              <button class="slider-counter__link {{ block.settings.custom_class }} slide-{{ forloop.index }} slider-counter__link--dots  link" aria-label="{{ 'general.slider.next_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}" aria-controls="Slider-{{ section.id }}">
+                <span class="dot"></span>
+              </button>
+            {%- endfor -%}
+          </div>
+      {% endcomment %}
+      {%- endif -%}
+             </slider-component>
+         </div>
+      </section>
+
+
+{% schema %}
+  {
+    "name": "Category Section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "custom_class",
+        "label": "Add Custom Class"
+      },
+      {
+        "type": "text",
+        "id": "category_title",
+        "label": "Add Title"
+      },
+      {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.collection-list.settings.columns_desktop.label"
+    },
+       {
+      "type": "checkbox",
+      "id": "enable_desktop_slider",
+      "label": "Enable Desktop Slider",
+      "default": false
+    },
+       {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__2.label"
+        }
+      ],
+      "default": "1",
+      "label": "t:sections.collection-list.settings.columns_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.collection-list.settings.swipe_on_mobile.label"
+    },
+       {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+    ],
+          "blocks": [
+        {
+          "type": "collection",
+          "name": "Collection Block",
+          "settings":
+          [
+            {
+              "type": "text",
+              "id": "city_hide",
+              "label": "Add City Hide Class"
+            },
+            {
+              "type": "image_picker",
+              "id": "coll_img",
+              "label": "Add Collection Image"
+            },
+            {
+              "type": "text",
+              "id": "coll_title",
+              "label": "Add Collection Title"
+            },
+            {
+              "type": "url",
+              "id": "card_url",
+              "label": "Add Url"
+            }
+          ]
+        }
+    ],
+        "presets": [
+      {
+        "name": "Category Section"
+      }
+  ]
+  }
+{% endschema %}
+
+
+{% javascript %}
+{% endjavascript %}

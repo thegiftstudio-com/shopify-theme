@@ -1,0 +1,617 @@
+<div class="delivery_date_sec">
+  <p class="font_text font_weight_400">Check availability at your pincode</p>
+  <div class="delivery_input_sec">
+    <div class="label_input_sec">
+      <label class="font_bold" for="pincode">Enter Delivery Pincode:</label><br>
+      <div class="input_container">
+        {% render 'location-pin' %}
+        <p class="line-item-property__field">
+          <!--
+            <input  id="pincode_input" placeholder="Eg:400001" type="number" name="properties[Pincode]" pattern="[0-9]{4}" maxlength="6" onKeyPress="if(this.value.length==6) return false;">
+          -->
+          <input
+            id="pincode_input"
+            placeholder="Eg:400001"
+            type="text"
+            name="properties[Pincode]"
+            maxlength="6"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+            data-gtm-form-interact-field-id="0"
+          >
+        </p>
+        <div class="right-section">
+          <span style="font-weight:100">Available</span>
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="pincode_btn">
+          <button type="button">{% render 'icon-arrow' %}</button>
+        </div>
+      </div>
+      {% if product.available == true or product.selected_or_first_available_variant.available == true %}
+        <p class="pincode_txt"></p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% comment %}
+    <div class="label_input_sec">
+    <label for="delivery_date">Enter Delivery Date:</label><br>
+    <div class="input_container date_sec">
+       {% render 'calender_icon' %}
+    <p class="line-item-property__field">
+      <input class="error-message cm-common-input" required id="delivery_date" type="text" name="properties[Enter Delivery Date]" onkeydown="return false" autocomplete="off">
+    </p>
+    </div>
+    </div>
+  {% endcomment %}
+</div>
+
+{% render 'delivery_date_picker' %}
+{% assign show_time_slot = false %}
+
+{% for time_slot_entry in shop.metaobjects.time_slot_on_pdp.values %}
+  {% if time_slot_entry.time_slot.value == true %}
+    {% assign show_time_slot = true %}
+    {% render 'time_slot_picker' %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% comment %}
+  <div class="estimated-date-text">
+    {% for t in product.tags %}
+      {% if t contains 'same-day' %}
+        <p class="font_text color_white same_day_text">{% render 'delivery_truck_icon' %}Thoughtful gift will be delivered within 24 hours.</p>
+        {% endif %}
+      {% if t contains '1-day' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Order before 12 noon for next day delivery.</p>
+        {% endif %}
+
+      {% if t contains '4-hrs' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered within 4 hours.</p>
+        {% endif %}
+
+      {% if t contains '2-days' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered within 48 hours.</p>
+        {% endif %}
+      {% if t contains '3-days' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered within 72 hours.</p>
+        {% endif %}
+      {% if t contains '4-days' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered in 4 days.</p>
+        {% endif %}
+      {% if t contains '7-days' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered in 7 days.</p>
+        {% endif %}
+      {% if t contains '10-days' %}
+        <p class="font_text color_white">{% render 'delivery_truck_icon' %}Thoughtful gifts will be delivered in 10 days.</p>
+        {% endif %}
+      {% endfor %}
+  </div>
+{% endcomment %}
+{% if product.tags contains '4-hrs' %}
+  <style>
+    .same_day_text{
+      display:none !important;
+    }
+  </style>
+{% endif %}
+
+<style>
+  .ui-widget-header{
+        border: 1px solid #000 !important;
+    background: #000 !important;
+  }
+  .ui-state-default, .ui-widget-content .ui-state-default{
+    color:#000;
+  }
+
+  .ui-state-hover, .ui-widget-content .ui-state-hover{
+    color: #000;
+    background: transparent;
+    border: 1px solid #000;
+  }
+
+  .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next{
+    background:#fff;
+  }
+  .ui-datepicker .ui-icon{
+    background-position: -10px -10px !important;
+        cursor: pointer;
+  }
+  .ui-datepicker .ui-datepicker-prev .ui-icon{
+    background-image:url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.png?v=1679685654') !important;
+  }
+
+  .ui-datepicker .ui-datepicker-next .ui-icon{
+    background-image:url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.png?v=1679685654') !important;
+  }
+  /* velocity:: 16-09-2024 Error message CSS. */
+  .pincode_error{
+    color: black;
+    background: white;
+  }
+    .right-section {
+      display: none;
+      align-items: center;
+      color: green;
+      font-weight: bold;
+    }
+
+    .right-section i {
+      color: green;
+      margin-left: 6px;
+      }
+</style>
+
+<script>
+// Added by Velocity Support on 02-01-2025 to handle the inventory check on the Product page for the variant
+function processProductAvailabilityCheck() {
+  return;
+    // Get the selected location and variant ID
+    var cluster = localStorage.getItem('location');
+  var location = cluster.split('-')[1];
+
+    var current_variant_id = window.currentVariantId;
+    var first_available_variant = 0;
+    // Construct the name of the hidden input field for the current variant
+    var hiddenInputName = `inventory_${location}_${current_variant_id}`;
+    var hiddenInput = $('#'+hiddenInputName);
+
+    // Flag to check if any variant has inventory
+    var anyVariantAvailable = false;
+
+    if (hiddenInput.length > 0 && parseInt(hiddenInput.val()) > 0) {
+        // Product is available for the current variant
+        // $('.pincode_txt').html("<span class='green_txt'>Product is Available</span>").removeClass('invalid').addClass('valid');
+        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").removeClass('pincode_error').prop('disabled', false);
+        anyVariantAvailable = true;
+    } else {
+        // Product is not available for the current variant
+        // Loop through all product variants in the `window.product_variants` array
+        var variantFound = false;
+        for (var i = 0; i < window.product_variants.length; i++) {
+            var variant_id = window.product_variants[i];
+
+            // Skip the currently checked variant
+            if (variant_id === current_variant_id || variantFound) {
+                continue;
+            }
+
+            // Construct the name of the hidden input field for this variant
+            var hiddenInputName = `inventory_${location}_${variant_id}`;
+            var hiddenInput = $('#'+hiddenInputName);
+
+            // Check availability for the current variant in the loop
+            if (hiddenInput.length > 0 && parseInt(hiddenInput.val()) > 0) {
+                // Product is available for this variant
+                variantFound = true;
+                anyVariantAvailable = true;
+                if(first_available_variant == 0){
+                  window.currentVariantId = variant_id;
+                  $('#ProductSelected-variant').val(variant_id);
+                  first_available_variant = 1;
+                }
+
+                // Update the UI: Mark this variant as selected
+                $('input[data-variant-id="'+variant_id+'"]').prop('checked', true); // Select this variant
+                $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").removeClass('pincode_error').prop('disabled', false);
+
+                // Update the availability text
+                // $('.pincode_txt').html("<span class='green_txt'>Product is Available</span>").removeClass('invalid').addClass('valid');
+            }
+        }
+    }
+
+    // If no variant is available, disable the pincode input and change "Add to Cart" button text to "Sold Out"
+    if (!anyVariantAvailable && window.product_variants.length > 1) {
+        $('#pincode_input').prop('disabled', true); // Disable the pincode input
+        $('.pincode_btn button').prop('disabled', true); // Disable the pincode input button
+        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").prop('disabled', true).text('Sold Out'); // Change button text to "Sold Out"
+    } 
+
+    // Disable the unavailable variants
+for (var i = 0; i < window.product_variants.length; i++) {
+    // Get the variant_id from the current variant
+    var variant_id = window.product_variants[i];
+
+    // Find the input field with the corresponding data-position value
+    var variantInput = $('[data-position="' + (i + 1) + '"]');
+    
+
+    // Prepare the hidden input name based on location and variant_id
+    var hiddenInputName = `inventory_${location}_${variant_id}`;
+    var hiddenInput = $('#' + hiddenInputName);
+
+    // Disable the variant input if the variant is not available
+    if (hiddenInput.length > 0 && parseInt(hiddenInput.val()) <= 0) {
+        variantInput.prop('disabled', true); // Disable the unavailable variant
+    } else {
+        variantInput.prop('disabled', false); // Ensure available variants are not disabled
+    }
+}
+
+}
+
+
+  async function getVariantQuantityInCart(variant_id) {
+    try {
+        // Fetch the cart data from Shopify
+        const response = await fetch('/cart.js');
+        const cart = await response.json();
+
+        // Find the cart item with the given variant_id
+        const cartItem = cart.items.find(item => item.id === parseInt(variant_id));
+
+        // Return the quantity if found, otherwise return 0
+        return cartItem ? cartItem.quantity : 0;
+    } catch (error) {
+        console.error("Error fetching cart data:", error);
+        return 0; // Return 0 if there's an error
+    }
+}
+
+
+$(document).ready(function() {
+  $('.product_quantity_input_pdp').on("change", function(){
+    $('.pincode_btn button').click();
+  });
+  const productId = '{{ product.id }}';
+  
+ //velocity:: 16-09-2024 Defined variable isAutoPincodeFilled as 0, to handle GTM pincode entered event intially.
+  var isAutoPincodeFilled = 0;
+
+// Checking availability of product once the length of input is equal to 6
+  $('#pincode_input').on("keyup", function(){
+    $(this).removeClass("ui-state-highlight");
+     $("#delivery-date-5").datepicker("setDate", null);
+
+     $('.pincode_txt').html("");
+    var pincode_val = $("#pincode_input").val();
+  // console.log("change",$(this).val().length);
+     if(pincode_val.length === 6 && /^\d+$/.test(pincode_val)){
+      $(".pincode_txt").text("Checking Product Availability...");
+      $('.pincode_btn button').trigger('click');     
+    }
+    else{
+       $('.pincode_txt').html("");
+                        $('.pincode_btn').css('display', 'block');
+      
+                        $('.right-section').css('display', 'none');
+        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").removeClass('pincode_error').prop('disabled', false);
+        $('.pincode_btn button').attr('disabled', false);
+        // $('.pincode_txt').html("<span class='red_txt'>Please enter correct Pincode</span>").removeClass('valid').addClass('invalid');
+    }
+  })
+
+
+    $('.pincode_btn button').on("click", function() {
+    $("#product_warehouse").remove();
+    $("#product_warehouse_available_quantity").remove();
+    $("#product_warehouse_tat").remove();
+
+    var pincode_val = $("#pincode_input").val();
+    var location_id = '';
+    var location_tag = 'mumbai';
+
+    if(localStorage.getItem("location") === "location-kolkata"){
+        location_id = '79511224627';
+        location_tag = 'mumbai';
+    } else if(localStorage.getItem("location") === "location-mumbai"){
+        location_id = '100279255347';
+        location_tag = 'mumbai';
+    } else if(localStorage.getItem("location") === "location-gurgaon"){
+        location_id = '102349177139';
+        location_tag = 'gurgaon';
+    }else if(localStorage.getItem("location") ==="location-bangalore"){
+         location_id = '79511519539';
+         location_tag = 'location-bangalore';
+      }
+
+    if (pincode_val === "") {
+        pushPincodeEnteredEvent(0,'Please fill Pincode value! it is required');
+        $('.pincode_txt').html("<span class='red_txt'>Please fill Pincode value! it is required.</span>").removeClass('valid').addClass('invalid');
+        $(".add-to-cart-button").removeAttr("disabled");
+        $(".add-to-cart-button .custom_spinner").css("display", "none");
+        return false;
+    } else if (pincode_val.length !== 6) {
+        if(isAutoPincodeFilled === 0) {
+            pushPincodeEnteredEvent(0,'Enter a Valid Pincode');
+        }
+        isAutoPincodeFilled = 0;
+
+        $('.pincode_txt').html("<span class='red_txt'>Enter a Valid Pincode</span>").removeClass('valid').addClass('invalid');
+        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+        $('.pincode_btn button').attr('disabled', true);
+    } else {
+        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+        $('.pincode_btn button').attr('disabled', true);
+        $('#pincode_input').prop('disabled', true);
+
+        const $datePicker = $("#delivery-date-5");
+        $datePicker.prop("disabled", true);
+
+        $.ajax({
+            type: 'POST',
+            url: 'https://hampers.tinglabs.in/pincode_product_inventory_check_universal_inventory',
+            data: {
+                product_id: productId,
+                variant_id: window.currentVariantId,
+                location_name: location_tag,
+                pincode: pincode_val,
+                shopify_location_id: JSON.stringify({
+                    "mumbai": 100279255347,
+                    "gurgaon": 102349177139,
+                    "bangalore": 79511519539
+                })
+            },
+            dataType: 'json',
+            headers: {
+                "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+            },
+            success: function(data) {
+                if (data.status === true) { 
+                  let perishableItem = 0; 
+                                    // To append the location in front of the location.
+                  const primaryWarehouseTat = data.tat[data.primary_warehouse];
+                  var zipcode_cluster = 'location-'+data.primary_warehouse;
+                    localStorage.setItem("location", zipcode_cluster); 
+                    localStorage.setItem("location-city", data.city); 
+                    localStorage.setItem("isPerishable", data.isPerishable); 
+                    localStorage.setItem("city-tat", primaryWarehouseTat); 
+                    localStorage.setItem("is-manually-set", "0"); 
+                  if ($(".product_tags").text().includes("perishable-item")) {
+                        perishableItem = 1
+                    }
+                  var city_name = document.querySelector(".city_name");
+                  city_name.innerText=data.pincode +", "+data.city;
+                  if ($(".product_tags").text().includes("perishable-item")) {
+                        perishableItem = 1;
+                    // -----07-05-2025 by rajat Add to cart selected perishable items for non-perishable city (Pune).
+                    if (data.city && data.city.toLowerCase() === 'pune' && $(".product_tags").text().includes("show-perishable")){
+                        perishableItem = 0;
+                    }
+                    // -----07-05-2025 end
+                    }
+                  if(data.isPerishable == 0 && perishableItem) {
+                     $('#pincode_input').prop('disabled', false);
+                    $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                    $('.pincode_btn button').attr('disabled', true);
+
+                     $('.pincode_txt').html("<span class='red_txt'>Product is not serviceable in your location</span>").removeClass('valid').addClass('invalid'); 
+                       if (isAutoPincodeFilled === 0) {
+                        pushPincodeEnteredEvent(0, "Product is not serviceable in your location");
+                    }
+                    isAutoPincodeFilled = 0;
+                    return;
+                  }
+                    let availabel_in_cart = 0;
+                    $(`.quantity__input[data-quantity-variant-id="${window.currentVariantId}"]`).each(function() {
+                        availabel_in_cart += parseInt($(this).val()) || 0;
+                    });
+
+                    var quantity_input = $(".product_quantity_input_pdp").val();
+                    var required_quantity = availabel_in_cart + parseInt(quantity_input);
+                    var primary_warehouse = data.primary_warehouse;
+                    
+                    var selected_warehouse = null;
+                    var selected_warehouse_tat = 0;
+                    var selected_warehouse_inventory = 0;
+
+                    // Function to get inventory from hidden input fields
+                    function getInventory(location, variantId) {
+                        let selector = `#inventory_${location}_${variantId}`;
+                        let inventoryValue = $(selector).val();
+                        return inventoryValue ? parseInt(inventoryValue) : 0;
+                    }
+                  
+
+                    // Check primary warehouse inventory first
+                    let primary_inventory = getInventory(primary_warehouse, window.currentVariantId);
+                    
+                    if (primary_inventory >= required_quantity) {
+                        selected_warehouse = primary_warehouse;
+                        selected_warehouse_tat = data.tat[primary_warehouse];
+                        selected_warehouse_inventory = primary_inventory;
+                    } else {
+                        if(data.isPerishable == 1 && perishableItem) {
+                           $('#pincode_input').prop('disabled', false);
+                          $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                          $('.pincode_btn button').attr('disabled', true);
+      
+                           $('.pincode_txt').html("<span class='red_txt'>Product is not available</span>").removeClass('valid').addClass('invalid'); 
+                             if (isAutoPincodeFilled === 0) {
+                              pushPincodeEnteredEvent(0, "Product is not available");
+                          }
+                          isAutoPincodeFilled = 0;
+                          return;
+                        }
+                        // If not enough, check other warehouses
+                        var available_warehouses = Object.keys(data.inventory)
+                            .filter(warehouse => getInventory(warehouse, window.currentVariantId) >= required_quantity)
+                            .sort((a, b) => data.tat[a] - data.tat[b]);
+
+                        selected_warehouse = available_warehouses.length > 0 ? available_warehouses[0] : null;
+                        selected_warehouse_tat = data.tat[selected_warehouse] || 0;
+                        selected_warehouse_inventory = getInventory(selected_warehouse, window.currentVariantId);
+                    }
+
+                    if (selected_warehouse) {
+                        var today = new Date();
+                        var minDate = new Date(today);
+                        var productTat = parseInt($(".product_tat").val());
+                       var currentDateTime = new Date();
+                            // console.log(currentDateTime + ":currentDateTime after");
+                            // Set cutoff time at 12:00 PM
+                            var cutoffTime = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 12, 0, 0);
+                            var cutoffTwoPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 14, 0, 0);
+                            var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
+                            var cutoffTimeFourPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
+                            var cutoffTimeSevenPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 19, 0, 0);
+                        if(productTat < 0) {
+                          if (productTat == '-3') {
+                            if(currentDateTime < cutoffTimethreePm) {
+                              productTat = 0;
+                            } else {
+                               productTat = 1;
+                            }
+                          } else if(productTat == '-2') {
+                             if(currentDateTime < cutoffTwoPm) {
+                              productTat = 0;
+                            } else {
+                               productTat = 1;
+                            }
+                          } else if(productTat == '-4') {
+                             if(currentDateTime < cutoffTimeFourPm) {
+                              productTat = 0;
+                            } else {
+                               productTat = 1;
+                            }
+                          }
+                            else if(productTat == '-7') {
+                             if(currentDateTime < cutoffTimeSevenPm) {
+                              productTat = 0;
+                            } else {
+                               productTat = 1;
+                            }
+                          } else {
+                            productTat = 0;
+                          }
+                        } else if(productTat == 0){
+                          if(currentDateTime < cutoffTimeSevenPm) {
+                              productTat = 0;
+                            } else {
+                               productTat = 1;
+                            }
+                        }
+                        minDate.setDate(minDate.getDate() + selected_warehouse_tat + productTat);
+                        $datePicker.addClass("ui-state-highlight");
+                        $datePicker.prop("disabled", false);
+                        $datePicker.datepicker("option", "minDate", minDate);
+                        $datePicker.datepicker("setDate", minDate);
+                       
+                       
+        // Utility function to check if the selected date is today
+function isSelectedDateToday(selectedDateStr) {
+  const currentDate = new Date().getDate();
+  const dateParts = selectedDateStr.split('-');
+  const day = dateParts[0];
+
+  const normalizedCurrentDate = currentDate.toString().padStart(2, '0');
+  const normalizedDay = day.padStart(2, '0');
+
+  return normalizedCurrentDate === normalizedDay;
+}
+
+// Utility function to check time slot conditions
+function shouldShowTimeSlot(data, selectedDateStr) {
+  
+  const eligibleCities = ['mumbai', 'gurgaon', 'delhi'];
+  const isCityEligible = eligibleCities.includes(data.city.toLowerCase());
+  // const isTatZero = (selectedWarehouseTat + productTat) === 0;
+  const hasCuratedHamper = $('p.product_tags').text().includes('Curated-Hamper');
+  const currentHour = new Date().getHours();
+  const isSameDay = isSelectedDateToday(selectedDateStr);
+  const local_warehouse=selected_warehouse === primary_warehouse;
+  
+  return isCityEligible  && hasCuratedHamper && local_warehouse;
+}
+// Main function to toggle time slots
+function toggleTimeSlotDisplay(data, selectedDateStr) {
+  if (shouldShowTimeSlot(data, selectedDateStr)) {
+    $('.time_slot_picker').css('display', 'block');
+    updateTimeSlots('', false);
+  } else {
+    $('.time_slot_picker').css('display', 'none');
+    updateTimeSlots('', true);
+  }
+}
+// Initial call if show_time_slot is true
+{% if show_time_slot == true %}
+const selectedDate = $("#delivery-date-5").val();
+toggleTimeSlotDisplay(data, selectedDate);
+{% endif %}
+// Event listener for date change
+$('#delivery-date-5').on('change', function () {
+  const selectedDate = $(this).val();
+  {% if show_time_slot == true %}
+  toggleTimeSlotDisplay(data, selectedDate);
+  {% endif %}
+});
+                      
+
+                        localStorage.setItem("userPincode", pincode_val);
+                        if (isAutoPincodeFilled === 0) {
+                            pushPincodeEnteredEvent(1, "Product is Available");
+                        }
+                        isAutoPincodeFilled = 0;
+
+                        $('#pincode_input').prop('disabled', false);
+                        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").removeClass('pincode_error').prop('disabled', false);
+                        $('.pincode_btn button').attr('disabled', false);
+                        $('.pincode_btn').css('display', 'none');
+                      
+                        $('.right-section').css('display', 'flex');
+                        $('.pincode_txt')
+                            .html(`<span class='green_txt'></span> 
+                            <input id="product_warehouse" type="hidden" value="${selected_warehouse}"> 
+                            <input id="product_warehouse_tat" type="hidden" value="${selected_warehouse_tat}"> 
+                            <input id="product_warehouse_available_quantity" type="hidden" value="${selected_warehouse_inventory}">`)
+                            .removeClass('invalid')
+                            .addClass('valid');
+                    } else {
+                        $('.pincode_txt')
+                            .html("<span class='red_txt'>Product is not available</span>")
+                            .removeClass('valid')
+                            .addClass('invalid');
+                        $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                    }
+                } else {
+                    $('.time_slot_picker').css('display','none');
+                    $('#pincode_input').prop('disabled', false);
+                    $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                    $('.pincode_btn button').attr('disabled', true);
+                    if(data.message_code == '1') {
+                       $('.pincode_txt').html("<span class='red_txt'>We don't deliver to the entered pincode</span>").removeClass('valid').addClass('invalid');
+                       if (isAutoPincodeFilled === 0) {
+                        pushPincodeEnteredEvent(0, "We don't deliver to the entered pincode");
+                    }
+                    isAutoPincodeFilled = 0;
+                    } else {
+                      $('.pincode_txt').html("<span class='red_txt'>Product is not available</span>").removeClass('valid').addClass('invalid'); 
+                       if (isAutoPincodeFilled === 0) {
+                        pushPincodeEnteredEvent(0, "Product is not available");
+                    }
+                    isAutoPincodeFilled = 0;
+                    }
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#pincode_input').prop('disabled', false);
+                console.log('Error:', textStatus, errorThrown);
+                alert("An error occurred while checking product availability.");
+            }
+        });
+    }
+});
+
+  // check if user pincode is available in local storage
+
+
+  
+  if(localStorage.getItem("userPincode")){
+    //velocity:: 16-09-2024 Intialized the isAutoPincodeFilled as 1, to not push the pincode entered event intially.
+    isAutoPincodeFilled = 1;
+    var localUserPincode = localStorage.getItem("userPincode");
+    
+    // if available the display it in input field
+    $("#pincode_input").val(localUserPincode);
+    $('.pincode_btn button').trigger('click');    
+  }
+
+  
+
+
+
+});
+</script>

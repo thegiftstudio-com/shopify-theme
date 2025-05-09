@@ -1,0 +1,75 @@
+<!-- Popup Modal -->
+<div id="tatResetPopup" class="popup-overlay">
+  <div class="popup-content">
+    <p>Quantity not in stock. Reset TAT to update cart and view the product again?</p>
+    <div class="popup-actions">
+      <button id="popupOkButton" class="btn">OK</button>
+      <button id="popupRejectButton" class="btn">Reject</button>
+    </div>
+  </div>
+</div>
+
+
+<style>
+  /* Popup Overlay */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1002;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Popup Content */
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+}
+
+/* Buttons */
+.popup-actions .btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#popupOkButton {
+    border-radius: 30px;
+    min-height: 44px;
+    background-color: var(--color_black);
+    color: #fff;
+    border: 1px solid var(--color_black);
+    transition: all 0.3s ease-in-out;
+    font-weight: 400;
+}
+
+  #popupOkButton:hover {
+    border: 1px solid var(--color_black);
+    color: var(--color_black);
+    background-color: #fff;
+}
+  
+#popupRejectButton {
+  background-color: #f44336;
+  color: white;
+  border-radius: 30px;
+  min-height: 44px;
+  transition: all 0.3s ease-in-out;
+  font-weight: 400;
+  min-height: 10px;
+}
+
+</style>

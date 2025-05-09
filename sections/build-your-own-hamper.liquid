@@ -1,0 +1,227 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki:wght@400;500;600;700&display=swap');
+    .BYOH_HERO .banner__content .banner__box.content-container{
+        max-width: 70rem !important;
+  }
+  .BYOH_HERO .banner__heading{
+  font-family: "Noto Serif Khojki",serif;
+      font-size: 66px;
+      line-height: 66px;
+      color: #000;
+      font-weight: 400;
+      padding: 0;
+      /* margin: -44px 0 0 73px; */
+      letter-spacing: 7px;
+  }
+  .BYOH_HERO .banner__text {
+     font-family: 'Nunito Sans';
+      font-size: 27px;
+      color: #000;
+      line-height: 30px;
+      margin-top: 16px;
+      font-weight: 300;
+  }
+   
+    .bundleId_link {
+      text-transform: none;
+      letter-spacing: 0.6px;
+      font-family: "Nunito Sans";
+      color: rgba(0,0,0,0.75);
+      font-weight: 400;
+      font-size: 16px;
+      line-height:24px;
+      text-decoration:none;
+      
+  }
+  @media only screen and (max-width: 767px) {
+    .BYOH_HERO .banner__content .banner__box.content-container {
+      max-width: 36rem!important;
+    }
+    .BYOH_HERO .banner__content {
+      justify-content: flex-start;
+    }
+    .BYOH_HERO .banner__heading {
+      font-size: 31px;
+      line-height: 31px;
+      text-align: left;
+      letter-spacing: 2px;
+    }
+    .BYOH_HERO .banner__text {
+      font-family: Nunito Sans;
+      font-size: 14px;
+      line-height: 17px;
+      margin-top: 6px;
+      text-align: left;
+    }
+    }
+  
+#mccloader-wrapper.loader-off, body.loaded #mccloader-wrapper {
+    opacity: 1;
+    visibility: hidden;
+    -webkit-transition: all 500ms linear 0s;
+    -moz-transition: all 500ms linear 0s;
+    -ms-transition: all 500ms linear 0s;
+    -o-transition: all 500ms linear 0s;
+    transition: all 500ms linear 0s;
+}
+#mccloader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 77;
+    background-color: #ffffff;
+    opacity: 1;
+    -webkit-transition: all 500ms linear 0s;
+    -moz-transition: all 500ms linear 0s;
+    -ms-transition: all 500ms linear 0s;
+    -o-transition: all 500ms linear 0s;
+    transition: all 500ms linear 0s;
+}
+
+#mccloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-top: -9px;
+    margin-left: -125px;
+    perspective: 400px;
+    transform-type: preserve-3d;
+}mcc
+html:not(.ie) #mccloader .mccdot {
+    border: 2px solid white;
+}
+#mccloader .mccdot {
+    animation: loader ease-in-out 3s infinite;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background-color: black;
+    position: absolute;
+    background: #191919;
+    display: inline-block;
+}
+#mccloader .mccdot:nth-child(2){
+    animation-delay: 0.5s;
+  }
+  
+  #mccloader .mccdot:nth-child(3){
+    animation-delay: 0.4s;
+  }
+  
+  #mccloader .mccdot:nth-child(4){
+    animation-delay: 0.3s;
+  }
+  
+  #mccloader .mccdot:nth-child(5){
+    animation-delay: 0.2s;
+  }
+  
+  #mccloader .mccdot:nth-child(6){
+    animation-delay: 0.1s;
+  }
+  
+  #mccloader .mccdot:nth-child(7){
+    animation-delay: 0s;
+  }
+      
+  html:not(.ie) #mccloader .mccdot{
+    border: 2px solid white;
+  }
+  
+  
+  @keyframes loader{
+    15%{
+      transform: translateX(0);
+    }
+    45%{
+      transform: translateX(232px);
+    }
+    65%{
+      transform: translateX(232px);
+    }
+    95%{
+      transform: translateX(0);
+    }
+  }
+</style>
+<div class="hamper_loader">
+     <div id="mccloader-wrapper">
+  <div id="mccloader">
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+    <div class="mccdot"></div>
+  </div>
+</div>
+</div>
+<div class="loder-result" style="display: none;">
+<div class="container custom_container">
+  <div class="multicolumn byoh_card_wrapper color-background-1 gradient background-none no-heading">
+  <div class="page-width section-template--18119957119283__b13183c4-3aa4-450a-8b8f-850827ee0971-padding isolate">
+    <slider-component class="slider-mobile-gutter">
+      <ul class="multicolumn-list contains-content-container grid grid--1-col-tablet-down grid--4-col-desktop" id="productCardBundle" role="list">
+        
+      </ul>
+    </slider-component>
+    <div class="center"></div>
+  </div>
+</div>
+</div>
+</div>
+{% schema %}
+{
+  "name": "Build Your Own Hamper",
+  "class":"build_your_own_hamper",
+  "tag":"section",
+  "settings": [
+    {
+    "type": "text",
+    "id": "custom_class_",
+    "label": "Add custom class"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Build Your Own Hamper",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+<script>
+
+const hamperLoader = document.querySelector('.hamper_loader');
+const loderResult = document.querySelector('.loder-result');
+hamperLoader.style.display = 'block';
+  fetch('https://hampers.tinglabs.in/fetchapi?action=fetchBundles&shop_url=tgs-revamp.myshopify.com',{
+    method: "GET",
+    headers: {
+      "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+    }
+  }).then(response => response.json()).then(data => {
+  hamperLoader.style.display = 'none';
+  loderResult.style.display = 'block';
+    data.forEach(function(item) {
+      $('#productCardBundle').append(`
+      <li id="Slide-template--18119957119283__b13183c4-3aa4-450a-8b8f-850827ee0971-1" class="multicolumn-list__item grid__item center">
+      <a class="bundleId_link" href="/pages/hamper-collections?bundle_id=${item.bundle_id}" >
+            <div class="multicolumn-card content-container">
+                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--full-width multicolumn-card-spacing">
+                  <div class="media media--transparent media--adapt" style="padding-bottom: 100.0%;">
+                    <img src="${item.bundle_image}" sizes="(min-width: 990px) 550px, (min-width: 750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image">
+                  </div>
+                </div><div class="multicolumn-card__info"><h3>${item.bundle_name}</h3>
+                  <div class="rte"><p>${item.bundle_description}</p></div></div>
+            </div>
+            </a>
+          </li>`);
+    });
+  });
+</script>

@@ -1,0 +1,147 @@
+<input
+  type="hidden"
+  id="ProductSelected-variant"
+  class="input_variant"
+  name="id"
+  value="{{ product.selected_or_first_available_variant.id }}"
+>
+
+{% if product.tags contains 'location-roi' %}
+  {% assign isRoiProduct = true %}
+{% else %}
+  {% assign isRoiProduct = false %}
+{% endif %}
+
+{% if product.tags contains 'sleeve-section' %}
+  <div class="sleeve_wrapper">
+    {% if product.tags contains 'Liquor' %}
+      <h4 style="padding-bottom: 5px;">Choose Packaging : <span class="show_sleeve_pd_name"></span></h4>
+    {% else %}
+      <h4>Choose Sleeve : <span class="show_sleeve_pd_name"></span></h4>
+    {% endif %}
+
+    <div class="sleeve_products_wrap">
+      {% if product.tags contains 'Liquor' %}
+      {% elsif product.tags contains 'bestseller-ateliers' %}
+        <div class="slv_product default_slv_product">
+          <input type="radio" class="sleeve_product_checkbox" name="sleeve_product_id" value="">
+          <img src="{{ 'no_sleeve.jpg' | asset_img_url:'100x100' }}">
+          <input type="hidden" value="" class="sleeve_pd_name">
+        </div>
+      {% else %}
+        <div class="slv_product default_slv_product">
+          <input type="radio" class="sleeve_product_checkbox" name="sleeve_product_id" value="">
+          <img src="{{ 'no_sleeve.jpg' | asset_img_url:'100x100' }}">
+          <input type="hidden" value="" class="sleeve_pd_name">
+        </div>
+      {% endif %}
+
+      {% for slv_product in collections.sleeve.products %}
+        {% for tag in slv_product.tags %}
+          {% if tag contains 'sleeve' %}
+            {% for pd_tag in product.tags %}
+              {% if pd_tag contains 'sleeve' %}
+                {% if pd_tag == tag %}
+                  <div class="slv_product {% for tag in slv_product.tags %}{% if tag contains "sleeve" %}{{ tag }} {% endif %}{% endfor %}">
+                    <input
+                      type="radio"
+                      class="sleeve_product_checkbox"
+                      name="sleeve_product_id"
+                      {% for variant in slv_product.variants %}
+                        value="{{ variant.id }}"
+                      {% endfor %}
+                    >
+                    <img src="{{ slv_product.featured_media.preview_image | img_url:'100x100' }}">
+                    {% if product.tags contains 'Liquor' %}
+                      <p>{{ slv_product.price | money }}</p>
+                    {% endif %}
+                    <input type="hidden" value="{{ slv_product.title }}" class="sleeve_pd_name">
+                    <div class="tooltip_product_info">
+                      {% if slv_product.images.size > 1 %}
+                        <img src="{{ slv_product.images[1] | img_url:'master' }}">
+                      {% else %}
+                        <img src="{{ slv_product.featured_media.preview_image | img_url:'master' }}">
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% if product.tags contains 'card-section' %}
+  <div class="gift_card_wrapper" data-roi="{{ isRoiProduct }}">
+    <h4>Add Gift Card : <span class="show_gift_prod_name"></span></h4>
+    <div class="gift_products_wrap">
+      <div class="gift_product">
+        <input type="radio" class="gift_product_checkbox" name="product_id" value="">
+        <img src="{{ 'no_card.jpg' | asset_img_url:'100x100' }}">
+        <input type="hidden" value="" class="gift_pd_name">
+      </div>
+      {% assign sorted_card_products = collections.card.products %}
+      {% for product in sorted_card_products %}
+        {% if isRoiProduct and product.tags contains 'location-roi' %}
+          <div class="gift_product">
+            <input
+              type="radio"
+              class="gift_product_checkbox"
+              name="product_id"
+              {% for variant in product.variants %}
+                value="{{ variant.id }}"
+              {% endfor %}
+            >
+            <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
+            <input type="hidden" value="{{ product.title }}" class="gift_pd_name">
+            <div class="tooltip_product_info">
+              {% if product.images.size > 1 %}
+                <img src="{{ product.images[1] | img_url:'master' }}">
+              {% else %}
+                <img src="{{ product.featured_media.preview_image | img_url:'master' }}">
+              {% endif %}
+            </div>
+          </div>
+        {% elsif isRoiProduct == false %}
+          {% unless product.tags contains 'location-roi' %}
+              <div class="gift_product">
+                <input
+                  type="radio"
+                  class="gift_product_checkbox"
+                  name="product_id"
+                  {% for variant in product.variants %}
+                    value="{{ variant.id }}"
+                  {% endfor %}
+                >
+                <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
+                <input type="hidden" value="{{ product.title }}" class="gift_pd_name">
+                <div class="tooltip_product_info">
+                  {% if product.images.size > 1 %}
+                    <img src="{{ product.images[1] | img_url:'master' }}">
+                  {% else %}
+                    <img src="{{ product.featured_media.preview_image | img_url:'master' }}">
+                  {% endif %}
+                </div>
+              </div>
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="card_msg_wrapper">
+      <h5>Message on card:</h5>
+      <textarea id="gift_card_msg"></textarea>
+      <p class="card_msg_error"></p>
+      <span class="custom_msg_error"></span>
+    </div>
+  </div>
+{% endif %}
+
+{% comment %}
+       {% if template == 'product' %}
+  {% render 'sticky_cart' %}
+  {% endif %}
+{% endcomment %}
+
+{{ 'cart_drawer_func.js' | asset_url | script_tag }}

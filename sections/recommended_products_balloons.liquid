@@ -1,0 +1,140 @@
+
+<style>
+  .related_products{
+    margin-top:100px;
+    margin-bottom:100px;
+        position: relative;
+  }
+  .product-card {
+    box-sizing: border-box;
+    float: left;
+    min-height: 1em;
+    padding-left: 2em;
+    vertical-align: top;
+    width: 25%;
+  }
+
+  .visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  }
+
+  @media(max-width:767px){
+.related_products{
+  margin-top:60px;
+}
+      
+  }
+  
+  
+</style>
+
+{%- assign counter = 0 -%}
+{%- assign break_at = section.settings.number_of_products | plus: 0 -%}
+{%- assign current_product = product -%}
+
+{%- capture related_items -%}
+<div class="product-recommendations ">
+
+
+
+            
+              <ul id="product-grid" data-id="{{ section.id }}" class="pro_slider
+              grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+              grid--{{ section.settings.columns_desktop }}-col-desktop">
+   <div class="nav-prev arrow" style="display: none;"></div> 
+  {%- for product in collections.balloons.products -%}
+    {%- unless product.handle == current_product.handle -%}
+
+      {%- if product.tags contains section.settings.related_tag -%}
+        
+                <li class="grid__item content_hidden {{ product.tags | join: ' ' }}">
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    show_quick_add: section.settings.enable_quick_add,
+                    section_id: section.id
+
+                  %}
+                </li>
+        
+
+        {%- assign counter = counter | plus: 1 -%}
+
+        {%- if counter == break_at -%}
+          
+          
+          {%- break -%}
+        {%- endif -%}
+
+      {%- endif -%}
+
+    {%- endunless -%}
+  {%- endfor -%}
+              <div class="nav-next arrow" style=""></div>
+  </ul>
+
+          
+          
+   
+  
+  </div>
+{%- endcapture -%}
+
+{%- assign related_items = related_items | trim -%}
+{%- unless related_items == blank -%}
+   {% if product.tags contains 'Balloons' %} 
+<div class=" related_products container page-width">
+  <aside>
+    {%- if section.settings.heading -%}
+<h2 class="font_heading text_xxxl text_400 product-recommendations__heading {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+    <h2 class="font_heading text_xxxl text_400 font_black product-recommendations__heading {{ section.settings.heading_size }}">{{ section.settings.subheading }}</h2>    {%- endif -%}
+
+    {{ related_items }}
+  </aside>
+</div>
+{% endif %}
+{%- endunless -%}
+
+
+
+{% schema %}
+{
+  "name": "Recommended products BL",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recommended products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub Heading"
+    },
+    {
+      "type": "text",
+      "id": "related_tag",
+      "label": "Tag",
+      "info" : "The tag determines which products show as related products."
+    }
+  ],
+  	"presets": [
+      {
+      "name": "Recommended products BL"
+      }
+   ]
+}
+{% endschema %}

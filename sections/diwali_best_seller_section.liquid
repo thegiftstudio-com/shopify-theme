@@ -1,0 +1,332 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+<style>
+.best_sellers {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 240, 217, 0.5047268907563025) 50%,
+    rgba(255, 219, 166, 0.5) 100%
+  );
+  border-radius:15px;
+}
+  .best_sellers .img-responsive {
+    max-width: 50%;
+    height: auto;
+  }
+
+.best_sellers .title-wrapper-with-link {
+  justify-content: center;
+  margin: 5rem 0 3rem;
+}
+.best_sellers .title-wrapper-with-link h2 {
+  margin-bottom: 0;
+}
+.best_sellers .best_seller_description {
+  margin: 0;
+  font-weight: 400;
+  text-align: center;
+}
+@media (max-width: 991px) {
+  .best_sellers .best_seller_description,
+  .best_sellers .title-wrapper-with-link {
+    align-items: center;
+  }
+  .best_sellers .title-wrapper-with-link {
+  margin: 2rem 0 3rem;
+}
+}
+
+.best_sellers .tab_new_popular nav ul {
+  list-style: none;
+  padding: 0 0px;
+  margin: 0px;
+}
+
+.best_sellers .tab_new_popular nav ul li {
+  padding: 1rem 2rem;
+  cursor: pointer;
+  color: #a7a7a7;
+  border-top: 1px solid #eee;
+}
+.best_sellers .tab_new_popular nav ul li:hover {
+  color: #3e4b58;
+}
+.best_sellers .tab_new_popular nav ul li.active {
+  color: #646464;
+  border-top: none;
+}
+@media screen and (max-width: 767px) {
+  .best_sellers .tab_new_popular nav ul li.active {
+    font-size: 17px;
+  }
+}
+.best_sellers .tab_new_popular nav ul {
+  display: flex;
+}
+
+.best_sellers .tab_new_popular nav ul {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-start;
+  white-space: nowrap;
+  overflow: auto;
+  border: none;
+  padding: 0;
+}
+
+.best_sellers .tab_new_popular nav ul::-webkit-scrollbar {
+  height: 0;
+}
+.best_sellers .tab_new_popular nav ul li.active {
+  background-color: transparent;
+  color: #000;
+  font-weight: 600;
+  border-bottom: 2px solid #000;
+}
+.best_sellers .tab_new_popular nav ul li {
+  border: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  padding: 5px 15px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  margin: 0;
+  letter-spacing: 0;
+}
+.best_sellers .collection_url_sec{
+  width:100%;
+}
+@media screen and (min-width: 767px) {
+  .best_sellers .tab_new_popular nav {
+    position: relative;
+  }
+  .best_sellers .tab_new_popular nav ul li {
+    padding: 5px 40px;
+  }
+  .best_sellers .tab_new_popular nav ul {
+    flex-wrap: wrap;
+    overflow: hidden;
+    justify-content: center;
+  }
+
+  .best_sellers .tab_new_popular nav ul li:not(.active) {
+    position: relative;
+    top: auto;
+  }
+
+  .best_sellers .tab_new_popular nav ul li.active:after {
+    display: none;
+  }
+}
+.best_sellers .tab_new_popular .tab-content {
+  display: none;
+  padding-top: 35px;
+}
+@media screen and (min-width: 767px) {
+  .best_sellers.diwali-best-seller .tab_new_popular .tab-content {
+    padding-top: 50px;
+  }
+}
+.best_sellers .tab_new_popular .tab-content.current {
+  display: flex;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .best_sellers .tab_new_popular nav ul li {
+    margin: 8px 0px;
+    font-size: 16px;
+    line-height: 1;
+    padding: 12px 25px;
+  }
+}
+
+  .best_sellers_box{
+    display:none;
+    margin:0 15px;
+  }
+.best_sellers_box:nth-child(1), .best_sellers_box:nth-child(2),
+.best_sellers_box:nth-child(3), .best_sellers_box:nth-child(4){
+  display:block;
+}
+
+  .diwali_slider{
+    touch-action:manipulation;
+  }
+
+  .diwali-best-seller {
+    background:url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Bestsellers.png?v=1697116867');
+  background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0;
+  }
+</style>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="best_sellers diwali-best-seller section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="popular_title">
+      <div class="title-wrapper-with-link title-wrapper--no-top-margin" {% if section.settings.subtitle != blank %}style="flex-direction:column;"{% endif %}>
+
+        {% if section.settings.title != blank %}
+        <h2 id="SectionHeading-{{ section.id }}" class="collection-list-title h1 center font_xxl">
+          
+          {{ section.settings.title }}
+          
+        </h2>
+          {% endif %}
+          <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_breaker-svg.svg?v=1729252731" class="img-responsive decor_line">
+        {% if section.settings.subtitle != blank %}
+          <div class="subtitle_sec">
+          <p class="best_seller_description font_xl">{{ section.settings.subtitle }}</p>
+            
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="tab_new_popular">
+      <nav class="tabs">
+        <ul>
+          {%- for block in section.blocks -%}
+            <li class="font_md {% if forloop.first %} active{% endif %}" data-tab="tab-{{ forloop.index }}">
+              {{ block.settings.tab_name }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      
+      {%- for block in section.blocks -%}
+        <div
+          id="tab-{{ forloop.index }}"
+          class="tab-content {% if forloop.first %}current{% endif %} diwali_slider grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+                grid--{{ section.settings.columns_desktop }}-col-desktop"
+        >
+          {%- for product in collections[block.settings.collection].products limit: 50 -%}
+            <div class="best_sellers_box grid__item filtered-div {% unless product.tags contains 'Warehouse' %}content_hidden {{ product.tags | join: ' ' }}{% endunless %}">
+              {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    lazy_load: lazy_load,
+                    show_quick_add: section.settings.enable_quick_add,
+                    section_id: section.id
+                  %}
+            </div>
+          {%- endfor -%}
+          
+        </div>
+        <div class="center collection_url_sec">
+            <a class="button font_weight_400 cmn_btn button--primary" href="{{ block.settings.collection.url }}">View All</a>
+          </div>
+      {%- endfor -%}
+  
+    </div>
+  </div>
+</section>
+
+{% schema %}
+ {
+   "name":"Diwali Best Sellers",
+   "settings":[
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Heading"
+      },
+      {
+         "type":"text",
+         "id":"subtitle",
+         "label":"Sub Heading"
+      },
+     {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+     {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
+        }
+      ]
+    },
+         {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+
+   ],
+   "blocks":[
+	{
+      "type": "collection",
+      "name":"Collection",
+         "settings": [
+			{
+            "type": "text",
+            "id": "tab_name",
+            "label": "Tab Name"
+            },
+            {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+            }
+
+         ]
+	}
+   ],
+   "presets":[
+	{
+      "name":"Diwali Best Sellers"
+	}
+   ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}

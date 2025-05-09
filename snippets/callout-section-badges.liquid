@@ -1,0 +1,35 @@
+<div class="custom-callout-badges" style="display: flex; gap: 50px; margin-top: 20px;">
+  {% for i in (1..3) %}
+    {% assign heading_key = 'heading' | append: i %}
+    {% assign url_key = 'url' | append: i %}
+    {% assign image_key = 'image' | append: i %}
+    {% if block.settings[heading_key] and block.settings[image_key] %}
+              {% if block.settings[url_key] == blank %}
+      <div style="text-align: center;">
+        <img
+          src="{{ block.settings[image_key] | image_url: width: 50, height: 50 }}"
+          alt="{{ block.settings[heading_key] }}"
+          width="50"
+          height="50"
+        >
+        <p style="margin-top: 0px; color: #020919 !important; font-weight: 400; font-size:10px">
+          {{ block.settings[heading_key] | newline_to_br }}
+        </p>
+          {% else %}
+                      <div style="text-align: center;">
+                  <a href="{{ block.settings[url_key] }}" target="_blank" style="color: #020919 !important;">
+        <img
+          src="{{ block.settings[image_key] | image_url: width: 50, height: 50 }}"
+          alt="{{ block.settings[heading_key] }}"
+          width="50"
+          height="50"
+        >
+        <p style="margin-top: 0px; color: #020919 !important; font-weight: 400; font-size:10px">
+         {{ block.settings[heading_key] }}
+        </p>
+                         </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

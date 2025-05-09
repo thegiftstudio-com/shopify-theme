@@ -1,0 +1,143 @@
+<div class="time_slot_picker" style="display:none;">
+  <p class="line-item-property__field">
+    <label for="time-slot">Select Time Slot:</label>
+    <select id="time-slot" required class="required" name="properties[time_slot]">
+      <option value="">Please select a time slot</option>
+      <option selected value="11:00am-01:00pm">11:00am-01:00pm</option>
+      <option value="01:00pm-03:00pm">01:00pm-03:00pm</option>
+      <option value="03:00pm-05:00pm">03:00pm-05:00pm</option>
+      <option value="05:00pm-07:00pm">05:00pm-07:00pm</option>
+      <option value="07:00pm-09:00pm">07:00pm-09:00pm</option>
+    </select>
+  </p>
+</div>
+
+<style>
+    /* Container for the form field to maintain consistent spacing */
+    .time_slot_picker {
+        margin-bottom: 20px;
+    }
+
+    /* Label styling */
+    label[for="time-slot"] {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+        display: block; /* Ensures label appears above the select field */
+    }
+
+    /* Style for the time slot select dropdown */
+  select#time-slot {
+      padding: 6px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      max-width: 300px;
+      width: 100%;
+      height: 41px;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
+  }
+
+    /* Hover effect for time slot dropdown */
+    select#time-slot:hover {
+        border-color: #007bff; /* Border turns blue on hover */
+    }
+
+    /* Focus effect for time slot dropdown */
+    select#time-slot:focus {
+        border-color: #0056b3; /* Darker blue border when focused */
+        outline: none; /* Remove default focus outline */
+    }
+      @media (max-width: 768px) {
+        select#time-slot {
+            max-width: 210px; /* Set max-width to 200px for mobile devices */
+        }
+    }
+</style>
+<script>
+        // Function to update available time slots based on the delivery date and current time
+      function updateTimeSlots(selectedDate='', hide=false) {
+
+          // Get the current date and time
+          // const currentDate = 27;
+          const currentDate = new Date().getDate();
+          const currentHour = new Date().getHours();
+
+          // Get the selected delivery date from the date picker
+        if(selectedDate ==''){
+          selectedDate = $("#delivery-date-5").val();
+
+        }
+
+      // Split the date string by the hyphen
+      const dateParts = selectedDate.split('-');
+
+      // Get the day (first part of the array)
+      const day = dateParts[0];
+
+  // Normalize currentDate and day to two-digit strings
+  const normalizedCurrentDate = currentDate.toString().padStart(2, '0');
+  const normalizedDay = day.padStart(2, '0');
+
+  // Compare if the selected date is the same day as the current date
+  const isSameDay = normalizedCurrentDate === normalizedDay;
+
+          // Get the time slot dropdown and its options
+          const timeSlotDropdown = document.getElementById('time-slot');
+          const options = timeSlotDropdown.options;
+
+          if(hide){
+              options[0].disabled = false;
+              options[0].selected=true;
+            return;
+          }else{
+              options[0].disabled = true;
+          }
+        // If the same day delivery is available then checking the current time
+          if(isSameDay){
+            if(currentHour >= 10 && currentHour < 12){
+              options[1].disabled = true;
+              options[2].selected=true;
+
+            }
+            if(currentHour >= 12 && currentHour < 14){
+              options[1].disabled = true;
+              options[2].disabled = true;
+              options[3].selected=true;
+
+            }
+            if(currentHour >= 14 && currentHour < 16){
+              options[1].disabled = true;
+              options[2].disabled = true;
+              options[3].disabled = true;
+              options[4].selected=true;
+
+            }
+            if(currentHour >= 16 && currentHour < 18){
+              options[1].disabled = true;
+              options[2].disabled = true;
+              options[3].disabled = true;
+              options[4].disabled = true;
+              options[5].selected=true;
+            }
+            if(currentHour >= 18){
+              options[1].disabled = true;
+              options[2].disabled = true;
+              options[3].disabled = true;
+              options[4].disabled = true;
+              options[5].selected = true;
+            }
+
+          }else{
+             for (let i = 1; i <= 5; i++) {
+                options[i].disabled = false;
+             }
+              options[1].selected = true;
+          }
+
+
+      }
+</script>

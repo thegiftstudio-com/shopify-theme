@@ -1,0 +1,433 @@
+{{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+{{ 'tracking.css' | asset_url | stylesheet_tag }}
+{{ 'shopify.css' | asset_url | stylesheet_tag }}
+<div class="content inner_page">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-xs-12">
+        <div class="recommend_info2">
+          <div class="main">
+            <h1 class="text-center">Track Order</h1>
+            <div class="sub-main">
+              <input
+                type="hidden"
+                name="csrfmiddlewaretoken"
+                value="FtHPpIERD7B4Iie1dqZcVrQNO4tCASYLDUuVfDnk5FGtANIVFpCc7phb8WYr8JoU"
+              >
+              <div class="form-row">
+                <div class="col-sm-10">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="order_number"
+                    name="order_number"
+                    placeholder="Track using Order Number or AWB"
+                    required
+                  >
+                  <br>
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="track_order()">Track</button>
+                </div>
+              </div>
+              <br>
+              <!-- Radio Button -->
+              <div class="form-row">
+                <div class="col-sm-6">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="search_by" id="inlineRadio1" value="1" checked>
+                    <label class="form-check-label" for="inlineRadio1">Order Number</label>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="search_by" id="inlineRadio2" value="2">
+                    <label class="form-check-label" for="inlineRadio2">AWB</label>
+                  </div>
+                </div>
+              </div>
+              <!-- Radio Button -->
+            </div>
+          </div>
+        </div>
+        <div class="loader" id="loader_div"></div>
+        <div class="recommend_info1" id="no-order" style="display:none;">
+          <center><strong id="order-num1"></strong></center>
+          <center><strong id="msg"></strong></center>
+        </div>
+        <input id="fbTest" type="hidden" value="">
+      </div>
+    </div>
+    
+    <div class="row" id="track" style="display:none;">
+                    <!-- tracking card -->
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="hp_cards" style="margin-top:20px;">
+                            <div class="hp_cards_info">
+                                <div class="clearfix  delievery_status">
+                                    <div class="pull-left status_cont">
+                                        <div class="status_check clearfix">
+                                            <span id="status_lable" style="display: none">Delivered On</span>
+                                            <div class="item">
+                                                <div class="edd_info" id="delivery_info">
+
+                                                </div>
+                                                <div class="edgeinfo1" id="order-status">
+
+                                                </div>
+                                            </div>
+                                            <div class="thanemumbai">
+                                                <p id="origin_destination"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right share_icon_wrap">
+                                        <div class="pull-right">
+                                            <div class="mytooltip">
+                                                <i style="font-size: 24px;cursor: pointer;" onmouseout="outFunc()" onclick="copy_to_clipboard()" class="fa fa-copy"> <span class="tooltiptext" id="myTooltip">Copy URL</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="courier_info clearfix">
+                                <div class="pull-left courier_logo" style="background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/delhivery.jpg?v=1681825678');background-repeat: no-repeat;">
+                                </div>
+                                <div class="pull-left">
+                                    <span><b>Delhivery</b></span>
+                                </div>
+                                <div class="pull-right">
+                                    <span><b>Tracking ID</b> </span>
+                                    <span class="tracking_id" id="tracking_id"></span>
+                                </div>
+                            </div>
+                            <div class="delievery_info ">
+                                <div class="delievery_list_wrap clearfix">
+                                    <ul id="tb_data">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tracking card end-->
+
+                    <div class="col-sm-6 col-xs-12">
+                        <!-- order details -->
+                        <div class="hp_cards information_block" style="margin-top:20px;">
+                            <div class="hp_cards_info">
+                                <h5><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Box.png"><span class="od">Order Details</span></h5>
+                                <div class="clearfix mb-20">
+                                    <span class="pull-left"><b>Order ID</b> </span><span class="pull-right  right_info" id="order_small_id"></span>
+                                </div>
+                                <div class="clearfix mb-20">
+                                    <span class="pull-left"><b>Order Pickup Date</b></span> <span class="pull-right  right_info" id="order_placed_date"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommend_info nps_pagination text-center" id="nps_courier_form">
+                        <a href="https://thegiftstudio.com/collections/curated-hampers"><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/banner_img.jpg" class="img-responsive"></a>
+                        </div>
+                        <div class="recommend_info" id="nps_form">
+                        <a href="https://thegiftstudio.com/collections/mango-hampers"><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/banner_img.jpg" class="img-responsive"></a>
+                        </div>
+
+                    </div>
+                </div>
+    <div class="row" id="track1" style="display:none;">
+                    <!-- tracking card -->
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="hp_cards" style="margin-top:20px;">
+                            <div class="hp_cards_info">
+                                <div class="clearfix  delievery_status">
+                                    <div class="pull-left status_cont">
+                                        <div class="status_check clearfix">
+                                            <span id="status_lable1" ></span>
+                                            <div class="item">
+                                                <div class="edd_info" id="delivery_info1">
+
+                                                </div>
+                                                <div class="edgeinfo1" id="order-status1">
+
+                                                </div>
+                                            </div>
+                                            <div class="thanemumbai">
+                                                <p id="origin_destination1"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right share_icon_wrap">
+                                        <div class="pull-right">
+                                            <div class="mytooltip">
+                                                <i style="font-size: 24px;cursor: pointer;" onmouseout="outFunc()" onclick="copy_to_clipboard()" class="fa fa-copy"> <span class="tooltiptext" id="myTooltip">Copy URL</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="courier_info clearfix">
+                                <div class="pull-left courier_logo" style="background-image: url('https://wellbeingnutrition.shiprocket.co/post_order/img/courier/thumb/delhivery.jpg');background-repeat: no-repeat;">
+                                </div>
+                                <div class="pull-left">
+                                    <span><b>Delhivery</b></span>
+                                </div>
+                                <div class="pull-right">
+                                    <span><b>Tracking ID</b> </span>
+                                    <span class="tracking_id" id="tracking_id"></span>
+                                </div>
+                            </div>
+                            <div class="delievery_info ">
+                                <div class="delievery_list_wrap clearfix">
+                                    <ul id="tb_data4">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tracking card end-->
+
+                    <div class="col-sm-6 col-xs-12">
+                        <!-- order details -->
+                        <div class="hp_cards information_block" style="margin-top:20px;">
+                            <div class="hp_cards_info">
+                                <h5><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Box.png"><span class="od">Order Details</span></h5>
+                                <div class="clearfix mb-20">
+                                    <span class="pull-left"><b>Order ID</b> </span><span class="pull-right  right_info" id="order_small_id1"></span>
+                                </div>
+                                <div class="clearfix mb-20">
+                                    <span class="pull-left"><b>Order place Date</b></span> <span class="pull-right  right_info" id="order_placed_date1"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommend_info nps_pagination text-center" id="nps_courier_form">
+                        <a href="https://thegiftstudio.com/collections/mango-hampers"><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Desktop.jpg" class="img-responsive"></a>
+                        </div>
+                        <div class="recommend_info" id="nps_form">
+                        <a href="https://thegiftstudio.com/collections/curated-hampers"><img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/banner_img.jpg" class="img-responsive"></a>
+                        </div>
+
+                    </div>
+                </div>
+  </div>
+</div>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+  crossorigin="anonymous"
+></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  
+function track_order() {
+    var order_number = $('#order_number').val();
+    var search_by = $("input[type='radio'][name='search_by']:checked").val();
+    console.log(search_by)
+    if (order_number == ""){
+        $('#no-order').hide();
+        $('#track').hide();
+        $('#track1').hide()
+    }
+    console.log(order_number);
+    $('#no-order').hide();
+    $('#track').hide();
+    $('#track1').hide()
+    $('#loader_div').show();
+    var generated_csrf_token = "mjba7hOYGhI50B5DwJSTHe7FEBQet8HakKYgXcxr8PNuS6zxYIvTTcy3Ytl31Z7j";
+    $.ajax({
+        url: "https://v2-mdtr.thegiftstudio.com/orders/track_tgs_order",
+        type: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        data: {
+            'order_number': order_number,
+            'search_by':search_by
+        },
+        dataType: 'json',
+        success: function (data) {
+            $('#loader_div').hide();
+            console.log(data)
+            if (data.status == 200) {
+
+                if (data.data_from == 1){
+
+
+                    if (data.track_data.tracking_data.track_status == 1){
+                    $('#no-order').hide();
+                    $('#track').show();
+                    $('#track1').hide()
+                    $('#order_small_id').html(order_number);
+                    $('#tracking_id').html(data.track_data.tracking_data.shipment_track[0].awb_code);
+                    $('#origin_destination').html(data.track_data.tracking_data.shipment_track[0].origin + ' To ' + data.track_data.tracking_data.shipment_track[0].destination);
+                    if (data.track_data.tracking_data.shipment_track[0].pickup_date != null) {
+                        $('#order_placed_date').html(data.track_data.tracking_data.shipment_track[0].pickup_date.slice(0, 10))
+                    } else {
+                        $('#order_placed_date').html("")
+                    }
+
+                    var order_stat = '';
+                    order_stat += "<strong id='shipment_status'><span id='shipment_status_label'>Status:</span>" + data.track_data.tracking_data.shipment_track[0].current_status + "</strong>"
+                    $('#order-status').html(order_stat);
+                    if (data.track_data.tracking_data.shipment_track[0].current_status == "Delivered") {
+                        $('#status_lable').show()
+                        var month_nm = '';
+                        var html_delivery = '';
+                        if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 01) {
+                            month_nm = "January"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 02) {
+                            month_nm = "February"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 03) {
+                            month_nm = "March"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 04) {
+                            month_nm = "April"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 05) {
+                            month_nm = "May"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 06) {
+                            month_nm = "June"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 07) {
+                            month_nm = "July"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 08) {
+                            month_nm = "August"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 09) {
+                            month_nm = "September"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 10) {
+                            month_nm = "October"
+                        } else if (data.track_data.tracking_data.shipment_track[0].delivered_date.slice(5, 7) == 11) {
+                            month_nm = "November"
+                        } else {
+                            month_nm = "December"
+                        }
+                        html_delivery += "<span style='display: inline;' class='edd_day' id='edd_day'></span>";
+                        html_delivery += "<strong class='edd_month' id='edd_month'>" + month_nm + "</strong>";
+                        html_delivery += "<strong class='edd_date' id='edd_date'>" + data.track_data.tracking_data.shipment_track[0].delivered_date.slice(8, 10) + "<span class='year_txt'>" + data.track_data.tracking_data.shipment_track[0].delivered_date.slice(0, 4) + "</span></strong>";
+                        $('#delivery_info').html(html_delivery);
+
+                    } else {
+                        $('#status_lable').hide()
+
+                        var html_delivery = '';
+                        if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 01) {
+                            month_nm = "January"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 02) {
+                            month_nm = "February"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 03) {
+                            month_nm = "March"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 04) {
+                            month_nm = "April"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 05) {
+                            month_nm = "May"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 06) {
+                            month_nm = "June"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 07) {
+                            month_nm = "July"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 08) {
+                            month_nm = "August"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 09) {
+                            month_nm = "September"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 10) {
+                            month_nm = "October"
+                        } else if (data.track_data.tracking_data.shipment_track_activities[0].date.slice(5, 7) == 11) {
+                            month_nm = "November"
+                        } else {
+                            month_nm = "December"
+                        }
+                        html_delivery += "<span style='display: inline;' class='edd_day' id='edd_day'></span>";
+                        html_delivery += "<strong class='edd_month' id='edd_month'>" + month_nm + "</strong>";
+                        html_delivery += "<strong class='edd_date' id='edd_date'>" + data.track_data.tracking_data.shipment_track_activities[0].date.slice(8, 10) + "<span class='year_txt'>" + data.track_data.tracking_data.shipment_track_activities[0].date.slice(0, 4) + "</span></strong>";
+                        $('#delivery_info').html(html_delivery);
+
+                    }
+                    var html = '';
+                    for (i = 0; i < data.track_data.tracking_data.shipment_track_activities.length; i++) {
+                        html += "<li class='active'>";
+                        html += "<span><b>Activity : </b><activity>" + data.track_data.tracking_data.shipment_track_activities[i].activity + "</activity></span>";
+                        html += "<span><b>Location : </b><activity>" + data.track_data.tracking_data.shipment_track_activities[i].location + "</activity></span>";
+                        html += "<div class='date_info_wrap'><span class='date'>" + data.track_data.tracking_data.shipment_track_activities[i].date.slice(0, 10) + "</span><span class='time'>" + data.track_data.tracking_data.shipment_track_activities[i].date.slice(11, 16) + "</span></div>";
+                        html += "<i class='circle_icon'></i>"
+                        html += "</li>"
+                    }
+                    $('#tb_data').html(html);
+                }
+                else{
+                $('#order-num1').html(order_number)
+                    $('#no-order').show();
+                    $('#track').hide();
+                    $('#track1').hide()
+                    $('#msg').html("Order is under processing or tracking history is not available. Please check after sometime.");
+                }
+
+
+            }
+            else{
+                $('#track1').show()
+                $('#track').hide()
+                $('#status_lable1').html(data.od_data[0].current_status + " on")
+                var html_delivery1 = '';
+                    html_delivery1 += "<span style='display: inline;' class='edd_day' id='edd_day'></span>";
+                    html_delivery1 += "<strong class='edd_month' id='edd_month'>" + data.od_data[0].month_nm + "</strong>";
+                    html_delivery1 += "<strong class='edd_date' id='edd_date'>" + data.od_data[0].day_nm + "<span class='year_txt'>" + data.od_data[0].year_nm + "</span></strong>";
+                    $('#delivery_info1').html(html_delivery1);
+
+                var order_stat1 = '';
+                order_stat1 += "<strong id='shipment_status'><span id='shipment_status_label'>Status:</span>" + data.od_data[0].current_status + "</strong>"
+                $('#order-status1').html(order_stat1);
+
+                $('#order_small_id1').html(data.od_data[0].od_num);
+                $('#tracking_id1').html();
+                $('#order_placed_date1').html(data.od_data[0].od_date);
+                $('#origin_destination1').html(data.od_data[0].from + ' To ' + data.od_data[0].to);
+
+
+                var html4 = '';
+                for (i = 0; i < data.order_status.length; i++) {
+                    html4 += "<li class='active'>";
+                    html4 += "<span><b>Activity : </b><activity>" + data.order_status[i].od_status + "</activity></span>";
+                    html4 += "<span><b>Location : </b><activity> NA </activity></span>";
+                    html4 += "<div class='date_info_wrap'><span class='date'>" + data.order_status[i].date + "</span><span class='time'>" + data.order_status[i].time + "</span></div>";
+                    html4 += "<i class='circle_icon'></i>"
+                    html4 += "</li>"
+                }
+                $('#tb_data4').html(html4);
+            }
+
+
+            } else if (data.status == 400) {
+                $('#order-num1').html(order_number)
+                $('#no-order').show();
+                $('#track').hide();
+                $('#track1').hide()
+                $('#msg').html("Order is under processing or tracking history is not available. Please check after sometime. ");
+            } else if (data.status == 404) {
+                $('#order-num1').html(order_number)
+                $('#no-order').show();
+                $('#track').hide();
+                $('#track1').hide()
+                $('#msg').html("Order is under processing or tracking history is not available. Please check after sometime. ");
+            }
+            else if (data.status == 0) {
+                $('#no-order').hide();
+                $('#track').hide();
+                $('#track1').hide();
+            }
+        }
+    });
+};
+</script>
+
+{% schema %}
+{
+  "name": "Section name",
+  "settings": []
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

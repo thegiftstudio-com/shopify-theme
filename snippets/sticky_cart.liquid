@@ -1,0 +1,54 @@
+ <div id="sticky_cart" class="sticky_add_to_cart_sec product-section">
+
+   <div class="prod_img_title_sec small--hide">
+     <div class="prod_img_sec">
+       <img src="{{ product.featured_media | img_url:'80x'}}" alt="product_img">
+     </div>
+     <div class="tle-pri-box">
+     <div class="prod_title_sec">
+       <h5>{{ product.title }}</h5>
+     </div>
+     <div class="prod_price_sec">
+          {%- render 'price' with product.price -%}
+     </div>
+        </div>
+   </div>
+  
+   <div class="product_quantity_cart_btn_sec">
+ 
+          <div class="cart_sec {%if product.available == false %}soldout-stickywrapper {% endif %}">
+  <button
+                    id = "add-to-cart-button_1"
+                        type="button"
+                        name="add"
+                        class=" product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+                        {% if product.selected_or_first_available_variant.available == false %}
+                          disabled
+                        {% endif %}
+                      >
+                        <span>
+                    <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/add-to-cart.png?v=1674486984" alt="add_to_cart">
+                          {%- if product.selected_or_first_available_variant.available -%}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {%- else -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- endif -%}
+                        </span>
+                        <div class="loading-overlay__spinner custom_spinner">
+<!--                           <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="spinner"
+                            viewBox="0 0 66 66"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg> -->
+                        </div>
+                      </button> 
+            <div class="lt_error_text"></div>
+                        </div>
+               </div> 
+
+   </div> 

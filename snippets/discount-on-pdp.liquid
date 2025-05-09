@@ -1,0 +1,228 @@
+<div class="discount-container">
+    <div class="coupon">
+        <div class="discount-info">
+            <span class="mega-deal">FESTIVE15</span>
+            <span class="get-price">            
+                <div class="details-container">
+                    <button class="details-btn">Details</button>
+                    <div class="terms" style="top: 431.594px; left: 362px;">
+                        <p>Flat 15% Off on your purchase above INR 999. Other T&amp;Cs may apply.</p>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="extra-offer">
+            <span>Flat 15% Off</span>
+        </div>
+    </div>
+
+    <div class="coupon">
+        <div class="discount-info">
+            <span class="mega-deal">TGS500</span>
+            <span class="get-price">            
+                <div class="details-container">
+                    <button class="details-btn">Details</button>
+                    <div class="terms" style="top: 431.594px; left: 922px;">
+                        <p>Flat Rs. 500 off on your minimum purchase of Rs. 1499. Other T&amp;Cs may apply.</p>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="extra-offer">
+            <span>Flat Rs. 500 off</span>
+        </div>
+    </div>
+    <div class="coupon">
+        <div class="discount-info">
+            <span class="mega-deal">TGS1000</span>
+            <span class="get-price">            
+                <div class="details-container">
+                    <button class="details-btn">Details</button>
+                    <div class="terms" style="top: 431.594px; left: 922px;">
+                        <p>Flat Rs. 1000 off on your minimum purchase of Rs. 3999. Other T&amp;Cs may apply.</p>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="extra-offer">
+            <span>Flat Rs. 1000 off</span>
+        </div>
+    </div>
+</div>
+
+<style>
+  /* Container for the discount offer */
+.discount-container {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px;
+    border-radius: 8px;
+    gap: 15px; /* Space between the coupons */
+    scrollbar-width: thin; /* Set the scrollbar width to thin */
+    scrollbar-color: #ffdba6 #f0f0f0; /* Scrollbar color: thumb and track */
+}
+
+/* Coupon box styling */
+.coupon {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    width: 250px; /* Fixed width for each coupon */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Prevent the coupons from shrinking */
+}
+
+/* Discount information */
+.discount-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mega-deal {
+    background-color: #ffdba6;
+    color: black;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.get-price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.get-price .price {
+    color: #f85c7b;
+    text-decoration: line-through;
+    margin-left: 5px;
+    font-size: 16px;
+}
+
+/* Extra offer section */
+.extra-offer {
+    margin-top: 8px;
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+}
+
+/* Terms and Conditions on hover */
+.details-container {
+    position: relative;
+}
+
+.details-btn {
+    padding: 5px 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.terms {
+    position: fixed;
+    max-height: -moz-max-content;
+  max-height: max-content;
+    bottom: 30px;
+    right: 0px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    color: #555;
+    width: 200px; /* Adjust the width of the box */
+    max-height: 150px; /* Set a max-height to prevent overflow */
+    overflow-y: auto; /* Allow vertical scrolling if content is too long */
+    display: none;
+    z-index: 10; /* Ensure the terms text appears above the button */
+}
+
+
+@media (max-width: 565px) {
+  .discount-container .coupon {
+    width: 90%;
+  }
+}
+
+.details-container:hover .terms {
+    display: block; /* Show the terms when hovering */
+}
+
+/* Scrollbar styling */
+.discount-container::-webkit-scrollbar {
+    height: 8px; /* Set the scrollbar height */
+}
+
+.discount-container::-webkit-scrollbar-thumb {
+    background-color: #ffdba6; /* Color of the thumb (scroll handle) */
+    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+.discount-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Color of the track (scroll background) */
+    border-radius: 10px; /* Rounded corners for the scrollbar track */
+}
+
+</style>
+<script>
+  // Added by velocity support on 24-01-2025 to add the discount coupons scrollable
+$(document).ready(function () {
+  $(".details-btn").on("mouseenter", function () {
+    handleTooltipPos(this);
+  });
+
+  $(window).on("scroll", function () {
+    $(".details-btn").each(function () {
+      handleTooltipPos(this);
+    });
+  });
+
+  $(".discount-container").on("scroll", function () {
+    $(".details-btn").each(function () {
+      handleTooltipPos(this);
+    });
+  });
+
+  function handleTooltipPos(element) {
+    const parent = $(element).parents(".discount-info")[0];
+    const container = parent.getBoundingClientRect();
+    const btn = element.getBoundingClientRect(); // Get the bounding rectangle of the hovered element
+    const tooltip = $(element).parents(".details-container").find(".terms");
+
+    // Calculate initial position
+    let top = btn.top + 30; // Adjust top position
+    let left = btn.left; // Adjust left position
+    // Adjust for viewport boundaries
+    const tooltipWidth = tooltip.outerWidth();
+    const tooltipHeight = tooltip.outerHeight();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Ensure the tooltip doesn't go beyond the right edge of the screen
+    if (left + tooltipWidth > viewportWidth) {
+      left = viewportWidth - tooltipWidth - 10; // Add a small margin
+    }
+
+    // Ensure the tooltip doesn't go beyond the bottom edge of the screen
+    if (top + tooltipHeight > viewportHeight) {
+      top = btn.top - tooltipHeight - 10; // Position above the element
+    }
+
+    // Apply the adjusted position
+    tooltip.css({
+      top: top + "px",
+      left:
+        container.left + ($(parent).width() - $(tooltip).width()) - 20 + "px",
+    });
+  }
+});
+
+</script>
