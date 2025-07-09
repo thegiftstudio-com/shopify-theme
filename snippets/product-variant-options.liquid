@@ -27,61 +27,69 @@
 
   assign product_form_id = 'product-form-' | append: section.id
 -%}
-<!--   start -->
-      {% for variant in product.variants %}
-       <p class="hidden_variant_id" data-variant-id ="{{ variant.id| escape | replace: ' ', '-'   }}" data-variant-price ="{{ variant.price  }}" data-variant-title = "{{ variant.title | escape | replace: ' ', '-'  }}" style="display:none;">{{ variant.title | replace: ' ', '-' | downcase  }}</p>
-        
-        {% endfor %}
+<!-- start -->
+{% for variant in product.variants %}
+  <p
+    class="hidden_variant_id"
+    data-media-id="{{ variant.featured_media.id }}"
+    data-variant-id="{{ variant.id| escape | replace: ' ', '-'   }}"
+    data-variant-price="{{ variant.price  }}"
+    data-variant-title="{{ variant.title | escape | replace: ' ', '-'  }}"
+    style="display:none;"
+  >{{ variant.title | replace: ' ', '-' | downcase }}</p>
+{% endfor %}
 
- <div class="hidden_indivisual-option"  style="display:none;">
-    {% for product_option in product.options_with_values %}
-{% if product_option.name == 'Choose Cake Type:' %}
-        <ul>
-          {% for value in product_option.values %}
+<div class="hidden_indivisual-option" style="display:none;">
+  {% for product_option in product.options_with_values %}
+    {% if product_option.name == 'Choose Cake Type:' %}
+      <ul>
+        {% for value in product_option.values %}
           <li class="first-option">{{ value }}</li>
-          {% endfor %}
-        </ul>
-{% endif %}
-{% endfor %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
 
-<!--   2nd   -->
-     {% for product_option in product.options_with_values %}
-{% if product_option.name == 'Choose Cake Weight:' %}
-        <ul>
-          {% for value in product_option.values %}
+  <!-- 2nd -->
+  {% for product_option in product.options_with_values %}
+    {% if product_option.name == 'Choose Cake Weight:' %}
+      <ul>
+        {% for value in product_option.values %}
           <li class="second-option">{{ value }}</li>
-          {% endfor %}
-        </ul>
-{% endif %}
-{% endfor %}
-  
-  </div> 
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+</div>
 
-
-<!--   end -->
+<!-- end -->
 {% assign index = 1 %}
 {%- for value in option.values -%}
-  
   {%- liquid
     assign option_disabled = true
-    assign variant_id = nil
-
+    assign variant_id = null
+    assign variant_media_id = null
     for variant in product.variants
-
       case option.position
         when 1
           if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
             assign variant_id = variant.id
+            assign variant_media_id = variant.featured_media.id
+
             assign option_disabled = false
           endif
         when 2
           if variant.option1 == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
             assign variant_id = variant.id
+            assign variant_media_id = variant.featured_media.id
+
             assign option_disabled = false
           endif
         when 3
           if variant.option1 == product.selected_or_first_available_variant.option1 and variant.option2 == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
             assign variant_id = variant.id
+            assign variant_media_id = variant.featured_media.id
+
             assign option_disabled = false
           endif
       endcase
@@ -96,10 +104,11 @@
       name="{{ option.name }}"
       value="{{ value | escape | replace: ' ', '-' | downcase}}"
       form="{{ product_form_id }}"
-      data-hidden-id ="{{ variant.id }}"
-      data-mydata =""
-      data-position = "{{ index }}"
-      data-variant-id="{{ variant_id }}" 
+      data-hidden-id="{{ variant.id }}"
+      data-mydata=""
+      data-position="{{ index }}"
+      data-variant-id="{{ variant_id }}"
+      data-media-id="{{ variant.featured_media.id }}"
       {% if option.selected_value == value %}
         checked
       {% endif %}
@@ -107,18 +116,23 @@
         class="disabled"
       {% endif %}
     >
-    <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" level="{{ forloop.index0 }}"  class=" test123 {{ value | escape | replace: ' ', '-' | downcase}} " value="{{ value | escape | replace: ' ', '-' | downcase}}">
+    <label
+      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      level="{{ forloop.index0 }}"
+      class="{{ value | escape | replace: ' ', '-' | downcase}} "
+      value="{{ value | escape | replace: ' ', '-' | downcase}}"
+    >
       {% comment %}
-      This line is commented by Velocity on 24-12-2024 -- To show the color name on the front end if the variant picker is selected as pill
-      <span class="{% if product.tags contains 'Curated-Hamper' %}color_sec{% endif %} {{ value | escape | replace: ' ', '-' | downcase}}" >{% if product.tags contains 'Curated-Hamper' %}{% else %}{{ value }}{% endif %}</span>
+        This line is commented by Velocity on 24-12-2024 -- To show the color name on the front end if the variant picker is selected as pill
+        <span class="{% if product.tags contains 'Curated-Hamper' %}color_sec{% endif %} {{ value | escape | replace: ' ', '-' | downcase}}" >{% if product.tags contains 'Curated-Hamper' %}{% else %}{{ value }}{% endif %}</span>
       {% endcomment %}
-            <span class="{{ value | escape | replace: ' ', '-' | downcase}}" >{{ value }}</span>
+      <span class="{{ value | escape | replace: ' ', '-' | downcase}}">{{ value }}</span>
       <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
     </label>
   {%- elsif block.settings.picker_type == 'dropdown' -%}
     <option
       value="{{ value | escape }}"
-      data-variant-id="{{ variant_id }}" 
+      data-variant-id="{{ variant_id }}"
       {% if option.selected_value == value %}
         selected="selected"
       {% endif %}
@@ -131,7 +145,6 @@
     </option>
   {%- endif -%}
   {% assign index = index | plus: 1 %}
-
 {%- endfor -%}
 
 <script>
@@ -144,9 +157,9 @@ $(document).ready(function() {
   });
   
   var hiddenVariantDataAttr, firstValue, secondValue, mainTitle;
+var sectionId = document.querySelector('[data-section]')?.dataset.section || 'template--product';
 
   $(".main_variant").click(function() {
-  
       var mainVariantValue = $(this).val();
       
       $('.hidden_variant_id').each(function() {
@@ -154,11 +167,11 @@ $(document).ready(function() {
         if (localText == mainVariantValue) {
           hiddenVariantDataAttr = $(this).attr('data-variant-id');
           $('#ProductSelected-variant').val('');
-          $('#ProductSelected-variant').val(hiddenVariantDataAttr);
+          $('#ProductSelected-variant').val(hiddenVariantDataAttr); 
           
           //velocity 09-10-2024: Store the selected variant ID in the global variable
           window.currentVariantId = hiddenVariantDataAttr;
-
+          window.currentVariantMedia=$(this).attr('data-media-id');
           hiddenVariantDataAttrPrice = $(this).attr('data-variant-price');
           $('.price__regular').text('');
           $('.price__regular').text('₹' + hiddenVariantDataAttrPrice / 100);
@@ -167,30 +180,37 @@ $(document).ready(function() {
       });
 
       $(this).attr('data-mydata', hiddenVariantDataAttr);
-
       //velocity 09-10-2024: Update the URL without reloading the page
       var currentUrl = new URL(window.location.href);
       var searchParams = currentUrl.searchParams;
       searchParams.set("variant", hiddenVariantDataAttr);
       window.history.replaceState({}, '', currentUrl);
+  // Code added by Ravi Velocity on 07-07-2025 for switching the product images on clicking the product variant options.
+    if(window.currentVariantMedia != ''){
+    var mediaGallery = document.querySelector('media-gallery');
+    if (mediaGallery && mediaGallery.setActiveMedia) {
+        var fullMediaId = `${sectionId}-${window.currentVariantMedia}`;
+        mediaGallery.setActiveMedia(fullMediaId, true);
+    } 
+  }
       $('.pincode_btn button').trigger('click');
     });
 
   if ($('.product-form__input').length == 1) {
     
     $(".main_variant").click(function() {
-  
       var mainVariantValue = $(this).val();
-      
       $('.hidden_variant_id').each(function() {
         var localText = $(this).text();
         if (localText == mainVariantValue) {
           hiddenVariantDataAttr = $(this).attr('data-variant-id');
           $('#ProductSelected-variant').val('');
           $('#ProductSelected-variant').val(hiddenVariantDataAttr);
+
           
           //velocity 09-10-2024: Store the selected variant ID in the global variable
           window.currentVariantId = hiddenVariantDataAttr;
+          window.currentVariantMedia=$(this).attr('data-media-id');
 
           hiddenVariantDataAttrPrice = $(this).attr('data-variant-price');
           $('.price__regular').text('');
@@ -207,6 +227,16 @@ $(document).ready(function() {
       searchParams.set("variant", hiddenVariantDataAttr);
       window.history.replaceState({}, '', currentUrl);
       $('.pincode_btn button').trigger('click');
+  // Code added by Ravi Velocity on 07-07-2025 for switching the product images on clicking the product variant options.
+          if(window.currentVariantMedia != ''){
+
+    var mediaGallery = document.querySelector('media-gallery');
+    if (mediaGallery && mediaGallery.setActiveMedia) {
+        var fullMediaId = `${sectionId}-${window.currentVariantMedia}`;
+        mediaGallery.setActiveMedia(fullMediaId, true);
+        // console.log('Setting active media:', fullMediaId);
+    } 
+          }
     });
   } else {
     $('#variant-radios-template--19604653343027__main').find('fieldset').find('input').click(function() {
@@ -259,7 +289,16 @@ $(document).ready(function() {
       searchParams.set("variant", hiddenVariantDataAttr);
       window.history.replaceState({}, '', currentUrl);
     });
-  }
-});
+  // Code added by Ravi Velocity on 07-07-2025 for switching the product images on clicking the product variant options.
+        if(window.currentVariantMedia != ''){
 
+    var mediaGallery = document.querySelector('media-gallery');
+    if (mediaGallery && mediaGallery.setActiveMedia) {
+        var fullMediaId = `${sectionId}-${window.currentVariantMedia}`;
+        mediaGallery.setActiveMedia(fullMediaId, true);
+        // console.log('Setting active media:', fullMediaId);
+    } 
+        }
+    }
+});
 </script>

@@ -1,111 +1,116 @@
-
 <style>
-  .cart-delivery-date {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.delivery-label {
-    margin-bottom: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
-
-.input-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    position: relative; /* Needed for positioning the SVG */
-}
-
-.input-container svg {
-    position: absolute;
-    left: 10px; /* Adjust space from the left */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px; /* Icon size */
-    height: 20px;
-    fill: #555; /* Icon color */
-}
-
-.field-wrapper {
-    width: 100%;
-}
-
-.delivery-input-pdp {
-    width: 100%;
-    padding: 10px 10px 10px 40px; /* Padding to make space for the icon */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-    outline: none;
-    transition: border-color 0.3s ease-in-out;
-}
-
-.delivery-input:focus {
-    border-color: #007aff;
-    box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
-}
-
-.date-section {
-    width: 100%; /* Ensure it spans the full width */
-}
-  #ui-datepicker-div {
-    z-index: 1001 !important; /* Ensure it appears above other elements */
-    position: absolute !important; /* Align relative to the input field */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
-}
-
-.delivery-input-pdp:focus,
-.delivery-input-pdp.ui-state-active,
-.delivery-input-pdp.ui-state-highlight {
-    border-color: #007aff !important;
-    box-shadow: 0 0 11px rgb(0 0 0) !important;
-}
-   #delivery-date-byoh-mobile{
-        background: #f4f4f4;
-        border: none;
-        border-radius: 5px;
+    .cart-delivery-date {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 20px;
   }
-  .ui-widget-header {
-    border: 1px solid #000 !important;
-    background: #000 !important;
-}
 
+  .delivery-label {
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+  }
+
+  .input-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative; /* Needed for positioning the SVG */
+  }
+
+  .input-container svg {
+      position: absolute;
+      left: 10px; /* Adjust space from the left */
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px; /* Icon size */
+      height: 20px;
+      fill: #555; /* Icon color */
+  }
+
+  .field-wrapper {
+      width: 100%;
+  }
+
+  .delivery-input-pdp {
+      width: 100%;
+      padding: 10px 10px 10px 40px; /* Padding to make space for the icon */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s ease-in-out;
+  }
+
+  .delivery-input:focus {
+      border-color: #007aff;
+      box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
+  }
+
+  .date-section {
+      width: 100%; /* Ensure it spans the full width */
+  }
+    #ui-datepicker-div {
+      z-index: 1001 !important; /* Ensure it appears above other elements */
+      position: absolute !important; /* Align relative to the input field */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
+  }
+
+  .delivery-input-pdp:focus,
+  .delivery-input-pdp.ui-state-active,
+  .delivery-input-pdp.ui-state-highlight {
+      border-color: #007aff !important;
+      box-shadow: 0 0 11px rgb(0 0 0) !important;
+  }
+     #delivery-date-byoh-mobile{
+          background: #f4f4f4;
+          border: none;
+          border-radius: 5px;
+    }
+    .ui-widget-header {
+      border: 1px solid #000 !important;
+      background: #000 !important;
+  }
 </style>
 
- <div class="cart-delivery-date">
-        <div class="delivery-label">
-            <label for="delivery-date">Enter Delivery Date:</label>
-        </div>
-        <div class="input-container date-section">
-            {% render 'calender_icon' %}
-            <p class="field-wrapper">
-                <input
-                    class="delivery-input-pdp"
-                    type="text"
-                    id="delivery-date-byoh-mobile"
-                    name="properties[delivery_date]"
-                    required
-                    readonly
-                />
-            </p>
-        </div>
+<div class="cart-delivery-date">
+  <div class="delivery-label">
+    <label for="delivery-date">Enter Delivery Date:</label>
   </div>
+  <div class="input-container date-section">
+    {% render 'calender_icon' %}
+    <p class="field-wrapper">
+      <input
+        class="delivery-input-pdp"
+        type="text"
+        id="delivery-date-byoh-mobile"
+        name="properties[delivery_date]"
+        required
+        readonly
+      >
+      <input
+        class="delivery-input-pdp"
+        type="hidden"
+        id="total-product-tat"
+        name="product_tat"
+        value=""
+      >
+    </p>
+  </div>
+</div>
 
 <script>
-    $(document).ready(function () {
-        const $datePicker = $("#delivery-date-byoh-mobile");
-        $datePicker.datepicker({
-            dateFormat: "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true,
-            showAnim: "slideDown",
-            minDate: 1 // Ensures only future dates are enabled
-        });
-    });
+  $(document).ready(function () {
+      const $datePicker = $("#delivery-date-byoh-mobile");
+      $datePicker.datepicker({
+          dateFormat: "dd-mm-yy",
+          changeMonth: true,
+          changeYear: true,
+          showAnim: "slideDown",
+          minDate: 1 // Ensures only future dates are enabled
+      });
+  });
 </script>

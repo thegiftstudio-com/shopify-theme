@@ -1,5 +1,7 @@
 {{ 'hamper-collections.css' | asset_url | stylesheet_tag }}
-
+{% comment %} Render the warning Popup and Product Image Popup on BYOH by default .It is display none. 07-07-2025 Added by Velocity {% endcomment %}
+{% render 'byoh-warning-alert' %}
+    {% render 'byoh-product-image' %}
 {% if page.handle == 'hamper-collections' %}
 {% assign default_collection = "" %}
 <style>
@@ -34,6 +36,7 @@
   .product_tag{
     display:none;
   }
+  
 </style>
 <script>
    var hamperCollectionData;
@@ -48,6 +51,8 @@
   var liquor_box_id = ""
   var liquor_bag_product_id = ''
   localStorage.setItem("bundle_products", "");
+  localStorage.setItem("bundle_products_variant_id", "");
+  
   $(".loader").hide()
   // let selectedItem = []
   let totalprice = 0.00;
@@ -262,7 +267,8 @@
                 <small class="cp_product"> *Choose minimum 2 products</small>
               </h3>
               <div class="buttons">
-                <button class="f-1 next next-btn1">Next</button>
+            <button class="prefv-btn1 modal-toggle view_hamper">View Hamper</button>
+                <!-- <button class="f-1 next next-btn1">Next</button> -->
                 <button class="reset prefv-btn1">Reset</button>
               </div>
             </div>
@@ -344,7 +350,8 @@
               <p id="{{ product.variants.first.id }}_tag" class="product_tag">{{ product.tags | join: ',' }}</p>
               <!-- Product Image -->
               <div class="product-img">
-                <img src="{{ product.featured_image | img_url: '330x330' }}" alt="{{ product.title }}">
+	      {% comment %} When click on image open a popup contains products images. 07-07-2025 Updated by Velocity{% endcomment %}
+                <img src="{{ product.featured_image | img_url: '330x330' }}" onclick="openProductPopup({{ product.images | json | escape }})" alt="{{ product.title }}">
               </div>
                 {{ nonveg }}
               <!-- Product Title -->
@@ -355,7 +362,7 @@
               {% render 'price', product: product, price_class: '' %}
 
               <!-- Quantity Selector -->
-              <div class="qty_selector {{ product.variants.first.id }}">
+              <div class="qty_selector {{ product.variants.first.id }} variant-{{ product.variants.first.id }}" style="{% if cart_item %}display:block;{% else %}display:none;{% endif %}"">
                 <span onclick='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 0)'>-</span>
                 <input type="text" name="qty" value="{% if cart_item %}{{ cart_item.properties.base_quantity }}{% else %}0{% endif %}" class="qty" onchange='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 0)' />
                 <span onclick='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 1)'>+</span>
@@ -395,8 +402,9 @@
             <div class="page-info">
               <h3 class="title">Step 2 - Choose Boxes</h3>
               <div class="buttons">
-                <button class="prev prev-btn1">Previous</button>
-                <button class="next next-btn2">Next</button>
+                <!-- <button class="prev prev-btn1">Previous</button> -->
+                <!-- <button class="next next-btn2">Next</button> -->
+                            <button class="prefv-btn1 modal-toggle view_hamper">View Hamper</button>
                 <button class="reset">Reset</button>
               </div>
             </div>
@@ -427,8 +435,9 @@
             <div class="page-info">
               <h3 class="title">Step 3 - Choose Addons</h3>
               <div class="buttons">
-                <button class="prev prev-btn2">Previous</button>
-                <button class="next next-btn3">Next</button>
+                <!-- <button class="prev prev-btn2">Previous</button> -->
+                <!-- <button class="next next-btn3">Next</button> -->
+                            <button class="prefv-btn1 modal-toggle view_hamper">View Hamper</button>
                 <button class="reset ">Reset</button>
               </div>
             </div>
@@ -614,7 +623,11 @@
       <div class="container">
         <div class="new_order_details">
           <div class="view_box">
-            <button class="view_btn modal-toggle"><strong>View Bundle Contents</strong></button>
+            <!-- <button class="view_btn modal-toggle"><strong>View Bundle Contents</strong></button> 
+                            <button class="reset view_btn"><strong>Reset</strong></button> -->
+			                    <button class="prev view_btn prev-btn1 prev_btn" style="display:none;"><strong>PREVIOUS</strong></button>
+
+
           </div>
           <div class="total">
             <span>Total</span>
@@ -763,7 +776,7 @@
               id
               title
               tags
-              images(first: 1) {
+              images(first: 10) {
                 edges {
                   node {
                     src
@@ -828,7 +841,14 @@
 
   
   function removeFromCart(varient_id, loder_id, isAGift = 0, isABox = 0, isAAddon = 0, isACard = 0) {
-      $(".byoh_checkout").css('display','block')
+    if(varient_id){
+// const selector = `.qty_selector.${escapeClass(varient_id)}`;
+      const selector = `.qty_selector.variant-${varient_id}`;
+
+    // To only hide the qty button for the selected product not for all the products
+$(selector).css('display', 'none');
+    }
+      $(".byoh_checkout").css('display','block');
       if ($(".byoh_view_cart").css('display') === 'block') {
           // If byoh_view_cart is display block, set it to none and cart_reset_alert_message to block
           $(".byoh_view_cart").css('display', 'none');
@@ -872,6 +892,8 @@
         
         var alreadyAddedItems = localStorage.getItem("bundle_products");
         localStorage.setItem("bundle_products", alreadyAddedItems.replace(loder_id, ""));
+    var alreadyAddedVariantId = localStorage.getItem("bundle_products_variant_id");
+        localStorage.setItem("bundle_products_variant_id", alreadyAddedVariantId.replace(varient_id, ""));
         selectedItem = selectedItem.filter(product => parseInt(product.item_var_id) !== parseInt(varient_id));
         window.totalUserItemsCount -= 1;
         renderProduct(varient_id, loder_id, 1);
@@ -908,9 +930,23 @@
     //   }
     // });
   }
+  // To access the products qty selector using the numeric value
+function escapeClass(cls) {
+  cls = String(cls);
+  return cls.replace(/([ !"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1')
+            .replace(/^(\d)/, '\\3$1 ');
+}
+
   
   function addtocart(varient_id, loder_id, isAGift = 0, isABox = 0, isAAddon = 0, isACard = 0, quantity = 1) {
-      $(".byoh_checkout").css('display','block')
+    if(varient_id){
+// const selector = `.qty_selector.${escapeClass(varient_id)}`;
+      const selector = `.qty_selector.variant-${varient_id}`;
+
+// To only show the qty button for the selected product not for all the products
+$(selector).css('display', 'block');
+    }
+      $(".byoh_checkout").css('display','block');
       if ($(".byoh_view_cart").css('display') === 'block') {
         // If byoh_view_cart is display block, set it to none and cart_reset_alert_message to block
         $(".byoh_view_cart").css('display', 'none');
@@ -1045,6 +1081,7 @@
             },
             dataType: 'json',
             success: function(data) {
+              $(`.loader_${loder_id}`).hide();
               addToCartData[''+varient_id] = tempATCData;
               const productdata = {
                 img: (addProdRespoData.image == null ? "https://placehold.jp/100x100.png" : addProdRespoData.image),
@@ -1060,6 +1097,8 @@
               }
               var alreadyAddedItems = localStorage.getItem("bundle_products");
               localStorage.setItem("bundle_products", alreadyAddedItems + " " + loder_id);
+              var alreadyAddedVariantId = localStorage.getItem("bundle_products_variant_id");
+              localStorage.setItem("bundle_products_variant_id", alreadyAddedVariantId + " " + varient_id);
               selectedItem.push(productdata);
               window.totalUserItemsCount += 1;
               new Promise((resolve, reject) => {
@@ -1091,7 +1130,11 @@
           });
         },
         error: function(jqXHR) {
-          alert("Product Not Available");
+	 // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+             document.getElementById('warning-msg').textContent ="Product Not Available";
+             document.getElementById("warning-popup").style.display = "block";
+            document.getElementById("warning-overlay").style.display = "block";
+          
           $(`.add_${varient_id}`).show();
           $(`.loader_${loder_id}`).hide();
         }
@@ -1120,7 +1163,13 @@
           renderProduct(44337026302259, 8100413899059)
         }
       }
-    } else alert(disAllowMsg);
+    } else{ 
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+       document.getElementById('warning-msg').textContent =disAllowMsg;
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      
+      }
   }
   
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
@@ -1148,7 +1197,7 @@
         } else {
           totalprice = totalprice + (item.price * val);
         }
-        quant = `<div class="qty_selector ${item.item_var_id}">
+        quant = `<div class="qty_selector ${item.item_var_id} variant-${item.item_var_id}">
                                       <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)'>-</span>
                                       <input type="text" name="qty" value="${lastqunt}" class="qty" onchange='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)' />
                                       <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,1)'>+</span>
@@ -1450,12 +1499,14 @@
   }
   
   function checkout() {
+       let total_product_tat = $("#total-product-tat").val();
     // Step 1: Update `base_quantity` and ensure properties are correctly structured
     Object.keys(addToCartData).forEach(function (productId) {
         var item = addToCartData[productId];
         item.properties.base_quantity = item.quantity;
         item.properties.product_type = item.properties['product_type'];
           item.properties.tags = item.properties['tags'];
+          item.properties.total_product_tat = total_product_tat;
     });
 
     
@@ -1487,19 +1538,27 @@
 
     // Step 3: Validate gift and box requirements
     if (window.totalUserGiftItemsCount < window.currentBundleData.product_min_limit) {
-        alert("Please go to Choose Gift Section to Fulfill the minimum requirement.");
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+        document.getElementById('warning-msg').textContent = "Please go to Choose Gift Section to Fulfill the minimum requirement.";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+         
         return false;
     }
     if (window.totalUserBoxItemsCount <= 0) {
-        alert("Please go to Choose Boxes section to add a Box.");
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+       document.getElementById('warning-msg').textContent = "Please go to Choose Boxes section to add a Box.";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+       
         return false;
     }
-    if ($('.mobil_msg_feild').is(":visible") || $('.message_feild').is(":visible")) {
-     if ($('[name="card_message_desktop"]').val() == '' && $('[name="card_message_mobile"]').val() == '') {
-       alert("Please fill message field")
-       return false;
-     }
-    }
+    // if ($('.mobil_msg_feild').is(":visible") || $('.message_feild').is(":visible")) {
+    //  if ($('[name="card_message_desktop"]').val() == '' && $('[name="card_message_mobile"]').val() == '') {
+    //    alert("Please fill message field")
+    //    return false;
+    //  }
+    // }
 
     // Step 4: Fetch current cart and process items
     fetch('/cart.js')
@@ -1627,11 +1686,22 @@
   });
   let ischangecolor = true;
   $(document).on("click", ".next-btn1", function(e) {
+  const prev_btn = $('.prev_btn');  // just select
+              prev_btn.css('display', 'block');
+    // prev_btn.css('display', 'block');
+
     $('.order-details').show()
     orderscroller()
     if (window.totalUserGiftItemsCount < Number(window.currentBundleData.product_min_limit)) {
       ischangecolor = false;
-      alert(`You'll need to add more than ${window.Number(window.currentBundleData.product_min_limit)} product in "Choose Gifts Section". There are ${window.totalUserGiftItemsCount} products in your bundle.`)
+      // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+      const minLimit = Number(window.currentBundleData.product_min_limit);
+      const totalGifts = window.totalUserGiftItemsCount;
+      const message = `You'll need to add more than ${minLimit} product in "Choose Gifts Section". There are ${totalGifts} products in your bundle.`;
+      document.getElementById('warning-msg').textContent = message;
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      
     } else {
       if(displayChooseBoxProducts == false){
         displayBoxProducts();
@@ -1669,7 +1739,11 @@
     $('.order-details').show()
     orderscroller()
     if (window.totalUserBoxItemsCount == 0) {
-      alert("Please select a Box");
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+       document.getElementById('warning-msg').textContent = "Please select a Box";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+     
       ischangecolor = false;
     } else {
       if(displayAddonProductsStatus == false){
@@ -1678,9 +1752,17 @@
       }
       if (isliquor) {
         if (window.totalUserBoxItemsCount == 1) {
-          alert("Please Select Gift Box")
+	// Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+           document.getElementById('warning-msg').textContent = "Please Select Gift Box";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+          
         } else if (!liquorBox) {
-          alert("Please Select Liquor Box")
+	// Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+           document.getElementById('warning-msg').textContent = "Please Select Liquor Box";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+          
           ischangecolor = false;
         } else {
           $('.checkout-bar .progressbar-steps .progressbar-dots').removeClass('active');
@@ -1720,7 +1802,11 @@
       var isEditHamper = urlParams.get('edit_hamper') === '1';
 
       if (!isEditHamper) {
-       alert("Please Add Some Products.")
+      // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+         document.getElementById('warning-msg').textContent = "Please Add Some Products.";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      
       } 
     } else {
       $('.checkout-bar .progressbar-steps .progressbar-dots').removeClass('active');
@@ -1833,12 +1919,14 @@
     // Ensure the variable exists and has data
   var hamperCollections = [];
   let element_first = 0;
+     //   const prev_btn = $('.prev_btn');  // just select
   {% for headercollection in shop.metaobjects.hamper_header_collection.values %}
      // Check if it's the first element
     if (element_first === 0) {
         // Call fetchFilterProducts with the first collection's ID
         fetchFilterProducts("{{  headercollection.default_collection.value.handle }}",1);
         element_first = 1; // Update the flag to prevent further calls
+	
     }
     
     {% for hcoll in headercollection.header_collection.value %}
@@ -1900,7 +1988,8 @@
         <div class="price font_text ${priceClass}">
             <div class="price__container">
                 <div class="price__sale">
-                    ${compareAtPrice ? `<span class="price-item price-item--regular">${compareMoneyPrice}</span>` : ''}
+		{% comment %}Add element in case of compareAtPrice is undefined or Null 07-07-2025 added by Velocity{% endcomment %}
+                    ${compareAtPrice ? `<span class="price-item price-item--regular">${compareMoneyPrice}</span>` : `<span class="price-item price-item--regular" style='display:inline-block'></span>`}
                     <span class="price-item price-item--sale">${moneyPrice}</span>
                 </div>
             </div>
@@ -1944,9 +2033,10 @@
 
     var cityTat = localStorage.getItem("city-tat");
 
-     var today = new Date();
-      var minDate = new Date(today);
-     var currentDateTime = new Date();
+    var today = new Date(istTime);
+    var minDate = new Date(today);
+    var productTat = parseInt($(".product_tat").val());
+    var currentDateTime = new Date(istTime);
           // console.log(currentDateTime + ":currentDateTime after");
           // Set cutoff time at 12:00 PM
           var cutoffTime = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 12, 0, 0);
@@ -1975,12 +2065,21 @@
              maxTAT = 1;
           }
         }else if(maxTAT == '-7') {
+          if(parseInt(cityTat) > 0){
+            if(currentDateTime < cutoffTimeFourPm) {
+                maxTAT = 0;
+            } else {
+              maxTAT = 1;
+            }
+          }
+        else {
            if(currentDateTime < cutoffTimeSevenPm) {
             maxTAT = 0;
           } else {
              maxTAT = 1;
           }
-        } else {
+        } 
+        }else {
           maxTAT = 0;
         }
       } else if(maxTAT == 0) {
@@ -1988,6 +2087,12 @@
             maxTAT = 0;
           } else {
              maxTAT = 1;
+          }
+        }else{
+          if(currentDateTime < cutoffTimeFourPm) {
+            maxTAT += 0;
+          } else {
+           maxTAT += 1;
           }
         }
     
@@ -1999,7 +2104,12 @@
 
     const mobileDatePicker = $("#delivery-date-byoh-mobile");
     const webDatePicker = $("#delivery-date-byoh-web");
-    var today = new Date();
+    const totalProductTat = $("#total-product-tat");
+    // const webDatePicker = $("#delivery-date-byoh-web");
+    // var today = new Date();
+
+    // var minDate = new Date(today);
+    var today = new Date(istTime);
     var minDate = new Date(today);
     
     
@@ -2025,12 +2135,58 @@
     webDatePicker.prop("disabled", false);
     webDatePicker.datepicker("option", "minDate", minDate);
     webDatePicker.datepicker("setDate", finalDate);
-   
+    totalProductTat.val(maxTAT);
+    var sundayCount = 0;
+    
+    if(maxTAT>0 && !enableSundayDelivery){
+      
+     const today = new Date(istTime);
+     const tempDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Stripped time
+    const targetDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate()); // Stripped time
 
-    return maxTAT;
+    
+
+    while (tempDate <= targetDate) {
+        if (tempDate.getDay() === 0) { // 0 = Sunday
+            sundayCount++;
+        }
+        tempDate.setDate(tempDate.getDate() + 1);
+    }
+
+    // Add number of Sundays to minDate
+    finalDate.setDate(finalDate.getDate() + sundayCount);
+
+    // Configure datepicker with updated minDate and disable Sundays
+    mobileDatePicker.datepicker("option", {
+        // minDate: minDate,
+        beforeShowDay: function (date) {
+            return [date.getDay() !== 0, ""]; // Disable Sundays
+        }
+    });
+     webDatePicker.datepicker("option", {
+        // minDate: minDate,
+        beforeShowDay: function (date) {
+            return [date.getDay() !== 0, ""]; // Disable Sundays
+        }
+    });
+     mobileDatePicker.addClass("ui-state-highlight");
+    mobileDatePicker.prop("disabled", false);
+    mobileDatePicker.datepicker("option", "minDate", minDate);
+    mobileDatePicker.datepicker("setDate", finalDate);
+
+    webDatePicker.addClass("ui-state-highlight");
+    webDatePicker.prop("disabled", false);
+    webDatePicker.datepicker("option", "minDate", minDate);
+    webDatePicker.datepicker("setDate", finalDate);
+    }
+    return maxTAT+sundayCount;
 }
     
   async function fetchFilterProducts(perticularCollectionId,isfirst=0) {
+// debugger;
+
+
+
     // Fetch products for the selected collection ID
     const returnedData = await fetchProductsByCollectionId(perticularCollectionId);
     const products = returnedData.data.collectionByHandle.products.edges;
@@ -2052,6 +2208,8 @@
               window.totalUserGiftItemsCount = (window.totalUserGiftItemsCount || 0) + 1;
             if(isfirst) {
               window.totalGiftItemsCount += item.quantity || 0;
+               
+
             }
           } else if (product_type1 === 'box') {
               window.totalUserBoxItemsCount = 1;
@@ -2128,9 +2286,9 @@
       return;
     } 
           $(".loaderr").css('display','none')
-    if(isfirst == 1) {
-      return;
-    }
+    // if(isfirst == 1) {
+    //   return;
+    // }
     
     // Hide product card and clear the current collection display
     $('#productcard1').css('display', 'none');
@@ -2148,6 +2306,7 @@
 
         // Get locally stored data for added items and location
         const alreadyAddedItems = localStorage.getItem("bundle_products");
+       const alreadyAddedVariantId=localStorage.getItem("bundle_products_variant_id");
         const getLocation1 = localStorage.getItem("location");
 
         loader1.style.display = 'none';
@@ -2157,6 +2316,9 @@
         products.forEach(({ node: product }) => {
             if(product.tags.includes(getLocation1)) {
             const cardProdImg = product.images.edges[0]?.node.src || 'https://placehold.jp/330x330.png'; // Fallback image
+     // Take all the images of the product and pass when click on product image 07-07-2025 added by Velocity
+     const imagesJSON = product.images.edges.map(edge => edge.node);
+              const Images = encodeURIComponent(JSON.stringify(imagesJSON));
             const productVariant = product.variants.edges[0]?.node;
             // const price = productVariant ? new Intl.NumberFormat("en-US", {
             //                 style: "currency",
@@ -2181,11 +2343,13 @@
             let addBagStyle = "";
             let removeBagStyle = "";
 
-            if (alreadyAddedItems?.includes(productId) || isInCart) {
-                addBagStyle = 'style="display:none;"';
-            } else {
-                removeBagStyle = 'style="display:none;"';
-            }
+              // const selector = `.qty_selector.${escapeClass(variantId)}`;
+              function escapeClassName(className) {
+  return className.replace(/([ !"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1')
+                  .replace(/^(\d)/, '\\3$1 ');
+}
+
+
 
             if(isInCart) {
               window.totalUserGiftItemsCount += 1;
@@ -2255,7 +2419,8 @@
                     <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}">
                     <p id="${ variantId }_tag" class="product_tag">${ product.tags }</p>
                         <div class="product-img">
-                            <img src="${cardProdImg}" alt="${product.handle}">
+                   {% comment %} Pass the image of the product when click on the below product image 07-07-2025 added by Velocity{% endcomment %}
+                            <img src="${cardProdImg}" onclick="openProductPopup('${Images}')" alt="${product.handle}">
                         </div>
                         ${nonveg}
                         <h4 class="product-card-title">${product.title}</h4>
@@ -2263,18 +2428,33 @@
                         <span>&#x20b9;${price}</span>
                         </h5>
                              ${priceHtml}
-                        <div class="qty_selector ${variantId}">
+                        <div class="qty_selector ${variantId} variant-${variantId}" style="display:none;">
                             <span onclick='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 0)'>-</span>
                             <input type="text" name="qty" value="${addToCartData[variantId] && addToCartData[variantId]['quantity'] ? addToCartData[variantId]['quantity'] : 0}" class="qty" onchange='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 0)' />
                             <span onclick='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 1)'>+</span>
                         </div>
                         <div class="addToBag">
                             <button type='button' onclick="addtocart('${variantId}', '${productId}', 1, 0, 0, 0)" class="add_${variantId} prodAddToBagBut" ${addBagStyle}>ADD</button>
-                            <button type='button' onclick="removeFromCart('${variantId}', '${productId}', 1, 0, 0)" class="remove_${variantId} prodRemoveFromBagBut" ${removeBagStyle}>REMOVE</button>
+                            {% comment %} Remove the Remove button in case product added in the first step of BYOH 07-07-2025 Added by Velocity {% endcomment %}
+			    {% comment %}<button type='button' onclick="removeFromCart('${variantId}', '${productId}', 1, 0, 0)" class="remove_${variantId} prodRemoveFromBagBut" ${removeBagStyle}>REMOVE</button>{% endcomment %}
                             <div class="loader loader_${productId}" style="display:none;"> <span></span> </div>
                         </div>
                     </div>
                 `);
+            }
+              const selector = `.qty_selector.variant-${variantId}`;
+              const add_selector = `.add_${variantId}`;
+	       // Remove the Remove button in case product added in the first step of BYOH 07-07-2025 Added by Velocity
+              // const remove_selector = `.remove_${variantId}`;
+
+            if (alreadyAddedVariantId?.includes(variantId) || isInCart) {
+                $(selector).css('display', 'block');
+              $(add_selector).css('display', 'none');
+            } 
+            else {
+                $(selector).css('display', 'none');
+		 // Remove the Remove button in case product added in the first step of BYOH 07-07-2025 Added by Velocity
+              // $(remove_selector).css('display', 'none');
             }
           }
         });
@@ -2418,7 +2598,7 @@
         alert("PLease enter a Discount Code");
         return false;
       }
-      fetch("https://hampers.tinglabs.in/fetchapi?action=fetchDiscountData&shop_url=tgs-revamp.myshopify.com&code=" + discountVal + "&_="+new Date().getTime(), {
+      fetch("https://tgs.velsof.com/fetchapi?action=fetchDiscountData&shop_url=tgs-revamp.myshopify.com&code=" + discountVal + "&_="+new Date().getTime(), {
         method: "GET",
         headers: {
           "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
@@ -2433,7 +2613,7 @@
         else{
           data = JSON.parse(data);
           const endsAtDatetime = new Date(data[0].ends_at);
-          const currentDatetime = new Date();
+          const currentDatetime = new Date(istTime);
           if (endsAtDatetime <= currentDatetime && data[0].ends_at != null){
             alert("The discount is expired.");
             return false;
@@ -2579,6 +2759,10 @@
   $('.modal-toggle').on('click', function(e) {
     e.preventDefault();
     if (window.totalUserGiftItemsCount <= 0) {
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+      document.getElementById('warning-msg').textContent = "Please Add Some Products.";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
       alert("Please Add some products");
       $('.modal').removeClass('is-visible');
     } else {
@@ -2704,6 +2888,10 @@
           }, 1000);
         });
       } else if (val == 0) {
+      // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+         document.getElementById('warning-msg').textContent = "You can't select negative quantity";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
         alert("You can't select negative quantity")
       } else {
         new Promise((resolve, reject) => {
@@ -3284,4 +3472,17 @@ async function displayAddonsProducts(){
     });
     document.dispatchEvent(allProductsLoaded);
 }
+  window.addEventListener('scroll', function () {
+    // debugger;
+  const footer = document.querySelector('.step-4-footer');
+  const scrollPosition = window.scrollY || window.pageYOffset;
+
+  // Adjust this threshold based on where you want to trigger stickiness
+  if (scrollPosition > 50) {
+    footer.style.display= 'fixed';
+  } else {
+    footer.style.display= 'block';
+  }
+});
+
 </script>

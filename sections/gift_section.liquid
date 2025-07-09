@@ -1,66 +1,66 @@
 <style>
-  .gift_section {
-  display: none; }
+   .gift_section {
+   display: none; }
 
-  .collection-raksha_bandhan .gift_section{
-     display: block;
-        overflow: auto;
-    padding-bottom: 10px !important;
-    padding-top: 15px !important;
-  }
-
-  .collection-raksha_bandhan .gift_section .gift_inner_sec {
-      display: flex;
-     justify-content: center;
-      padding-left: 0px;
-    margin-left: 0;
-    margin-right: 0;}
-  @media (min-width: 0px) and (max-width: 767px) {
-    .gift_section {
+   .collection-raksha_bandhan .gift_section{
       display: block;
-        overflow: auto;
-    padding-bottom: 10px !important;
-    padding-top: 15px !important;}
-
- .gift_section::-webkit-scrollbar{
-    height:0px;    
-  }
-    
-  .gift_section .gift_inner_sec::-webkit-scrollbar{
-    height:1px;    
-  }
-   .gift_section .gift_inner_sec::-webkit-scrollbar-track{
-     box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+         overflow: auto;
+     padding-bottom: 10px !important;
+     padding-top: 15px !important;
    }
-  }
-  @media (min-width: 0px) and (max-width: 767px) {
-    .gift_section .gift_inner_sec {
-      display: -webkit-inline-box;
-      padding-left: 0px;
-      overflow-x: scroll;
-      padding-bottom: 10px;
-    margin-left: 0;
-    margin-right: 0;}
-      .gift_section .gift_inner_sec .gift_sec {
-        padding: 0 0px;
-        width:30%;
-      cursor:pointer;}
-        .gift_section .gift_inner_sec .gift_sec p {
-          font-weight:400;
-          text-align: center;
-          font-family: var(--font-text);
-          padding-top: 0px; 
-            margin: 0;
-          line-height:1.2;
-    font-size: 12px;
-    letter-spacing: 0;
-        width:85%;} }
-  .gift_section .gift_inner_sec .gift_sec img{
-    border-radius: 5px;
-    width:85%;
-  }
+
+   .collection-raksha_bandhan .gift_section .gift_inner_sec {
+       display: flex;
+      justify-content: center;
+       padding-left: 0px;
+     margin-left: 0;
+     margin-right: 0;}
+   @media (min-width: 0px) and (max-width: 767px) {
+     .gift_section {
+       display: block;
+         overflow: auto;
+     padding-bottom: 10px !important;
+     padding-top: 15px !important;}
+
+  .gift_section::-webkit-scrollbar{
+     height:0px;
+   }
+
+   .gift_section .gift_inner_sec::-webkit-scrollbar{
+     height:1px;
+   }
+    .gift_section .gift_inner_sec::-webkit-scrollbar-track{
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    }
+   }
+   @media (min-width: 0px) and (max-width: 767px) {
+     .gift_section .gift_inner_sec {
+       display: -webkit-inline-box;
+       padding-left: 0px;
+       overflow-x: scroll;
+       padding-bottom: 10px;
+     margin-left: 0;
+     margin-right: 0;}
+       .gift_section .gift_inner_sec .gift_sec {
+         padding: 0 0px;
+         width:30%;
+       cursor:pointer;}
+         .gift_section .gift_inner_sec .gift_sec p {
+           font-weight:400;
+           text-align: center;
+           font-family: var(--font-text);
+           padding-top: 0px;
+             margin: 0;
+           line-height:1.2;
+     font-size: 12px;
+     letter-spacing: 0;
+         width:85%;} }
+   .gift_section .gift_inner_sec .gift_sec img{
+     border-radius: 5px;
+     width:85%;
+   }
 </style>
-      
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -74,87 +74,90 @@
     }
   }
 {%- endstyle -%}
-      
-      <section class="gift_section page-width section_margin section-{{ section.id }}-padding">
-         <div class="gift_inner_sec">
-           {%- for block in section.blocks -%}
-            <div class="gift_sec {{ block.settings.city_hide }}" onclick="window.location.href='{{ block.settings.img_url }}';">
-               <img 
-                src="{{ block.settings.gift_img | img_url: '188x134' }}" 
-                srcset="{{ block.settings.gift_img | img_url: '188x134' }} 1x, 
-                        {{ block.settings.gift_img | img_url: '376x268' }} 2x"
-                alt="{{ block.settings.gift_title }}" 
-                loading="lazy"
-                width="94" 
-                height="67">
-               <p class="text_xs">{{ block.settings.gift_title }}</p>
-            </div>
-            {% endfor %} 
-         </div>
-      </section>
 
-
+<section class="gift_section page-width section_margin section-{{ section.id }}-padding">
+  <div class="gift_inner_sec">
+    {%- for block in section.blocks -%}
+      <div
+        class="gift_sec {{ block.settings.city_hide }}"
+        onclick="window.location.href='{{ block.settings.img_url }}';"
+      >
+        <img
+          src="{{ block.settings.gift_img | img_url: '188x134' }}"
+          srcset="
+            {{ block.settings.gift_img | img_url: '188x134' }} 1x,
+            {{ block.settings.gift_img | img_url: '376x268' }} 2x
+          "
+          alt="{{ block.settings.gift_title }}"
+          width="94"
+          height="67"
+        >
+        <p class="text_xs">{{ block.settings.gift_title }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
 
 {% schema %}
-  {
-    "name": "Gift Section",
-    "settings": [
-      {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 36
-    },
+{
+  "name": "Gift Section",
+  "settings": [
     {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 36
-    }
-    ],
-      "blocks": [
-        {
-          "type": "Text",
-          "name": "Text Block",
-          "settings":
-          [
-            {
-              "type": "text",
-              "id": "city_hide",
-              "label": "Add City Hide Class"
-            },
-            {
-              "type": "image_picker",
-              "id": "gift_img",
-              "label": "Add Gift Image"
-            },
-            {
-              "type": "text",
-              "id": "gift_title",
-              "label": "Add Gift Title"
-            },
-            {
-              "type": "url",
-              "id": "img_url",
-              "label": "Add Gift Link"
-            }
-          ]
-        }
-    ],
-   "presets": [
-      {
-        "name": "Gift Section"
-      }
-  ] 
+    "type": "range",
+    "id": "padding_top",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Padding Top",
+    "default": 36
+  },
+  {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Padding Bottom",
+    "default": 36
   }
+  ],
+    "blocks": [
+      {
+        "type": "Text",
+        "name": "Text Block",
+        "settings":
+        [
+          {
+            "type": "text",
+            "id": "city_hide",
+            "label": "Add City Hide Class"
+          },
+          {
+            "type": "image_picker",
+            "id": "gift_img",
+            "label": "Add Gift Image"
+          },
+          {
+            "type": "text",
+            "id": "gift_title",
+            "label": "Add Gift Title"
+          },
+          {
+            "type": "url",
+            "id": "img_url",
+            "label": "Add Gift Link"
+          }
+        ]
+      }
+  ],
+ "presets": [
+    {
+      "name": "Gift Section"
+    }
+]
+}
 {% endschema %}
 
 {% stylesheet %}

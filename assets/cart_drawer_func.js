@@ -134,10 +134,13 @@ function hasBlankFields() {
   
 
     $(".add-to-cart-button").on("click", function(event) {
+      // debugger;
      // code star by dev NR
         var newProdTags = $(".hidden_tag").val();
           if(newProdTags.toLowerCase().includes("custom_game_set") && hasBlankFields()==true){
+            $(".custom_game_input").focus();
             return $(".lt_error_text").text("Please fill up the questionaire. ");
+            
           }
       // code end
         $(".lt_error_text").text("");
@@ -179,13 +182,48 @@ function hasBlankFields() {
         var product_name = $('.product__title h1').html();
         var pd_quantity = $('.product_quantity_input_pdp').val() || 1;
         var custom_game_text = $('.custom_game_input').val();
-      
+      var fileInput = $("#custom_photo")[0]; // Get the DOM element from jQuery
+var image_upload=false;
+      const Image_upload_mandatory = $('p.product_tags').text().includes('photo_upload_field');
+if (fileInput && fileInput.files.length > 0) {
+  
+    var file = fileInput.files[0];
+    var allowedTypes = ['image/jpeg', 'image/png'];
+    var maxSize = 1 * 1024 * 1024; // 1MB
+ 
+// Remove any previous error
+$(".custom_photo_error_txt").remove();
+    if (!allowedTypes.includes(file.type)) {
+        $("#custom_photo")[0].focus();
+        $('<span class="custom_photo_error_txt lt_error_text">Please upload a valid image (JPEG, JPG or PNG only).</span>').insertAfter($(".image_input"));
+        $(".add-to-cart-button").removeAttr("disabled");
+        $(".add-to-cart-button .custom_spinner").css("display", "none");
+        return false;
+    }
+    if (file.size > maxSize) {
+        $("#custom_photo")[0].focus();
+      $('<span class="custom_photo_error_txt lt_error_text">Image size must be less than 1 MB.</span>').insertAfter($(".image_input"));
+        $(".add-to-cart-button").removeAttr("disabled");
+        $(".add-to-cart-button .custom_spinner").css("display", "none");
+        return false;
+    }
+  image_upload=true;
+}
+else if(Image_upload_mandatory){
+$(".custom_photo_error_txt").remove();
+        $("#custom_photo")[0].focus();
+        $('<span class="custom_photo_error_txt lt_error_text">Please upload a image (JPEG, JPG or PNG only).</span>').insertAfter($(".image_input"));
+  $(".add-to-cart-button").removeAttr("disabled");
+        $(".add-to-cart-button .custom_spinner").css("display", "none");
+  return false;
+}
 
         var pincode_val = $("#pincode_input").val();
        var delivery_date_val = $("#delivery-date-5").val();
         var product_warehouse = $("#product_warehouse").val();
         var product_warehouse_available_quantity = $("#product_warehouse_available_quantity").val();
         var product_warehouse_tat = $("#product_warehouse_tat").val();
+        var total_product_tat = $("#total_product_tat").val();
         var time_slot = $('#time-slot').val();
     
         var pd_json_property_val = {};
@@ -195,6 +233,7 @@ function hasBlankFields() {
            pushPincodeEnteredEvent(0,'Please fill Pincode value! it is required');
            $('.pincode_txt').html("<span class='red_txt'>Please fill Pincode value! it is required. </span>").removeClass('valid').addClass('invalid');
             // $(".lt_error_text").text("Please fill Pincode value! it is required. ");
+          $("#pincode_input").focus();
             $(".add-to-cart-button").removeAttr("disabled");
             $(".add-to-cart-button .custom_spinner").css("display", "none");
           // scroll to pincode input field if empty
@@ -206,6 +245,7 @@ function hasBlankFields() {
             $('.pincode_txt').html("<span class='red_txt'>Enter a Valid Pincode</span>").removeClass('valid').addClass('invalid');
             $(".add-to-cart-button").removeAttr("disabled");
             $(".add-to-cart-button .custom_spinner").css("display", "none");
+          $("#pincode_input").focus();
             
             $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
             $('.pincode_btn button').attr('disabled', true);
@@ -215,14 +255,17 @@ function hasBlankFields() {
             return false;
         }
         pd_json_property_val["Pincode"] = pincode_val;
-        pd_json_property_val["product_warehouse_tat"] = product_warehouse_tat;
+        pd_json_property_val["_product_warehouse_tat"] = product_warehouse_tat;
+        pd_json_property_val["_product_tat"] = total_product_tat;
         pd_json_property_val["Delivery Time Slot"] = time_slot;
-        pd_json_property_val["product_warehouse"] = product_warehouse;
-        pd_json_property_val["product_warehouse_available_quantity"] = product_warehouse_available_quantity;
+        pd_json_property_val["_product_warehouse"] = product_warehouse;
+        pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
       
       
         if (delivery_date_val == "") {
             $(".lt_error_text").text("Please Choose Delivery date value! it is required. ");
+          $("#delivery-date-5").focus();
+          
             $(".add-to-cart-button").removeAttr("disabled");
             $(".add-to-cart-button .custom_spinner").css("display", "none");
             return false;
@@ -232,9 +275,12 @@ function hasBlankFields() {
         if ($("#balloon-customisation-txt").length == 1) {
             var ballon_customisation_val = $("#balloon-customisation-txt").val();
             if (ballon_customisation_val == "") {
+              
                 $(".lt_error_text").text("Please Add Ballon customization value! it is required. ");
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
+          $("#balloon-customisation-txt").focus();
+              
                 return false;
             }
             pd_json_property_val["Balloon customization text"] = ballon_customisation_val;
@@ -243,6 +289,8 @@ function hasBlankFields() {
             var cake_message_val = $("#cake-message").val();
             if (cake_message_val == "") {
                 $(".lt_error_text").text("Please Enter cake customization value! it is required. ");
+                $("#cake-message").focus();
+              
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -263,6 +311,7 @@ function hasBlankFields() {
             var gift_carnation_message_val = $("#gift_carnation-message").val();
             if (gift_carnation_message_val == "") {
                 $(".lt_error_text").text("Please Enter gift customization value! it is required. ");
+                        $("#gift_carnation-message").focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -273,6 +322,7 @@ function hasBlankFields() {
             var giftees_name_val = $("#giftees-name").val();
             if (giftees_name_val == "") {
                 $(".lt_error_text").text("Please Enter Giftees name! it is required. ");
+                        $("#giftees-name").focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -283,6 +333,7 @@ function hasBlankFields() {
             var giftees_email_val = $("#giftees-email").val();
             if (giftees_email_val == "") {
                 $(".lt_error_text").text("Please Enter Giftees email! it is required. ");
+                        $("#giftees-email").focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -293,6 +344,7 @@ function hasBlankFields() {
             var giftees_number_val = $("#giftees-number").val();
             if (giftees_number_val == "") {
                 $(".lt_error_text").text("Please Enter Giftees number! it is required. ");
+                $("#giftees-number").focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -303,6 +355,7 @@ function hasBlankFields() {
             var customisation_digit_val = $("#customisation-digit").val();
             if (customisation_digit_val == "") {
                 $(".lt_error_text").text("Please Enter Customization Digit Value! it is required.");
+                $("#customisation-digit").focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
@@ -314,6 +367,7 @@ function hasBlankFields() {
             var customisation_color_val = $("input[name='color_product_id']:checked").val();
         var customisation_sku_val = $("input[name='color_product_id']:checked").data('sku');
             if (customisation_color_val == "") {
+                $("input[name='color_product_id']:checked").focus();
                 $(".lt_error_text").text("Please Select Box Color! it is required.");
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
@@ -327,6 +381,7 @@ function hasBlankFields() {
             if (your_message_val == "") {
                 $(".lt_error_text").text("Please Add Your Message value! it is required. ");
                 $(".add-to-cart-button").removeAttr("disabled");
+                $("#your-message").focus();
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
             }
@@ -337,6 +392,7 @@ function hasBlankFields() {
             if (your_spacial_date_val == "") {
                 $(".lt_error_text").text("Please Add Your Spacial Date value! it is required. ");
                 $(".add-to-cart-button").removeAttr("disabled");
+                $("#your-spacial-date").focus();
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
             }
@@ -348,6 +404,7 @@ function hasBlankFields() {
                 $(".lt_error_text").text("Please Add Time value! it is required. ");
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
+                $("#time").focus();
                 return false;
             }
             pd_json_property_val["Time"] = time_val;
@@ -358,6 +415,8 @@ function hasBlankFields() {
                 $(".lt_error_text").text("Please Add Location value! it is required. ");
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
+                $("#location").focus();
+    
                 return false;
             }
             pd_json_property_val["Location"] = location_val;
@@ -541,6 +600,17 @@ function hasBlankFields() {
 
         function addItemToCart() {
 
+          var timestamp=istTime.toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
           // code start by NR
           $(".ans_sec textarea").each(function() {
             var property_Names = $(this).attr("name");
@@ -555,7 +625,10 @@ function hasBlankFields() {
                     items: [{
                         "id": product_id,
                         "quantity": pd_quantity,
-                        "properties": pd_json_property_val
+                        "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
                     }]
                 }
             } else if ((gift_product_id != "" || gift_product_id != undefined) && (sleeve_product_id == "" || sleeve_product_id == undefined)) {
@@ -571,7 +644,10 @@ function hasBlankFields() {
                         {
                             "id": product_id,
                             "quantity": pd_quantity,
-                            "properties": pd_json_property_val
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
                         }
                     ]
 
@@ -588,7 +664,10 @@ function hasBlankFields() {
                         {
                             "id": product_id,
                             "quantity": pd_quantity,
-                            "properties": pd_json_property_val
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
                         }
                     ]
 
@@ -613,7 +692,10 @@ function hasBlankFields() {
                         {
                             "id": product_id,
                             "quantity": pd_quantity,
-                            "properties": pd_json_property_val
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
                         }
                     ]
 
@@ -692,12 +774,15 @@ function hasBlankFields() {
                        $("#giftees-number").val("");
                         $("#gift_card_msg").val("");
 
+
                         $(".add-to-cart-button").removeAttr("disabled");
                         $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
                             $(".add-to-cart-button .custom_spinner").css("display", "none");
                             //velocity: 17-07-2024 Function to send the event to send the side drawer open event to GTM
                             handleCartDrawer();
-                          
+                                                // Added code to hide the zohodesk chat support icon on cart drawer open
+                          var $zsiqFloat = $('.zsiq-float');
+$zsiqFloat.css('display', 'none');
                             $("cart-drawer.drawer").addClass("active");
                             if($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
                               setTimeout(function(){location.reload()},900);
@@ -715,6 +800,10 @@ function hasBlankFields() {
                                     $(this).removeClass('content_hidden');
                                 }
                             });
+// velocity: 01-06-2025 Updated delivery date and time slot when delivery date and time slot expired.        
+                          
+      validateDeliveryDates();
+                          
                         }, 500);
                         // Code end by NR
 
@@ -733,18 +822,60 @@ function hasBlankFields() {
         }
 
 
+          function ImageUpload(){
+                
+  const formData = new FormData();
+  formData.append('file', file); 
+  $.ajax({
+    type: 'POST',
+    url: 'https://tgs.velsof.com/upload_image',
+    data: formData,
+    dataType: 'json',
+    processData: false, // Required for FormData
+    contentType: false, // Required for FormData
+     headers: {
+                    "x-api-key": "339308f5c7eac7cdaffd9646d61109a7"
+                },
+    success: function(response) {
+      if (response.status === true) {
+      const uploadedImageURL = response.file_url;
+        console.log('Image uploaded:', uploadedImageURL);
+        // debugger;
+        pd_json_property_val["Image"] = uploadedImageURL;
+        
+          addItemToCart();
+        
+      } else {
+        console.error('Upload failed:', response.message);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error('AJAX error:', error);
+    }
+  });
+  }
 
         if (gift_product_id == "" || gift_product_id == undefined) {
+      if(image_upload == true){
+        ImageUpload();
+      }else{
             addItemToCart();
+      }
         } else {
             if (card_msg == "") {
                 // $('.card_msg_error').text("Please fill this field, it is required !");
                 $(".lt_error_text").text("Please fill 'Message on card' field, it is required !");
+              $('#gift_card_msg').focus();
                 $(".add-to-cart-button").removeAttr("disabled");
                 $(".add-to-cart-button .custom_spinner").css("display", "none");
                 return false;
-            } else {
-                addItemToCart();
+            }
+            else {
+                 if(image_upload == true){
+            ImageUpload();
+            }else{
+            addItemToCart();
+            }
             }
         }
 

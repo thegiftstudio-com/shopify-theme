@@ -12,10 +12,12 @@ class CartDrawer extends HTMLElement {
     const cartLink = document.querySelector('#cart-icon-bubble');
     const cartLink1 = document.querySelector('#cart-icon-bubble-1');
 
-    if (!cartLink) {
+    if (cartLink) {
         cartLink.setAttribute('role', 'button');
         cartLink.setAttribute('aria-haspopup', 'dialog');
         cartLink.addEventListener('click', (event) => {
+         validateDeliveryDates();
+          
             event.preventDefault();
             this.open(cartLink);
         });
@@ -28,10 +30,13 @@ class CartDrawer extends HTMLElement {
     }
 
     if (cartLink1) {
+      
             cartLink1.setAttribute('role', 'button');
             cartLink1.setAttribute('aria-haspopup', 'dialog');
             
             cartLink1.addEventListener('click', (event) => {
+      validateDeliveryDates();
+              
                 event.preventDefault();
                 this.open(cartLink1);
             });
@@ -46,6 +51,8 @@ class CartDrawer extends HTMLElement {
 }
 
   open(triggeredBy) {
+    var $zsiqFloat = $('.zsiq-float');
+$zsiqFloat.css('display', 'none');
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
@@ -62,6 +69,8 @@ class CartDrawer extends HTMLElement {
   }
 
   close() {
+    var $zsiqFloat = $('.zsiq-float');
+$zsiqFloat.css('display', 'block');
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');

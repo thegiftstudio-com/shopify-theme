@@ -1,124 +1,317 @@
-
-
-
-  
 {% render 'delivery_date' %}
 
 <!-- Code start by NR -->
-<input class="hidden_tag" type="hidden" value="{{ product.tags }}" />
+<input class="hidden_tag" type="hidden" value="{{ product.tags }}">
 <!-- code end -->
 
 {% if product.tags contains 'message_on_cake' %}
-<p class="line-item-property__field">
-  <label for="cake-message">Message on Cake:</label><br>
-<textarea class="error-message cm-common-input" id="cake-message" name="properties[Message on Cake]" maxlength="100"></textarea>
-</p>
-  
-  {% endif %}
-
+  <p class="line-item-property__field">
+    <label for="cake-message">Message on Cake:</label><br>
+    <textarea
+      class="error-message cm-common-input"
+      id="cake-message"
+      name="properties[Message on Cake]"
+      maxlength="100"
+    ></textarea>
+  </p>
+{% endif %}
 
 {% if product.tags contains 'cake_message_new' %}
-<p class="line-item-property__field">
-  <label for="cake-message-new">Message:</label><br>
-<textarea class="error-message cm-common-input" id="cake-message-new" name="properties[Message]" maxlength="100"></textarea>
-</p>
-  
-  {% endif %}
+  <p class="line-item-property__field">
+    <label for="cake-message-new">Message:</label><br>
+    <textarea
+      class="error-message cm-common-input"
+      id="cake-message-new"
+      name="properties[Message]"
+      maxlength="100"
+    ></textarea>
+  </p>
+{% endif %}
 
-
-  {% if product.tags contains 'message_on_gift_carnation' %}
-<p class="line-item-property__field">
-  <label for="gift_carnation-message">Message on Card:</label><br>
-<textarea class="error-message cm-common-input" id="gift_carnation-message" name="properties[Message on Card]" maxlength="100" required></textarea>
-</p>
-  
-  {% endif %}
-
-
+{% if product.tags contains 'message_on_gift_carnation' %}
+  <p class="line-item-property__field">
+    <label for="gift_carnation-message">Message on Card:</label><br>
+    <textarea
+      class="error-message cm-common-input"
+      id="gift_carnation-message"
+      name="properties[Message on Card]"
+      maxlength="100"
+      required
+    ></textarea>
+  </p>
+{% endif %}
 
 {% if product.tags contains 'balloon_msg_text' %}
-<p class="line-item-property__field">
-  <label for="balloon-customisation-txt">Add Balloon customization text:</label><br>
-<textarea class="error-message cm-common-input" id="balloon-customisation-txt" name="properties[Add Balloon customization text]" maxlength="20" required></textarea>
-</p>
-  {% endif %}
+  <p class="line-item-property__field">
+    <label for="balloon-customisation-txt">Add Balloon customization text:</label><br>
+    <textarea
+      class="error-message cm-common-input"
+      id="balloon-customisation-txt"
+      name="properties[Add Balloon customization text]"
+      maxlength="20"
+      required
+    ></textarea>
+  </p>
+{% endif %}
 
 {% if product.tags contains 'number_field' %}
   <p class="line-item-property__field">
-  <label for="customisation-digit">Add Digits:</label><br>
-<input class="error-message cm-common-input" required id="customisation-digit" type="number" name="properties[Add Digits]" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==2) return false;">
+    <label for="customisation-digit">Add Digits:</label><br>
+    <input
+      class="error-message cm-common-input"
+      required
+      id="customisation-digit"
+      type="number"
+      name="properties[Add Digits]"
+      pattern="/^-?\d+\.?\d*$/"
+      onKeyPress="if(this.value.length==2) return false;"
+    >
   </p>
-    {% endif %}
+{% endif %}
 
-    {% if product.tags contains 'photo_upload_field'  %}
-     <p class="line-item-property__field">
-<label for="custom_photo">Add customization photo</label><br>
-<input class="error-message cm-common-input" required id="custom_photo" type="file" name="properties[Add cake customization photo]"><br>
-     <input type="reset" value="Remove Image" class="reset_btn">
-</p>    
-     {% endif %}
+{% if product.tags contains 'photo_upload_field' or product.tags contains 'photo_upload_optional' %}
+  <p class="line-item-property__field">
+    <div class="image-container">
+      <label for="custom_photo">Upload Photo (It Will Be Printed on the Frame)</label><br>
+      <div class="image_input">
+        <input
+          class="error-message cm-common-input"
+          accept=".jpeg,.jpg,.png"
+          required
+          id="custom_photo"
+          type="file"
+          name="properties[Add cake customization photo]"
+          onchange="handleImageSelect(event)"
+        >
+        <span
+          id="removeImageIcon"
+          onclick="resetImage()"
+        >
+          ×
+        </span>
+        <div class="image-upload-popup" style="top: 35px; left: 0px;">
+          <p>
+            File type must be JPEG, JPG, or PNG.<br>
+            File size must be less than 1MB.
+          </p>
+        </div>
+      </div>
+    </div>
+  </p>
+{% endif %}
 
-      {% if product.tags contains "Gift-Card" %}
-<p class="line-item-property__field">
-        <label for="giftees-name">Enter Giftees Name:</label><br>         
-        <input class="error-message cm-common-input" id="giftees-name" type="text" name="properties[Enter Giftees Name]" required><br><br>
-     </p>
-       <p class="line-item-property__field custom-field">
-        <label for="giftees-email">Enter Giftees Email:</label><br>
-        <input class="error-message cm-common-input" id="giftees-email" type="text" name="properties[Enter Giftees Email]" required><br><br>
-     	   
-     </p>
-        <p class="line-item-property__field custom-field">
-        <label for="giftees-number">Enter Giftees Number:</label><br>
-          <input class="error-message cm-common-input" required id="giftees-number" type="number" name="properties[Enter Giftees Number]" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
- 
-        </p>
-        {% endif %}
+{% if product.tags contains 'Gift-Card' %}
+  <p class="line-item-property__field">
+    <label for="giftees-name">Enter Giftees Name:</label><br>
+    <input
+      class="error-message cm-common-input"
+      id="giftees-name"
+      type="text"
+      name="properties[Enter Giftees Name]"
+      required
 
+    ><br>
+    <br>
+  </p>
+  <p class="line-item-property__field custom-field">
+    <label for="giftees-email">Enter Giftees Email:</label><br>
+    <input
+      class="error-message cm-common-input"
+      id="giftees-email"
+      type="text"
+      name="properties[Enter Giftees Email]"
+      required
+
+    ><br>
+    <br>
+  </p>
+  <p class="line-item-property__field custom-field">
+    <label for="giftees-number">Enter Giftees Number:</label><br>
+    <input
+      class="error-message cm-common-input"
+      required
+      id="giftees-number"
+      type="number"
+      name="properties[Enter Giftees Number]"
+      pattern="/^-?\d+\.?\d*$/"
+      onKeyPress="if(this.value.length==10) return false;"
+    >
+  </p>
+{% endif %}
 
 {% if product.tags contains 'outbox_products' %}
   <div class="outbox_products">
     <div style="margin:0 auto;" class="pxFormGenerator" id="hVoDwPMpZgpAQaaAYCZSBA"></div>
   </div>
+{% endif %}
 
-  {% endif %}
-
-  
-
-
- {% if product.tags contains 'custom_game_set'  %}
-     {% render 'custom_game' %} 
-     {% endif %}
- <!-- New Code Start -->
+{% if product.tags contains 'custom_game_set' %}
+  {% render 'custom_game' %}
+{% endif %}
+<!-- New Code Start -->
 {% if product.tags contains 'your-message' %}
   <div class="custom_game">
-   <p class="main_ques"> Please fill up the questionaire</p>
-  <div class="ques_ans">
-    
-  <p class="line-item-property__field">
-<label for="your-message">Your Message</label>
-    <input class="error-message cm-common-input" required id="your-message" type="text" maxlength="50" name="properties[Your Message]" placeholder="Enter your message here">
-<!-- <textarea class="error-message cm-common-input" id="your-message" name="properties[Your Message]" maxlength="50" required placeholder="Enter your message here"></textarea> -->
-</p>
-<p class="line-item-property__field">
-<label for="your-spacial-date">Your Special Date</label>
-<input class="error-message cm-common-input" required id="your-spacial-date" type="date" name="properties[Your Special Date]" placeholder="Select a date">
-</p>
-<p class="line-item-property__field">
-<label for="time">Time</label>
-<input class="error-message cm-common-input" required id="time" type="time" name="properties[Time]" placeholder="Select a time">
-</p>
-<p class="line-item-property__field">
-<label for="location">Location</label>
-<input class="error-message cm-common-input" required id="location" type="text" name="properties[Location]" placeholder="City & State">
-</p>
-
-  </div>
+    <p class="main_ques">Please fill up the questionaire</p>
+    <div class="ques_ans">
+      <p class="line-item-property__field">
+        <label for="your-message">Your Message</label>
+        <input
+          class="error-message cm-common-input"
+          required
+          id="your-message"
+          type="text"
+          maxlength="50"
+          name="properties[Your Message]"
+          placeholder="Enter your message here"
+        >
+        <!--
+          <textarea class="error-message cm-common-input" id="your-message" name="properties[Your Message]" maxlength="50" required placeholder="Enter your message here"></textarea>
+        -->
+      </p>
+      <p class="line-item-property__field">
+        <label for="your-spacial-date">Your Special Date</label>
+        <input
+          class="error-message cm-common-input"
+          required
+          id="your-spacial-date"
+          type="date"
+          name="properties[Your Special Date]"
+          placeholder="Select a date"
+        >
+      </p>
+      <p class="line-item-property__field">
+        <label for="time">Time</label>
+        <input
+          class="error-message cm-common-input"
+          required
+          id="time"
+          type="time"
+          name="properties[Time]"
+          placeholder="Select a time"
+        >
+      </p>
+      <p class="line-item-property__field">
+        <label for="location">Location</label>
+        <input
+          class="error-message cm-common-input"
+          required
+          id="location"
+          type="text"
+          name="properties[Location]"
+          placeholder="City & State"
+        >
+      </p>
+    </div>
   </div>
 {% endif %}
 <!-- New Code End -->
 
-     {% render 'sleeve_card_section' %}
+{% render 'sleeve_card_section' %}
+<style>
+  #custom_photo{
+    width:185px;
+    padding-left: 4px;
+  }
+  .image-container{
+    position:relative;
+    margin-bottom: 15px;
+  }
+    .image-upload-popup {
+      height:max-content;
+      position: absolute;
+      max-height: -moz-max-content;
+      max-height: max-content;
+      bottom: 30px;
+      right: 0px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      color: #555;
+      width: 236px;
+      font-weight:bold;
+      max-height: 160px;
+      overflow-y: auto;
+      display: none;
+      z-index: 10;
+  }
+  .image_input{
+    display:flex;
+    align-items:center;
+    height:33px;
 
+    position: relative;
+    border-radius: 5px;
 
-     
+    margin-top: 10px;
+    width: 205px;
+  }
+  #removeImageIcon{
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    line-height:0px;
+      font-size: 25px;
+
+    top: 15px;
+    right: 0px;
+    font-weight: bold;
+    color: gray;
+    background: #F4F4F4;
+    border-radius: 50%;
+
+  }
+</style>
+<script>
+  function handleImageSelect(event) {
+      const input = event.target;
+      const file = input.files[0];
+      const icon = document.getElementById("removeImageIcon");
+
+      if (file) {
+        icon.style.display = "inline";
+      } else {
+        icon.style.display = "none";
+      }
+    var allowedTypes = ['image/jpeg', 'image/png','image/jpg'];
+      const MAX_SIZE_MB = 1;
+
+     const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
+  if (file) {
+      // const fileSizeMB = file.size / (1024 * 1024); // Convert to MB
+      $(".custom_photo_error_txt").remove(); // Remove previous error messages
+
+      if (!allowedTypes.includes(file.type)) {
+          $('<span class="custom_photo_error_txt lt_error_text">Please upload a valid image (JPEG, JPG or PNG only).</span>')
+              .insertAfter($(".image_input"));
+          $(".add-to-cart-button").removeAttr("disabled");
+          $(".add-to-cart-button .custom_spinner").hide();
+          return false;
+      }
+      if (file.size > MAX_SIZE_BYTES) {
+          $('<span class="custom_photo_error_txt lt_error_text">Image size must be less than 1 MB.</span>')
+              .insertAfter($(".image_input"));
+          $(".add-to-cart-button").removeAttr("disabled");
+          $(".add-to-cart-button .custom_spinner").hide();
+          return false;
+      }
+  }
+    }
+  function resetImage() {
+
+    document.getElementById('custom_photo').value = '';
+    $(".custom_photo_error_txt").remove();
+   $('#removeImageIcon').css('display', 'none');
+  }
+  $(document).ready(function () {
+    $(".image_input").on("mouseenter", function () {
+      $(this).find(".image-upload-popup").css("display", "block");
+    }).on("mouseleave", function () {
+      $(this).find(".image-upload-popup").css("display", "none");
+    });
+
+  });
+</script>

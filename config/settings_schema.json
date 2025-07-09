@@ -1557,5 +1557,18 @@
         "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
       }
     ]
-  }
+  },
+  {
+  "name": "Sunday Delivery",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sunday_delivery",
+      "label": "Enable Sunday Delivery",
+      "default": false
+    }
+  ]
+}
 ]
+
+

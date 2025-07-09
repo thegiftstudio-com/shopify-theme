@@ -124,6 +124,7 @@
 <script>
   // velocity 09-10-2024: defined the current variant id for pincode check
   window.currentVariantId = {{ product.selected_or_first_available_variant.id }};
+    window.currentVariantMedia= '{{ product.selected_or_first_available_variant.featured_media.id }}';
 
 // Added by Velocity Support on 02-01-2025 to handle the inventory check on the Product page for the variant
   window.product_variants = [];

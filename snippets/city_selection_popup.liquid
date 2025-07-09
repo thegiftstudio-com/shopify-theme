@@ -100,7 +100,8 @@
 <script>
  
 
-      function cityChange(city, location, tat, isPerishable, pincode) {
+      function cityChange(city, location, tat, isPerishable, pincode,warehouseTAT) {
+        localStorage.setItem("warehouseTAT", JSON.stringify(warehouseTAT));
   $('#citySelected')
     .attr('data-city', city)
     .attr('data-location-tag', location)
@@ -148,7 +149,7 @@ if (!isNaN(pincode_val)) {
 
         $.ajax({
             type: 'POST',
-            url: 'https://hampers.tinglabs.in/pincode_suggestion',
+            url: 'https://tgs.velsof.com/pincode_suggestion',
             data: data,
             dataType: 'json',
             headers: {
@@ -166,7 +167,7 @@ if (!isNaN(pincode_val)) {
                         return `
                             <li>
                                 <a href="#" class="${cityId}-city-selection" 
-                                   onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
+                                   onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}",${JSON.stringify(item.warehouse_tat).replace(/"/g, '&quot;')})'>
                                    ${item.pincode}, ${item.city}
                                 </a>
                             </li>
@@ -227,7 +228,7 @@ if (!isNaN(pincode_val)) {
         // Check if pincode is numeric and at least 4 digits (for suggestions)
             $.ajax({
                 type: 'POST',
-                url: 'https://hampers.tinglabs.in/pincode_suggestion',
+                url: 'https://tgs.velsof.com/pincode_suggestion',
                 data: data,
                 dataType: 'json',
                 headers: {
@@ -245,7 +246,7 @@ if (!isNaN(pincode_val)) {
                             return `
                                 <li>
                                     <a href="#" class="${cityId}-city-selection" 
-                                       onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
+                                       onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}", ${JSON.stringify(item.warehouse_tat).replace(/"/g, '&quot;')})'>
                                        ${item.pincode}, ${item.city}
                                     </a>
                                 </li>

@@ -1,0 +1,80 @@
+{% comment %}
+  Section: Collection Description
+  Purpose: Display collection description using a metaobject selected via Theme Editor.
+{% endcomment %}
+{% if section.settings.collection_description_ref and section.settings.collection_description_ref != blank %}
+  <div class="collection-description-container">
+    <div class="collection page-width">
+      <div id="content" class="collection-description-content">
+        {{ section.settings.collection_description_ref }}
+      </div>
+      <button id="toggleBtn" class="show-more-btn">SHOW MORE</button>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .collection-description-container {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+
+    /* font-family: 'Helvetica Neue', sans-serif; */
+  }
+  .collection-description-content {
+
+    line-height: 1.6;
+    font-weight:100;
+    max-height: 300px; /* initial collapsed height */
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+  }
+    .expanded {
+      max-height: max-content; /* adjust based on content */
+    }
+
+    .show-more-btn {
+      margin: 10px;
+      padding: 6px 16px;
+      cursor: pointer;
+      border: 1px solid #333;
+      border-radius:5px;
+      background-color: white;
+      margin-left:0;
+    }
+
+
+  .collection-description-placeholder {
+    color: #999;
+    font-style: italic;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Description",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "collection_description_ref",
+      "label": "Collection Description",
+
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Description"
+    }
+  ]
+}
+{% endschema %}
+<script>
+  const content = document.getElementById("content");
+  const toggleBtn = document.getElementById("toggleBtn");
+
+  toggleBtn.addEventListener("click", function () {
+    content.classList.toggle("expanded");
+    toggleBtn.textContent = content.classList.contains("expanded") ? "SHOW LESS" : "SHOW MORE";
+  });
+</script>

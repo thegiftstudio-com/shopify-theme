@@ -103,73 +103,77 @@
     >
   {%- endif -%}
   {% assign gurgaon_variant_inventory = product.metafields.custom.gurgaon_variant_inventory %}
-{% assign kolkata_variant_inventory = product.metafields.custom.kolkata_variant_inventory %}
-{% assign mumbai_variant_inventory = product.metafields.custom.mumbai_variant_inventory %}
-{% assign bangalore_variant_inventory = product.metafields.custom.bangalore_variant_inventory %}
+  {% assign kolkata_variant_inventory = product.metafields.custom.kolkata_variant_inventory %}
+  {% assign mumbai_variant_inventory = product.metafields.custom.mumbai_variant_inventory %}
+  {% assign bangalore_variant_inventory = product.metafields.custom.bangalore_variant_inventory %}
 
-  
- {% assign locations = "gurgaon,kolkata,mumbai,bangalore" | split: ',' %}
-              {% assign number = 0 %}
-
-{% if product.tags contains 'same-day' and product.tags contains 'location-roi' %}
-  {% assign number = 5 %}
-{% elsif product.tags contains 'same-day' %}
+  {% assign locations = 'gurgaon,kolkata,mumbai,bangalore' | split: ',' %}
   {% assign number = 0 %}
-{% elsif product.tags contains '1-day' %}
-  {% assign number = 1 %}
-{% elsif product.tags contains '2-days' %}
-  {% assign number = 2 %}
-{% elsif product.tags contains '3-days' %}
-  {% assign number = 3 %}
-{% elsif product.tags contains '4-days' %}
-  {% assign number = 4 %}
-{% elsif product.tags contains '5-days' %}
-  {% assign number = 5 %}
-{% elsif product.tags contains '6-days' %}
-  {% assign number = 6 %}
-{% elsif product.tags contains '7-days' %}
-  {% assign number = 7 %}
-{% elsif product.tags contains '8-days' %}
-  {% assign number = 8 %}
-{% elsif product.tags contains '10-days' %}
-  {% assign number = 10 %}
-{% elsif product.tags contains '12-days' %}
-  {% assign number = 12 %}
-{% elsif product.tags contains '13-days' %}
-  {% assign number = 13 %}
-{% elsif product.tags contains '7PM-Order' %}
-  {% assign number = -7 %}
-{% elsif product.tags contains '4PM-Order' %}
-  {% assign number = -4 %}
+
+  {% if product.tags contains 'same-day' and product.tags contains 'location-roi' %}
+    {% assign number = 5 %}
+  {% elsif product.tags contains 'same-day' %}
+    {% assign number = 0 %}
+  {% elsif product.tags contains '1-day' %}
+    {% assign number = 1 %}
+  {% elsif product.tags contains '2-days' %}
+    {% assign number = 2 %}
+  {% elsif product.tags contains '3-days' %}
+    {% assign number = 3 %}
+  {% elsif product.tags contains '4-days' %}
+    {% assign number = 4 %}
+  {% elsif product.tags contains '5-days' %}
+    {% assign number = 5 %}
+  {% elsif product.tags contains '6-days' %}
+    {% assign number = 6 %}
+  {% elsif product.tags contains '7-days' %}
+    {% assign number = 7 %}
+  {% elsif product.tags contains '8-days' %}
+    {% assign number = 8 %}
+  {% elsif product.tags contains '10-days' %}
+    {% assign number = 10 %}
+  {% elsif product.tags contains '12-days' %}
+    {% assign number = 12 %}
+  {% elsif product.tags contains '13-days' %}
+    {% assign number = 13 %}
+  {% elsif product.tags contains '7PM-Order' %}
+    {% assign number = -7 %}
+  {% elsif product.tags contains '4PM-Order' %}
+    {% assign number = -4 %}
   {% elsif product.tags contains '3PM-Order' %}
-  {% assign number = -3 %}
-   {% elsif product.tags contains '2PM-Order' %}
-  {% assign number = -2 %}
-{% endif %}
+    {% assign number = -3 %}
+  {% elsif product.tags contains '2PM-Order' %}
+    {% assign number = -2 %}
+  {% endif %}
 
-<input type="hidden" class="product_tat" value="{{ number }}" />
- <p class="product_tags" style="display:none;">
-  {{ product.tags | join: ", " }}
-</p>
+  <input type="hidden" class="product_tat" value="{{ number }}">
+  <p class="product_tags" style="display:none;">
+    {{ product.tags | join: ', ' }}
+  </p>
 
-{% for location in locations %}
-    {% if location == "gurgaon" %}
-        {% assign inventory_data = gurgaon_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
-    {% elsif location == "kolkata" %}
-        {% assign inventory_data = kolkata_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
-    {% elsif location == "mumbai" %}
-        {% assign inventory_data = mumbai_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
-       {% elsif location == "bangalore" %}
-        {% assign inventory_data = bangalore_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
+  {% for location in locations %}
+    {% if location == 'gurgaon' %}
+      {% assign inventory_data = gurgaon_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
+    {% elsif location == 'kolkata' %}
+      {% assign inventory_data = kolkata_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
+    {% elsif location == 'mumbai' %}
+      {% assign inventory_data = mumbai_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
+    {% elsif location == 'bangalore' %}
+      {% assign inventory_data = bangalore_variant_inventory | replace: '{', '' | replace: '}', '' | replace: '"', '' %}
     {% endif %}
 
     {% assign inventory_pairs = inventory_data | split: ',' %}
 
     {% for pair in inventory_pairs %}
-        {% assign key_value = pair | split: ':' %}
-        <input type="hidden" name="inventory_{{ location }}_{{ key_value[0] | strip }}" id="inventory_{{ location }}_{{ key_value[0] | strip }}" value="{{ key_value[1] | strip }}">
+      {% assign key_value = pair | split: ':' %}
+      <input
+        type="hidden"
+        name="inventory_{{ location }}_{{ key_value[0] | strip }}"
+        id="inventory_{{ location }}_{{ key_value[0] | strip }}"
+        value="{{ key_value[1] | strip }}"
+      >
     {% endfor %}
-{% endfor %}
+  {% endfor %}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 
@@ -237,18 +241,18 @@
                   </div>
                 {% endif %}
               </div>
-            {% comment %}
-              {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
-                <div class="product__tax caption rte">
-                  {%- if shop.taxes_included -%}
-                    {{ 'products.product.include_taxes' | t }}
-                  {%- endif -%}
-                  {%- if shop.shipping_policy.body != blank -%}
-                    {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            {% endcomment %}
+              {% comment %}
+                {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+                  <div class="product__tax caption rte">
+                    {%- if shop.taxes_included -%}
+                      {{ 'products.product.include_taxes' | t }}
+                    {%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%}
+                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              {% endcomment %}
               <div {{ block.shopify_attributes }}>
                 {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
                 {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
@@ -336,7 +340,7 @@
               {{ block.settings.custom_liquid }}
             {%- when 'collapsible_tab' -%}
               {% if block.settings.content != blank or block.settings.page.content != blank %}
-                <div class="product__accordion accordion quick-add-hidden"  {{ block.shopify_attributes }}>
+                <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                   <details id="Details-{{ block.id }}-{{ section.id }}" open>
                     <summary>
                       <div class="summary__title">
@@ -748,122 +752,122 @@
   -%}
 
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ shop.url }}"
-    }
-    {% if template contains 'product' %}
-    ,{
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ collection.title | default: 'Products' }}",
-      "item": "{{ shop.url }}{% if collection.url %}/collections/{{ collection.handle }}{% else %}/collections/all{% endif %}"
-    },{
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ product.title }}",
-      "item": "{{ shop.url }}{{ product.url }}"
-    }
-    {% elsif template contains 'collection' %}
-    ,{
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ collection.title }}",
-      "item": "{{ shop.url }}{{ collection.url }}"
-    }
-    {% elsif template contains 'article' %}
-    ,{
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ blog.title }}",
-      "item": "{{ shop.url }}{{ blog.url }}"
-    },{
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ article.title }}",
-      "item": "{{ shop.url }}{{ article.url }}"
-    }
-    {% endif %}
-  ]
-}
-</script>
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org/",
-    "@type": "Product",
-    "name": {{ product.title | json }},
-    "url": {{ request.origin | append: product.url | json }},
-    {% if seo_media -%}
-      "image": [
-        {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
-      ],
-    {%- endif %}
-    "description": {{ product.description | strip_html | json }},
-    {% if product.selected_or_first_available_variant.sku != blank -%}
-      "sku": {{ product.selected_or_first_available_variant.sku | json }},
-    {%- endif %}
-    {% if product.selected_or_first_available_variant.barcode != blank %}
-      "gtin": {{ product.selected_or_first_available_variant.barcode | json }},
-    {% endif %}
-    {% if product.selected_or_first_available_variant.sku != blank %}
-      "mpn": {{ product.selected_or_first_available_variant.sku | json }},
-    {% endif %}
-    "brand": {
-      "@type": "Brand",
-      "name": {{ product.vendor | json }}
-    },
-    "offers": [
-      {%- for variant in product.variants -%}
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
         {
-          "@type" : "Offer",
-          {%- if variant.sku != blank -%}
-            "sku": {{ variant.sku | json }},
-          {%- endif -%}
-          {%- if variant.barcode.size == 12 -%}
-            "gtin12": {{ variant.barcode }},
-          {%- endif -%}
-          {%- if variant.barcode.size == 13 -%}
-            "gtin13": {{ variant.barcode }},
-          {%- endif -%}
-          {%- if variant.barcode.size == 14 -%}
-            "gtin14": {{ variant.barcode }},
-          {%- endif -%}
-          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
-          "price" : {{ variant.price | divided_by: 100.00 | json }},
-          "priceCurrency" : {{ cart.currency.iso_code | json }},
-          "url" : {{ request.origin | append: variant.url | json }}
-        }{% unless forloop.last %},{% endunless %}
-      {%- endfor -%}
-    ]
-  }
-  {% if product.metafields.reviews.rating.value != blank %}
-    ,"aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "{{ product.metafields.reviews.rating.value.rating }}",
-      "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ shop.url }}"
+        }
+        {% if template contains 'product' %}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ collection.title | default: 'Products' }}",
+          "item": "{{ shop.url }}{% if collection.url %}/collections/{{ collection.handle }}{% else %}/collections/all{% endif %}"
+        },{
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{ product.title }}",
+          "item": "{{ shop.url }}{{ product.url }}"
+        }
+        {% elsif template contains 'collection' %}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ collection.title }}",
+          "item": "{{ shop.url }}{{ collection.url }}"
+        }
+        {% elsif template contains 'article' %}
+        ,{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ blog.title }}",
+          "item": "{{ shop.url }}{{ blog.url }}"
+        },{
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{ article.title }}",
+          "item": "{{ shop.url }}{{ article.url }}"
+        }
+        {% endif %}
+      ]
     }
-  {% endif %}
-</script>
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {% if seo_media -%}
+        "image": [
+          {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+        ],
+      {%- endif %}
+      "description": {{ product.description | strip_html | json }},
+      {% if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif %}
+      {% if product.selected_or_first_available_variant.barcode != blank %}
+        "gtin": {{ product.selected_or_first_available_variant.barcode | json }},
+      {% endif %}
+      {% if product.selected_or_first_available_variant.sku != blank %}
+        "mpn": {{ product.selected_or_first_available_variant.sku | json }},
+      {% endif %}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "offers": [
+        {%- for variant in product.variants -%}
+          {
+            "@type" : "Offer",
+            {%- if variant.sku != blank -%}
+              "sku": {{ variant.sku | json }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 12 -%}
+              "gtin12": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 13 -%}
+              "gtin13": {{ variant.barcode }},
+            {%- endif -%}
+            {%- if variant.barcode.size == 14 -%}
+              "gtin14": {{ variant.barcode }},
+            {%- endif -%}
+            "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "price" : {{ variant.price | divided_by: 100.00 | json }},
+            "priceCurrency" : {{ cart.currency.iso_code | json }},
+            "url" : {{ request.origin | append: variant.url | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+    {% if product.metafields.reviews.rating.value != blank %}
+      ,"aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.reviews.rating.value.rating }}",
+        "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+      }
+    {% endif %}
+  </script>
 </section>
 
 <script>
   const deliveryDateElement = document.getElementById("delivery_date");
 
   if (deliveryDateElement) {
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date(istTime).toISOString().split('T')[0];
       deliveryDateElement.setAttribute("min", today);
   }
 </script>
 
 {% if product.tags contains 'same-day' %}
   <script>
-    var now = new Date(); // get current date and time
+    var now = new Date(istTime); // get current date and time
     var cutoffTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0); // set cutoff time to today at 12pm
 
      $("#delivery_date").datepicker({
@@ -876,7 +880,7 @@
 
 {% if product.tags contains '1-day' %}
   <script>
-     var now = new Date(); // get current date and time
+     var now = new Date(istTime); // get current date and time
     var cutoffTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0); // set cutoff time to today at 12pm
 
      $("#delivery_date").datepicker({

@@ -310,7 +310,7 @@ input::file-selector-button, .reset_btn {
 .gift_products_wrap{
 	    display: flex;
     flex-wrap: wrap;
-    max-height: 300px;
+    max-height: 120px;
     overflow: auto;
     min-height: auto;
   position:relative;

@@ -63,8 +63,9 @@
 
           // Get the current date and time
           // const currentDate = 27;
-          const currentDate = new Date().getDate();
-          const currentHour = new Date().getHours();
+            var selectedTimeSlot='';
+    const currentDate = istTime.getDate();
+    const currentHour = istTime.getHours();
 
           // Get the selected delivery date from the date picker
         if(selectedDate ==''){
@@ -102,11 +103,13 @@
               options[1].disabled = true;
               options[2].selected=true;
 
+                                    selectedTimeSlot='01:00pm-03:00pm';
             }
             if(currentHour >= 12 && currentHour < 14){
               options[1].disabled = true;
               options[2].disabled = true;
               options[3].selected=true;
+  selectedTimeSlot='03:00pm-05:00pm';
 
             }
             if(currentHour >= 14 && currentHour < 16){
@@ -114,6 +117,7 @@
               options[2].disabled = true;
               options[3].disabled = true;
               options[4].selected=true;
+                  selectedTimeSlot='05:00pm-07:00pm';
 
             }
             if(currentHour >= 16 && currentHour < 18){
@@ -122,6 +126,7 @@
               options[3].disabled = true;
               options[4].disabled = true;
               options[5].selected=true;
+                  selectedTimeSlot='07:00pm-09:00pm';
             }
             if(currentHour >= 18){
               options[1].disabled = true;
@@ -129,6 +134,7 @@
               options[3].disabled = true;
               options[4].disabled = true;
               options[5].selected = true;
+                  selectedTimeSlot='07:00pm-09:00pm';
             }
 
           }else{
@@ -136,8 +142,9 @@
                 options[i].disabled = false;
              }
               options[1].selected = true;
+                selectedTimeSlot='11:00am-01:00pm';
           }
 
-
-      }
+  return selectedTimeSlot;
+          }
 </script>

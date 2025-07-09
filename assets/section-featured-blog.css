@@ -29,6 +29,10 @@
   color: rgba(var(--color-foreground), 0.75);
 }
 
+.title-wrapper-with-link {
+  text-align: left;
+}
+
 @media screen and (min-width: 990px) {
   .grid--1-col-desktop .article-card .card__content {
     text-align: center;
@@ -70,6 +74,8 @@
 .blog__button {
   margin-top: 3rem;
 }
+
+
 
 @media screen and (min-width: 750px) {
   .blog__button {

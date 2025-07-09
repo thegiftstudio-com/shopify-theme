@@ -2240,3 +2240,15 @@ body .crisp-client .cc-1brb6[data-full-view=true][data-website-logo=false][data-
 span.font-segeo {
     display: none !important;
 }
+
+.zsiq-float {
+  bottom:110px !important;
+}
+
+.chat-iframe-wrap {
+    bottom: 165px !important;
+}
+
+.zsiq-medium-size {
+height: 64% !important;
+}

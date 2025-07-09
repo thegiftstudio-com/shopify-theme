@@ -1,130 +1,129 @@
 {{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
 {{ 'component-rte.css' | asset_url | stylesheet_tag }}
- <script src="{{ 'share.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'share.js' | asset_url }}" defer="defer"></script>
 <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 
 <style>
-    .desktop_banner{
-      display:block;
-    }
-    .mobile_banner{
-      display:none;
-    }
-  .multicolumn_description{
-    margin: 0;
-    font-weight: 400;
-    text-align: center;
-  }
-  .multicolumn .title-wrapper-with-link {
-    justify-content: center;
-    margin: 5rem 0 7rem;
-}
-  .treasured_section .title-wrapper-with-link {
-    margin: 2rem 0 4rem !important;
-}
-  .treasured_section .multicolumn-card__image-wrapper {
-    margin-left: 0rem !important;
-    margin-right: 0rem !important;
-    cursor:pointer;
-}
-  .treasured_section .btn_txt{
-    display:none;
-  }
-  .treasured_section .multicolumn-card__info{
-    padding-left: 0 !important;
-    display: flex;
-    align-items: flex-start;
-    padding-top: 10px !important;
-    justify-content: space-between;
-  }
-  .treasured_section .multicolumn-card__info .link{
-    margin-top: 0;
-  }
-  .treasured_section .multicolumn-card__info p{
-    text-align: left;
-    line-height: 1.2;
-    letter-spacing: 0;
-    font-size:18px;
-  }
-  .treasured_section{
-    background: linear-gradient(180deg, rgba(255,240,217,0.5047268907563025) 50%, rgba(255,219,166,0.5) 100%);
-  }
-  .treasured_section .multicolumn-list__item.center .media--adapt img{
-    border-radius:10px;
-  }
-
-  @media(max-width:991px){
-     .treasured_section .title-wrapper-with-link{
-      align-items:center;
-      margin: 0rem 0 2rem !important;
-      gap:0rem;
-    }
-
-   .treasured_section .grid--1-col-tablet-down .grid__item {
-      width: calc(18% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
-      max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
-   }
-    .treasured_section .multicolumn-card__info {
-    padding-left: 0rem !important;
-    }
-}
-  
-  @media(max-width:767px){
-     .mobile_banner{
-      display:block;
-        height:100% !important;
-    }
       .desktop_banner{
+        display:block;
+      }
+      .mobile_banner{
+        display:none;
+      }
+    .multicolumn_description{
+      margin: 0;
+      font-weight: 400;
+      text-align: center;
+    }
+    .multicolumn .title-wrapper-with-link {
+      justify-content: center;
+      margin: 5rem 0 7rem;
+  }
+    .treasured_section .title-wrapper-with-link {
+      margin: 2rem 0 4rem !important;
+  }
+    .treasured_section .multicolumn-card__image-wrapper {
+      margin-left: 0rem !important;
+      margin-right: 0rem !important;
+      cursor:pointer;
+  }
+    .treasured_section .btn_txt{
       display:none;
     }
-   .treasured_section .multicolumn-list{
-     display:grid;
-      grid-template-columns: repeat(2,48%);
+    .treasured_section .multicolumn-card__info{
+      padding-left: 0 !important;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 10px !important;
+      justify-content: space-between;
+    }
+    .treasured_section .multicolumn-card__info .link{
+      margin-top: 0;
     }
     .treasured_section .multicolumn-card__info p{
-      line-height:1.5;
+      text-align: left;
+      line-height: 1.2;
+      letter-spacing: 0;
+      font-size:18px;
     }
-    .treasured_section .multicolumn-list__item .media--adapt .multicolumn-card__image{
-      width:100%;
-      height:auto;
-    }
-     .treasured_section .multicolumn-list__item:nth-child(3){
-      grid-column:1/3;
-    }
-    .treasured_section .multicolumn-list__item:nth-child(3).center .media--adapt{
-      padding-bottom: 53.589041% !important;
+    .treasured_section{
+      background: linear-gradient(180deg, rgba(255,240,217,0.5047268907563025) 50%, rgba(255,219,166,0.5) 100%);
     }
     .treasured_section .multicolumn-list__item.center .media--adapt img{
-    border-radius:10px;
-  }
-    .treasured_section .grid--1-col-tablet-down .grid__item {
-      width: 100%;
-      max-width: 100%;
+      border-radius:10px;
     }
+
+    @media(max-width:991px){
+       .treasured_section .title-wrapper-with-link{
+        align-items:center;
+        margin: 0rem 0 2rem !important;
+        gap:0rem;
+      }
+
+     .treasured_section .grid--1-col-tablet-down .grid__item {
+        width: calc(18% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+        max-width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
+     }
+      .treasured_section .multicolumn-card__info {
+      padding-left: 0rem !important;
+      }
   }
 
-.wedding_corporate .mobile_banner{
-  display:none;
-}
-.curated_gift_section .title-wrapper-with-link .cmn_btn{
-  color:#fff;
-  margin: 0;
-}
-  .curated_gift_section .title-wrapper-with-link{
-        justify-content: space-between !important;
-    align-items: center;
-    margin-bottom: 20px !important;
-  }
+    @media(max-width:767px){
+       .mobile_banner{
+        display:block;
+          height:100% !important;
+      }
+        .desktop_banner{
+        display:none;
+      }
+     .treasured_section .multicolumn-list{
+       display:grid;
+        grid-template-columns: repeat(2,48%);
+      }
+      .treasured_section .multicolumn-card__info p{
+        line-height:1.5;
+      }
+      .treasured_section .multicolumn-list__item .media--adapt .multicolumn-card__image{
+        width:100%;
+        height:auto;
+      }
+       .treasured_section .multicolumn-list__item:nth-child(3){
+        grid-column:1/3;
+      }
+      .treasured_section .multicolumn-list__item:nth-child(3).center .media--adapt{
+        padding-bottom: 53.589041% !important;
+      }
+      .treasured_section .multicolumn-list__item.center .media--adapt img{
+      border-radius:10px;
+    }
+      .treasured_section .grid--1-col-tablet-down .grid__item {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
 
-  .curated_gift_section .title-wrapper-with-link h2{
-    margin:0;
+  .wedding_corporate .mobile_banner{
+    display:none;
   }
-   .curated_gift_section .multicolumn-card__image-wrapper{
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-   }
-  
+  .curated_gift_section .title-wrapper-with-link .cmn_btn{
+    color:#fff;
+    margin: 0;
+  }
+    .curated_gift_section .title-wrapper-with-link{
+          justify-content: space-between !important;
+      align-items: center;
+      margin-bottom: 20px !important;
+    }
+
+    .curated_gift_section .title-wrapper-with-link h2{
+      margin:0;
+    }
+     .curated_gift_section .multicolumn-card__image-wrapper{
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+     }
 </style>
 
 {%- style -%}
@@ -150,11 +149,15 @@
 -%}
 
 <div class="multicolumn {{ section.settings.custom_class }} color-{{ section.settings.color_scheme }} gradient{% unless section.settings.background_style == 'none' and settings.text_boxes_border_thickness > 0 or settings.text_boxes_shadow_opacity > 0 %} background-{{ section.settings.background_style }}{% endunless %}{% if section.settings.title == blank %} no-heading{% endif %}">
-   
-  
   <div class="page-width section-{{ section.id }}-padding isolate">
     {%- unless section.settings.title == blank -%}
-      <div asd class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin" {% if section.settings.subtitle != blank %}style="flex-direction:column";{% endif %}>
+      <div
+        asd
+        class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin"
+        {% if section.settings.subtitle != blank %}
+          style="flex-direction:column";
+        {% endif %}
+      >
         <h2 class="title center font_xxl {{ section.settings.heading_size }}">
           {{ section.settings.title | escape }}
         </h2>
@@ -163,22 +166,22 @@
             {{- section.settings.button_label | escape -}}
           </a>
         {%- endif -%}
-      <p class="multicolumn_description color_black font_lg">{{ section.settings.subtitle }}</p>
-      
-      <div class="center{% if show_mobile_slider %} small-hide medium-hide{% endif %}">
-      {%- if section.settings.button_label != blank -%}
-        <a
-          class="cmn_btn button button--primary"
-          {% if section.settings.button_link == blank %}
-            role="link" aria-disabled="true"
-          {% else %}
-            href="{{ section.settings.button_link }}"
-          {% endif %}
-        >
-          {{ section.settings.button_label | escape }}
-        </a>
-      {%- endif -%}
-    </div>
+        <p class="multicolumn_description color_black font_lg">{{ section.settings.subtitle }}</p>
+
+        <div class="center{% if show_mobile_slider %} small-hide medium-hide{% endif %}">
+          {%- if section.settings.button_label != blank -%}
+            <a
+              class="cmn_btn button button--primary"
+              {% if section.settings.button_link == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section.settings.button_link }}"
+              {% endif %}
+            >
+              {{ section.settings.button_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
       </div>
     {%- endunless -%}
     <slider-component class="slider-mobile-gutter">
@@ -215,8 +218,13 @@
                 {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
                   {% assign spaced_image = true %}
                 {% endif %}
-                
-                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} multicolumn-card-spacing{% endif %}" {% unless page.handle == 'digital-wall' %}onclick="window.location.href='{{ block.settings.link }}';" style="cursor: pointer;"{% endunless %}>
+
+                <div
+                  class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} multicolumn-card-spacing{% endif %}"
+                  {% unless page.handle == 'digital-wall' %}
+                    onclick="window.location.href='{{ block.settings.link }}';" style="cursor: pointer;"
+                  {% endunless %}
+                >
                   <div
                     class="media desktop_banner media--transparent media--{{ section.settings.image_ratio }}"
                     {% if section.settings.image_ratio == 'adapt' %}
@@ -230,11 +238,7 @@
                     {{
                       block.settings.image
                       | image_url: width: 1420
-                      | image_tag:
-                        loading: 'lazy',
-                        sizes: sizes,
-                        widths: '275, 550, 710, 1420',
-                        class: 'multicolumn-card__image'
+                      | image_tag: sizes: sizes, widths: '275, 550, 710, 1420', class: 'multicolumn-card__image'
                     }}
                   </div>
                   <div
@@ -247,26 +251,28 @@
                       (min-width: 990px) {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %}, (min-width:
                       750px) {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %}, calc(100vw - 30px)
                     {%- endcapture -%}
-                  {% comment %}
-                    {{
-                      block.settings.mob_banner
-                      | image_url: width: 1420
-                      | image_tag:
-                        loading: 'lazy',
-                        sizes: sizes,
-                        widths: '275, 550, 710, 1420',
-                        class: 'multicolumn-card__image'
-                    }}
-                {% endcomment %}
-                <img 
-                  src="{{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }}" 
-                 srcset="{{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }} 1x, 
-                   {{ block.settings.mob_banner | img_url: '400x400', crop: 'center' }} 2x"
-                  loading="lazy"
-                  width="178" 
-                 height="178" 
-                  alt="{{ block.settings.mob_banner.alt | default: 'Mobile banner' }}" 
-                 class="img-responsive">
+                    {% comment %}
+                      {{
+                        block.settings.mob_banner
+                        | image_url: width: 1420
+                        | image_tag:
+                          loading: 'lazy',
+                          sizes: sizes,
+                          widths: '275, 550, 710, 1420',
+                          class: 'multicolumn-card__image'
+                      }}
+                    {% endcomment %}
+                    <img
+                      src="{{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }}"
+                      srcset="
+                             {{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }} 1x,
+                        {{ block.settings.mob_banner | img_url: '400x400', crop: 'center' }} 2x
+                      "
+                      width="178"
+                      height="178"
+                      alt="{{ block.settings.mob_banner.alt | default: 'Mobile banner' }}"
+                      class="img-responsive"
+                    >
                   </div>
                 </div>
               {%- endif -%}
@@ -276,17 +282,18 @@
                 {%- endif -%}
                 {%- if block.settings.text != blank -%}
                   <div class="rte desc font_text color_black font_weight_400">
-                    {% if page.handle == "digital-wall" %}
-                    <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Union_2.png?v=1698930598" class="img-reponsive quotes_img">
-                      {% endif %}
-                  {{ block.settings.text }}
+                    {% if page.handle == 'digital-wall' %}
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Union_2.png?v=1698930598"
+                        class="img-reponsive quotes_img"
+                      >
+                    {% endif %}
+                    {{ block.settings.text }}
                   </div>
-                  
                 {%- endif -%}
-         
-            {%- if block.settings.city_text != blank -%}
+
+                {%- if block.settings.city_text != blank -%}
                   <div class="rte city_txt font_text color_black font_weight_400">{{ block.settings.city_text }}</div>
-                  
                 {%- endif -%}
                 {%- if block.settings.link_label != blank -%}
                   <a
@@ -334,7 +341,6 @@
         </div>
       {%- endif -%}
     </slider-component>
-    
   </div>
 </div>
 

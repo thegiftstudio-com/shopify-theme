@@ -842,14 +842,13 @@
             widths: '50, 100, 150, 200, 250, 300, 400, 500',
             height: logo_height,
             width: settings.logo_width,
-            alt: logo_alt,
-            loading: 'lazy'
+            alt: logo_alt
           }}
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
         {%- endif -%}
         <div class="mobile_logo large-up-hide medium-hide">
-          <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_MOB-FNL-08.svg?v=1746097264" alt="mobile_svg_logo" loading="lazy"> 
+          <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_MOB-FNL-08.svg?v=1746097264" alt="mobile_svg_logo" > 
         </div>
       </a>
       
@@ -1275,8 +1274,7 @@
             widths: '50, 100, 150, 200, 250, 300, 400, 500',
             height: logo_height,
             width: settings.logo_width,
-            alt: logo_alt,
-            loading: 'lazy'
+            alt: logo_alt
           }}
         {%- else -%}
           <span class="h2">{{ shop.name }}</span>
@@ -1286,9 +1284,7 @@
         </div>
       </a>
       
-      {%- if request.page_type == 'index' -%}
-        <h1 class="visually-hidden">{{ page_title | default: shop.name }}</h1>
-      {%- endif -%}
+
     {%- endif -%}
 
     <div class="header__icons">

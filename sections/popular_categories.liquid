@@ -189,7 +189,7 @@
 }
     
    .category_list .populer_inner_sec .populer_slider .populer_sec{
-      width: calc(33% - var(--grid-mobile-horizontal-spacing) - 3rem) !important;
+      width: calc(50% - var(--grid-mobile-horizontal-spacing) - 3rem) !important;
     }
         
   }
@@ -268,7 +268,6 @@
          sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
          alt="Valentine Flower" 
          class="left_flower valentine" 
-         loading="lazy" 
          width="300" 
          height="300">
     
@@ -279,7 +278,6 @@
          sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
          alt="Valentine Flower" 
          class="right_flower valentine" 
-         loading="lazy" 
          width="300" 
          height="300">
   
@@ -300,7 +298,6 @@
            alt="Decorative Line Design"
            width="846"
            height="40"
-           loading="lazy">
     </div>
   </div>
              <div id="Slider-{{ section.id }}" class="populer_slider page-width grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down {% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}">
@@ -317,7 +314,6 @@
                          alt="{{ block.settings.coll_title | escape }}"
                          width="{{ block.settings.coll_img.width }}"
                          height="{{ block.settings.coll_img.height }}"
-                         loading="lazy"
                          decoding="async"
                          >
                         </div>

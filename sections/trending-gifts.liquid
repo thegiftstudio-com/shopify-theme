@@ -1,0 +1,123 @@
+{% schema %}
+{
+  "name": "Trending Gifts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Trending Gifts at The Gift Studio"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll",
+      "label": "Enable Horizontal Scroll on Mobile",
+      "default": true
+    }
+  ],
+ "blocks": [
+  {
+    "type": "gift_image",
+    "name": "Gift Image Block",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "gift_image",
+        "label": "Gift Image"
+      },
+      {
+        "type": "url",
+        "id": "gift_link",
+        "label": "Gift Link"
+      }
+    ]
+  }
+],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Trending Gifts (Configurable)"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="page-width">
+  <section class="trending-gifts-section">
+    {% if section.settings.section_heading != blank %}
+      <h2 class="text-center text-2xl font-bold my-6">{{ section.settings.section_heading }}</h2>
+    {% endif %}
+
+    <div
+      class="gift-grid {% if section.settings.enable_scroll %}scroll-enabled{% endif %}"
+      style="--columns-desktop: {{ section.settings.columns_desktop }};"
+    >
+      {% for block in section.blocks %}
+        <div class="gift-card">
+          {% if block.settings.gift_image != blank %}
+            {% if block.settings.gift_link != blank %}
+              <a href="{{ block.settings.gift_link }}">
+                <img
+                  src="{{ block.settings.gift_image | image_url: width: 500 }}"
+                  alt="Gift Image"
+                  style="width:100%; border-radius:12px;"
+                >
+              </a>
+            {% else %}
+              <img
+                src="{{ block.settings.gift_image | image_url: width: 500 }}"
+                alt="Gift Image"
+                style="width:100%; border-radius:12px;"
+              >
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<style>
+  .trending-gifts-section h2 {
+    text-align: center;
+  }
+
+  .trending-gifts-section .gift-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns-desktop), 1fr);
+    gap: 20px;
+    padding: 0 20px;
+  }
+
+  /* Mobile: Scrollable layout if enabled */
+  @media screen and (max-width: 767px) {
+    .trending-gifts-section .gift-grid.scroll-enabled {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .trending-gifts-section .gift-grid.scroll-enabled .gift-card {
+      min-width: 80%;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    /* If scroll is disabled, fallback to responsive wrapping grid */
+    .trending-gifts-section .gift-grid:not(.scroll-enabled) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+  }
+</style>

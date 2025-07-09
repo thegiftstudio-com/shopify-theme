@@ -333,7 +333,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: 'https://hampers.tinglabs.in/pincode_product_inventory_check_universal_inventory',
+            url: 'https://tgs.velsof.com/pincode_product_inventory_check_universal_inventory',
             data: {
                 product_id: productId,
                 variant_id: window.currentVariantId,
@@ -354,6 +354,8 @@ $(document).ready(function() {
                   let perishableItem = 0; 
                                     // To append the location in front of the location.
                   const primaryWarehouseTat = data.tat[data.primary_warehouse];
+                localStorage.setItem("warehouseTAT", JSON.stringify(data.tat));
+                  
                   var zipcode_cluster = 'location-'+data.primary_warehouse;
                     localStorage.setItem("location", zipcode_cluster); 
                     localStorage.setItem("location-city", data.city); 
@@ -367,10 +369,16 @@ $(document).ready(function() {
                   city_name.innerText=data.pincode +", "+data.city;
                   if ($(".product_tags").text().includes("perishable-item")) {
                         perishableItem = 1;
-                    // -----07-05-2025 by rajat Add to cart selected perishable items for non-perishable city (Pune).
-                    if (data.city && data.city.toLowerCase() === 'pune' && $(".product_tags").text().includes("show-perishable")){
+                    // -----07-05-2025 by velocity Add to cart selected perishable items for non-perishable city (Pune).
+                    if (data.city && data.city.toLowerCase() === 'pune' && $(".product_tags").text().includes("pune-perishable-item")){
                         perishableItem = 0;
                     }
+                    //------16-05-2025 by velocity Perishable items for non-perishable city (Kolkata as well)
+                    
+                    if (data.city && data.city.toLowerCase() === 'kolkata' && $(".product_tags").text().includes("kolkata-perishable-item")){
+                        perishableItem = 0;
+                    }
+                    //-----16-05-2025 end
                     // -----07-05-2025 end
                     }
                   if(data.isPerishable == 0 && perishableItem) {
@@ -437,60 +445,12 @@ $(document).ready(function() {
                     }
 
                     if (selected_warehouse) {
-                        var today = new Date();
-                        var minDate = new Date(today);
+                       //  var today = new Date();
+                       //  var minDate = new Date(today);
                         var productTat = parseInt($(".product_tat").val());
-                       var currentDateTime = new Date();
-                            // console.log(currentDateTime + ":currentDateTime after");
-                            // Set cutoff time at 12:00 PM
-                            var cutoffTime = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 12, 0, 0);
-                            var cutoffTwoPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 14, 0, 0);
-                            var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
-                            var cutoffTimeFourPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
-                            var cutoffTimeSevenPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 19, 0, 0);
-                        if(productTat < 0) {
-                          if (productTat == '-3') {
-                            if(currentDateTime < cutoffTimethreePm) {
-                              productTat = 0;
-                            } else {
-                               productTat = 1;
-                            }
-                          } else if(productTat == '-2') {
-                             if(currentDateTime < cutoffTwoPm) {
-                              productTat = 0;
-                            } else {
-                               productTat = 1;
-                            }
-                          } else if(productTat == '-4') {
-                             if(currentDateTime < cutoffTimeFourPm) {
-                              productTat = 0;
-                            } else {
-                               productTat = 1;
-                            }
-                          }
-                            else if(productTat == '-7') {
-                             if(currentDateTime < cutoffTimeSevenPm) {
-                              productTat = 0;
-                            } else {
-                               productTat = 1;
-                            }
-                          } else {
-                            productTat = 0;
-                          }
-                        } else if(productTat == 0){
-                          if(currentDateTime < cutoffTimeSevenPm) {
-                              productTat = 0;
-                            } else {
-                               productTat = 1;
-                            }
-                        }
-                        minDate.setDate(minDate.getDate() + selected_warehouse_tat + productTat);
-                        $datePicker.addClass("ui-state-highlight");
-                        $datePicker.prop("disabled", false);
-                        $datePicker.datepicker("option", "minDate", minDate);
-                        $datePicker.datepicker("setDate", minDate);
-                       
-                       
+                       // var currentDateTime = new Date();
+  
+  var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'');
         // Utility function to check if the selected date is today
 function isSelectedDateToday(selectedDateStr) {
   const currentDate = new Date().getDate();
@@ -556,6 +516,8 @@ $('#delivery-date-5').on('change', function () {
                             .html(`<span class='green_txt'></span> 
                             <input id="product_warehouse" type="hidden" value="${selected_warehouse}"> 
                             <input id="product_warehouse_tat" type="hidden" value="${selected_warehouse_tat}"> 
+                            <input id="total_product_tat" type="hidden" value="${productTat}"> 
+                            
                             <input id="product_warehouse_available_quantity" type="hidden" value="${selected_warehouse_inventory}">`)
                             .removeClass('invalid')
                             .addClass('valid');

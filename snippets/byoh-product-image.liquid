@@ -1,0 +1,180 @@
+{% comment %} This file display the product image Popup on BYOH when click on product image 07-07-2025 Added by Velocity {% endcomment %}
+<div class="warning_sec" id="warning">
+  <div class="warning-popup-overlay popup_warning" id="warning-overlay"></div>
+<div id="popupmodal-container" class="modal-container">
+  <div class="modal-container-content">
+    <span class="close-btn">&times;</span>
+
+    <div class="carousel">
+      <button class="prev-btn">&#10094;</button>
+      <div class="carousel-image" id="carouselImageContainer"></div>
+      <button class="next-btn">&#10095;</button>
+    </div>
+
+    <div class="dots" id="dotsContainer"></div>
+  </div>
+</div>
+</div>
+
+
+<style>
+.modal-container {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.7);
+}
+
+/* modal-container Content */
+.modal-container-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 1rem;
+  position: relative;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: -5px;
+  right: 12px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Carousel Image */
+.carousel-image {
+  width:80%;
+  margin:auto;
+  text-align: center;
+}
+.carousel-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Navigation Arrows */
+.prev-btn, .next-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 10px;
+  color: #000;
+}
+.prev-btn {
+  left: 10px;
+}
+.next-btn {
+  right: 10px;
+}
+
+/* Dots */
+.dots {
+  text-align: center;
+  justify-content: center;
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot.active {
+  background-color: #333;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .modal-container-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+  .prev-btn, .next-btn {
+    font-size: 20px;
+  }
+}
+  </style>
+  <script>
+let currentIndex = 0;
+// when click on product image on BYOH. Below function display the product image popup and handle popup functionality. 07-07-2025 added by Velocity
+function openProductPopup(jsonImages) {
+const parsed = JSON.parse(decodeURIComponent(jsonImages));
+    images = parsed.map(img => img.src);
+  currentIndex = 0;
+  renderPopup();
+  document.getElementById('popupmodal-container').style.display = 'block';
+}
+
+document.querySelector('.close-btn').onclick = () => {
+  document.getElementById('popupmodal-container').style.display = 'none';
+};
+
+document.querySelector('.prev-btn').onclick = () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  renderPopup();
+};
+
+document.querySelector('.next-btn').onclick = () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  renderPopup();
+};
+
+function renderPopup() {
+  const container = document.getElementById('carouselImageContainer');
+  const dotsContainer = document.getElementById('dotsContainer');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+
+  container.innerHTML = `<img src="${images[currentIndex]}" alt="product_image">`;
+
+  const showCarousel = images.length > 1;
+  prevBtn.style.display = nextBtn.style.display = showCarousel ? 'block' : 'none';
+  dotsContainer.style.display = showCarousel ? 'flex' : 'none';
+
+  dotsContainer.innerHTML = '';
+  if (showCarousel) {
+    images.forEach((_, idx) => {
+      const dot = document.createElement('span');
+      dot.classList.add('dot');
+      if (idx === currentIndex) dot.classList.add('active');
+      dot.onclick = () => {
+        currentIndex = idx;
+        renderPopup();
+      };
+      dotsContainer.appendChild(dot);
+    });
+  }
+}
+    // Below logic for close the popup when click on outside the popup 07-07-2025 Added by Velocity
+document.addEventListener('click', function (event) {
+  const modalContainer = document.getElementById('popupmodal-container');
+  const modalContent = document.querySelector('.modal-container-content');
+
+  const isVisible = modalContainer.style.display === 'block' || modalContainer.style.display === '';
+
+  if (isVisible && !modalContent.contains(event.target) && modalContainer.contains(event.target)) {
+    modalContainer.style.display = 'none';
+    document.getElementById('warning-overlay').style.display = 'none';
+  }
+});
+  </script>
