@@ -40,40 +40,13 @@ $(document).ready(function() {
 
 
     var gift_product_id = "";
-    var feature_product_id = "";
-  
     var sleeve_product_id = "";
     var color_product_id = ""; 
-  // To select the addon product on PDP when user clicks on the Addon product Added By velocity 10-07-2025
-    $('.product_checkbox').click(function() {
-        $('input[name="product_id"]:checked').each(function() {
-            feature_product_id = this.value;
-            var pd_name = $(this).parent().find('.pd_name').val();
-            var pd_price = $(this).parent().find('.pd_price').val()/100;
-            
-            $('.show_prod_name').text(pd_name);
-          if(pd_price!=''){
-            $('.show_prod_price').text(`?${pd_price}`);
-          }else{
-                 $('.show_prod_price').text('');
-              }
-           
-        });
-    });
-  // To show the name of the gift card along with the price on PDP Added By velocity 10-07-2025
-  
     $('.gift_product_checkbox').click(function() {
         $('input[name="product_id"]:checked').each(function() {
             gift_product_id = this.value;
             var gift_pd_name = $(this).parent().find('.gift_pd_name').val();
-          var gift_pd_price = $(this).parent().find('.gift_pd_price').val()/100;
             $('.show_gift_prod_name').text(gift_pd_name);
-              if(gift_pd_price!=''){
-           $('.show_gift_prod_price').text(`?${gift_pd_price}`);
-              }else{
-                 $('.show_gift_prod_price').text('');
-              }
-            var gift_collection_name = $('.collection_name').val();
             if (gift_product_id == "" || gift_product_id == undefined) {
                 $('.card_msg_wrapper').slideUp();
                 $('#gift_card_msg').removeClass('cm-common-input');
@@ -111,15 +84,7 @@ $(document).ready(function() {
   }
 
 
-    {% comment %}
-    $('.sleeve_product_checkbox').click(function() {
-        $('input[name="sleeve_product_id"]:checked').each(function() {
-            sleeve_product_id = this.value;
-            var sleeve_pd_name = $(this).parent().find('.sleeve_pd_name').val();
-            $('.show_sleeve_pd_name').text(sleeve_pd_name);
-        });
-    }); 
-    {% endcomment %}
+    
 
 
 
@@ -489,7 +454,7 @@ $(".custom_photo_error_txt").remove();
                                    <dl>
                               
                                   <div class="product-option">
-                                    <dt>{{ option.name }}: </dt>
+                                    <dt>: </dt>
                                     <dd>${variantTitle}</dd>
                                   </div>
                                 
@@ -521,28 +486,28 @@ $(".custom_photo_error_txt").remove();
 
                         <td class="cart-item__quantity" role="cell" headers="CartDrawer-ColumnQuantity">
                       <cart-remove-button id="CartDrawer-Remove-${key}" data-index="${key}">
-                              <button type="button" class="button button--tertiary" aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}">
-                                {% render 'icon-remove' %}
+                              <button type="button" class="button button--tertiary" aria-label="Remove ">
+                                Liquid error: This liquid context does not allow includes.
                               </button>
                             </cart-remove-button>
                           <div class="cart-item__quantity-wrapper">
                             <quantity-input class="quantity">
                               <button class="quantity__button no-js-hidden" name="minus" type="button">
-                                <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}</span>
-                                {% render 'icon-minus' %}
+                                <span class="visually-hidden">Decrease quantity for </span>
+                                Liquid error: This liquid context does not allow includes.
                               </button>
                               <input class="quantity__input"
                                 type="number"
                                 name="updates[]"
-                                value="{{ item.quantity }}"
+                                value=""
                                 min="0"
-                                aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
-                                id="Drawer-quantity-{{ item.index | plus: 1 }}"
-                                data-index="{{ item.index | plus: 1 }}"
+                                aria-label="Quantity for "
+                                id="Drawer-quantity-1"
+                                data-index="1"
                               >
                               <button class="quantity__button no-js-hidden" name="plus" type="button">
-                                <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}</span>
-                                {% render 'icon-plus' %}
+                                <span class="visually-hidden">Increase quantity for </span>
+                                Liquid error: This liquid context does not allow includes.
                               </button>
                             </quantity-input>
 
@@ -555,41 +520,9 @@ $(".custom_photo_error_txt").remove();
                             </div>
                           </div>
 
-                          <div class="cart-item__price-wrapper">
-                            {%- if item.original_line_price != item.final_line_price -%}
-                              <div class="cart-item__discounted-prices">
-                                <span class="visually-hidden">
-                                  {{ 'products.product.price.regular_price' | t }}
-                                </span>
-                                <s class="cart-item__old-price price price--end">
-                                  {{ item.original_line_price | money }}
-                                </s>
-                                <span class="visually-hidden">
-                                  {{ 'products.product.price.sale_price' | t }}
-                                </span>
-                                <span class="price price--end">
-                                  {{ item.final_line_price | money }}
-                                </span>
-                              </div>
-                            {%- else -%}
-                              <span class="price price--end">
-                                {{ item.original_line_price | money }}
-                              </span>
-                            {%- endif -%}
-
-                            {%- if item.variant.available and item.unit_price_measurement -%}
-                              <div class="unit-price caption">
-                                <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                                {{ item.variant.unit_price | money }}
-                                <span aria-hidden="true">/</span>
-                                <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
-                                {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
-                                  {{- item.variant.unit_price_measurement.reference_value -}}
-                                {%- endif -%}
-                                {{ item.variant.unit_price_measurement.reference_unit }}
-                              </div>
-                            {%- endif -%}
-                          </div>
+                          <div class="cart-item__price-wrapper"><span class="price price--end">
+                                
+                              </span></div>
                           </div>
 
                           <div id="CartDrawer-LineItemError-${key}" class="cart-item__error" role="alert">
@@ -687,137 +620,88 @@ $(".custom_photo_error_txt").remove();
         
           // code end
           
-            // if ((gift_product_id == "" || gift_product_id == undefined) && (sleeve_product_id == "" || sleeve_product_id == undefined)) {
-            //     data = {
-            //         items: [{
-            //             "id": product_id,
-            //             "quantity": pd_quantity,
-            //             "properties": {
-            //         ...pd_json_property_val,
-            //         "_Timestamp": timestamp
-            //     }
-            //         }]
-            //     }
-            // } else if ((gift_product_id != "" || gift_product_id != undefined) && (sleeve_product_id == "" || sleeve_product_id == undefined)) {
-            //     data = {
-            //         items: [{
-            //                 "id": gift_product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //                     "Product title": product_name,
-            //                     "Message on card": card_msg
-            //                 }
-            //             },
-            //             {
-            //                 "id": product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //         ...pd_json_property_val,
-            //         "_Timestamp": timestamp
-            //     }
-            //             }
-            //         ]
+            if ((gift_product_id == "" || gift_product_id == undefined) && (sleeve_product_id == "" || sleeve_product_id == undefined)) {
+                data = {
+                    items: [{
+                        "id": product_id,
+                        "quantity": pd_quantity,
+                        "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
+                    }]
+                }
+            } else if ((gift_product_id != "" || gift_product_id != undefined) && (sleeve_product_id == "" || sleeve_product_id == undefined)) {
+                data = {
+                    items: [{
+                            "id": gift_product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                                "Product title": product_name,
+                                "Message on card": card_msg
+                            }
+                        },
+                        {
+                            "id": product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
+                        }
+                    ]
 
-            //     }
-            // } else if ((gift_product_id == "" || gift_product_id == undefined) && (sleeve_product_id != "" || sleeve_product_id != undefined)) {
-            //     data = {
-            //         items: [{
-            //                 "id": sleeve_product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //                     "Product title": product_name
-            //                 }
-            //             },
-            //             {
-            //                 "id": product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //         ...pd_json_property_val,
-            //         "_Timestamp": timestamp
-            //     }
-            //             }
-            //         ]
+                }
+            } else if ((gift_product_id == "" || gift_product_id == undefined) && (sleeve_product_id != "" || sleeve_product_id != undefined)) {
+                data = {
+                    items: [{
+                            "id": sleeve_product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                                "Product title": product_name
+                            }
+                        },
+                        {
+                            "id": product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
+                        }
+                    ]
 
-            //     }
-            // } else {
-            //     data = {
-            //         items: [{
-            //                 "id": gift_product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //                     "Product title": product_name,
-            //                     "Message on card": card_msg
-            //                 }
-            //             },
-            //             {
-            //                 "id": sleeve_product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //                     "Product title": product_name
-            //                 }
-            //             },
-            //             {
-            //                 "id": product_id,
-            //                 "quantity": pd_quantity,
-            //                 "properties": {
-            //         ...pd_json_property_val,
-            //         "_Timestamp": timestamp
-            //     }
-            //             }
-            //         ]
+                }
+            } else {
+                data = {
+                    items: [{
+                            "id": gift_product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                                "Product title": product_name,
+                                "Message on card": card_msg
+                            }
+                        },
+                        {
+                            "id": sleeve_product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                                "Product title": product_name
+                            }
+                        },
+                        {
+                            "id": product_id,
+                            "quantity": pd_quantity,
+                            "properties": {
+                    ...pd_json_property_val,
+                    "_Timestamp": timestamp
+                }
+                        }
+                    ]
 
-            //     }
-            // }
+                }
+            }
 
-          // Added all the product into the cart. such as Gift Card, Add-On product, etc. Added by velocity 10-07-2025
-          data = {
-    items: []
-};
-
-// Add gift product if it exists
-if (gift_product_id && gift_product_id !== "") {
-    data.items.push({
-        "id": gift_product_id,
-        "quantity": pd_quantity,
-        "properties": {
-            "Product title": product_name,
-            "Message on card": card_msg
-        }
-    });
-}
-
-// Add sleeve product if it exists
-if (sleeve_product_id && sleeve_product_id !== "") {
-    data.items.push({
-        "id": sleeve_product_id,
-        "quantity": pd_quantity,
-        "properties": {
-            "Product title": product_name
-        }
-    });
-}
-
-// Add feature product if it exists
-if (feature_product_id && feature_product_id !== "") {
-    data.items.push({
-        "id": feature_product_id,
-        "quantity": 1,
-        "properties": {
-            "Product title": product_name,
-            "Add-On Product": "Yes"
-        }
-    });
-}
-
-// Add main product (always present)
-data.items.push({
-    "id": product_id,
-    "quantity": pd_quantity,
-    "properties": {
-        ...pd_json_property_val,
-        "_Timestamp": timestamp
-    }
-});
             function getCart(callback) {
                 $.ajax({
                     type: 'GET',
