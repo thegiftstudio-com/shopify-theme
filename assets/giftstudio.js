@@ -1434,13 +1434,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let selectedWarehouse = locationKey;
     let selected_warehouse_tat = null;
-   if (
-    inventoryMap["mumbai"] === 0 &&
-    inventoryMap["gurgaon"] === 0 &&
-    inventoryMap["bangalore"] === 0
-  ) {
-    return; 
-  }
     if (inventoryMap[locationKey] > 0) {
       selected_warehouse_tat = warehouseTAT[locationKey];
     } else {
@@ -1453,7 +1446,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     
-    const total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag);
+    var total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag);
+    // In case product not available then selected_warehouse_tat is null. and consider as highest product TAT. Added by Velocity
+    if(selected_warehouse_tat==null)total=5000;
 const stripElement = document.querySelector(`#strip_${productId}`);
 if (stripElement) {
   const $strip = $(stripElement); // wrap in jQuery
