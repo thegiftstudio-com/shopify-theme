@@ -74,14 +74,34 @@
   </div>
 {% endif %}
 {% if product.tags contains 'card-section' %}
+  {% comment %}
+   Add accordion in Gift card section to make it collapsable and by default open the collapsable gift section. Added by Velocity 10-07-2025
+  {% endcomment %}
+  <div class="product__accordion accordion quick-add-hidden">
+    <details id="Details-card-section-{{ section.id }}" open>
+      <summary>
+        <div class="summary__title">
+          <h2 class="h4 accordion__title">Add Gift Card</h2>
+        </div>
+        {% render 'icon-caret' %}
+      </summary>
+
+      <div class="accordion__content rte" id="ProductAccordion-card-section-{{ section.id }}">
   <div class="gift_card_wrapper" data-roi="{{ isRoiProduct }}">
-    <h4>Add Gift Card : <span class="show_gift_prod_name"></span></h4>
+    <h4>Add Gift Card : <span class="show_gift_prod_name"></span><span class="show_gift_prod_price"></span></h4>
     <div class="gift_products_wrap">
       <div class="gift_product">
         <input type="radio" class="gift_product_checkbox" name="product_id" value="">
         <img src="{{ 'no_card.jpg' | asset_img_url:'100x100' }}">
         <input type="hidden" value="" class="gift_pd_name">
+   {% comment %}
+   Add Price of the Gift Card. Added by Velocity 10-07-2025
+  {% endcomment %}
+        <input type="hidden" value="" class="gift_pd_price">
+        
       </div>
+      {% assign collection_handle = product.metafields.custom.collection_name.value %}
+  <input type="hidden" value="{{ collection_handle}}" class="collection_name">
       {% assign sorted_card_products = collections.card.products %}
       {% for product in sorted_card_products %}
         {% if isRoiProduct and product.tags contains 'location-roi' %}
@@ -96,6 +116,10 @@
             >
             <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
             <input type="hidden" value="{{ product.title }}" class="gift_pd_name">
+             {% comment %}
+   To add the Price of the Gift Card. Added by Velocity 10-07-2025
+  {% endcomment %}
+            <input type="hidden" value="{{ product.variants[0].price }}" class="gift_pd_price">
             <div class="tooltip_product_info">
               {% if product.images.size > 1 %}
                 <img src="{{ product.images[1] | img_url:'master' }}">
@@ -117,6 +141,7 @@
                 >
                 <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
                 <input type="hidden" value="{{ product.title }}" class="gift_pd_name">
+                <input type="hidden" value="{{ product.variants[0].price }}" class="gift_pd_price">
                 <div class="tooltip_product_info">
                   {% if product.images.size > 1 %}
                     <img src="{{ product.images[1] | img_url:'master' }}">
@@ -136,7 +161,94 @@
       <span class="custom_msg_error"></span>
     </div>
   </div>
+      </div>
+    </details>
+  </div>
 {% endif %}
+
+{% comment %}To show Add-on product (e.g, Rakhi, etc) on PDP page based on TAG(featire-product) and keep it collapsible. 10-07-2025
+{% endcomment %}
+ {% assign collection_handle = product.metafields.custom.collection_name.value %}
+
+{% if product.tags contains 'feature-product' and collections[collection_handle].products.size!=0 %}
+    <div class="product__accordion accordion quick-add-hidden">
+    <details id="Details-card-section-{{ section.id }}" open>
+      <summary>
+        <div class="summary__title">
+          <h2 class="h4 accordion__title">Add-On Product</h2>
+        </div>
+        {% render 'icon-caret' %}
+      </summary>
+
+      <div class="accordion__content rte" id="ProductAccordion-card-section-{{ section.id }}">
+  <div class="gift_card_wrapper" data-roi="{{ isRoiProduct }}">
+    <h4>Add Product : <span class="show_prod_name"></span><span class="show_prod_price"></span></h4>
+    <div class="gift_products_wrap">
+      <div class="gift_product">
+        <input type="radio" class="product_checkbox" name="product_id" value="">
+        <img src="{{ 'no_product.png' | asset_img_url:'100x100' }}">
+        <input type="hidden" value="" class="pd_name">
+        <input type="hidden" value="" class="pd_price">
+      </div>
+      
+      {% assign sorted_card_products = collections[collection_handle].products %}
+      {% for product in sorted_card_products %}
+        {% if isRoiProduct and product.tags contains 'location-roi' %}
+          <div class="gift_product">
+            <input
+              type="radio"
+              class="product_checkbox"
+              name="product_id"
+              {% for variant in product.variants %}
+                value="{{ variant.id }}"
+              {% endfor %}
+            >
+            <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
+            <input type="hidden" value="{{ product.title }}" class="pd_name">
+            <input type="hidden" value="{{ product.variants[0].price }}" class="pd_price">
+            <div class="tooltip_product_info">
+              {% if product.images.size > 1 %}
+                <img src="{{ product.images[1] | img_url:'master' }}">
+              {% else %}
+                <img src="{{ product.featured_media.preview_image | img_url:'master' }}">
+              {% endif %}
+            </div>
+          </div>
+        {% elsif isRoiProduct == false %}
+          {% unless product.tags contains 'location-roi' %}
+              <div class="gift_product">
+                <input
+                  type="radio"
+                  class="product_checkbox"
+                  name="product_id"
+                  {% for variant in product.variants %}
+                    value="{{ variant.id }}"
+                  {% endfor %}
+                >
+                <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
+                <input type="hidden" value="{{ product.title }}" class="pd_name">
+            <input type="hidden" value="{{ product.variants[0].price }}" class="pd_price">
+                
+                <div class="tooltip_product_info">
+                  {% if product.images.size > 1 %}
+                    <img src="{{ product.images[1] | img_url:'master' }}">
+                  {% else %}
+                    <img src="{{ product.featured_media.preview_image | img_url:'master' }}">
+                  {% endif %}
+                </div>
+              </div>
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+      </div>
+    </details>
+    </div>
+{% endif %}
+
+
+
 
 {% comment %}
        {% if template == 'product' %}
@@ -145,3 +257,14 @@
 {% endcomment %}
 
 {{ 'cart_drawer_func.js' | asset_url | script_tag }}
+ {% comment %}
+   Add styling of Price of the Add-On product Added by Velocity 10-07-2025
+  {% endcomment %}
+<style>
+  .show_prod_price{
+    margin-left: 6px;
+  }
+  .show_gift_prod_price{
+    margin-left: 6px;
+  }
+</style>
