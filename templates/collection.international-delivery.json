@@ -47,6 +47,7 @@
     },
     "featured_collection_FKhtyY": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "custom_class": "",
@@ -134,6 +135,15 @@
         "section_heading": "Trending Products for International Delivery",
         "columns_desktop": 3,
         "enable_scroll": false
+      }
+    },
+    "recommended_products_hampers_JHak6a": {
+      "type": "recommended_products_hampers",
+      "name": "Recommended products",
+      "settings": {
+        "heading": "Recommended products",
+        "subheading": "",
+        "related_tag": "international-rakhis"
       }
     },
     "rich_text_aMVebW": {
@@ -319,6 +329,7 @@
     "enquiry_hulk_form_rMXbL9",
     "featured_collection_FKhtyY",
     "trending_gifts_r8c38H",
+    "recommended_products_hampers_JHak6a",
     "rich_text_aMVebW",
     "image_banner_k8yHTe",
     "a9376f36-a120-47c4-9ede-cb7aa6d83177",
