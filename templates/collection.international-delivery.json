@@ -18,8 +18,21 @@
         "color_scheme": "background-1"
       }
     },
+    "enquiry_hulk_form_AqG3ey": {
+      "type": "enquiry_hulk_form",
+      "name": "Hulk Enquiry Form Section",
+      "settings": {
+        "bg_image_desktop": "shopify://shop_images/rakhi-web-Photoroom_1.webp",
+        "button_1_text": "Talk to Our Concierge",
+        "button_1_link": "https://wa.me/919147321916?text=Hi",
+        "button_2_text": "",
+        "button_2_link": "",
+        "hulk_form_embed": "<iframe src=\"https://formbuilder.hulkapps.com/corepage/customform?id=INv58lSy6OcHzJmOs4LITw&referrer_url=https://thegiftstudio.com/collections/corporate-gifting\" id=\"frame_INv58lSy6OcHzJmOs4LITw\" frameborder=\"0\" width=\"100%\" style=\"height: 662px;\"></iframe>"
+      }
+    },
     "enquiry_hulk_form_rMXbL9": {
       "type": "enquiry_hulk_form",
+      "disabled": true,
       "name": "Hulk Enquiry Form Section",
       "settings": {
         "bg_image_desktop": "shopify://shop_images/BANNER_desktop.png",
@@ -31,100 +44,28 @@
         "hulk_form_embed": "<iframe src=\"https://formbuilder.hulkapps.com/corepage/customform?id=krHBDwnIV7JZpkshZGEuKQ&referrer_url=https://thegiftstudio.com/collections/corporate-gifting\" id=\"frame_krHBDwnIV7JZpkshZGEuKQ\" frameborder=\"0\" width=\"100%\" style=\"height: 662px;\"></iframe>"
       }
     },
-    "categories_list_section_RJyRXR": {
-      "type": "categories_list_section",
-      "blocks": {
-        "text_HRTyzD": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Wurfel_3.png",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "text_kT6H7Q": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Blue_d79c9001-b0d4-49df-9cd4-1c0a363043ca.png",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "text_6Ac8f7": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Raheja_0149b9e0-2482-41ad-87cc-91933b97daba.png",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "text_LB6JFd": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Wurfel_1.png",
-            "category_title": "",
-            "img_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_HRTyzD",
-        "text_kT6H7Q",
-        "text_6Ac8f7",
-        "text_LB6JFd"
-      ],
-      "custom_css": [
-        ".category_section .category_inner_sec .category_sec img {width: 100%; border-radius: 10px;}",
-        ".category_section .category_inner_sec .category_sec {cursor: default;}",
-        ".category_section .category_inner_sec {row-gap: 2rem;}",
-        ".category_section .collection-list-title{font-size: 28px;}"
-      ],
-      "name": "Categories List",
-      "settings": {
-        "custom_class": "",
-        "title": "What Our Customers Say",
-        "subtitle": "",
-        "columns_desktop": 2,
-        "columns_mobile": "1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "c5fba097-1ecc-4566-83d5-9c5db1b741c8": {
-      "type": "custom-liquid",
-      "settings": {
-        "custom_liquid": "{% render 'company-trusted.liquid' %}",
-        "color_scheme": "background-1",
-        "padding_top": 8,
-        "padding_bottom": 0
-      }
-    },
     "trending_gifts_r8c38H": {
       "type": "trending-gifts",
       "blocks": {
         "gift_image_NpWNEG": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9349.png",
-            "gift_link": "#"
+            "gift_image": "shopify://shop_images/DivineOmRakhi_1463688_1_1-Photoroom.png",
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_P8BKKq": {
           "type": "gift_image",
           "settings": {
             "gift_image": "shopify://shop_images/Frame_9434.png",
-            "gift_link": "#"
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_E393JT": {
           "type": "gift_image",
           "settings": {
             "gift_image": "shopify://shop_images/Frame_9432.png",
-            "gift_link": "#"
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_4h3CFk": {
@@ -157,6 +98,7 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
+      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Gifts at The Gift Studio",
@@ -164,30 +106,102 @@
         "enable_scroll": false
       }
     },
-    "image_banner_KLhtRY": {
-      "type": "image-banner",
-      "custom_css": [
-        ".mobile_banner {height: 700px;}",
-        ".media > *:not(.zoom):not(.deferred-media__poster-button),.media model-viewer {object-fit: fill;}"
+    "rich_text_aMVebW": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_xJ6xnt": {
+          "type": "heading",
+          "settings": {
+            "heading": "<h2>Why choose us for international rakhi gifts?</h2>",
+            "color_pick_title": "",
+            "class_name": "",
+            "heading_size": "h1"
+          }
+        },
+        "text_b6t86R": {
+          "type": "text",
+          "settings": {
+            "text": "<h4><br/>At The Gift Studio, we specialize in premium, thoughtfully curated Rakhi hampers that celebrate the bond between siblings, no matter where they are in the world. Our unique selection blends traditional charm with luxury gifting — featuring handcrafted rakhis, artisanal sweets, gourmet treats, and elegant packaging. With reliable international shipping, personalized options, and seamless service, we ensure your Rakhi gift reaches your loved ones abroad with love, style, and on time. Trust The Gift Studio to deliver more than a gift — we deliver emotions across borders.<br/><br/></h4>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xJ6xnt",
+        "text_b6t86R"
       ],
-      "name": "t:sections.image-banner.presets.name",
+      "name": "t:sections.rich-text.presets.name",
       "settings": {
-        "custom_class": "",
-        "image": "shopify://shop_images/Frame_142892_1.png",
-        "mob_banner": "shopify://shop_images/WHY_CHOOSE.png",
-        "banner_link": "#",
-        "image_overlay_opacity": 0,
-        "image_height": "adapt",
-        "desktop_content_position": "middle-center",
-        "show_text_box": true,
-        "desktop_content_alignment": "center",
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "best_sellers_section_g6gHjH": {
+      "type": "best_sellers_section",
+      "blocks": {
+        "collection_JCxTxW": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Individual Rakhis",
+            "collection": "rakhis"
+          }
+        },
+        "collection_YqkAxd": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Hampers",
+            "collection": "birthday-curated-hampers"
+          }
+        }
+      },
+      "block_order": [
+        "collection_JCxTxW",
+        "collection_YqkAxd"
+      ],
+      "name": "Best Sellers",
+      "settings": {
+        "title": "International Bestsellers",
+        "subtitle": "",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collage_RDXycb": {
+      "type": "collage",
+      "blocks": {
+        "image_TnceKj": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_8dFjQm": {
+          "type": "image",
+          "settings": {}
+        },
+        "image_xLzEeV": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image_TnceKj",
+        "image_8dFjQm",
+        "image_xLzEeV"
+      ],
+      "name": "t:sections.collage.presets.name",
+      "settings": {
+        "heading": "Bestsellers for International Delivery",
+        "heading_size": "h1",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "card_styles": "product-card-wrapper",
         "color_scheme": "background-1",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": true,
-        "show_text_below": true,
-        "page_width": false,
-        "margin_top": 0,
-        "margin_bottom": 0
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "image_banner_k8yHTe": {
@@ -342,20 +356,53 @@
       "settings": {
         "collection_description_ref": "{{ collection.metafields.custom.collection_information | metafield_tag }}"
       }
+    },
+    "featured_blog_b6iWrw": {
+      "type": "featured-blog",
+      "name": "t:sections.featured-blog.presets.name",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "blog": "giftgiving",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "color_scheme": "background-1",
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_excerpt": false,
+        "show_view_all": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "page_7LmMNN": {
+      "type": "page",
+      "name": "t:sections.page.presets.name",
+      "settings": {
+        "page": "explore-our-offerings",
+        "heading_size": "h1",
+        "color_scheme": "background-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "banner",
+    "enquiry_hulk_form_AqG3ey",
     "enquiry_hulk_form_rMXbL9",
-    "categories_list_section_RJyRXR",
-    "c5fba097-1ecc-4566-83d5-9c5db1b741c8",
     "trending_gifts_r8c38H",
-    "image_banner_KLhtRY",
+    "rich_text_aMVebW",
+    "best_sellers_section_g6gHjH",
+    "collage_RDXycb",
     "image_banner_k8yHTe",
     "a9376f36-a120-47c4-9ede-cb7aa6d83177",
     "featured_collection_FXBVeL",
     "product-grid",
     "8a78d8e3-e587-4c1a-b757-84aa50a661ea",
-    "collection_description_dmfELQ"
+    "collection_description_dmfELQ",
+    "featured_blog_b6iWrw",
+    "page_7LmMNN"
   ]
 }
