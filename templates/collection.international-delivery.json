@@ -22,7 +22,7 @@
       "type": "enquiry_hulk_form",
       "name": "Hulk Enquiry Form Section",
       "settings": {
-        "bg_image_desktop": "shopify://shop_images/rakhi-web-Photoroom_1.webp",
+        "bg_image_desktop": "shopify://shop_images/rakhi-web-Photoroom_4.png",
         "button_1_text": "Talk to Our Concierge",
         "button_1_link": "https://wa.me/919147321916?text=Hi",
         "button_2_text": "",
@@ -50,43 +50,43 @@
         "gift_image_NpWNEG": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/DivineOmRakhi_1463688_1_1-Photoroom.png",
-            "gift_link": "#"
+            "gift_image": "shopify://shop_images/Rakhi_for_International_Image-Photoroom.webp",
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_P8BKKq": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9434.png",
+            "gift_image": "shopify://shop_images/GreenMeenakariRakhi_1463686_2-Photoroom.png",
             "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_E393JT": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9432.png",
+            "gift_image": "shopify://shop_images/HandmadeCrochetCuteLionRakhiforKids_1463373_2-Photoroom.png",
             "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_4h3CFk": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9433.png",
-            "gift_link": "#"
+            "gift_image": "shopify://shop_images/DivineOmRakhi_1463688_2_1-Photoroom.png",
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_8Xy63f": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9434_1.png",
-            "gift_link": "#"
+            "gift_image": "shopify://shop_images/RoyalBloomMeenakariBhaiyaBhabhiRakhi_1463696_2-Photoroom.png",
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         },
         "gift_image_MagmiA": {
           "type": "gift_image",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9435.png",
-            "gift_link": "#"
+            "gift_image": "shopify://shop_images/HandmadeCrochetTigerRakhiforKids_1463372_2-Photoroom.png",
+            "gift_link": "https://wa.me/919147321916?text=Hi"
           }
         }
       },
@@ -100,8 +100,8 @@
       ],
       "name": "Trending Gifts (Configurable)",
       "settings": {
-        "section_heading": "Trending International Gifts",
-        "columns_desktop": 4,
+        "section_heading": "Trending for International Delivery",
+        "columns_desktop": 3,
         "enable_scroll": false
       }
     },
