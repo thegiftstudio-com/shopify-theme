@@ -47,10 +47,12 @@
         },
         "quantity_selector": {
           "type": "quantity_selector",
+          "disabled": true,
           "settings": {}
         },
         "custom_liquid_4fGHRF": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "{% render 'discount-on-pdp' %}"
           }
@@ -64,9 +66,9 @@
             "heading2": "Happy Customers",
             "url2": "",
             "image2": "shopify://shop_images/40k-02_1_70405e1d-6a83-402b-8294-6562ea3068c2.svg",
-            "heading3": "An Initiative by Nature's Basket",
+            "heading3": "Reliable Global Delivery",
             "url3": "",
-            "image3": "shopify://shop_images/by_NB-01_3.svg"
+            "image3": "shopify://shop_images/global-shipping_18945797.png"
           }
         },
         "custom_liquid_MiiLXn": {
@@ -78,12 +80,14 @@
         },
         "buy_buttons": {
           "type": "buy_buttons",
+          "disabled": true,
           "settings": {
             "show_dynamic_checkout": false
           }
         },
         "quinn_shoppable_reel_app_cards_block_rpQTeF": {
           "type": "shopify://apps/quinn-shoppable-reel/blocks/app-cards-block/483fa771-9c4d-49e4-8c0d-0155f4b872d6",
+          "disabled": true,
           "settings": {
             "custom_metaobject_handle": "null",
             "background_color": "#ffffff",
@@ -91,6 +95,12 @@
             "margin_mobile": "5px 0px 0px 0px",
             "padding_desktop": "10px 10px 10px 10px",
             "padding_mobile": "10px 5px 10px 5px"
+          }
+        },
+        "custom_liquid_PYhRin": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<a href=\"https://wa.me/919147321916?text=Hi\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
           }
         },
         "description": {
@@ -177,6 +187,7 @@
         "custom_liquid_MiiLXn",
         "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
+        "custom_liquid_PYhRin",
         "description",
         "share",
         "4ff5d10f-2e52-47ce-b34f-a7aad6596d06",
