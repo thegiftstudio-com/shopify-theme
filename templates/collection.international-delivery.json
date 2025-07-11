@@ -23,6 +23,7 @@
       "name": "Hulk Enquiry Form Section",
       "settings": {
         "bg_image_desktop": "shopify://shop_images/rakhi-web-Photoroom_4.png",
+        "bg_image_mobile": "shopify://shop_images/rakhi-web_copy_-Photoroom.png",
         "button_1_text": "Talk to Our Concierge",
         "button_1_link": "https://wa.me/919147321916?text=Hi",
         "button_2_text": "",
@@ -100,7 +101,7 @@
       ],
       "name": "Trending Gifts (Configurable)",
       "settings": {
-        "section_heading": "Trending for International Delivery",
+        "section_heading": "Trending Products for International Delivery",
         "columns_desktop": 3,
         "enable_scroll": false
       }
