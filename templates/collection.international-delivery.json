@@ -45,6 +45,35 @@
         "hulk_form_embed": "<iframe src=\"https://formbuilder.hulkapps.com/corepage/customform?id=krHBDwnIV7JZpkshZGEuKQ&referrer_url=https://thegiftstudio.com/collections/corporate-gifting\" id=\"frame_krHBDwnIV7JZpkshZGEuKQ\" frameborder=\"0\" width=\"100%\" style=\"height: 662px;\"></iframe>"
       }
     },
+    "featured_collection_FKhtyY": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "custom_class": "",
+        "title": "Products for International Delivery",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-1",
+        "image_ratio": "adapt",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "trending_gifts_r8c38H": {
       "type": "trending-gifts",
       "blocks": {
@@ -99,6 +128,7 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
+      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Products for International Delivery",
@@ -287,6 +317,7 @@
     "banner",
     "enquiry_hulk_form_AqG3ey",
     "enquiry_hulk_form_rMXbL9",
+    "featured_collection_FKhtyY",
     "trending_gifts_r8c38H",
     "rich_text_aMVebW",
     "image_banner_k8yHTe",
