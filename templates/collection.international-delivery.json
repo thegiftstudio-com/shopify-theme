@@ -47,7 +47,6 @@
     },
     "featured_collection_FKhtyY": {
       "type": "featured-collection",
-      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "custom_class": "",
@@ -56,8 +55,8 @@
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "",
-        "products_to_show": 4,
+        "collection": "rakhis-for-international-shipping",
+        "products_to_show": 8,
         "columns_desktop": 4,
         "full_width": false,
         "show_view_all": true,
@@ -129,6 +128,7 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
+      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Products for International Delivery",
