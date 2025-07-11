@@ -129,7 +129,6 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
-      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Products for International Delivery",
@@ -139,6 +138,7 @@
     },
     "recommended_products_hampers_JHak6a": {
       "type": "recommended_products_hampers",
+      "disabled": true,
       "name": "Recommended products",
       "settings": {
         "heading": "Recommended products",
