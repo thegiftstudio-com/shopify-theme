@@ -100,7 +100,7 @@
         "custom_liquid_PYhRin": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<a href=\"https://wa.me/919147321916?text=Hi\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
+            "custom_liquid": "<a href=\"https://wa.me/919147321916?text=Hi, I'm interested in the {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
           }
         },
         "description": {
