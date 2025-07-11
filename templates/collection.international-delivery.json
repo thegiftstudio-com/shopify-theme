@@ -51,7 +51,7 @@
           "type": "gift_image",
           "settings": {
             "gift_image": "shopify://shop_images/DivineOmRakhi_1463688_1_1-Photoroom.png",
-            "gift_link": "https://wa.me/919147321916?text=Hi"
+            "gift_link": "#"
           }
         },
         "gift_image_P8BKKq": {
@@ -100,8 +100,8 @@
       ],
       "name": "Trending Gifts (Configurable)",
       "settings": {
-        "section_heading": "Trending Gifts at The Gift Studio",
-        "columns_desktop": 3,
+        "section_heading": "Trending International Gifts",
+        "columns_desktop": 4,
         "enable_scroll": false
       }
     },
