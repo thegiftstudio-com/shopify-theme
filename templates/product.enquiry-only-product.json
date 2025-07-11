@@ -50,13 +50,6 @@
           "disabled": true,
           "settings": {}
         },
-        "custom_liquid_4fGHRF": {
-          "type": "custom_liquid",
-          "disabled": true,
-          "settings": {
-            "custom_liquid": "{% render 'discount-on-pdp' %}"
-          }
-        },
         "custom_badges_QCNVye": {
           "type": "custom_badges",
           "settings": {
@@ -69,13 +62,6 @@
             "heading3": "Reliable Global Delivery",
             "url3": "",
             "image3": "shopify://shop_images/global-shipping_18945797.png"
-          }
-        },
-        "custom_liquid_MiiLXn": {
-          "type": "custom_liquid",
-          "disabled": true,
-          "settings": {
-            "custom_liquid": "{% render 'offers-on-pdp' %}"
           }
         },
         "buy_buttons": {
@@ -100,7 +86,7 @@
         "custom_liquid_PYhRin": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<a href=\"https://wa.me/919147321916?text=Hi, I'm interested in the {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
+            "custom_liquid": "<a href=\"https://wa.me/7738038029?text=Hi, I'm interested in the {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
           }
         },
         "description": {
@@ -182,9 +168,7 @@
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
         "judge_me_reviews_preview_badge_rzEHCL",
         "quantity_selector",
-        "custom_liquid_4fGHRF",
         "custom_badges_QCNVye",
-        "custom_liquid_MiiLXn",
         "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
         "custom_liquid_PYhRin",
