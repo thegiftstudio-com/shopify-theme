@@ -40,27 +40,43 @@ $(document).ready(function() {
 
 
     var gift_product_id = "";
-    var feature_product_id = "";
-  
     var sleeve_product_id = "";
     var color_product_id = ""; 
-  // To select the addon product on PDP when user clicks on the Addon product Added By velocity 10-07-2025
-    $('.product_checkbox').click(function() {
-        $('input[name="product_id"]:checked').each(function() {
-            feature_product_id = this.value;
-            var pd_name = $(this).parent().find('.pd_name').val();
-            var pd_price = $(this).parent().find('.pd_price').val()/100;
-            
-            $('.show_prod_name').text(pd_name);
-          if(pd_price!=''){
-            $('.show_prod_price').text(`₹${pd_price}`);
-          }else{
-                 $('.show_prod_price').text('');
-              }
-           
-        });
+    var selectedProducts = [];
+// Multiselect Addon Product on PDP page Added By Velocity 11-07-2025
+$('.product_checkbox').on('change', function () {
+    selectedProducts = [];
+
+
+    $('input.product_checkbox').each(function () {
+        var parent = $(this).closest('.gift_product');
+
+        if ($(this).is(':checked')) {
+            let productId = this.value;
+            let pd_name = $(this).parent().find('.pd_name').val();
+            let pd_price = $(this).parent().find('.pd_price').val() / 100;
+
+            selectedProducts.push({
+                id: productId,
+                name: pd_name,
+                price: pd_price
+            });
+
+            parent.addClass('selected');
+        } else {
+            parent.removeClass('selected');
+        }
     });
-  // To show the name of the gift card along with the price on PDP Added By velocity 10-07-2025
+
+
+    // Update UI
+    let names = selectedProducts.map(p => p.name).join(', ');
+    let prices = selectedProducts.map(p => `₹${p.price}`).join(', ');
+
+    $('.show_prod_name').text(names);
+    $('.show_prod_price').text(prices);
+});
+//END MultiSelect Addon Product on PDP Added By Velocity 11-07-2025
   
     $('.gift_product_checkbox').click(function() {
         $('input[name="product_id"]:checked').each(function() {
@@ -796,16 +812,17 @@ if (sleeve_product_id && sleeve_product_id !== "") {
         }
     });
 }
-
-// Add feature product if it exists
-if (feature_product_id && feature_product_id !== "") {
-    data.items.push({
-        "id": feature_product_id,
-        "quantity": 1,
-        "properties": {
-            "Product title": product_name,
-            "Add-On Product": "Yes"
-        }
+// Add all the addon Product into the cart Added By Velocity 11-07-2025
+if (selectedProducts.length > 0) {
+    selectedProducts.forEach(product => {
+        data.items.push({
+            id: product.id,
+            quantity: 1,
+            properties: {
+                "Product title": product.name,
+                "Add-On Product": "Yes"
+            }
+        });
     });
 }
 
