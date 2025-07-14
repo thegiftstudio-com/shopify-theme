@@ -1,0 +1,154 @@
+
+
+# SEO Recommendations for theme.liquid
+
+## 1. Duplicate Meta Description
+
+**Issue:** Multiple `<meta name="description">` tags can confuse search engines.  
+**Fix:** Only output one meta description tag per page.
+
+**Code Sample:**
+
+```liquid
+{% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{% endif %}
+```
+
+---
+
+## 2. Multiple Google Tag Manager (GTM) Scripts
+
+**Issue:** Including more than one GTM container can cause data duplication and tracking problems.  
+**Fix:** Use only one GTM container unless you have a specific advanced use case.
+
+**Code Sample:**
+
+```liquid
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-XXXX');</script>
+<!-- End Google Tag Manager -->
+```
+
+---
+
+## 3. Meta Robots Tag Placement
+
+**Issue:** Conditional logic may result in more than one `<meta name="robots">` tag on some pages, which is invalid.  
+**Fix:** Output only one robots tag per page, with the correct value for that page.
+
+**Code Sample:**
+
+```liquid
+{% if request.path contains '/tagged/' %}
+  <meta name="robots" content="noindex">
+{% else %}
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+{% endif %}
+```
+
+---
+
+## 4. Open Graph Image Fallback
+
+**Issue:** If `shop.logo` or `collection.image` is blank, the OG image tag will be empty.  
+**Fix:** Add a fallback image for Open Graph tags.
+
+**Code Sample:**
+
+```liquid
+<meta property="og:image" content="{{ collection.image | default: shop.logo | default: 'your-fallback-image.jpg' | img_url: '1200x630' | absolute_url }}">
+```
+
+---
+
+## 5. Canonical Tag
+
+**Issue:** Using `request.path | prepend: shop.url` may not always match Shopify’s recommended `{{ canonical_url }}`.  
+**Fix:** Use `{{ canonical_url }}` for canonical tags.
+
+**Code Sample:**
+
+```liquid
+<link rel="canonical" href="{{ canonical_url }}">
+```
+
+---
+
+## 6. Title Tag Structure
+
+**Issue:** If `page_title` is not set, the `<title>` tag could be blank.  
+**Fix:** Ensure `page_title` is always set and meaningful.
+
+**Code Sample:**
+
+```liquid
+<title>{% if page_title %}{{ page_title }} | {% endif %}{{ shop.name }}</title>
+```
+
+---
+
+## 7. Missing Alt Attributes
+
+**Issue:** Images without descriptive `alt` attributes hurt accessibility and SEO.  
+**Fix:** Ensure all `<img>` tags have meaningful `alt` attributes.
+
+**Code Sample:**
+
+```liquid
+<img src="{{ image | img_url: '600x' }}" alt="{{ image.alt | escape }}">
+```
+
+---
+
+## 8. Excessive Inline CSS and JS
+
+**Issue:** Too much inline CSS/JS can slow down page loads.  
+**Fix:** Move as much CSS/JS as possible to external files.
+
+**Code Sample:**
+
+```liquid
+<!-- Instead of inline CSS/JS -->
+<link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+<script src="{{ 'theme.js' | asset_url }}" defer></script>
+```
+
+---
+
+## 9. Meta Charset Placement
+
+**Issue:** `<meta charset="utf-8">` should be the first element in `<head>`.  
+**Fix:** Place it at the very top of the `<head>` section.
+
+**Code Sample:**
+
+```liquid
+<head>
+  <meta charset="utf-8">
+  ...existing code...
+</head>
+```
+
+---
+
+## 10. Unused/Commented Code
+
+**Issue:** Commented-out scripts and tags clutter the file.  
+**Fix:** Remove unused or commented code for clarity and maintainability.
+
+**Code Sample:**
+
+```liquid
+{# Remove commented-out code like this: #}
+{# <!-- <script src="old-script.js"></script> --> #}
+```
+
+---
+
+
+**Let me know if you want help applying these changes!**
