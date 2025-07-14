@@ -1,12 +1,37 @@
 {% if collection.metafields.custom.filter.value == true %}
   <div class="collection page-width">
     <section class="price_filter">
+  {% comment %}
+    Display the price filter on collection page If collection metafield is not NULL. Added By Velocity 11-07-2025
+  {% endcomment %}
+      {% if collection.metafields.custom.dynamic_price_filter %}
       <div id="btn">
         <button id="filter-btn" class="filter-btn">Price</button>
       </div>
       <div id="filter-card" class="filter-card hidden">
         <h3>Filter by Price</h3>
         <form id="filter-form">
+           {% comment %}
+            Display the price filter range based on collection metafiled(Dynamic price Filter) Added By Velocity 11-07-2025
+           {% endcomment %}
+          {% assign price_objects = collection.metafields.custom.dynamic_price_filter.value %}
+          {% for price in price_objects %}
+            <label>
+                <input
+                  type="radio"
+                  name="price-filter"
+                  id=""
+                  data-filter-type="{{ price.price_filter_type |downcase}}"
+                  data-min-value="{{ price.min_price }}"
+                  data-max-value="{{ price.max_price }}"
+                  data-product-tag=""
+                >
+                {{ price.price_range }}
+              </label>
+            {% endfor %}
+            {% comment %}
+           ------Shop Level dynamic price filter comment as of now. Added by Velocity 11-07-2025
+            {% else %}
           {% for block in section.blocks %}
             {% if block.settings.filter_type != 'product_tag' %}
               <label>
@@ -23,8 +48,12 @@
               </label>
             {% endif %}
           {% endfor %}
+            {% endcomment %}
+            
         </form>
       </div>
+      {% endif %}
+      
       <div class="btn-container">
         <div id="selected-filter" class="selected-filter hidden">
           <div id="filter-label">
@@ -66,9 +95,11 @@
              let activeTags = new Set();
              let activePrice = null;
       //Click for open the price filter card
+             if(filterBtn){
              filterBtn.addEventListener("click", function () {
                filterCard.classList.toggle("hidden");
              });
+             }
       //Make a unique array of product tags available in the all product cards.
             // const productCards = document.querySelectorAll(".grid__item");
             const productCards = document.querySelectorAll(".all_in_stock");
@@ -128,6 +159,7 @@
   });
 
       //Select the price range from the price filter card.
+             if(filterForm){
         filterForm.addEventListener("change", function (event) {
                const selectedOption = event.target;
                if (selectedOption.checked) {
@@ -158,13 +190,15 @@
       //Apply filter price and tag based together.
                applyCombinedFilters();
              });
-
+             }
       //Disable the card
+             if(filterBtn & filterCard ){
              document.addEventListener("click", function (event) {
                if (!filterBtn.contains(event.target) && !filterCard.contains(event.target)) {
                  filterCard.classList.add("hidden");
                }
              });
+             }
     //Below are the function for apply both filter together.
              function applyCombinedFilters() {
                const productCards = document.querySelectorAll(".grid__item");
@@ -179,7 +213,7 @@
                  let isPriceMatch = true;
                  if (activePrice!=null) {
                    const type = activePrice.type;
-                   if (type === "greater") {
+                   if (type === "above") {
                      isPriceMatch = productPrice > activePrice.min;
                    } else if (type === "between") {
                      isPriceMatch = productPrice >= activePrice.min && productPrice <= activePrice.max;
@@ -322,7 +356,7 @@
 </style>
 {% schema %}
 {
-  "name": "Dynamic Price Filter",
+  "name": "Dynamic Pill/Price Filter",
   "settings": [
     {
       "type": "text",
@@ -359,7 +393,7 @@
           "id": "filter_type",
           "label": "Filter Type",
           "options": [
-            { "value": "greater", "label": "Greater than" },
+            { "value": "above", "label": "Above" },
             { "value": "between", "label": "Between" },
             { "value": "below", "label": "Below" }
 
@@ -371,7 +405,7 @@
   ],
   "presets": [
     {
-      "name": "Dynamic Price Filter",
+      "name": "Dynamic Pill/Price Filter",
       "category": "Filters",
       "blocks": [
         {
