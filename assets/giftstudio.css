@@ -557,9 +557,11 @@ product-recommendations {
   text-align:center;
 }
 
+/*
 #debug-recommendations {
   display: none !important;
 }
+*/
 }
 
 .location_filter {
