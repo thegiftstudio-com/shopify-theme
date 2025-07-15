@@ -64,8 +64,8 @@
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/Internatinal-shipping.jpg",
-            "gift_title": "International",
-            "img_url": "https://thegiftstudio.com/pages/international-shipping"
+            "gift_title": "International ( Rakhi )",
+            "img_url": "shopify://collections/rakhis-for-international-shipping"
           }
         },
         "text_JKAPRb": {
