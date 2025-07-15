@@ -547,9 +547,12 @@ predictive-search .spinner{
   display: none;
 }
 
+/*
+Commenting out hiding of product reccomendations
 product-recommendations {
   display: none !important;
 }
+*/
 .product-recommendations .card__heading a{
   text-align:center;
 }
