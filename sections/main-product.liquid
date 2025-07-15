@@ -523,6 +523,11 @@
                 class="complementary-products quick-add-hidden no-js-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
                 data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ block.settings.product_list_limit }}&intent=complementary"
               >
+                {# DEBUG: Output recommendations status for troubleshooting #}
+                <div style="display:none" id="debug-recommendations">
+                  recommendations.performed: {{ recommendations.performed }}<br>
+                  recommendations.products_count: {{ recommendations.products_count }}
+                </div>
                 {%- if recommendations.performed and recommendations.products_count > 0 -%}
                   <aside
                     aria-label="{{ 'accessibility.complementary_products' | t }}"
