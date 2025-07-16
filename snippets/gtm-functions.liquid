@@ -307,6 +307,10 @@
             }
           });
       });
+    // Trigger event when click on whatsapp enquiry for international products on PDP . Added by Velocity 16-07-2025
+      $('.enquire-now-btn').on('click', function() {
+          pushEnquiryOnWhatsAppEvent();
+      });
   });
 
     function handleCartDrawer() {
@@ -582,4 +586,22 @@
         });
 
       }
+  // Added by Velocity 16-07-2025: Function to push the WhatsApp Enquiry For International Products event to the  GTM and Meta
+   function pushEnquiryOnWhatsAppEvent() {
+    window.dataLayer = window.dataLayer || [];
+    const eventData = {
+        event: "enquiry_for_international_products_on_pdp",
+        ecommerce: {
+            user_id: getCustomerId(),
+            productId: v_productId,
+            productVariantId: v_productVariantId,
+            category_id: v_productCollectionId,
+            productName: v_productName,
+            productVariantTitle: v_productVariantTitle,
+            category_name: v_productCollection,
+            productPrice: v_productPrice
+        }
+    };
+    window.dataLayer.push(eventData);
+    }
 </script>
