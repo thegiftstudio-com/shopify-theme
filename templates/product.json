@@ -84,7 +84,6 @@
         },
         "complementary_JKMkkP": {
           "type": "complementary",
-          "disabled": true,
           "settings": {
             "block_heading": "Add Ons",
             "make_collapsible_row": true,
