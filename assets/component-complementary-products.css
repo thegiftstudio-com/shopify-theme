@@ -22,10 +22,21 @@ product-recommendations:not(.is-accordion) .complementary-products__container {
   --shadow-padding-sides-negative: calc((var(--shadow-horizontal-offset) * -1 + var(--shadow-blur-radius)) * var(--shadow-visible));
 }
 
-.complementary-slide > ul {
+/* .complementary-slide > ul {
   display: flex;
   flex-direction: column;
   gap: var(--grid-mobile-vertical-spacing);
+} */
+
+/* 
+* Updated complementary products layout to display 2 products per row
+* Changed from flex column to grid layout for 2x2 display
+*/
+.complementary-slide > ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-mobile-vertical-spacing);
+  grid-auto-rows: auto;
 }
 
 .complementary-slide.complementary-slide--standard > ul {
