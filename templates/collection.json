@@ -135,8 +135,19 @@
         "padding_bottom": 16
       }
     },
+    "custom_liquid_963R9L": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div style=\"padding-left: 3rem; padding-right: 3rem; margin-top: 2rem; color: black;\">\n  <h2 class=\"rich-text__heading rte h2\" style=\"font-weight: bold;\">Explore Our Offerings</h2>\n\n  <style>\n    .custom-links-black a {\n      color: black !important;\n      text-decoration: underline;\n      font-weight: normal;\n    }\n\n    .custom-links-black a:hover {\n      text-decoration: underline;\n    }\n  </style>\n\n  <div class=\"custom-links-black\">\n    <p><strong>For Birthdays</strong></p>\n    <p>\n      <a href=\"/collections/birthday-curated-hampers\">Birthday Hampers</a> |\n      <a href=\"/collections/birthday-cakes\">Birthday Cakes</a> |\n      <a href=\"/collections/birthday-flowers\">Birthday Plants and Flowers</a> |\n      <a href=\"/collections/birthday-balloons\">Birthday Baloons</a> |\n      <a href=\"/collections/birthday-hamper-for-her\">Birthday Gifts for Her</a> |\n      <a href=\"/collections/birthday-hamper-for-him\">Birthday Gifts for Him</a>\n    </p>\n\n    <p><strong>For Anniversaries</strong></p>\n    <p>\n      <a href=\"/collections/anniversary-curated-hampers\">Anniversary Hampers</a> |\n      <a href=\"/collections/anniversary-cakes\">Anniversary Cakes</a> |\n      <a href=\"/collections/anniversary-flowers\">Anniversary Flowers</a> |\n      <a href=\"/collections/jewellry\">Jewelry</a>\n    </p>\n\n    <p><strong>Unique Offerings</strong></p>\n    <p>\n      <a href=\"/collections/international-shipping\">International Delivery</a> |\n      <a href=\"/collections/sdd-4pm-cut-off\">Same Day Delivery</a> |\n      <a href=\"/pages/hamper-collections\">Build Your Own Hamper</a> |\n      <a href=\"/collections/exclusive-collection\">Exclusive Collection</a> |\n      <a href=\"/collections/corporate-gifting\">Corporate Gifting</a>\n    </p>\n  </div>\n</div>",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "page_HjifdU": {
       "type": "page",
+      "disabled": true,
       "custom_css": [],
       "name": "t:sections.page.presets.name",
       "settings": {
@@ -155,6 +166,7 @@
     "product-grid",
     "collection_description_3hfkc7",
     "featured_blog_e7ymeJ",
+    "custom_liquid_963R9L",
     "page_HjifdU"
   ]
 }
