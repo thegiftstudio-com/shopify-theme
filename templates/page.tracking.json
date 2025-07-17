@@ -1,1 +1,45 @@
-{"wrapper":"#tracking","sections":{"main":{"type":"main-tracking-page","settings":{}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": "#tracking",
+  "sections": {
+    "main": {
+      "type": "main-tracking-page",
+      "settings": {}
+    },
+    "rich_text_7RixMV": {
+      "type": "rich-text",
+      "blocks": {
+        "text_zVjCem": {
+          "type": "text",
+          "settings": {
+            "text": "<p>For any complaints, escalations, or order-related concerns, please email us at <br/>  <a href=\"mailto:complaints@thegiftstudio.com\">complaints@thegiftstudio.com</a> or <br/>  Call/WhatsApp us on +91-90822 24938.<br/>  If unresolved, you may escalate the issue to:<br/>  <strong>Mohit Dialani</strong>, E-commerce Head – <a href=\"mailto:mohit.dialani@rpsg.in\">mohit.dialani@rpsg.in</a><br/>  <strong>Arun Devanathan</strong>, CEO –  <a href=\"mailto:arun.devanathan@rpsg.in\">arun.devanathan@rpsg.in</a></p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_zVjCem"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_7RixMV"
+  ]
+}
