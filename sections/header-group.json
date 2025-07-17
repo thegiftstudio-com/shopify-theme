@@ -1,1 +1,130 @@
-{"name":"t:sections.header.name","type":"header","sections":{"announcement-bar":{"type":"announcement-bar","blocks":{"announcement_RnxM4p":{"type":"announcement","settings":{"text":"For Any Queries Please Call Us On +91-9147321916","text_alignment":"center","color_scheme":"accent-1","link":""}},"announcement_3htE96":{"type":"announcement","disabled":true,"settings":{"text":"Get 20% off for Mother's Day - Apply TGS20","text_alignment":"center","color_scheme":"accent-1","link":""}},"announcement-bar-0":{"type":"announcement","disabled":true,"settings":{"text":"This Women's Day, Get Flat 15% off on Your Orders, Use Code: DIFY15","text_alignment":"left","color_scheme":"inverse","link":""}},"436ae65a-2e19-4562-b53e-48a111657c2f":{"type":"announcement","disabled":true,"settings":{"text":"Get 10% discount on your order! Use Code: TGS10","text_alignment":"center","color_scheme":"accent-1","link":""}},"announcement_wBG8WR":{"type":"announcement","disabled":true,"settings":{"text":"Get 10% discount on your order! Use Code: TGS10","text_alignment":"center","color_scheme":"accent-1","link":""}},"announcement_trkiKA":{"type":"announcement","disabled":true,"settings":{"text":"Get 15% Off on Shopping for Rs. 999! Use Code: FESTIVE15","text_alignment":"center","color_scheme":"accent-1","link":"https:\/\/thegiftstudio.com\/collections\/diwali-gift-hampers"}},"announcement_FQLWQY":{"type":"announcement","disabled":true,"settings":{"text":"Get 15% Off on Shopping for Rs. 999! Use Code: DIWALI15","text_alignment":"center","color_scheme":"accent-1","link":"https:\/\/thegiftstudio.com\/collections\/diwali-gift-hampers"}}},"block_order":["announcement_RnxM4p","announcement_3htE96","announcement-bar-0","436ae65a-2e19-4562-b53e-48a111657c2f","announcement_wBG8WR","announcement_trkiKA","announcement_FQLWQY"],"custom_css":[".announcement-bar__message {font-size: 13px;}","@media (max-width: 600px) {.announcement-bar__message {font-size: 11px; }}"],"settings":{"auto_scroll":false}},"header":{"type":"header","settings":{"color_scheme":"background-1","logo_position":"top-left","menu":"mumbai-menu","menu_kol":"mumbai-menu","menu_pune":"mumbai-menu","menu_bangalore":"mumbai-menu","menu_delhi":"mumbai-menu","menu_gurgaon":"mumbai-menu","menu_roi":"mumbai-menu","menu_type_desktop":"mega","sticky_header_type":"always","show_line_separator":true,"mobile_logo_position":"center","margin_bottom":0,"padding_top":20,"padding_bottom":20}}},"order":["announcement-bar","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_RnxM4p": {
+          "type": "announcement",
+          "settings": {
+            "text": "For Any Queries Please Call Us On +91-2231394015",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
+        "announcement_3htE96": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 20% off for Mother's Day - Apply TGS20",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
+        "announcement-bar-0": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "This Women's Day, Get Flat 15% off on Your Orders, Use Code: DIFY15",
+            "text_alignment": "left",
+            "color_scheme": "inverse",
+            "link": ""
+          }
+        },
+        "436ae65a-2e19-4562-b53e-48a111657c2f": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 10% discount on your order! Use Code: TGS10",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
+        "announcement_wBG8WR": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 10% discount on your order! Use Code: TGS10",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
+        "announcement_trkiKA": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 15% Off on Shopping for Rs. 999! Use Code: FESTIVE15",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": "https://thegiftstudio.com/collections/diwali-gift-hampers"
+          }
+        },
+        "announcement_FQLWQY": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 15% Off on Shopping for Rs. 999! Use Code: DIWALI15",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": "https://thegiftstudio.com/collections/diwali-gift-hampers"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_RnxM4p",
+        "announcement_3htE96",
+        "announcement-bar-0",
+        "436ae65a-2e19-4562-b53e-48a111657c2f",
+        "announcement_wBG8WR",
+        "announcement_trkiKA",
+        "announcement_FQLWQY"
+      ],
+      "custom_css": [
+        ".announcement-bar__message {font-size: 13px;}",
+        "@media (max-width: 600px) {.announcement-bar__message {font-size: 11px; }}"
+      ],
+      "settings": {
+        "auto_scroll": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "color_scheme": "background-1",
+        "logo_position": "top-left",
+        "menu": "mumbai-menu",
+        "menu_kol": "mumbai-menu",
+        "menu_pune": "mumbai-menu",
+        "menu_bangalore": "mumbai-menu",
+        "menu_delhi": "mumbai-menu",
+        "menu_gurgaon": "mumbai-menu",
+        "menu_roi": "mumbai-menu",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "always",
+        "show_line_separator": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
