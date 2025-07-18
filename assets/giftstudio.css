@@ -2262,3 +2262,42 @@ span.font-segeo {
 .zsiq-medium-size {
 height: 64% !important;
 }
+/* Added by velocity on 16 july to update the UI for the complement section on the PDP */
+.complementary-products__container ul {
+  max-height: 155px; 
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: block;
+  padding-right: 10px; 
+}
+
+.complementary-products__container ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+.complementary-products__container ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Target the scrollbar */
+.complementary-products__container ul::-webkit-scrollbar {
+  width: 8px; 
+}
+
+/* Style the scrollbar track */
+.complementary-products__container ul::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+/* Style the scrollbar thumb */
+.complementary-products__container ul::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 6px;
+}
+
+/* Remove the up/down arrow buttons */
+.complementary-products__container ul::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+}
