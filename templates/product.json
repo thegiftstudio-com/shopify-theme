@@ -84,14 +84,13 @@
         },
         "complementary_JKMkkP": {
           "type": "complementary",
-          "disabled": true,
           "settings": {
             "block_heading": "Add Ons",
             "make_collapsible_row": true,
             "icon": "price_tag",
             "product_list_limit": 10,
             "products_per_page": 4,
-            "pagination_style": "counter",
+            "pagination_style": "numbers",
             "image_ratio": "square",
             "enable_quick_add": true
           }
