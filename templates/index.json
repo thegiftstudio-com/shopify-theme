@@ -1371,7 +1371,7 @@
         "heading_wqFJEn": {
           "type": "heading",
           "settings": {
-            "heading": "<p>Curated Gifts</p>",
+            "heading": "<p>Raksha Bandhan</p>",
             "color_pick_title": "",
             "class_name": "",
             "heading_size": "h1"
@@ -1387,8 +1387,8 @@
         "content_alignment": "center",
         "color_scheme": "background-1",
         "full_width": true,
-        "padding_top": 20,
-        "padding_bottom": 0
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "popular_categories_4LQxF9": {
@@ -1501,6 +1501,243 @@
         "collection_TnBBqt",
         "collection_98ppUT",
         "collection_raVwbN"
+      ],
+      "disabled": true,
+      "settings": {
+        "custom_class": "curated_category_sec",
+        "category_title": "",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "popular_categories_3Dz4Vj": {
+      "type": "popular_categories",
+      "blocks": {
+        "collection_MEYGQd": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "Rakhi",
+            "coll_img": "shopify://shop_images/RAKHIS.jpg",
+            "coll_title": "Rakhi",
+            "card_url": "shopify://collections/rakhis"
+          }
+        },
+        "collection_Lrebin": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "Hamper for Brother",
+            "coll_img": "shopify://shop_images/BRO_Hamper.jpg",
+            "coll_title": "Hampers for Brother",
+            "card_url": "https://thegiftstudio.com/collections/rakhi-gift-for-brother"
+          }
+        },
+        "collection_ABCtQx": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/SIS_Hamper.jpg",
+            "coll_title": "Hampers for sister",
+            "card_url": "https://thegiftstudio.com/collections/rakhi-gifts-for-sister"
+          }
+        },
+        "collection_QGRUQ4": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/BHAIYA_BHABI_Hamper.jpg",
+            "coll_title": "Hampers for bhaiya-bhabhi",
+            "card_url": "https://thegiftstudio.com/collections/rakhi-gifts-for-bhaiya-bhabhi"
+          }
+        },
+        "collection_97TRNn": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/KIDS_1.jpg",
+            "coll_title": "Hampers For Kids",
+            "card_url": "https://thegiftstudio.com/collections/rakhi-gift-for-kids"
+          }
+        }
+      },
+      "block_order": [
+        "collection_MEYGQd",
+        "collection_Lrebin",
+        "collection_ABCtQx",
+        "collection_QGRUQ4",
+        "collection_97TRNn"
+      ],
+      "settings": {
+        "custom_class": "curated_category_sec",
+        "category_title": "",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_KtPPtn": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_U4QxHi": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Curated Gifts</p>",
+            "color_pick_title": "",
+            "class_name": "",
+            "heading_size": "h1"
+          }
+        },
+        "text_gjJdaj": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+          }
+        },
+        "button_3gghqU": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_U4QxHi",
+        "text_gjJdaj",
+        "button_3gghqU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-1",
+        "full_width": true,
+        "padding_top": 0,
+        "padding_bottom": 20
+      }
+    },
+    "popular_categories_fWTBcV": {
+      "type": "popular_categories",
+      "blocks": {
+        "collection_W4QE4W": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Birthday_5963d1eb-2d99-46c2-883c-8df2a903e7b5.jpg",
+            "coll_title": "Birthday Selection",
+            "card_url": "https://thegiftstudio.com/collections/birthday-curated-hampers"
+          }
+        },
+        "collection_gqbbat": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Annivarsary.jpg",
+            "coll_title": "Anniversary Range",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
+          }
+        },
+        "collection_3xARHC": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Wedding.jpg",
+            "coll_title": "Wedding Series",
+            "card_url": "https://thegiftstudio.com/collections/curated-hamper-wedding"
+          }
+        },
+        "collection_Cadbx8": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Hug_me_tight.jpg",
+            "coll_title": "Hug Me Tight",
+            "card_url": "https://thegiftstudio.com/collections/hug-day"
+          }
+        },
+        "collection_qyaELf": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Seal_with_Kiss.jpg",
+            "coll_title": "Seal with kiss",
+            "card_url": "https://thegiftstudio.com/collections/kiss-day"
+          }
+        },
+        "collection_Lawqce": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Rosey_Surprise.jpg",
+            "coll_title": "Rosey Surprise",
+            "card_url": "https://thegiftstudio.com/collections/rose-day"
+          }
+        },
+        "collection_ffnX7w": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Heartfelt_Promises.jpg",
+            "coll_title": "heartfelt promises",
+            "card_url": "https://thegiftstudio.com/collections/promise-day"
+          }
+        },
+        "collection_enDdkr": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Evening_Gaze_v2.jpg",
+            "coll_title": "Anniversary Gifts",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
+          }
+        },
+        "collection_M6nA8g": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Home_Decor.jpg",
+            "coll_title": "Home Decor",
+            "card_url": "https://thegiftstudio.com/collections/tgs-home"
+          }
+        },
+        "collection_mKdDh8": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Couple_Games_e8b632e6-8f16-4a4f-ad6c-0ff820ac1c0f.jpg",
+            "coll_title": "Couple Games",
+            "card_url": "https://thegiftstudio.com/collections/couple-games"
+          }
+        }
+      },
+      "block_order": [
+        "collection_W4QE4W",
+        "collection_gqbbat",
+        "collection_3xARHC",
+        "collection_Cadbx8",
+        "collection_qyaELf",
+        "collection_Lawqce",
+        "collection_ffnX7w",
+        "collection_enDdkr",
+        "collection_M6nA8g",
+        "collection_mKdDh8"
       ],
       "settings": {
         "custom_class": "curated_category_sec",
@@ -2501,6 +2738,9 @@
     "782f453f-a109-43d1-8e49-de1598cb442d",
     "rich_text_7QEyFK",
     "popular_categories_4LQxF9",
+    "popular_categories_3Dz4Vj",
+    "rich_text_KtPPtn",
+    "popular_categories_fWTBcV",
     "multicolumn_3VG8GE",
     "23ab7808-7e1e-4528-ad91-6b6c873b4243",
     "43489cf9-cc66-4660-ac72-60536b0acc48",
