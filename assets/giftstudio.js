@@ -107,8 +107,9 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     }
   var sunday = 0;
    if (selected_warehouse_tat+product_Tat > 0 && !enableSundayDelivery) {
-    
-     
+    // To handle the scenerio when the product for the same day delivery post 7 PM was getting skipped
+    if ((currentDateTime > cutoffTimeSevenPm && product_Tat > 1) || selected_warehouse_tat >0 ) {
+ 
     const today = new Date(istTime);
      const tempDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Stripped time
     const targetDate = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate()); // Stripped time
@@ -130,6 +131,7 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
         }
     });
   }
+   }
    }
   if($datePicker!=''){
     // $datePicker.addClass("ui-state-highlight");
