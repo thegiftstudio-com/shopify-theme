@@ -82,16 +82,27 @@
         class="gift_sec {{ block.settings.city_hide }}"
         onclick="window.location.href='{{ block.settings.img_url }}';"
       >
-        <img
-          src="{{ block.settings.gift_img | img_url: '188x134' }}"
-          srcset="
-            {{ block.settings.gift_img | img_url: '188x134' }} 1x,
-            {{ block.settings.gift_img | img_url: '376x268' }} 2x
-          "
-          alt="{{ block.settings.gift_title }}"
-          width="94"
-          height="67"
-        >
+        <picture>
+          <source
+            srcset="
+              {{ block.settings.gift_img | img_url: '188x134', format: 'webp' }} 1x,
+              {{ block.settings.gift_img | img_url: '376x268', format: 'webp' }} 2x
+            "
+            type="image/webp"
+          >
+          <img
+            src="{{ block.settings.gift_img | img_url: '188x134' }}"
+            srcset="
+              {{ block.settings.gift_img | img_url: '188x134' }} 1x,
+              {{ block.settings.gift_img | img_url: '376x268' }} 2x
+            "
+            alt="{{ block.settings.gift_title }}"
+            width="94"
+            height="67"
+            loading="lazy"
+            decoding="async"
+          >
+        </picture>
         <p class="text_xs">{{ block.settings.gift_title }}</p>
       </div>
     {% endfor %}

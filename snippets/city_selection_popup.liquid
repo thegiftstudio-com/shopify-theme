@@ -36,6 +36,7 @@
         data-perishable=""
         data-pincode=""
       >
+      {% comment %}
       <div id="cityDataContainer" style="display: none;">
         {% for city_mapping in shop.metaobjects.city_mapping_popup.values %}
           {% for city in city_mapping.city_mapping_data.value %}
@@ -51,6 +52,7 @@
           {% endfor %}
         {% endfor %}
       </div>
+      {% endcomment %}
     </div>
   </div>
 </div>
@@ -100,8 +102,7 @@
 <script>
  
 
-      function cityChange(city, location, tat, isPerishable, pincode,warehouseTAT) {
-        localStorage.setItem("warehouseTAT", JSON.stringify(warehouseTAT));
+      function cityChange(city, location, tat, isPerishable, pincode) {
   $('#citySelected')
     .attr('data-city', city)
     .attr('data-location-tag', location)
@@ -167,7 +168,7 @@ if (!isNaN(pincode_val)) {
                         return `
                             <li>
                                 <a href="#" class="${cityId}-city-selection" 
-                                   onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}",${JSON.stringify(item.warehouse_tat).replace(/"/g, '&quot;')})'>
+                                   onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
                                    ${item.pincode}, ${item.city}
                                 </a>
                             </li>
@@ -246,7 +247,7 @@ if (!isNaN(pincode_val)) {
                             return `
                                 <li>
                                     <a href="#" class="${cityId}-city-selection" 
-                                       onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}", ${JSON.stringify(item.warehouse_tat).replace(/"/g, '&quot;')})'>
+                                       onclick='cityChange("${item.city}", "${location}", "${item.warehouse_tat[item.primary_warehouse]}", "${item.isPerishable}", "${item.pincode}")'>
                                        ${item.pincode}, ${item.city}
                                     </a>
                                 </li>

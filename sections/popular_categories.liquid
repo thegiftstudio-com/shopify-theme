@@ -1,5 +1,5 @@
 
-<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="preload" href="{{ 'component-slider.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 
 <style>
@@ -269,7 +269,9 @@
          alt="Valentine Flower" 
          class="left_flower valentine" 
          width="300" 
-         height="300">
+         height="300"
+         loading="lazy"
+         decoding="async">
     
     <!-- Right flower image with srcset -->
     <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right_side_flower-small.png?v=1707127532" 
@@ -279,7 +281,9 @@
          alt="Valentine Flower" 
          class="right_flower valentine" 
          width="300" 
-         height="300">
+         height="300"
+         loading="lazy"
+         decoding="async">
   
  
          <div class="populer_inner_sec">
@@ -305,17 +309,27 @@
                <div id="Slide-{{ section.id }}-{{ forloop.index }}" class="populer_sec {{ block.settings.city_hide }} collection-list__item grid__item {% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}" onclick="window.location.href='{{ block.settings.card_url }}';">
                   <div class="image_text_sec">
                      <div class="image_sec">
-                        <img
-                         srcset="{{ block.settings.coll_img | img_url: '300x' }} 300w,
-                           {{ block.settings.coll_img | img_url: '400x' }} 400w,
-                           {{ block.settings.coll_img | img_url: '500x' }} 500w"
-                         src="{{ block.settings.coll_img | img_url: '300x' }}"
-                         sizes="(max-width: 768px) 141px, 231px"
-                         alt="{{ block.settings.coll_title | escape }}"
-                         width="{{ block.settings.coll_img.width }}"
-                         height="{{ block.settings.coll_img.height }}"
-                         decoding="async"
-                         >
+                        <picture>
+                          <source
+                            srcset="{{ block.settings.coll_img | img_url: '300x', format: 'webp' }} 300w,
+                             {{ block.settings.coll_img | img_url: '400x', format: 'webp' }} 400w,
+                             {{ block.settings.coll_img | img_url: '500x', format: 'webp' }} 500w"
+                            sizes="(max-width: 768px) 141px, 231px"
+                            type="image/webp"
+                          >
+                          <img
+                           srcset="{{ block.settings.coll_img | img_url: '300x' }} 300w,
+                             {{ block.settings.coll_img | img_url: '400x' }} 400w,
+                             {{ block.settings.coll_img | img_url: '500x' }} 500w"
+                           src="{{ block.settings.coll_img | img_url: '300x' }}"
+                           sizes="(max-width: 768px) 141px, 231px"
+                           alt="{{ block.settings.coll_title | escape }}"
+                           width="{{ block.settings.coll_img.width }}"
+                           height="{{ block.settings.coll_img.height }}"
+                           loading="lazy"
+                           decoding="async"
+                           >
+                        </picture>
                         </div>
                         <div class="text_area">
                            <p class="color_white text_sm">{{ block.settings.coll_title }}</p>
