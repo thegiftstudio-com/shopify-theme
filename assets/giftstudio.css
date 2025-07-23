@@ -32,6 +32,32 @@ margin-bottom: 100px;
     bottom:75px !important;
   }
 }
+
+/* Mobile Performance Optimizations */
+@media (max-width: 767px) {
+  /* Optimize image rendering for mobile */
+  img {
+    image-rendering: optimizeQuality;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
+  /* Improve scroll performance */
+  .gift_section .gift_inner_sec {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Optimize animations for mobile */
+  .slideshow, .banner {
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  /* Reduce layout thrashing */
+  .critical-image {
+    contain: layout;
+  }
+}
 /* Added by Velocity on 20-12-2024 To add the background image on the concierge-query page */
 
 #shopify-section-template--23872808878387__173452918766afd9d0{
@@ -70,38 +96,47 @@ margin-bottom: 100px;
 @font-face {
   font-family: LatoRegular;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Regular.ttf?v=1687176677");
+  font-display: swap;
 }
 @font-face {
   font-family: LatoLight;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Light.ttf?v=1687716407");
+  font-display: swap;
 }
 @font-face {
   font-family: LatoBold;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Lato-Bold.ttf?v=1687716407");
+  font-display: swap;
 }
 @font-face {
   font-family: SignPainter;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/SignPainter-HouseScript.ttf?v=1687591632");
+  font-display: swap;
 }
 @font-face {
   font-family: QuattrocentoBold;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Quattrocento-Bold.ttf?v=1687176659");
+  font-display: swap;
 }
 @font-face {
   font-family: QuattrocentoRegular;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Quattrocento-Regular.ttf?v=1687176658");
+  font-display: swap;
 }
 @font-face {
   font-family: SegeoRegular;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/segoesc.ttf?v=1695822263");
+  font-display: swap;
 }
 @font-face {
   font-family: FortCollins;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/FORT_COLLINS_SCRIPT_DEMO_1.ttf?v=1707109150");
+  font-display: swap;
 }
 @font-face {
   font-family: DomainDisplay;
   src: url("https://cdn.shopify.com/s/files/1/0689/3014/2515/files/DomaineDisp-Medium_1.otf?v=1707227092");
+ font-display: swap;
 }
 :root {
   --font-heading: QuattrocentoBold;
@@ -562,7 +597,6 @@ product-recommendations {
   display: none !important;
 }
 */
-}
 
 .location_filter {
   display: flex;
@@ -1002,7 +1036,7 @@ product-recommendations {
   width: 9%;
 }
 .header__menu-item:hover .mega-menu__content {
-    opacity: 1;s
+    opacity: 1;
     transform: translateY(0);
 }
 
@@ -1766,8 +1800,6 @@ product-recommendations {
   background: rgba(255, 255, 255, 0.8) !important;
 }
 
-.mobile-facets__inner {
-}
 .mobile-facets__open-label,
 .mobile-facets__open svg {
   color: #000;

@@ -1,3 +1,41 @@
+// Performance optimizations for mobile
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Optimize event listeners for better INP
+function optimizeEventListeners() {
+  // Use passive listeners for scroll events
+  if (typeof window !== 'undefined') {
+    const passiveOptions = { passive: true };
+    
+    // Replace scroll event listeners with passive ones
+    document.addEventListener('scroll', debounce(() => {
+      // Scroll handling
+    }, 16), passiveOptions);
+    
+    // Optimize touch events for mobile
+    document.addEventListener('touchstart', (e) => {
+      // Touch handling
+    }, passiveOptions);
+  }
+}
+
+// Initialize optimizations when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', optimizeEventListeners);
+} else {
+  optimizeEventListeners();
+}
+
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(

@@ -36,6 +36,7 @@
         data-perishable=""
         data-pincode=""
       >
+      {% comment %}
       <div id="cityDataContainer" style="display: none;">
         {% for city_mapping in shop.metaobjects.city_mapping_popup.values %}
           {% for city in city_mapping.city_mapping_data.value %}
@@ -51,6 +52,7 @@
           {% endfor %}
         {% endfor %}
       </div>
+      {% endcomment %}
     </div>
   </div>
 </div>

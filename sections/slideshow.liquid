@@ -1,6 +1,11 @@
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
+
+<link rel="preload" href="{{ 'component-slider.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}"></noscript>
+
+<link rel="preload" href="{{ 'component-slideshow.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ 'component-slideshow.css' | asset_url }}"></noscript>
+
 
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
@@ -260,111 +265,106 @@
     data-speed="{{ section.settings.change_slides_speed }}"
   >
     {%- for block in section.blocks -%}
-      <style>
-        #Slide-{{ section.id }}-{{ forloop.index }} .banner__media::after {
-          opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
-        }
-      </style>
-      <div
-        class="slideshow__slide {{ block.settings.custom_class }} slideshow-{{ forloop.index }} grid__item grid--1-col slider__slide"
-        id="Slide-{{ section.id }}-{{ forloop.index }}"
-        {{ block.shopify_attributes }}
-        role="group"
-        aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
-        aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
-        tabindex="-1"
-        onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}');"
-        {% if block.settings.link %}
-          style="cursor:pointer;"
-        {% endif %}
-      >
-        <div class="slideshow__media desktop_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
-          {%- if block.settings.image -%}
-            {%- assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round -%}
-            {%- if forloop.first -%}
-              {{
-                block.settings.image
-                | image_url: width: 3840
-                | image_tag:
-                  height: height,
-                  class: 'critical-image',
-                  sizes: '(min-width: 1500px) 1500px, (min-width: 750px) 100vw, 100vw',
-                  widths: '550, 750, 1100, 1500, 1780, 1920',
-                  fetchpriority: 'high',
-                  loading: 'eager'
-              }}
-            {%- else -%}
-              {{
-                block.settings.image
-                | image_url: width: 3840
-                | image_tag:
-                  height: height,
-                  class: 'critical-image',
-                  sizes: '(min-width: 1500px) 1500px, (min-width: 750px) 100vw, 100vw',
-                  widths: '550, 750, 1100, 1500, 1780, 1920',
-                  fetchpriority: 'auto',
-                  loading: 'lazy'
-              }}
-            {%- endif -%}
+  <style>
+    #Slide-{{ section.id }}-{{ forloop.index }} .banner__media::after {
+      opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
+    }
+  </style>
 
-          {%- else -%}
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+  <div
+    class="slideshow__slide {{ block.settings.custom_class }} slideshow-{{ forloop.index }} grid__item grid--1-col slider__slide"
+    id="Slide-{{ section.id }}-{{ forloop.index }}"
+    {{ block.shopify_attributes }}
+    role="group"
+    aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+    aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+    tabindex="-1"
+    onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}');"
+    {% if block.settings.link %}
+      style="cursor:pointer;"
+    {% endif %}
+  >
+    <!-- Desktop Banner -->
+    <div class="slideshow__media desktop_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
+      {%- if block.settings.image -%}
+        {%- assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round -%}
+        {{
+          block.settings.image
+          | image_url: width: 3840
+          | image_tag:
+            height: height,
+            class: 'critical-image',
+            sizes: '(min-width: 1500px) 1500px, (min-width: 750px) 100vw, 100vw',
+            widths: '550, 750, 1100, 1500, 1780, 1920',
+            fetchpriority: forloop.first | default: false | ternary: 'high', 'auto',
+            loading: forloop.first | default: false | ternary: 'eager', 'lazy',
+            decoding: 'async'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <!-- Mobile Banner -->
+    <div class="slideshow__media mobile_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
+      <img
+        onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
+        src="{{ block.settings.mob_banner | img_url: '400x431', crop: 'center', format: 'webp' }}"
+        srcset="
+          {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
+          {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w,
+          {{ block.settings.mob_banner | img_url: '800x862', crop: 'center' }} 800w
+        "
+        sizes="(max-width: 480px) 100vw, (max-width: 768px) 80vw, 800px"
+        width="400"
+        height="431"
+        alt="{{ block.settings.mob_banner.alt | escape }}"
+        {% if forloop.first %}
+          loading="eager"
+          fetchpriority="high"
+        {% else %}
+          loading="lazy"
+          fetchpriority="auto"
+        {% endif %}
+        decoding="async"
+      >
+    </div>
+
+    <!-- Text Overlay -->
+    <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}">
+      {% if block.settings.heading != blank
+        or block.settings.subheading != blank
+        or block.settings.button_label != blank
+      %}
+        <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}">
+          {%- if block.settings.heading != blank -%}
+            <h2 class="banner__heading {{ block.settings.heading_size }}">{{ block.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if block.settings.subheading != blank -%}
+            <div class="banner__text" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.subheading }}</span>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.button_label != blank -%}
+            <div class="banner__buttons">
+              <a
+                {% if block.settings.link %}
+                  href="{{ block.settings.link }}"
+                {% else %}
+                  role="link" aria-disabled="true"
+                {% endif %}
+                class="button {% if block.settings.button_style_secondary %}button--secondary{% else %}button--primary{% endif %}"
+              >
+                {{- block.settings.button_label | escape -}}
+              </a>
+            </div>
           {%- endif -%}
         </div>
-        <div class="slideshow__media mobile_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
-          <img
-            onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
-            src="{{ block.settings.mob_banner | img_url: '400x431', crop: 'center', format: 'webp' }}"
-            srcset="
-              {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
-              {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w,
-              {{ block.settings.mob_banner | img_url: '800x862', crop: 'center' }} 800w
-            "
-            sizes="(max-width: 480px) 100vw, (max-width: 768px) 80vw, 800px"
-            width="400"
-            height="431"
-            alt="{{ block.settings.mob_banner.alt | escape }}"
-            {% if forloop.first %}
-              loading="eager"
-              fetchpriority="high"
-            {% else %}
-              loading="lazy"
-            {% endif %}
-          >
-        </div>
-        <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}">
-          {% if block.settings.heading != blank
-            or block.settings.subheading != blank
-            or block.settings.button_label != blank
-          %}
-            <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}">
-              {%- if block.settings.heading != blank -%}
-                <h2 class="banner__heading {{ block.settings.heading_size }}">{{ block.settings.heading }}</h2>
-              {%- endif -%}
-              {%- if block.settings.subheading != blank -%}
-                <div class="banner__text" {{ block.shopify_attributes }}>
-                  <span>{{ block.settings.subheading }}</span>
-                </div>
-              {%- endif -%}
-              {%- if block.settings.button_label != blank -%}
-                <div class="banner__buttons">
-                  <a
-                    {% if block.settings.link %}
-                      href="{{ block.settings.link }}"
-                    {% else %}
-                      role="link" aria-disabled="true"
-                    {% endif %}
-                    class="button {% if block.settings.button_style_secondary %}button--secondary{% else %}button--primary{% endif %}"
-                  >
-                    {{- block.settings.button_label | escape -}}
-                  </a>
-                </div>
-              {%- endif -%}
-            </div>
-          {% endif %}
-        </div>
-      </div>
-    {%- endfor -%}
+      {% endif %}
+    </div>
+  </div>
+{%- endfor -%}
+
   </div>
 
   {%- if section.blocks.size > 1 and section.settings.auto_rotate == false -%}
