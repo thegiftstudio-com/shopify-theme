@@ -1,0 +1,5 @@
+/*
+Generated time: July 23, 2025 12:02
+This file was created by the app developer. Feel free to contact the original developer with any questions. It was minified (compressed) by AVADA. AVADA do NOT own this script.
+*/
+.track_form{position:relative;width:100%;max-width:375px;margin:0 auto}.track_form input[type=text]{border-radius:40px;padding:10px 22px;border:2px solid var(--blue);width:100%;height:41px;outline:0;font-family:var(--button)}.track_form input[type=text]::placeholder{opacity:.5}.track_form button{border-radius:50%;height:35px;width:35px;position:absolute;top:3px;right:3px;border:none;background:var(--yellow);cursor:pointer}.track_form button img{width:70%;transform:translateX(-2px);text-align:right;display:flex;margin:auto;margin-right:0}
