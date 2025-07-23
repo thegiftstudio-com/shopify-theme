@@ -18,7 +18,7 @@
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
 
-{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.aio.min.css' | asset_url | stylesheet_tag }}
 
 {%- if card_product.price < card_product.compare_at_price -%}
   {%- assign savings = card_product.compare_at_price
@@ -63,7 +63,7 @@
           <div class="card__media">
             {% if card_product.tags contains 'Non-Veg' %}
               <div class="label_img">
-                <img
+                <img loading="lazy"
                   src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/non-veg-icon.svg?v=1691504652"
                   class="non_veg_label img-repsonsive"
                 >
@@ -90,7 +90,7 @@
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                 alt="{{ card_product.featured_media.alt | escape }}"
                 class="motion-reduce"
-                loading="{% if lazy_load == true %}lazy{% else %}eager{% endif %}"
+                loading="lazy"
                 width="{{ card_product.featured_media.width }}"
                 height="{{ card_product.featured_media.height }}"
               >

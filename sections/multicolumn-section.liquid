@@ -1,7 +1,7 @@
-{{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
-{{ 'component-rte.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'share.js' | asset_url }}" defer="defer"></script>
-<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'section-multicolumn.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-rte.aio.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'share.aio.min.js' | asset_url }}" defer="defer"></script>
+<link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 
 <style>
@@ -262,7 +262,7 @@
                           class: 'multicolumn-card__image'
                       }}
                     {% endcomment %}
-                    <img
+                    <img loading="lazy"
                       src="{{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }}"
                       srcset="
                              {{ block.settings.mob_banner | img_url: '200x200', crop: 'center' }} 1x,
@@ -283,7 +283,7 @@
                 {%- if block.settings.text != blank -%}
                   <div class="rte desc font_text color_black font_weight_400">
                     {% if page.handle == 'digital-wall' %}
-                      <img
+                      <img loading="lazy"
                         src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/Union_2.png?v=1698930598"
                         class="img-reponsive quotes_img"
                       >

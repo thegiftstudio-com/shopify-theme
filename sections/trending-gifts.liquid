@@ -66,14 +66,14 @@
           {% if block.settings.gift_image != blank %}
             {% if block.settings.gift_link != blank %}
               <a href="{{ block.settings.gift_link }}">
-                <img
+                <img loading="lazy"
                   src="{{ block.settings.gift_image | image_url: width: 500 }}"
                   alt="Gift Image"
                   style="width:100%; border-radius:12px;"
                 >
               </a>
             {% else %}
-              <img
+              <img loading="lazy"
                 src="{{ block.settings.gift_image | image_url: width: 500 }}"
                 alt="Gift Image"
                 style="width:100%; border-radius:12px;"

@@ -64,7 +64,7 @@
 
    <div class="prod_img_title_sec small--hide">
      <div class="prod_img_sec">
-       <img src="{{ product.featured_media | img_url:'80x'}}" alt="product_img">
+       <img loading="lazy" src="{{ product.featured_media | img_url:'80x'}}" alt="product_img">
      </div>
      <div class="tle-pri-box">
      <div class="prod_title_sec">
@@ -110,7 +110,7 @@
         </div>
         </div>
           {%- if block.settings.show_dynamic_checkout -%}
-          <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/flash_1.png?v=1674488992" alt="buy_now" class="buy_now">
+          <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/flash_1.png?v=1674488992" alt="buy_now" class="buy_now">
             {{ form | payment_button }}
           {%- endif -%}
 
@@ -151,7 +151,7 @@
   {%- endif -%}
 
   {%- if show_pickup_availability -%}
-    {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+    {{ 'component-pickup-availability.aio.min.css' | asset_url | stylesheet_tag }}
 
     {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
       | where: 'pick_up_enabled', true
@@ -179,7 +179,7 @@
       </template>
     </pickup-availability>
 
-    <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pickup-availability.aio.min.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
             

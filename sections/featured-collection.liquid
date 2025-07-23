@@ -1,13 +1,13 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-rte.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.aio.min.css' | asset_url | stylesheet_tag }}
+{{ 'component-rte.aio.min.css' | asset_url | stylesheet_tag }}
 
-<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'template-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'template-collection.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- if section.settings.enable_quick_add -%}
-  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <link rel="stylesheet" href="{{ 'quick-add.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.aio.min.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.aio.min.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'template-collection.css' | asset_url | stylesheet_tag }}</noscript>
@@ -56,7 +56,7 @@
       {%- if section.settings.title != blank -%}
         <h2 class="title font_heading {{ section.settings.heading_size }}">{{ section.settings.title | escape }}</h2>
       <!-- <div class="valentine_heading_line">
-      <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749">
+      <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749">
     </div> -->
       {%- endif -%}
       
@@ -128,7 +128,7 @@
             aria-controls="Slider-{{ section.id }}"
           >
             {% comment %}{% render 'icon-caret' %}{% endcomment %}
-        <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
+        <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
           </button>
 
 
@@ -160,7 +160,7 @@
             aria-controls="Slider-{{ section.id }}"
           >
             {% comment %}{% render 'icon-caret' %}{% endcomment %}
-        <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
+        <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
           </button>
         </div>
       {%- endif -%}

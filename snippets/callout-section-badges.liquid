@@ -6,7 +6,7 @@
     {% if block.settings[heading_key] and block.settings[image_key] %}
               {% if block.settings[url_key] == blank %}
       <div style="text-align: center;">
-        <img
+        <img loading="lazy"
           src="{{ block.settings[image_key] | image_url: width: 50, height: 50 }}"
           alt="{{ block.settings[heading_key] }}"
           width="50"

@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
-{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection-hero.aio.min.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
 
@@ -70,7 +70,7 @@
       </h1>
 {% comment %}
       {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+        <div class="collection-hero__description rte">{{ collection.description | replace: '<img', '<img loading="lazy"' }}</div>
       {%- endif -%}
       {% endcomment %}
     </div>
@@ -102,7 +102,7 @@
       }}
 
         {% comment %}
-        <img
+        <img loading="lazy"
           srcset="
             {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
             {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}

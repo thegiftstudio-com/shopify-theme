@@ -2,7 +2,7 @@
 
    <div class="prod_img_title_sec small--hide">
      <div class="prod_img_sec">
-       <img src="{{ product.featured_media | img_url:'80x'}}" alt="product_img">
+       <img loading="lazy" src="{{ product.featured_media | img_url:'80x'}}" alt="product_img">
      </div>
      <div class="tle-pri-box">
      <div class="prod_title_sec">
@@ -27,7 +27,7 @@
                         {% endif %}
                       >
                         <span>
-                    <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/add-to-cart.png?v=1674486984" alt="add_to_cart">
+                    <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/add-to-cart.png?v=1674486984" alt="add_to_cart">
                           {%- if product.selected_or_first_available_variant.available -%}
                             {{ 'products.product.add_to_cart' | t }}
                           {%- else -%}

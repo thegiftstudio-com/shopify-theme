@@ -28,15 +28,15 @@
                     value="{{ variant.id }}"
                   {% endfor %}
                 >
-                <img src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
+                <img loading="lazy" src="{{ product.featured_media.preview_image | img_url:'100x100' }}">
                 <input type="hidden" value="{{ product.title }}" class="pd_name">
             <input type="hidden" value="{{ product.variants[0].price }}" class="pd_price">
                 
                 <div class="tooltip_product_info">
                   {% if product.images.size > 1 %}
-                    <img src="{{ product.images[1] | img_url:'master' }}">
+                    <img loading="lazy" src="{{ product.images[1] | img_url:'master' }}">
                   {% else %}
-                    <img src="{{ product.featured_media.preview_image | img_url:'master' }}">
+                    <img loading="lazy" src="{{ product.featured_media.preview_image | img_url:'master' }}">
                   {% endif %}
                 </div>
               </div>

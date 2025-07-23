@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-article-card.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'section-featured-blog.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-card.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-article-card.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-featured-blog.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 
 
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
@@ -96,7 +96,7 @@
               aria-label="{{ 'general.slider.previous_slide' | t }}"
             >
               {% render 'icon-caret' %}
-        <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
+        <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
             </button>
           
             <div class="slider-counter caption">
@@ -113,7 +113,7 @@
               aria-label="{{ 'general.slider.next_slide' | t }}"
             >
              {% render 'icon-caret' %}
-        <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
+        <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
             </button> 
           {% endcomment %}
           </div>

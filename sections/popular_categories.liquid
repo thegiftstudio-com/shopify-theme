@@ -1,5 +1,5 @@
 
-<link rel="preload" href="{{ 'component-slider.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="{{ 'component-slider.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 
 <style>
@@ -293,7 +293,7 @@
          {{ section.settings.category_title }}
          </h3>
     <div class="valentine_heading_line valentine">
-      <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749"
+      <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749"
            srcset="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=320 320w,
              https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=480 480w,
              https://cdn.shopify.com/s/files/1/0689/3014/2515/files/line_design_1.png?v=1707124749&width=640 640w,
@@ -344,7 +344,7 @@
              {%- if show_mobile_slider or show_desktop_slider -%}
         <div class="slider-buttons no-js-hidden small-hide">
           <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}">
-            <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
+            <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
       </button>
 <!--           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
@@ -353,7 +353,7 @@
             <span class="slider-counter--total">{{ section.blocks.size }}</span>
           </div> -->
           <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">
-            <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
+            <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
           </button>
           
         </div>
