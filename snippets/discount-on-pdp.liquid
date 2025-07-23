@@ -237,41 +237,44 @@
       });
     });
 
-    function handleTooltipPos(element) {
-      const parent = $(element).parents(".discount-info")[0];
-      const container = parent.getBoundingClientRect();
-      const btn = element.getBoundingClientRect(); // Get the bounding rectangle of the hovered element
-      const tooltip = $(element).parents(".details-container").find(".terms");
+function handleTooltipPos(element) {
+  const $parent = $(element).closest(".discount-info");
+  if ($parent.length === 0) return;
 
-      // Calculate initial position
-      let top = btn.top + 30; // Adjust top position
-      let left = btn.left; // Adjust left position
-      // Adjust for viewport boundaries
-      const tooltipWidth = tooltip.outerWidth();
-      const tooltipHeight = tooltip.outerHeight();
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+  const parent = $parent[0];
+  const container = parent.getBoundingClientRect();
+  const btn = element.getBoundingClientRect(); // Get the bounding rectangle of the hovered element
+  const tooltip = $(element).parents(".details-container").find(".terms");
 
-      // Ensure the tooltip doesn't go beyond the right edge of the screen
-      if (left + tooltipWidth > viewportWidth) {
-        left = viewportWidth - tooltipWidth - 10; // Add a small margin
-      }
+  // Calculate initial position
+  let top = btn.top + 30; // Adjust top position
+  let left = btn.left; // Adjust left position
 
-      // Ensure the tooltip doesn't go beyond the bottom edge of the screen
-      if (top + tooltipHeight > viewportHeight) {
-        top = btn.top - tooltipHeight - 10; // Position above the element
-      }
+  // Adjust for viewport boundaries
+  const tooltipWidth = tooltip.outerWidth();
+  const tooltipHeight = tooltip.outerHeight();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
 
-      // Apply the adjusted position
-      tooltip.css({
-        top: top + "px",
-        left:
-          container.left + ($(parent).width() - $(tooltip).width()) - 20 + "px",
-      });
-    }
+  // Ensure the tooltip doesn't go beyond the right edge of the screen
+  if (left + tooltipWidth > viewportWidth) {
+    left = viewportWidth - tooltipWidth - 10; // Add a small margin
+  }
+
+  // Ensure the tooltip doesn't go beyond the bottom edge of the screen
+  if (top + tooltipHeight > viewportHeight) {
+    top = btn.top - tooltipHeight - 10; // Position above the element
+  }
+
+  // Apply the adjusted position
+  tooltip.css({
+    top: top + "px",
+    left:
+      container.left + ($parent.width() - tooltip.width()) - 20 + "px",
   });
-</script>
-<script>
+}
+
+  });
   function copyCode(codeId, btnElement) {
     const codeElement = document.getElementById(codeId);
     const codeText = codeElement ? codeElement.innerHTML : "";
