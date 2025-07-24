@@ -2,7 +2,7 @@
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
     <!-- Other head content -->
-
+  <!-- PERFORMANCE: Critical CSS for above-the-fold slideshow content -->
     {% comment %}
       Preload fonts loaded by giftstudio.css
     {% endcomment %}
@@ -48,80 +48,129 @@
       // var istTime = new Date();
       console.log("IST-Time" + istTime);
     </script>
-    <script>
-          !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-          posthog.init('phc_LnKvR2mt5YicNZSDPE2gdi1tQpXhUOsO8u53GmteDMY',{api_host:'https://us.i.posthog.com', person_profiles: 'identified_only' ,
-                                                                              rate_limiting: {
-              events_per_second: 100,  // Adjust this number
-              events_burst_limit: 1000 // Adjust this number
-          }// or 'always' to create profiles for anonymous users as well
-              })
 
-         posthog.set_config({
-          rate_limiting: {
-              events_per_second: 100,
-              events_burst_limit: 1000
-          }
-      })
-    </script>
-    <!-- Google Tag Manager New -->
+    <!-- PERFORMANCE: Defer all analytics scripts for better LCP -->
     <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-WBK8GF9W');
+      // Store analytics configurations
+      window.analyticsConfig = {
+        gtm: 'GTM-WBK8GF9W',
+        fbPixel: '296471998183075',
+        gtag: 'AW-16490033597',
+        clarity: 'ey8m1hoith',
+        posthog: 'phc_LnKvR2mt5YicNZSDPE2gdi1tQpXhUOsO8u53GmteDMY',
+        zoho: 'siq61cf1d23cf4aa51747e3945ecff9e247faf679123c014d3e32b11dbb7f84f7bb',
+        currency: '{{ shop.currency }}'
+      };
+      
+      // Initialize critical data layers immediately but defer script loading
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // PostHog stub for immediate event collection
+      window.posthog = window.posthog || [];
+      window.posthog.init = function() { window.posthog.push(['init'].concat(Array.prototype.slice.call(arguments))); };
+      window.posthog.capture = function() { window.posthog.push(['capture'].concat(Array.prototype.slice.call(arguments))); };
+      
+      // Zoho stub
+      window.$zoho = window.$zoho || {};
+      window.$zoho.salesiq = window.$zoho.salesiq || {ready:function(){}};
+      
+      // Critical: Add initial page view to dataLayer but don't load scripts yet
+      dataLayer.push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+      
+      // Global analytics variables for compatibility
+      var shop_currency_code = '{{ shop.currency }}';
     </script>
-    <!-- End Google Tag Manager -->
-
 
     {% if request.path contains '/tagged/' %}
       <meta name="robots" content="noindex">
     {% endif %}
     <meta name="description" content="{{ page_description | escape }}">
     <meta name="format-detection" content="telephone=no">
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '296471998183075');
-      fbq('track', 'PageView');
-        // velocity: added this code so, that it can be accessed from any where required
-        var shop_currency_code = '{{ shop.currency }}'
-    </script>
-    <noscript
-      ><img loading="lazy"
+    
+    <!-- Analytics noscript fallbacks -->
+    <noscript>
+      <img loading="lazy"
         height="1"
-        width="1"
+        width="1" 
         style="display:none"
-        src="https://www.facebook.com/tr?id=296471998183075&ev=PageView&noscript=1"
-    ></noscript>
-    <!-- End Meta Pixel Code -->
+        src="https://www.facebook.com/tr?id=296471998183075&ev=PageView&noscript=1">
+    </noscript>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16490033597"></script>
+    <!-- CRITICAL: Load all analytics scripts after page load for better LCP -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function loadAllAnalyticsScripts() {
+        console.log('Analytics: Loading all scripts after page completion...');
+        
+        // 1. Load PostHog Analytics
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init(window.analyticsConfig.posthog, {
+          api_host:'https://us.i.posthog.com', 
+          person_profiles: 'identified_only',
+          rate_limiting: {
+            events_per_second: 100,
+            events_burst_limit: 1000
+          }
+        });
 
-      gtag('config', 'AW-16490033597');
-    </script>
-    <!-- MS Clarity Code -->
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
+        // 2. Load Google Tag Manager
+        (function(w,d,s,l,i){
+          var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer', window.analyticsConfig.gtm);
+        
+        // 3. Load Facebook Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', window.analyticsConfig.fbPixel);
+        fbq('track', 'PageView');
+        
+        // 4. Load Google Analytics (gtag)
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.analyticsConfig.gtag;
+        document.head.appendChild(gtagScript);
+        
+        gtagScript.onload = function() {
+          gtag('js', new Date());
+          gtag('config', window.analyticsConfig.gtag);
+        };
+        
+        // 5. Load MS Clarity
+        (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "ey8m1hoith");
+        })(window, document, "clarity", "script", window.analyticsConfig.clarity);
+        
+        // 6. Load Zoho SalesIQ
+        setTimeout(function() {
+          var zohoScript = document.createElement('script');
+          zohoScript.id = 'zsiqscript';
+          zohoScript.src = 'https://salesiq.zohopublic.in/widget?wc=' + window.analyticsConfig.zoho;
+          zohoScript.defer = true;
+          document.head.appendChild(zohoScript);
+        }, 200);
+        
+        console.log('Analytics: All scripts (including Zoho) loaded successfully');
+      }
+      
+      // PERFORMANCE: Load analytics only after page is fully loaded
+      if (document.readyState === 'complete') {
+        setTimeout(loadAllAnalyticsScripts, 1000);
+      } else {
+        window.addEventListener('load', function() {
+          setTimeout(loadAllAnalyticsScripts, 1000);
+        });
+      }
     </script>
-    <!-- MS Clarity Code -->
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -165,66 +214,6 @@
 
     {% comment %} Homepage Slideshow Image Preloading for Better LCP {% endcomment %}
     {% if template == 'index' %}
-      {% assign slideshow_section = sections['slideshow'] %}
-      {% if slideshow_section.blocks.size > 0 %}
-        {% assign first_slide = slideshow_section.blocks.first %}
-        {% if first_slide.settings.image %}
-          <!-- Preload hero slideshow image for critical LCP improvement -->
-          <link rel="preload" as="image" 
-                href="{{ first_slide.settings.image | img_url: '1920x', format: 'avif' }}" 
-                media="(min-width: 769px)" 
-                fetchpriority="high" 
-                type="image/avif">
-          <link rel="preload" as="image" 
-                href="{{ first_slide.settings.image | img_url: '1920x', format: 'webp' }}" 
-                media="(min-width: 769px)" 
-                fetchpriority="high" 
-                type="image/webp">
-          <link rel="preload" as="image" 
-                href="{{ first_slide.settings.image | img_url: '1920x' }}" 
-                media="(min-width: 769px)" 
-                fetchpriority="high">
-        {% endif %}
-        {% if first_slide.settings.mob_banner %}
-          <!-- Preload mobile hero image -->
-          <link rel="preload" as="image" 
-                href="{{ first_slide.settings.mob_banner | img_url: '800x862', crop: 'center', format: 'webp' }}" 
-                media="(max-width: 768px)" 
-                fetchpriority="high" 
-                type="image/webp">
-          <link rel="preload" as="image" 
-                href="{{ first_slide.settings.mob_banner | img_url: '800x862', crop: 'center' }}" 
-                media="(max-width: 768px)" 
-                fetchpriority="high">
-        {% endif %}
-      {% endif %}
-              {% comment %} CRITICAL: Mobile LCP Emergency Fix {% endcomment %}
-      <!-- Emergency mobile LCP optimizer - load immediately -->
-      <script>
-        // Inline critical mobile optimization
-        if (window.innerWidth <= 768) {
-          document.addEventListener('DOMContentLoaded', function() {
-            const mobileBanners = document.querySelectorAll('.mobile_banner');
-            const desktopBanners = document.querySelectorAll('.desktop_banner');
-            
-            mobileBanners.forEach(banner => {
-              banner.style.display = 'block';
-              banner.style.visibility = 'visible';
-            });
-            
-            desktopBanners.forEach(banner => {
-              banner.style.display = 'none';
-            });
-            
-            const mobileImgs = document.querySelectorAll('.mobile-banner-img');
-            if (mobileImgs[0]) {
-              mobileImgs[0].loading = 'eager';
-              mobileImgs[0].fetchPriority = 'high';
-              mobileImgs[0].style.transform = 'translate3d(0,0,0)';
-            }
-          });
-        }
-      </script>
 
     {% endif %}
     {%- liquid
@@ -528,27 +517,16 @@
   </head>
 
   <body class="gradient {{ template | replace: '.', '-' | replace: '/', '-' }}-main">
-    <!-- Google Tag Manager (noscript) New -->
-    <noscript
-      ><iframe
+    <!-- PERFORMANCE: Optimized GTM noscript fallback -->
+    <noscript>
+      <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-WBK8GF9W"
         height="0"
         width="0"
         style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-5WTLR8R"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+        loading="lazy">
+      </iframe>
+    </noscript>
 
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
@@ -822,13 +800,5 @@
           }
       }
     </script>
-    <script>
-      window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}
-    </script>
-    <script
-      id="zsiqscript"
-      src="https://salesiq.zohopublic.in/widget?wc=siq61cf1d23cf4aa51747e3945ecff9e247faf679123c014d3e32b11dbb7f84f7bb"
-      defer
-    ></script>
   </body>
 </html>
