@@ -320,10 +320,8 @@
         height="431"
         alt="{{ block.settings.mob_banner.alt | escape }}"
         {% if forloop.first %}
-          loading="lazy"
           fetchpriority="high"
         {% else %}
-          loading="lazy"
           fetchpriority="auto"
         {% endif %}
         decoding="async"
