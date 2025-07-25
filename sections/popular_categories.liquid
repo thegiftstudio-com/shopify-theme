@@ -301,7 +301,7 @@
            sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, 846px"
            alt="Decorative Line Design"
            width="846"
-           height="40"
+           height="40">
     </div>
   </div>
              <div id="Slider-{{ section.id }}" class="populer_slider page-width grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down {% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}">
@@ -326,7 +326,11 @@
                            alt="{{ block.settings.coll_title | escape }}"
                            width="{{ block.settings.coll_img.width }}"
                            height="{{ block.settings.coll_img.height }}"
-                           loading="lazy"
+                                 {% if forloop.index < 4 %}
+            loading="eager"
+        {% else %}
+            loading="lazy"
+        {% endif %}
                            decoding="async"
                            >
                         </picture>
@@ -346,12 +350,16 @@
           <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}">
             <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.svg" alt="left_arrow">
       </button>
+                       {% comment %}
+
 <!--           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
               <span aria-hidden="true"> / </span>
               <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
             <span class="slider-counter--total">{{ section.blocks.size }}</span>
           </div> -->
+                {% endcomment %}
+
           <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">
             <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.svg" alt="right_arrow">
           </button>

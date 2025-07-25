@@ -1,10 +1,11 @@
 {{ 'section-image-banner.aio.min.css' | asset_url | stylesheet_tag }}
 
-<link rel="preload" href="{{ 'component-slider.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}"></noscript>
+<!-- PERFORMANCE: Optimize CSS loading for slideshow -->
+<link rel="preload" href="{{ 'component-slider.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" fetchpriority="high">
+<noscript><link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}"></noscript>
 
-<link rel="preload" href="{{ 'component-slideshow.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{{ 'component-slideshow.css' | asset_url }}"></noscript>
+<link rel="preload" href="{{ 'component-slideshow.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" fetchpriority="high">
+<noscript><link rel="stylesheet" href="{{ 'component-slideshow.aio.min.css' | asset_url }}"></noscript>
 
 
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
@@ -34,6 +35,56 @@
 {% endif %}
 
 <style>
+  /* PERFORMANCE: Critical CSS optimizations for slideshow */
+  
+  /* Optimize slideshow container for better LCP */
+  slideshow-component {
+    display: block;
+    contain: layout style paint;
+  }
+  
+  .slideshow {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Critical image optimization */
+  .critical-image, .mobile-banner-img {
+    transform: translate3d(0,0,0);
+    will-change: transform;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Optimize mobile/desktop switching */
+  .desktop_banner { display: block; }
+  .mobile_banner { display: none; }
+  
+  @media (max-width: 768px) {
+    .mobile_banner { 
+      display: block !important; 
+      visibility: visible !important;
+    }
+    .desktop_banner { 
+      display: none !important; 
+    }
+  }
+  
+  /* Reduce layout shifts */
+  .slideshow__media {
+    position: relative;
+    aspect-ratio: 16/9; /* Adjust based on your images */
+  }
+  
+  .slideshow__media img, .slideshow__media picture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   /*   #Slide-template--18201551110451__782f453f-a109-43d1-8e49-de1598cb442d-3 .slideshow__text-wrapper .banner__box{
       display:none;
     } */
@@ -279,54 +330,74 @@
     aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
     aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
     tabindex="-1"
-    onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}');"
     {% if block.settings.link %}
       style="cursor:pointer;"
     {% endif %}
   >
-    <!-- Desktop Banner -->
-    <div class="slideshow__media desktop_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
-      {%- if block.settings.image -%}
-        {%- assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round -%}
-        {{
-          block.settings.image
-          | image_url: width: 3840
-          | image_tag:
-            height: height,
-            class: 'critical-image',
-            sizes: '(min-width: 1500px) 1500px, (min-width: 750px) 100vw, 100vw',
-            widths: '550, 750, 1100, 1500, 1780, 1920',
-            fetchpriority: forloop.first | default: false | ternary: 'high', 'auto',
-            loading: forloop.first | default: false | ternary: 'eager', 'lazy',
-            decoding: 'async'
-        }}
-      {%- else -%}
-        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
-    </div>
+<!-- Preload LCP images (first slide only) -->
+{% if forloop.index < 3 %}
+  <link
+    rel="preload"
+    as="image"
+    href="{{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }}"
+    media="(max-width: 767px)"
+    imagesrcset="
+      {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
+      {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w
+    "
+    imagesizes="100vw"
+  >
+  <link
+    rel="preload"
+    as="image"
+    href="{{ block.settings.image | img_url: '1600x' }}"
+    media="(min-width: 768px)"
+    imagesrcset="
+      {{ block.settings.image | img_url: '800x' }} 800w,
+      {{ block.settings.image | img_url: '1200x' }} 1200w,
+      {{ block.settings.image | img_url: '1600x' }} 1600w
+    "
+    imagesizes="100vw"
+  >
+{% endif %}
 
-    <!-- Mobile Banner -->
-    <div class="slideshow__media mobile_banner banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
-      <img
-        onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
-        src="{{ block.settings.mob_banner | img_url: '400x431', crop: 'center', format: 'webp' }}"
+<!-- Unified responsive image using <picture> -->
+<div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
+  {% if block.settings.image %}
+    <picture>
+      <!-- Mobile first -->
+      <source
         srcset="
           {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
-          {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w,
-          {{ block.settings.mob_banner | img_url: '800x862', crop: 'center' }} 800w
+          {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w
         "
-        sizes="(max-width: 480px) 100vw, (max-width: 768px) 80vw, 800px"
-        width="400"
-        height="431"
-        alt="{{ block.settings.mob_banner.alt | escape }}"
-        {% if forloop.first %}
-          fetchpriority="high"
-        {% else %}
-          fetchpriority="auto"
-        {% endif %}
+        sizes="100vw"
+        media="(max-width: 767px)"
+      >
+      <!-- Desktop fallback -->
+      <source
+        srcset="
+          {{ block.settings.image | img_url: '800x' }} 800w,
+          {{ block.settings.image | img_url: '1200x' }} 1200w,
+          {{ block.settings.image | img_url: '1600x' }} 1600w
+        "
+        sizes="100vw"
+        media="(min-width: 768px)"
+      >
+      <img
+        src="{{ block.settings.image | img_url: '800x' }}"
+        width="{{ block.settings.image.width }}"
+        height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round }}"
+        alt="{{ block.settings.image.alt | escape }}"
+          loading="eager"
         decoding="async"
       >
-    </div>
+    </picture>
+  {% else %}
+    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+  {% endif %}
+</div>
+
 
     <!-- Text Overlay -->
     <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}">
