@@ -1,0 +1,250 @@
+<form method="post" action="#" accept-charset="UTF-8" id="corporate-gifting-form" class="corporate-gifting-form">
+  <input type="hidden" name="form_type" value="contact" />
+  <input type="hidden" name="utf8" value="✓" />
+
+  <h1 class="form-title">Send an enquiry or reach out to us directly</h1>
+  <p class="form-subtitle">
+    For any further queries, call us at <a href="tel:+918880077745">+91-88800-77745</a> or email us at
+    <a href="mailto:contact@thegiftstudio.com">contact@thegiftstudio.com</a>.
+  </p>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="full_name">Full Name*</label>
+      <input type="text" id="full_name" name="contact[full_name]" placeholder="Enter Full Name here" >
+       <div id="full_name_error" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email ID*</label>
+      <input type="email" id="email" name="contact[email]" placeholder="Enter Email ID here" >
+      <div id="email_error" class="error"></div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="phone">Phone Number*</label>
+      <input type="tel" id="phone" name="contact[phone]" >
+      <div id="phone_error" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="city">City*</label>
+      <input type="text" id="city" name="contact[city]" >
+      <div id="city_error" class="error"></div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Tell us a little about what you’re looking for (Optional)</label>
+    <textarea id="message" name="contact[body]" rows="4"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send Enquiry</button>
+</form>
+<style>
+.corporate-gifting-form {
+  background: #fdf7f2;
+  padding: 2rem;
+  border-radius: 24px;
+  max-width: 900px;
+  margin: auto;
+  height: 660px;
+  contain: layout style;
+}
+.form-title {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 1rem;
+}
+.form-subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+.btn.btn-primary {
+  background: #0a1128;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 1.5rem 2.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+@media (max-width: 768px) { 
+  .form-row {
+    flex-direction: column;
+    gap: 0; 
+  }
+  .corporate-gifting-form{
+    height:auto;
+  }
+}
+
+.btn.btn-primary:hover {
+  background: #808080;
+}
+  .error {
+    color: red;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  .form-group input.error-border,
+  .form-group textarea.error-border {
+    border-color: red;
+  }
+  </style>
+
+
+<script>
+  document.getElementById('corporate-gifting-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    let valid = true;
+
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerText = "Sending...";
+
+    const fields = [
+      { id: 'full_name', name: 'Full Name' },
+      { id: 'email', name: 'Email', type: 'email' },
+      { id: 'phone', name: 'Phone Number', type: 'phone' },
+      { id: 'city', name: 'City' }
+    ];
+
+    const formData = {};
+
+    fields.forEach(field => {
+      const input = document.getElementById(field.id);
+      const errorDiv = document.getElementById(`${field.id}_error`);
+      errorDiv.innerText = '';
+      input.classList.remove('error-border');
+
+      const value = input.value.trim();
+
+      // General required check
+      if (!value) {
+        errorDiv.innerText = `${field.name} is required.`;
+        input.classList.add('error-border');
+        valid = false;
+      }
+
+      // Email format validation
+      else if (field.type === 'email') {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(value)) {
+          errorDiv.innerText = 'Please enter a valid email address.';
+          input.classList.add('error-border');
+          valid = false;
+        }
+      }
+
+      // Phone format validation (only digits and optional + at start)
+      else if (field.type === 'phone') {
+        const phonePattern = /^\+?[0-9]+$/;
+        if (!phonePattern.test(value)) {
+          errorDiv.innerText = 'Phone number must contain only numbers and optionally start with +.';
+          input.classList.add('error-border');
+          valid = false;
+        } else if (value.replace(/\D/g, '').length < 10) {
+          errorDiv.innerText = 'Phone number must be at least 10 digits.';
+          input.classList.add('error-border');
+          valid = false;
+        }
+      }
+
+      formData[field.id] = value;
+    });
+
+    if (!valid) {
+      submitButton.disabled = false;
+      submitButton.innerText = "Send Enquiry";
+      return;
+    }
+
+    // Optional field
+    const message = document.getElementById('message').value.trim();
+    formData['message'] = message;
+
+    if (!valid) {
+      submitButton.disabled = false;
+      submitButton.innerText = "Send Enquiry";
+      return;
+    }
+    var hmac = '{{ "now" | date: "%Y-%m-%d"  | append: "|" | append: "tgs-revamp" | hmac_sha256: "u1sjirx9cC" }}';
+    var time = '{{ "now" | date: "%Y-%m-%d" }}';
+    
+    // API payload
+    const payload = {
+      name: formData['full_name'],
+      email: formData['email'],
+      phone: formData['phone'],
+      city: formData['city'],
+      message: formData['message'],
+      hmac:hmac,
+      time:time
+    };
+
+// Send data to API
+fetch('https://tgs.velsof.com/add_form_data_to_spreadsheet', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': '339308f5c7eac7cdaffd9646d61109a7'
+  },
+  body: JSON.stringify(payload)
+})
+.then(response => response.json().then(data => ({ status: response.status, ok: response.ok, body: data })))
+.then(({ status, ok, body }) => {
+  if (ok && body.status) {
+    //  Success Handling
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "form_filled",
+      formData: payload
+    });
+    setTimeout(() => {
+      window.location.href = "https://thegiftstudio.com/pages/corporate-gifting-thank-you";
+    }, 500);
+  } else {
+    const errorMessage = body.message || "There was a problem submitting your enquiry. Please try again.";
+    alert(errorMessage);
+    console.error("Form submission failed:", body);
+  }
+})
+.catch(error => {
+  console.error("Submission error:", error);
+  alert("An unexpected error occurred. Please try again later.");
+})
+.finally(() => {
+  submitButton.disabled = false;
+  submitButton.innerText = "Send Enquiry";
+});
+
+  });
+</script>
+
+
+
