@@ -917,8 +917,9 @@ data.items.push({
                           var $zsiqFloat = $('.zsiq-float');
 $zsiqFloat.css('display', 'none');
                             $("cart-drawer.drawer").addClass("active");
-                            if($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
-                              setTimeout(function(){location.reload()},900);
+                          // Added by Velocity 29-07-2025 Remove the page reload If BYOH products Added into the cart.
+                            // if($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
+                            //   setTimeout(function(){location.reload()},900);
                         // Code start by NR
                         setTimeout(function() {
                             var classes = $('body').attr('class').split(' ');

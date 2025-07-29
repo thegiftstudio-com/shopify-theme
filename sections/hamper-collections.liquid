@@ -196,19 +196,23 @@
                 (0)</span
               >
             </li>
+            {% comment %}
+            Added By Velocity - 29-07-2025 As per the TGS requirement we have combine the box and addon section.
             <li class="progressbar-steps">
               <div class="progressbar-dots next-btn1">2</div>
               <span>Choose Boxes</span>
             </li>
+              
+            {% endcomment %}
+	    {%comment %}Added By Velocity - 29-07-2025 Combine the box and addon section.{% endcomment %}
             <li class="progressbar-steps">
-              <div class="progressbar-dots next-btn2">3</div>
+              <div class="progressbar-dots next-btn2">2</div>
               <span
-                >Choose Addons <br>
-                (optional)</span
+                >Choose Boxes & Addons</span
               >
             </li>
             <li class="progressbar-steps">
-              <div class="progressbar-dots next-btn3">4</div>
+              <div class="progressbar-dots next-btn3">3</div>
               <span> Hamper Summary</span>
             </li>
           </ul>
@@ -397,6 +401,8 @@
             </div>
           </div>
         </div>
+              {% comment %}
+	      Added By Velocity - 29-07-2025 TO combine the box and addon section. Merge step 2 with step 3
         <div class="tab-pane" id="step2">
           <div class="page">
             <div class="page-info">
@@ -408,32 +414,15 @@
                 <button class="reset">Reset</button>
               </div>
             </div>
-            <div class="card-container" id="product-card2"></div>
           </div>
         </div>
+              {% endcomment %}
+        
         <div class="tab-pane" id="step3">
           <div class="page">
-            <div class="top-tabs step3-tab">
-              <div class="top-tabs-container">
-                <a class="addons_tab">
-                  <div class="custom_tab">
-                    <span
-                      class="font_bold custom_font_bold custom_font_boldsm custom_custsor  tablinks_custom byoh-addon-cards"
-                      onclick="openTab(event, 'cards')"
-                      >Cards</span
-                    >
-                    <span class=" custom_custsor tablinks_custom " onclick="openTab(event, 'sleeves')">Sleeves</span>
-                    <span
-                      class=" custom_custsor custom_font_bold custom_font_boldsm tablinks_custom "
-                      onclick="openTab(event, 'bows')"
-                      >Bows</span
-                    >
-                  </div>
-                </a>
-              </div>
-            </div>
+           {% comment %}Added By Velocity - 29-07-2025 To combine the box and addon section.{% endcomment %}
             <div class="page-info">
-              <h3 class="title">Step 3 - Choose Addons</h3>
+              <h3 class="title">Step 2 - Choose Boxes & Addons</h3>
               <div class="buttons">
                 <!-- <button class="prev prev-btn2">Previous</button> -->
                 <!-- <button class="next next-btn3">Next</button> -->
@@ -441,7 +430,38 @@
                 <button class="reset ">Reset</button>
               </div>
             </div>
-            <div id="sleeves" class="tabcontent_custom" style="display: block;">
+	    {% comment %} Added by Velocity - 29-07-2025 Remove the Toggle Button from the step 3 and made card and addon button toggle {% endcomment %}
+             <div class="top-tabs step3-tab">
+              <div class="top-tabs-container">
+                <a class="addons_tab">
+                  <div class="custom_tab">
+                    <span
+                      class="font_bold custom_font_bold custom_font_boldsm custom_custsor  tablinks_custom byoh-addon-cards"
+                      onclick="openTab(event, 'boxes')"
+                      >Boxes</span
+                    >
+                    <span class=" custom_custsor tablinks_custom " onclick="openTab(event, 'cards')">Addons</span>
+                    {% comment %}
+                    <span
+                      class="font_bold custom_font_bold custom_font_boldsm custom_custsor  tablinks_custom byoh-addon-cards"
+                      onclick="openTab(event, 'cards')"
+                      >Cards</span
+                    >
+                    <span
+                      class=" custom_custsor custom_font_bold custom_font_boldsm tablinks_custom "
+                      onclick="openTab(event, 'bows')"
+                      >Bows</span
+                    >
+                    {% endcomment %}
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div id="boxes" class="tabcontent_custom" style="display: block;">
+              <div class="card-container" id="product-card2"></div>
+{% comment %} Added by Velocity - 29-07-2025 We are using only product-card3 for display all the products for addon section in a single page. {% endcomment %}
+            </div>
+            <div id="cards" class="tabcontent_custom" style="display: block;">
               <div class="card-container" id="product-card3"></div>
             </div>
             <div id="cards" class="tabcontent_custom" style="display: none;">
@@ -532,7 +552,7 @@
                     <div class="message_feild">
                       <textarea
                         name="card_message_desktop"
-                        placeholder="Add Greeting Card Message here...."
+                        placeholder="Add Greeting Card Message here...."
                         maxlength="200"
                         id="cardmessageid"
                       ></textarea>
@@ -633,8 +653,9 @@
             <span>Total</span>
             <h3 class="total-price"></h3>
           </div>
+	  {% comment %} Added by Velocity - 29-07-2025 To Remove one step from the BYOH follow we need to made the changes in previous and next button. {% endcomment %}
           <div class="next_btn_new">
-            <button class="next-1 next order_next next-btn1" onclick="scrollToTop()"><strong>NEXT</strong></button>
+            <button class="next-1 next order_next next-btn2" onclick="scrollToTop()"><strong>NEXT</strong></button>
           </div>
         </div>
       </div>
@@ -842,8 +863,8 @@
   
   function removeFromCart(varient_id, loder_id, isAGift = 0, isABox = 0, isAAddon = 0, isACard = 0) {
     if(varient_id){
-// const selector = `.qty_selector.${escapeClass(varient_id)}`;
-      const selector = `.qty_selector.variant-${varient_id}`;
+         // const selector = `.qty_selector.${escapeClass(varient_id)}`;
+         const selector = `.qty_selector.variant-${varient_id}`;
 
     // To only hide the qty button for the selected product not for all the products
 $(selector).css('display', 'none');
@@ -874,7 +895,7 @@ $(selector).css('display', 'none');
       return (item.varient_id !== varient_id)
     });
     $(`.remove_${varient_id}`).hide();
-    $(`.loader_${loder_id}`).show();
+    $(`.loader_${loder_id}`).hide();
     // $.ajax({
     //   type: 'POST',
     //   url: '/cart/change.json',
@@ -1065,41 +1086,54 @@ $(selector).css('display', 'block');
       if(isAGift){
         window.totalGiftItemsCount +=1;
       }
-      $.ajax({
-        type: 'POST',
-        url: '/cart/add.js',
-        data: tempATCData,
-        dataType: 'json',
-        success: function(data) {
-          var addProdRespoData = data;
-          $.ajax({
-            type: 'POST',
-            url: '/cart/change.json',
-            data: {
-              quantity: 0,
-              id: varient_id
-            },
-            dataType: 'json',
-            success: function(data) {
-              $(`.loader_${loder_id}`).hide();
-              addToCartData[''+varient_id] = tempATCData;
-              const productdata = {
-                img: (addProdRespoData.image == null ? "https://placehold.jp/100x100.png" : addProdRespoData.image),
-                title: addProdRespoData.title,
-                price: addProdRespoData.price,
-                item_var_id: varient_id,
-                isAGift: isAGift,
-                isABox: isABox,
-                isAAddon: isAAddon,
-                isACard: isACard,
-                itemProdId: loder_id,
-                tags: $("#"+varient_id+"_tag").html()
-              }
-              var alreadyAddedItems = localStorage.getItem("bundle_products");
-              localStorage.setItem("bundle_products", alreadyAddedItems + " " + loder_id);
-              var alreadyAddedVariantId = localStorage.getItem("bundle_products_variant_id");
-              localStorage.setItem("bundle_products_variant_id", alreadyAddedVariantId + " " + varient_id);
-              selectedItem.push(productdata);
+       // --- Get image, title, price from DOM --- Added By Velocity 29-07-2025
+      // debugger;
+      var img = '';
+      var title = '';
+      var price = 0;
+      // Try to get image
+      var imgElem = $(`.add_${varient_id}`).closest('.product-card').find('.product-img img');
+      if (imgElem.length) {
+        img = imgElem.attr('src') || '';
+      }
+      // Try to get title
+      var titleElem = $(`.add_${varient_id}`).closest('.product-card').find('.product-card-title');
+      if (titleElem.length) {
+        title = titleElem.text().trim();
+      }
+      // Try to get price
+      var priceElem = $(`.add_${varient_id}`).closest('.product-card').find('.price .price-item--sale');
+      if (priceElem.length) {
+        var priceText = priceElem.text().replace(/[^\d.]/g, '');
+        price = parseFloat(priceText)*100 || 0;
+      }
+      // Fallback: try hidden price
+      if (!price) {
+        var priceHiddenElem = $(`.add_${varient_id}`).closest('.product-card').find('h5.price span');
+        if (priceHiddenElem.length) {
+          var priceText2 = priceHiddenElem.text().replace(/[^\d.]/g, '');
+          price = parseFloat(priceText2)*100 || 0;
+        }
+      }
+      // ---
+      addToCartData[''+varient_id] = tempATCData;
+      const productdata = {
+        img: img,
+        title: title,
+        price: price,
+        item_var_id: varient_id,
+        isAGift: isAGift,
+        isABox: isABox,
+        isAAddon: isAAddon,
+        isACard: isACard,
+        itemProdId: loder_id,
+        tags: $("#"+varient_id+"_tag").html()
+      }
+      var alreadyAddedItems = localStorage.getItem("bundle_products");
+      localStorage.setItem("bundle_products", (alreadyAddedItems || "") + " " + loder_id);
+      var alreadyAddedVariantId = localStorage.getItem("bundle_products_variant_id");
+      localStorage.setItem("bundle_products_variant_id", (alreadyAddedVariantId || "") + " " + varient_id);
+      selectedItem.push(productdata);
               window.totalUserItemsCount += 1;
               new Promise((resolve, reject) => {
                 if (isAGift) {
@@ -1126,19 +1160,7 @@ $(selector).css('display', 'block');
                 }
               }
               $(".prodAddToBagBut").prop("disabled",false);
-            }
-          });
-        },
-        error: function(jqXHR) {
-	 // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
-             document.getElementById('warning-msg').textContent ="Product Not Available";
-             document.getElementById("warning-popup").style.display = "block";
-            document.getElementById("warning-overlay").style.display = "block";
-          
-          $(`.add_${varient_id}`).show();
-          $(`.loader_${loder_id}`).hide();
-        }
-      });
+  
       if (isliquor) {
         if (varient_id == "44337026629939") {
           removeFromCart(liquor_box_id, liquor_bag_product_id, 0, 1, 0)
@@ -1173,6 +1195,7 @@ $(selector).css('display', 'block');
   }
   
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
+
     let list = document.getElementById("selectproduct");
     $("#selectproduct").empty();
     $('#add_row').empty();
@@ -1265,8 +1288,10 @@ $(selector).css('display', 'block');
                                               class="cart-item__name h4 break"
                                               >${item.title}</a
                                             >
+                                            {% comment %}
                                             <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
                                             <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                            {% endcomment %}
                                           </div>
                                         </div>
                                       </div>
@@ -1301,8 +1326,10 @@ $(selector).css('display', 'block');
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
+                                        {% comment %}
                                         <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
                                         <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
                                       </div>
                                     </div>
                                   </div>
@@ -1339,8 +1366,10 @@ $(selector).css('display', 'block');
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
+                                        {% comment %}
                                         <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
                                         <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
                                       </div>
                                     </div>
                                   </div>
@@ -1380,8 +1409,10 @@ $(selector).css('display', 'block');
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
+                                        {% comment %}
                                         <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
                                         <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
                                       </div>
                                     </div>
                                   </div>
@@ -1418,8 +1449,10 @@ $(selector).css('display', 'block');
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
+                                        {% comment %}
                                         <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
                                         <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
                                       </div>
                                     </div>
                                   </div>
@@ -1466,7 +1499,7 @@ $(selector).css('display', 'block');
     } else {
       $("#hiddenItemsCount").text("").hide();
     }
-    totalprice = totalprice * 0.01;
+    totalprice = totalprice*0.01 ;
     if (isRemoved) $(`.add_${varient_id}`).show();
     else $(`.remove_${varient_id}`).show();
     $(`.loader_${loder_id}`).hide();
@@ -1499,68 +1532,82 @@ $(selector).css('display', 'block');
   }
   
   function checkout() {
-       let total_product_tat = $("#total-product-tat").val();
+    let total_product_tat = $("#total-product-tat").val();
     // Step 1: Update `base_quantity` and ensure properties are correctly structured
     Object.keys(addToCartData).forEach(function (productId) {
         var item = addToCartData[productId];
         item.properties.base_quantity = item.quantity;
         item.properties.product_type = item.properties['product_type'];
-          item.properties.tags = item.properties['tags'];
-          item.properties.total_product_tat = total_product_tat;
+        item.properties.tags = item.properties['tags'];
+        item.properties.total_product_tat = total_product_tat;
     });
-
-    
     let deliveryDate;
-
     if ($("#delivery-date-byoh-mobile").is(":visible")) {
         deliveryDate = $("#delivery-date-byoh-mobile").val();
     } else if ($("#delivery-date-byoh-web").is(":visible")) {
         deliveryDate = $("#delivery-date-byoh-web").val();
     }
-
     Object.keys(addToCartData).forEach(key => {
         addToCartData[key].properties["Delivery date"] = deliveryDate;
     });
-    
-    console.log("Selected Delivery Date:", deliveryDate);
-
-    // Step 2: Save card message and discount code to localStorage
+    // Save card message and discount code to localStorage
     if ($('[name="card_message_desktop"]').val() != "")
         localStorage.setItem("BYOHCardMsg", $('[name="card_message_desktop"]').val());
     if ($('[name="card_message_mobile"]').val() != "")
         localStorage.setItem("BYOHCardMsg", $('[name="card_message_mobile"]').val());
     localStorage.setItem("BYOHDiscountCode", window.userAppliedDiscount);
-
     var checkoutButtonEl = $(".final_checkout").find("button");
-
-    // Prevent checkout if button is disabled
     if (checkoutButtonEl.is(":disabled")) return false;
-
-    // Step 3: Validate gift and box requirements
+    // Validate gift and box requirements
     if (window.totalUserGiftItemsCount < window.currentBundleData.product_min_limit) {
-    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
         document.getElementById('warning-msg').textContent = "Please go to Choose Gift Section to Fulfill the minimum requirement.";
-      document.getElementById("warning-popup").style.display = "block";
-      document.getElementById("warning-overlay").style.display = "block";
-         
+        document.getElementById("warning-popup").style.display = "block";
+        document.getElementById("warning-overlay").style.display = "block";
         return false;
     }
     if (window.totalUserBoxItemsCount <= 0) {
-    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
-       document.getElementById('warning-msg').textContent = "Please go to Choose Boxes section to add a Box.";
-      document.getElementById("warning-popup").style.display = "block";
-      document.getElementById("warning-overlay").style.display = "block";
-       
+        document.getElementById('warning-msg').textContent = "Please go to Choose Boxes section to add a Box.";
+        document.getElementById("warning-popup").style.display = "block";
+        document.getElementById("warning-overlay").style.display = "block";
         return false;
     }
-    // if ($('.mobil_msg_feild').is(":visible") || $('.message_feild').is(":visible")) {
-    //  if ($('[name="card_message_desktop"]').val() == '' && $('[name="card_message_mobile"]').val() == '') {
-    //    alert("Please fill message field")
-    //    return false;
-    //  }
-    // }
+    // Build updatesObject for bundle update
+    var updatesObject = {};
+    Object.values(addToCartData).forEach(function(item) {
+        updatesObject[item.id] = item.quantity;
+    });
+    // Call robust AJAX checkout logic
+    ajaxAddToCartCheckout(Object.values(addToCartData), updatesObject);
+    return true;
+}
 
-    // Step 4: Fetch current cart and process items
+// --- AJAX Add to Cart and Drawer Update Logic (only define once) --- Added by Velocity 29-07-2025
+function ajaxAddToCartCheckout(addItems, bundleUpdates) {
+  // 1. Add to cart via AJAX
+  $.ajax({
+    type: 'POST',
+    url: '/cart/add.js',
+    data: JSON.stringify({ items: addItems }),
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function() {
+      // 2. Update for bundle logic
+      $.ajax({
+        type: 'POST',
+        url: '/cart/update.js',
+        data: JSON.stringify({ updates: bundleUpdates }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function() {
+          // 3. Update cart drawer with proper sections rendering for BYOH
+          
+          /*
+          * Fixed cart drawer update issue where products added from BYOH page were not appearing in side cart until page refresh
+          * Updated ajaxAddToCartCheckout function to properly fetch and render cart drawer sections with updated cart data
+          * 07-01-2025
+          */
+          
+     // Step 4: Fetch current cart and process items
     fetch('/cart.js')
         .then(response => response.json())
         .then(cartData => {
@@ -1625,7 +1672,6 @@ $(selector).css('display', 'block');
 
     return true;
 }
-
 
   document.querySelectorAll(".filters .item").forEach(function(tab, index) {
     tab.addEventListener("click", function() {
@@ -1735,10 +1781,60 @@ $(selector).css('display', 'block');
       ischangecolor = true;
     }
   });
+  // Added by velocity - 29-07-2025 Combine Step 2 and Step 3. We need to made the changes in the button and warning
   $(document).on("click", ".next-btn2", function(e) {
+            const prev_btn = $('.prev_btn');  // just select
+              prev_btn.css('display', 'block');
+    // prev_btn.css('display', 'block');
+
     $('.order-details').show()
     orderscroller()
-    if (window.totalUserBoxItemsCount == 0) {
+    if (window.totalUserGiftItemsCount < Number(window.currentBundleData.product_min_limit)) {
+      ischangecolor = false;
+      // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+      const minLimit = Number(window.currentBundleData.product_min_limit);
+      const totalGifts = window.totalUserGiftItemsCount;
+      const message = `You'll need to add more than ${minLimit} product in "Choose Gifts Section". There are ${totalGifts} products in your bundle.`;
+      document.getElementById('warning-msg').textContent = message;
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      
+    } else {
+      if(displayChooseBoxProducts == false){
+        displayBoxProducts();
+        displayChooseBoxProducts = true;
+      }
+      $("#product-card2 > .product-card").each(function() { 
+	
+        	$(this).removeClass("data-boxquant-hide");
+        	
+        	
+        	var boxqty = $(this).attr("data-boxquant");
+        	console.log(boxqty); 
+        	if(boxqty < window.totalGiftItemsCount) {
+        		$(this).addClass("data-boxquant-hide");
+        
+        	}
+        }); 
+      
+      $('.checkout-bar .progressbar-steps .progressbar-dots').removeClass('active');
+      $(".tab-pane").hide();
+      if (isliquor) {
+        addtocart('44337026302259', '8100413899059', 0, 1, 0)
+        $(".add_44337026302259").hide()
+      }
+      $("#step2").fadeIn(1000);
+      $(".order_next").removeClass("next-btn1");
+      $(".order_next").addClass("next-btn2");
+      $("li.progressbar-steps:lt(2) .progressbar-dots").addClass("active");
+      $('.checkout-bar .progressbar-steps:nth-child(2) .progressbar-dots').addClass('active');
+      setChooseBoxesData();
+      ischangecolor = true;
+      {% comment %}
+    }
+    $('.order-details').show()
+    orderscroller()
+    if (window.totalUserBoxItemsCount != 0) {
     // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
        document.getElementById('warning-msg').textContent = "Please select a Box";
       document.getElementById("warning-popup").style.display = "block";
@@ -1746,6 +1842,8 @@ $(selector).css('display', 'block');
      
       ischangecolor = false;
     } else {
+      {% endcomment %}
+      
       if(displayAddonProductsStatus == false){
         displayAddonsProducts();
         displayAddonProductsStatus = true;
@@ -1784,8 +1882,8 @@ $(selector).css('display', 'block');
         $("#step3").fadeIn(1000);
         $(".order_next").removeClass("next-btn2");
         $(".order_next").addClass("next-btn3");
-        $("li.progressbar-steps:lt(3) .progressbar-dots").addClass("active");
-        $('.checkout-bar .progressbar-steps:nth-child(3) .progressbar-dots').addClass('active');
+        $("li.progressbar-steps:lt(2) .progressbar-dots").addClass("active");
+        $('.checkout-bar .progressbar-steps:nth-child(2) .progressbar-dots').addClass('active');
         ischangecolor = true;
       }
     }
@@ -1795,8 +1893,15 @@ $(selector).css('display', 'block');
     
     $(".loaderr").css('display','none');
     orderscroller()
-
-    if (window.totalUserGiftItemsCount < Number(window.currentBundleData.product_min_limit) || window.totalUserBoxItemsCount == 0) {
+    if (window.totalUserBoxItemsCount == 0) {
+    // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
+       document.getElementById('warning-msg').textContent = "Please select a Box";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+     
+      ischangecolor = false;
+    }
+    else if(window.totalUserGiftItemsCount < Number(window.currentBundleData.product_min_limit) || window.totalUserBoxItemsCount == 0) {
       // velocity: Added the check to not show the message of please add some product if somebody directly opens the URL 
       var urlParams = new URLSearchParams(window.location.search);
       var isEditHamper = urlParams.get('edit_hamper') === '1';
@@ -1842,8 +1947,8 @@ $(selector).css('display', 'block');
     $("#step1").fadeIn(1000);
     $('.checkout-bar .progressbar-steps:nth-child(2) .progressbar-dots').removeClass('active');
     $('.checkout-bar .progressbar-steps:nth-child(1) .progressbar-dots').addClass('active');
-    $(".order_next").removeClass("next-btn2");
-    $(".order_next").addClass("next-btn1");
+    $(".order_next").removeClass("next-btn3");
+    $(".order_next").addClass("next-btn2");
     // removeFromCart(window.boxVarId, window.boxProdId, 0, 1, 0);
   });
   $(".prev-btn2").click(function() {
@@ -1858,13 +1963,13 @@ $(selector).css('display', 'block');
     $(".order_next").addClass("next-btn2");
   });
   $(".prev-btn3").click(function() {
-    $(".next-btn2").click()
+    $(".next-btn3").click()
     orderscroller()
     $(".tab-pane").hide();
     $('.order-details').show()
     $("#step3").fadeIn(1000);
-    $('.checkout-bar .progressbar-steps:nth-child(4) .progressbar-dots').removeClass('active');
-    $('.checkout-bar .progressbar-steps:nth-child(3) .progressbar-dots').addClass('active');
+    $('.checkout-bar .progressbar-steps:nth-child(3) .progressbar-dots').removeClass('active');
+    $('.checkout-bar .progressbar-steps:nth-child(2) .progressbar-dots').addClass('active');
     $(".order_next").removeClass("next-btn4");
     $(".order_next").addClass("next-btn3");
     $(".order-details").show();
@@ -2763,7 +2868,7 @@ $(selector).css('display', 'block');
       document.getElementById('warning-msg').textContent = "Please Add Some Products.";
       document.getElementById("warning-popup").style.display = "block";
       document.getElementById("warning-overlay").style.display = "block";
-      alert("Please Add some products");
+      // alert("Please Add some products");
       $('.modal').removeClass('is-visible');
     } else {
       $('.modal').addClass('is-visible');
@@ -3056,6 +3161,8 @@ async function displayBoxProducts() {
       const priceHtml = getPriceHtml(product.node);
       // Product information
       const cardProdImg = product.node.images.edges[0]?.node.src || 'https://placehold.jp/330x330.png'; // Default to placeholder if no image
+      const boxImagesJSON = product.node.images.edges.map(edge => edge.node);
+      const boxImages = encodeURIComponent(JSON.stringify(boxImagesJSON));
       const productVariant = product.node.variants.edges[0]?.node;
       const price = productVariant.price.amount ? productVariant.price.amount : 'N/A';
       const variantId = productVariant ? productVariant.id.match(/\d+$/)[0] : null; // Extract numeric part
@@ -3089,11 +3196,12 @@ async function displayBoxProducts() {
         }
       
       // Append product card to the container
+      // Added Image Popup on BYOH Boxes Added by velocity 29-07-2025
       $('#product-card2').append(`
         <div class="${needToHide} ${showBox} product-card bgs ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data-boxquant="${boxMaxQuantFinal}">
           <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
           <div class="product-img">
-            <img src="${cardProdImg}" alt="${product?.node?.handle}">
+            <img src="${cardProdImg}" onclick="openProductPopup('${boxImages}')" alt="${product?.node?.handle}">
           </div>
           <h4 class="product-card-title">${product?.node.title} <br> <span class="box_limit">(Ideal for ${boxMaxQuantFinal} Items)</span></h4>
           <h5 class="price" style="display:none;"><span>&#x20b9;${price}</span></h5>
@@ -3328,7 +3436,8 @@ async function displayAddonsProducts(){
             const removeBagStyle = isInCart ? '' : 'style="display:none;"';
 
             // Append the product card
-            $('#product-card4').append(`
+	    // Append all the products of sleeve,bows, and card in the single page added by velocity 29-07-2025
+            $('#product-card3').append(`
                 <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}">
                 <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
                     <div class="product-img">
@@ -3438,7 +3547,8 @@ async function displayAddonsProducts(){
             const removeBagStyle = isInCart ? '' : 'style="display:none;"';
 
             // Append the product card
-            $('#product-card5').append(`
+	    	    // Append all the products of sleeve,bows, and card in the single page added by velocity 29-07-2025
+            $('#product-card3').append(`
                 <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}">
                 <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
                     <div class="product-img">
