@@ -219,7 +219,8 @@ const expectedDateOnly = new Date(expectedDate.getFullYear(), expectedDate.getMo
 
 if (deliveryDateOnly < expectedDateOnly) {
           const warningMessage = `<span style="color:red;">*${formattedExpectedDate}</span>`;
-          $(`.${item.variant_id}`).html(warningMessage);
+          // Comment the below line this effect in the BYOH last step when cart drawer open. It will rewrite the element Added by Velocity
+          // $(`.${item.variant_id}`).html(warningMessage);
           $(`.delivery_date_${item.variant_id}`).html(warningMessage);
                    $(`.warning-msg-${item.variant_id}`).html("*Delivery date/time has passed. We've updated it to the next available slot.");
           if(deliveryTimeStr!=null){
@@ -246,7 +247,8 @@ if (deliveryDateOnly < expectedDateOnly) {
   }
         } else {
           const message = `<span>${formattedDeliveryDate}</span>`;
-          $(`.${item.variant_id}`).html(message);
+          // Comment the below line this effect in the BYOH last step when cart drawer open. It will rewrite the element. Added by Velocity
+          // $(`.${item.variant_id}`).html(message);
            if (deliveryTimeStr != null) {
         const selectedTime = updateTimeSlots(selectedDate = formattedDeliveryDate, hide = false);
 
