@@ -1,10 +1,4 @@
-if(window.location.href.includes("corporate-gifting-thank-you")){
-  // Push event to data layer
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: 'form_filled'
-  });
-}
+
 var clickTargetUrl = '';
 // velocity: This function handles showing a popup and then redirecting to the passed URL after a delay
 function handleRedirectWithPopup(url, image_src='', isBannerClick = 0) {
