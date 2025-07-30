@@ -1,222 +1,182 @@
 {% stylesheet %}
+      .enquiry-section {
+        background-size: cover;
+        background-position: right;
+        padding-top:20px;
+      }
+      @media (max-width: 768px) {
+
+        .enquiry-section.mobile-bg {
+          background-size: cover;
+         background-position: top;
+        }
+      }
+
+      /* Grid container */
+      .enquiry-grid {
+        display: grid;
+        grid-template-columns: 3fr 6fr;
+        gap: 60px;
+        /* max-width: 1200px; */
+        margin: 6rem;
+        margin-bottom:0;
+        /* background: #fff; */
+        border-radius: 16px;
+        /* padding: 2rem; */
+        align-items: flex-start;
+      }
+
+      @media (max-width: 768px) {
+        .enquiry-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin: 2rem;
+        }
+
+      }
+
+      /* Button section */
+      .button-area {
+        margin-top:170px;
+        display: flex;
+        /* flex-direction: column; */
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .button-area .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        /* background-color: #000; */
+        color: #fff;
+        border-radius: 60px;
+        border:2px solid black;
+        text-align: center;
+        text-decoration: none;
+        width: fit-content;
+      }
+
+    #btn-1{
+         color: white;
+      font-size:medium;
+      background-color: black;
+      cursor: pointer;
+    }
+      #btn-2{
+      color: black;
+
+      }
+      /* Form section */
+      .hulk-form-wrapper {
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+
+        width: 90%;
+        background: #FFF8F4;
+
+      }
+      @media (max-width: 768px) {
+        .button-area {
+        margin-top:300px;
+          flex-direction: column;
+                  margin-left: 10%;
+          margin-right: 10%;
+        }
+        .button-area .btn {
+          width: 100%;
+        }
+        .hulk-form-wrapper {
+          width: 100%;
+        }
+      }
+     @media (max-width: 430px) {
+        .button-area {
+        margin-top:150px;
+        }
+     }
+    @media (min-width: 1000px) and (max-width: 1400px) {
+
   .enquiry-section {
-    background-size: cover;
-    background-position: right;
-    padding-top: 20px;
-    /* Fallback background will be set via inline style */
-  }
-
-  @media (max-width: 768px) {
-    .enquiry-section.mobile-bg {
-      background-size: cover;
-      background-position: top;
-    }
-  }
-
-  /* Grid container */
-  .enquiry-grid {
-    display: grid;
-    grid-template-columns: 3fr 6fr;
-    gap: 60px;
-    margin: 6rem;
-    margin-bottom: 0;
-    border-radius: 16px;
-    align-items: flex-start;
-  }
-
-  @media (max-width: 768px) {
-    .enquiry-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-      margin: 2rem;
-    }
-  }
-
-  /* Button section */
-  .button-area {
-    margin-top: 170px;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .button-area .btn {
-    display: inline-block;
-    padding: 12px 24px;
-    color: #fff;
-    border-radius: 60px;
-    border: 2px solid black;
-    text-align: center;
-    text-decoration: none;
-    width: fit-content;
-    /* Add performance optimizations */
-    will-change: transform;
-    transition: transform 0.2s ease;
-  }
-
-  .button-area .btn:hover {
-    transform: translateY(-2px);
-  }
-
-  #btn-1 {
-    color: white;
-    font-size: medium;
-    background-color: black;
-    cursor: pointer;
-    border: none;
-  }
-
-  #btn-2 {
-    color: black;
-    background-color: transparent;
-  }
-
-  /* Form section */
-  .hulk-form-wrapper {
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    width: 90%;
-    background: #FFF8F4;
-    /* Add contain for better performance */
-    contain: layout style paint;
-  }
-
-  @media (max-width: 768px) {
-    .button-area {
-      margin-top: 300px;
-      flex-direction: column;
-      margin-left: 10%;
-      margin-right: 10%;
-    }
-    .button-area .btn {
-      width: 100%;
-    }
-    .hulk-form-wrapper {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 430px) {
-    .button-area {
-      margin-top: 150px;
-    }
-  }
-
-  @media (min-width: 1000px) and (max-width: 1400px) {
-    .enquiry-section {
       background-position: left -90px top;
     }
   }
-
-  /* Remove loading shimmer styles - not needed with immediate display */
 {% endstylesheet %}
-
-<!-- Preload critical images -->
-{% if section.settings.bg_image_desktop %}
-  <link
-    rel="preload"
-    as="image"
-    href="{{ section.settings.bg_image_desktop | image_url: width: 1920 }}"
-    media="(min-width: 769px)"
-  >
-{% endif %}
-{% if section.settings.bg_image_mobile %}
-  <link
-    rel="preload"
-    as="image"
-    href="{{ section.settings.bg_image_mobile | image_url: width: 768 }}"
-    media="(max-width: 768px)"
-  >
-{% endif %}
 
 {% javascript %}
   document.addEventListener("DOMContentLoaded", function () {
     const section = document.querySelector(".enquiry-section");
-    const isMobile = window.innerWidth <= 768;
-    
-    // Get image URLs from data attributes
-    const desktopImageUrl = section.dataset.bgDesktop;
-    const mobileImageUrl = section.dataset.bgMobile;
-    
-    const imageUrl = isMobile ? mobileImageUrl : desktopImageUrl;
-    
-    if (imageUrl && imageUrl !== '' && imageUrl !== 'undefined') {
-      // Set background image immediately for faster display
-      section.style.backgroundImage = `url(${imageUrl})`;
-      
-      if (isMobile) {
-        section.classList.add("mobile-bg");
-      }
-      
-      // Create new image object for preloading optimization
-      const img = new Image();
-      img.src = imageUrl;
+    if (window.innerWidth <= 768 && section.dataset.bgMobile) {
+      section.style.backgroundImage = `url(${section.dataset.bgMobile})`;
+      section.classList.add("mobile-bg");
     }
   });
+
+ 
+  
 {% endjavascript %}
-
 <script>
-  // Optimized download function with better error handling
-  function downloadCatalogue() {
-    const button = document.getElementById('btn-1');
-    const originalText = button.textContent;
-
-    // Show loading state
-    button.textContent = 'Downloading...';
-    button.disabled = true;
-
+   function downloadCatalogue() {
+    // debugger
+    // event.preventDefault(); 
     const fileUrl = '{{ section.settings.button_1_link }}';
-    const fileName = 'Corporate_Catalogue_2025.pdf';
+    // const fileUrl = 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_New_Intro_Deck_FY26.pdf?v=1747816368'; // Replace with the actual file URL
+    // const fileUrl = 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_Introduction_1_1.pdf?v=1737032149'; // Replace with the actual file URL
+    const fileName = 'Corporate_Catalogue_2025.pdf'; // Desired file name
 
-    // Use a more efficient download approach
-    if (fileUrl) {
-      const anchor = document.createElement('a');
-      anchor.href = fileUrl;
-      anchor.download = fileName;
-      anchor.style.display = 'none';
+    fetch(fileUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch file: ${response.statusText}`);
+            }
+            return response.blob(); // Get the file as a blob
+        })
+        .then(blob => {
+            // Create a temporary link element
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = fileName; // Set the desired file name
 
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
+            // Trigger the download
+            document.body.appendChild(anchor);
+            anchor.click();
 
-      // Reset button state
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.disabled = false;
-      }, 1000);
-    } else {
-      console.error('No file URL provided');
-      button.textContent = originalText;
-      button.disabled = false;
-    }
-  }
+            // Clean up
+            document.body.removeChild(anchor);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error downloading file:', error));
+}
 </script>
 
 <div
   class="enquiry-section"
-  style="background-image: url({{ section.settings.bg_image_desktop | image_url }});"
-  data-bg-desktop="{{ section.settings.bg_image_desktop | image_url: width: 1920 }}"
-  data-bg-mobile="{{ section.settings.bg_image_mobile | image_url: width: 768 }}"
+  style="background-image: url({{ section.settings.bg_image_desktop | img_url: '1920x' }});"
+  data-bg-mobile="{{ section.settings.bg_image_mobile | img_url: '768x' }}"
 >
   <div class="enquiry-grid">
     <!-- Left Button Area -->
     <div class="button-area">
       {% if section.settings.button_1_link and section.settings.button_1_text %}
-        <button type="button" id="btn-1" class="btn" onclick="downloadCatalogue()">
-          {{ section.settings.button_1_text | default: 'Download Catalogue' }}
-        </button>
+      
+     <button type="button" id="btn-1" class="btn"  onclick="downloadCatalogue()">
+      Download Catalogue
+    </button>
       {% endif %}
-
+      
       {% if section.settings.button_2_link and section.settings.button_2_text %}
         <a href="{{ section.settings.button_2_link }}" id="btn-2" class="btn">
-          {{ section.settings.button_2_text }}
+          {{- section.settings.button_2_text -}}
         </a>
       {% endif %}
     </div>
 
-    <!-- Right Form Area -->
+    <!-- Right Form Area with CLS prevention -->
     <div class="hulk-form-wrapper">
-      {{ section.settings.hulk_form_embed }}
+      <div class="hulk-form-container" style="height: auto; min-height: 662px;">
+          {% render 'corporate_native_form' %}
+
+      </div>
     </div>
   </div>
 </div>
@@ -228,14 +188,12 @@
     {
       "type": "image_picker",
       "id": "bg_image_desktop",
-      "label": "Background Image (Desktop)",
-      "info": "Recommended size: 1920x1080px or larger"
+      "label": "Background Image (Desktop)"
     },
     {
       "type": "image_picker",
       "id": "bg_image_mobile",
-      "label": "Background Image (Mobile)",
-      "info": "Recommended size: 768x1024px or larger"
+      "label": "Background Image (Mobile)"
     },
     {
       "type": "text",
