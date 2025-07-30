@@ -39,6 +39,324 @@
   
 </style>
 <script>
+    
+  function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
+
+    let list = document.getElementById("selectproduct");
+    $("#selectproduct").empty();
+    $('#add_row').empty();
+    $('#mobile_cart_data').empty();
+    totalprice = 0;
+    selectedItem.forEach((item, index) => {
+      let val = $(`.${item.item_var_id} .qty`).val();
+      if(val == undefined && parseInt(item.available_quantity)>0) {
+        val = parseInt(item.available_quantity);
+      }
+      let producttp = item.price * 0.01;
+      let quant = '<input type="text" name="qty" value="1" class="qty static_qty"/>'
+      if (Number(val)) {
+        let lastqunt = Number(val)
+        producttp = (item.price * Number(val)) * 0.01;
+        if (isliquor) {
+          if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
+            totalprice = totalprice + (item.price * numberOfLiuor);
+          } else {
+            totalprice = totalprice + (item.price * val);
+          }
+        } else {
+          totalprice = totalprice + (item.price * val);
+        }
+        quant = `<div class="qty_selector ${item.item_var_id} variant-${item.item_var_id}">
+                                      <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)'>-</span>
+                                      <input type="text" name="qty" value="${lastqunt}" class="qty" onchange='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)' />
+                                      <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,1)'>+</span>
+                                    </div>`
+      } else {
+        if (isliquor) {
+          if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
+            totalprice = totalprice + (item.price * numberOfLiuor);
+          } else {
+            totalprice = totalprice + item.price;
+          }
+        } else {
+          totalprice = totalprice + item.price;
+        }
+      }
+      let prsc = item.price * 0.01;
+      let li = document.createElement("li");
+      li.id = "bottom_cart_item_" + item.item_var_id;
+      if (index + 1 >= 25) li.style.display = "inline";
+      li.innerHTML = `<div class="item-details">
+                                  <div class="item-img">
+                                    <img src="${item.img}"
+                                        class="cart-item__image"
+                                        alt="img"
+                                        loading=1"lazy">
+                                  </div>
+                                  <div class="item-title">
+                                    <p>${item.title}</p>
+                                    <p>&#x20b9;${prsc}</p>
+                                  </div>
+                                  ${quant}
+                                  <div class="item-remove_btn">
+                                    
+                                      <button class="remove_btn"  onclick="removeFromCart(${item.item_var_id},${item.item_var_id},1,0,0)">Remove</button>
+                                  </div>
+                                </div>`;
+      list.appendChild(li);
+      let cartPrice = `${item.price}`;
+      cartPrice = cartPrice * 0.01;
+      if (isliquor) {
+        if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
+          producttp = cartPrice * numberOfLiuor
+        }
+      }
+      if (isliquor) {
+        if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
+          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
+                                    <td>
+                                      <div class="priduct-card">
+                                        <div class="pd-img">
+                                          <img
+                                            src="${item.img}"
+                                            class="cart-item__image"
+                                            alt=""
+                                            loading="lazy"
+                                            width="150"
+                                            height="150"
+                                          >
+                                        </div>
+                                        <div class="pd-details">
+                                          
+                                          <div class="pd-title">
+                                            <a
+                                              href="/products/${item.title}"
+                                              class="cart-item__name h4 break"
+                                              >${item.title}</a
+                                            >
+                                            {% comment %}
+                                            <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
+                                            <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                            {% endcomment %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td><span class="price"> &#x20b9;${cartPrice}</span></td>
+                                    <td>
+                                    </td>
+                                    <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
+                                    <td>
+                                    </td>
+                                </tr>`);
+        } else {
+          if (item.isABox) {
+            $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
+                                <td>
+                                  <div class="priduct-card">
+                                    <div class="pd-img">
+                                      <img
+                                        src="${item.img}"
+                                        class="cart-item__image"
+                                        alt=""
+                                        loading="lazy"
+                                        width="150"
+                                        height="150"
+                                      >
+                                    </div>
+                                    <div class="pd-details">
+                                      
+                                      <div class="pd-title">
+                                        <a
+                                          href="/products/${item.title}"
+                                          class="cart-item__name h4 break"
+                                          >${item.title}</a
+                                        >
+                                        {% comment %}
+                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
+                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
+                                <td>
+                                </td>
+                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
+                                <td>
+                                  <span class="delete_image"
+                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
+                                  ></span>
+                                </td>
+                              </tr>`);
+          } else {
+            $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
+                                <td>
+                                  <div class="priduct-card">
+                                    <div class="pd-img">
+                                      <img
+                                        src="${item.img}"
+                                        class="cart-item__image"
+                                        alt=""
+                                        loading="lazy"
+                                        width="150"
+                                        height="150"
+                                      >
+                                    </div>
+                                    <div class="pd-details">
+                                      
+                                      <div class="pd-title">
+                                        <a
+                                          href="/products/${item.title}"
+                                          class="cart-item__name h4 break"
+                                          >${item.title}</a
+                                        >
+                                        {% comment %}
+                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
+                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
+                                <td>${quant}
+                                </td>
+                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
+                                <td>
+                                  <span class="delete_image"
+                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
+                                  ></span>
+                                </td>
+                              </tr>`);
+          }
+        }
+      } else {
+        if (item.isABox) {
+          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
+                                <td>
+                                  <div class="priduct-card">
+                                    <div class="pd-img">
+                                      <img
+                                        src="${item.img}"
+                                        class="cart-item__image"
+                                        alt=""
+                                        loading="lazy"
+                                        width="150"
+                                        height="150"
+                                      >
+                                    </div>
+                                    <div class="pd-details">
+                                      
+                                      <div class="pd-title">
+                                        <a
+                                          href="/products/${item.title}"
+                                          class="cart-item__name h4 break"
+                                          >${item.title}</a
+                                        >
+                                        {% comment %}
+                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
+                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
+                                <td>
+                                </td>
+                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
+                                <td>
+                                  <span class="delete_image"
+                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
+                                  ></span>
+                                </td>
+                              </tr>`);
+        } else {
+          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
+                                <td>
+                                  <div class="priduct-card">
+                                    <div class="pd-img">
+                                      <img
+                                        src="${item.img}"
+                                        class="cart-item__image"
+                                        alt=""
+                                        loading="lazy"
+                                        width="150"
+                                        height="150"
+                                      >
+                                    </div>
+                                    <div class="pd-details">
+                                      
+                                      <div class="pd-title">
+                                        <a
+                                          href="/products/${item.title}"
+                                          class="cart-item__name h4 break"
+                                          >${item.title}</a
+                                        >
+                                        {% comment %}
+                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
+                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
+                                        {% endcomment %}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
+                                <td>${quant}
+                                </td>
+                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
+                                <td>
+                                  <span class="delete_image"
+                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
+                                  ></span>
+                                </td>
+                              </tr>`);
+        }
+      }
+      $('#mobile_cart_data').append(`<div class="product-cart">
+                            <div class="img">
+                              <img
+                                src="${item.img}"
+                                class="cart-item__image"
+                                alt="${item.title}"
+                                loading="lazy"
+                                width="150"
+                                height="150"
+                              >
+                            </div>
+                            <div class="text">
+                              <h3 class="title">
+                                <a href="/products/${item.title}3" class="cart-item__name h4 break"
+                                  >${item.title}</a
+                                >
+                              </h3>
+            
+                              <h3 class="price">&#x20b9;${producttp}</h3>
+                            ${quant}
+                            </div>
+                            <span class='delete_image'><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-card="${item.isACard}" data-is-a-addon="${item.isAAddon}"  src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
+                            ></span>
+                          </div>`);
+    });
+    if (window.totalUserItemsCount > 15) {
+      $("#hiddenItemsCount").text("and " + (window.totalUserItemsCount - 15) + " more items").show();
+    } else {
+      $("#hiddenItemsCount").text("").hide();
+    }
+    totalprice = totalprice*0.01 ;
+    if (isRemoved) $(`.add_${varient_id}`).show();
+    else $(`.remove_${varient_id}`).show();
+    $(`.loader_${loder_id}`).hide();
+    $(".total-price").text(totalprice);
+    $(".total-price").prepend("&#8377;");
+    $(".total-price1").text(totalprice);
+    $(".total-price1").prepend("&#8377;");
+    $("#SubTotalPrice").text(totalprice);
+    $("#SubTotalPrice").prepend("&#8377;");
+  }
+  
    var hamperCollectionData;
   var displayChooseBoxProducts = false;
   var displayAddonProductsStatus = false;
@@ -1193,324 +1511,7 @@ $(selector).css('display', 'block');
       
       }
   }
-  
-  function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
 
-    let list = document.getElementById("selectproduct");
-    $("#selectproduct").empty();
-    $('#add_row').empty();
-    $('#mobile_cart_data').empty();
-    totalprice = 0;
-    selectedItem.forEach((item, index) => {
-      let val = $(`.${item.item_var_id} .qty`).val();
-      if(val == undefined && parseInt(item.available_quantity)>0) {
-        val = parseInt(item.available_quantity);
-      }
-      let producttp = item.price * 0.01;
-      let quant = '<input type="text" name="qty" value="1" class="qty static_qty"/>'
-      if (Number(val)) {
-        let lastqunt = Number(val)
-        producttp = (item.price * Number(val)) * 0.01;
-        if (isliquor) {
-          if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
-            totalprice = totalprice + (item.price * numberOfLiuor);
-          } else {
-            totalprice = totalprice + (item.price * val);
-          }
-        } else {
-          totalprice = totalprice + (item.price * val);
-        }
-        quant = `<div class="qty_selector ${item.item_var_id} variant-${item.item_var_id}">
-                                      <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)'>-</span>
-                                      <input type="text" name="qty" value="${lastqunt}" class="qty" onchange='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)' />
-                                      <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,1)'>+</span>
-                                    </div>`
-      } else {
-        if (isliquor) {
-          if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
-            totalprice = totalprice + (item.price * numberOfLiuor);
-          } else {
-            totalprice = totalprice + item.price;
-          }
-        } else {
-          totalprice = totalprice + item.price;
-        }
-      }
-      let prsc = item.price * 0.01;
-      let li = document.createElement("li");
-      li.id = "bottom_cart_item_" + item.item_var_id;
-      if (index + 1 >= 25) li.style.display = "inline";
-      li.innerHTML = `<div class="item-details">
-                                  <div class="item-img">
-                                    <img src="${item.img}"
-                                        class="cart-item__image"
-                                        alt="img"
-                                        loading=1"lazy">
-                                  </div>
-                                  <div class="item-title">
-                                    <p>${item.title}</p>
-                                    <p>&#x20b9;${prsc}</p>
-                                  </div>
-                                  ${quant}
-                                  <div class="item-remove_btn">
-                                    
-                                      <button class="remove_btn"  onclick="removeFromCart(${item.item_var_id},${item.item_var_id},1,0,0)">Remove</button>
-                                  </div>
-                                </div>`;
-      list.appendChild(li);
-      let cartPrice = `${item.price}`;
-      cartPrice = cartPrice * 0.01;
-      if (isliquor) {
-        if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
-          producttp = cartPrice * numberOfLiuor
-        }
-      }
-      if (isliquor) {
-        if (item.item_var_id == "44337026629939" || item.item_var_id == "44337026498867" || item.item_var_id == "44337026302259") {
-          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
-                                    <td>
-                                      <div class="priduct-card">
-                                        <div class="pd-img">
-                                          <img
-                                            src="${item.img}"
-                                            class="cart-item__image"
-                                            alt=""
-                                            loading="lazy"
-                                            width="150"
-                                            height="150"
-                                          >
-                                        </div>
-                                        <div class="pd-details">
-                                          
-                                          <div class="pd-title">
-                                            <a
-                                              href="/products/${item.title}"
-                                              class="cart-item__name h4 break"
-                                              >${item.title}</a
-                                            >
-                                            {% comment %}
-                                            <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
-                                            <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
-                                            {% endcomment %}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td><span class="price"> &#x20b9;${cartPrice}</span></td>
-                                    <td>
-                                    </td>
-                                    <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
-                                    <td>
-                                    </td>
-                                </tr>`);
-        } else {
-          if (item.isABox) {
-            $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
-                                <td>
-                                  <div class="priduct-card">
-                                    <div class="pd-img">
-                                      <img
-                                        src="${item.img}"
-                                        class="cart-item__image"
-                                        alt=""
-                                        loading="lazy"
-                                        width="150"
-                                        height="150"
-                                      >
-                                    </div>
-                                    <div class="pd-details">
-                                      
-                                      <div class="pd-title">
-                                        <a
-                                          href="/products/${item.title}"
-                                          class="cart-item__name h4 break"
-                                          >${item.title}</a
-                                        >
-                                        {% comment %}
-                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
-                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
-                                        {% endcomment %}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
-                                <td>
-                                </td>
-                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
-                                <td>
-                                  <span class="delete_image"
-                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
-                                  ></span>
-                                </td>
-                              </tr>`);
-          } else {
-            $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
-                                <td>
-                                  <div class="priduct-card">
-                                    <div class="pd-img">
-                                      <img
-                                        src="${item.img}"
-                                        class="cart-item__image"
-                                        alt=""
-                                        loading="lazy"
-                                        width="150"
-                                        height="150"
-                                      >
-                                    </div>
-                                    <div class="pd-details">
-                                      
-                                      <div class="pd-title">
-                                        <a
-                                          href="/products/${item.title}"
-                                          class="cart-item__name h4 break"
-                                          >${item.title}</a
-                                        >
-                                        {% comment %}
-                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
-                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
-                                        {% endcomment %}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
-                                <td>${quant}
-                                </td>
-                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
-                                <td>
-                                  <span class="delete_image"
-                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
-                                  ></span>
-                                </td>
-                              </tr>`);
-          }
-        }
-      } else {
-        if (item.isABox) {
-          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
-                                <td>
-                                  <div class="priduct-card">
-                                    <div class="pd-img">
-                                      <img
-                                        src="${item.img}"
-                                        class="cart-item__image"
-                                        alt=""
-                                        loading="lazy"
-                                        width="150"
-                                        height="150"
-                                      >
-                                    </div>
-                                    <div class="pd-details">
-                                      
-                                      <div class="pd-title">
-                                        <a
-                                          href="/products/${item.title}"
-                                          class="cart-item__name h4 break"
-                                          >${item.title}</a
-                                        >
-                                        {% comment %}
-                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
-                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
-                                        {% endcomment %}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
-                                <td>
-                                </td>
-                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
-                                <td>
-                                  <span class="delete_image"
-                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
-                                  ></span>
-                                </td>
-                              </tr>`);
-        } else {
-          $('#add_row').append(`<tr id="main_bundle_checkout_${item.item_var_id}">
-                                <td>
-                                  <div class="priduct-card">
-                                    <div class="pd-img">
-                                      <img
-                                        src="${item.img}"
-                                        class="cart-item__image"
-                                        alt=""
-                                        loading="lazy"
-                                        width="150"
-                                        height="150"
-                                      >
-                                    </div>
-                                    <div class="pd-details">
-                                      
-                                      <div class="pd-title">
-                                        <a
-                                          href="/products/${item.title}"
-                                          class="cart-item__name h4 break"
-                                          >${item.title}</a
-                                        >
-                                        {% comment %}
-                                        <p class="current_bundle_data_id">bundle_id: ${window.currentBundleData.bundle_id}</p>
-                                        <p class="current_bundle_data_name">bundle_name: ${window.currentBundleData.bundle_name}</p>
-                                        {% endcomment %}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td><span class="price"> &#x20b9;${cartPrice}</span></td>
-                                <td>${quant}
-                                </td>
-                                <td><span class="subtotle"> &#x20b9;${producttp}</span></td>
-                                <td>
-                                  <span class="delete_image"
-                                    ><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-addon="${item.isAAddon}" data-is-a-card="${item.isACard}" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
-                                  ></span>
-                                </td>
-                              </tr>`);
-        }
-      }
-      $('#mobile_cart_data').append(`<div class="product-cart">
-                            <div class="img">
-                              <img
-                                src="${item.img}"
-                                class="cart-item__image"
-                                alt="${item.title}"
-                                loading="lazy"
-                                width="150"
-                                height="150"
-                              >
-                            </div>
-                            <div class="text">
-                              <h3 class="title">
-                                <a href="/products/${item.title}3" class="cart-item__name h4 break"
-                                  >${item.title}</a
-                                >
-                              </h3>
-            
-                              <h3 class="price">&#x20b9;${producttp}</h3>
-                            ${quant}
-                            </div>
-                            <span class='delete_image'><img data-del-var-id="${item.item_var_id}" data-del-prod-id="${item.itemProdId}" data-is-a-gift="${item.isAGift}" data-is-a-box="${item.isABox}" data-is-a-card="${item.isACard}" data-is-a-addon="${item.isAAddon}"  src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/oie_5fGcRAnE5Pgg.png?v=1680761338"
-                            ></span>
-                          </div>`);
-    });
-    if (window.totalUserItemsCount > 15) {
-      $("#hiddenItemsCount").text("and " + (window.totalUserItemsCount - 15) + " more items").show();
-    } else {
-      $("#hiddenItemsCount").text("").hide();
-    }
-    totalprice = totalprice*0.01 ;
-    if (isRemoved) $(`.add_${varient_id}`).show();
-    else $(`.remove_${varient_id}`).show();
-    $(`.loader_${loder_id}`).hide();
-    $(".total-price").text(totalprice);
-    $(".total-price").prepend("&#8377;");
-    $(".total-price1").text(totalprice);
-    $(".total-price1").prepend("&#8377;");
-    $("#SubTotalPrice").text(totalprice);
-    $("#SubTotalPrice").prepend("&#8377;");
-  }
-  
   function between(x, min, max) {
     return x >= min && x <= max;
   }
