@@ -328,6 +328,7 @@
     {{ block.shopify_attributes }}
     role="group"
     aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+    onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
     aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
     tabindex="-1"
     {% if block.settings.link %}
@@ -367,6 +368,7 @@
     <picture>
       <!-- Mobile first -->
       <source
+            onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
         srcset="
           {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
           {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w
@@ -376,6 +378,8 @@
       >
       <!-- Desktop fallback -->
       <source
+            onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
+
         srcset="
           {{ block.settings.image | img_url: '800x' }} 800w,
           {{ block.settings.image | img_url: '1200x' }} 1200w,
@@ -385,6 +389,7 @@
         media="(min-width: 768px)"
       >
       <img
+            onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
         src="{{ block.settings.image | img_url: '800x' }}"
         width="{{ block.settings.image.width }}"
         height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round }}"
