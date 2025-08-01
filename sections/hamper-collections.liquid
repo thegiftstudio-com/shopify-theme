@@ -2114,6 +2114,32 @@ $(selector).css('display', 'block');
           var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
           var cutoffTimeFourPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
           var cutoffTimeSevenPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 19, 0, 0);
+          // Added by Velocity 01-08-2025 Flexible Cutoff based on warehouse and overide the Product tag based cutoff.
+          var selectedWarehouse = localStorage.getItem("location")?.split("-")[1];
+
+            for (var i = 0; i < warehouse_cutoff.length; i++) {
+             var warehouseEntry = warehouse_cutoff[i];
+             var warehouseNames = warehouseEntry.name.map(function (c) {
+                 return c.toLowerCase();
+             });
+         
+             if (warehouseNames.includes(selectedWarehouse)) {
+                 // Override cutoff time with the one from the list
+                 cutoffTimeSevenPm = new Date(
+                     currentDateTime.getFullYear(),
+                     currentDateTime.getMonth(),
+                     currentDateTime.getDate(),
+                     warehouseEntry.cutoff,
+                     0,
+                     0
+                 );
+                 cutoffTwoPm=cutoffTimeSevenPm;
+                 cutoffTimethreePm=cutoffTimeSevenPm;
+                 cutoffTimeFourPm=cutoffTimeSevenPm;
+                 break;
+             }
+            }
+            //END 01-08-2025
       if(maxTAT < 0) {
       
         if (maxTAT == '-3') {

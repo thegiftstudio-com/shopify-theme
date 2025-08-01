@@ -449,8 +449,8 @@ $(document).ready(function() {
                        //  var minDate = new Date(today);
                         var productTat = parseInt($(".product_tat").val());
                        // var currentDateTime = new Date();
-  
-  var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'');
+  // Added by Velocity 01-08-2025 Pass selected warehouse name(selected_warehouse) into the function setMinDeliveryDate
+  var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'',selected_warehouse);
         // Utility function to check if the selected date is today
 function isSelectedDateToday(selectedDateStr) {
   const currentDate = new Date().getDate();
