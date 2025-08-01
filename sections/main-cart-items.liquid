@@ -184,6 +184,9 @@
         availbale_quantity = $(this).data('kolkata-inventory');
       } else if (setLocation === 'location-gurgaon') {
         availbale_quantity = $(this).data('gurgaon-inventory');
+      {% comment %} Added check for Banglore inventory for the product items {%endcomment %}
+       } else if (setLocation === 'location-bangalore') {
+        availbale_quantity = $(this).data('bangalore-inventory');
       }
 
       let productId = $(this).data('product-id');
@@ -478,6 +481,8 @@
                             class="product-option cart_property_product_title"
                             data-product-title="{{ item.product.title | escape }}"
                             data-kolkata-inventory="{{ item.product.metafields.custom.kolkata_inventory }}"
+                            {% comment %} Added check for Banglore inventory for the product items {%endcomment %}
+                            data-bangalore-inventory="{{ item.product.metafields.custom.bengaluru_inventory }}"
                             data-mumbai-inventory="{{ item.product.metafields.custom.mumbai_inventory }}"
                             data-gurgaon-inventory="{{ item.product.metafields.custom.gurgaon_inventory }}"
                             data-product-id="{{ item.variant.id }}"
