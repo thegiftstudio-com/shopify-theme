@@ -1470,8 +1470,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     }
-    
-    var total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag);
+    // Added by Velocity 01-08-2025 Pass selected warehouse name(selectedWarehouse) into the function setMInDeliveryDate
+    var total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag, selectedWarehouse);
     // In case product not available then selected_warehouse_tat is null. and consider as highest product TAT. Added by Velocity
     if(selected_warehouse_tat==null)total=5000;
 const stripElement = document.querySelector(`#strip_${productId}`);
