@@ -16,14 +16,23 @@ class CartDrawer extends HTMLElement {
         cartLink.setAttribute('role', 'button');
         cartLink.setAttribute('aria-haspopup', 'dialog');
         cartLink.addEventListener('click', (event) => {
+          event.preventDefault();
+         // Check if current page is cart page and redirect to /cart instead of opening drawer
+         if (window.location.pathname === '/cart') {
+         window.location.href = '/cart';
+         return;
+         }
          validateDeliveryDates();
-          
-            event.preventDefault();
             this.open(cartLink);
         });
         cartLink.addEventListener('keydown', (event) => {
             if (event.code.toUpperCase() === 'SPACE') {
-                event.preventDefault();
+              event.preventDefault();
+            // Check if current page is cart page and redirect to /cart instead of opening drawer
+            if (window.location.pathname === '/cart') {
+                window.location.href = '/cart';
+                return;
+            }
                 this.open(cartLink);
             }
         });
@@ -35,15 +44,24 @@ class CartDrawer extends HTMLElement {
             cartLink1.setAttribute('aria-haspopup', 'dialog');
             
             cartLink1.addEventListener('click', (event) => {
-      validateDeliveryDates();
-              
-                event.preventDefault();
+            // Check if current page is cart page and redirect to /cart instead of opening drawer
+            event.preventDefault();
+            if (window.location.pathname === '/cart') {
+                window.location.href = '/cart';
+                return;
+            }
+               validateDeliveryDates();
                 this.open(cartLink1);
             });
             
             cartLink1.addEventListener('keydown', (event) => {
                 if (event.code.toUpperCase() === 'SPACE') {
                     event.preventDefault();
+             // Check if current page is cart page and redirect to /cart instead of opening drawer
+            if (window.location.pathname === '/cart') {
+                window.location.href = '/cart';
+                return;
+            }
                     this.open(cartLink1);
                 }
             });

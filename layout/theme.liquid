@@ -517,6 +517,7 @@
   </head>
 
   <body class="gradient {{ template | replace: '.', '-' | replace: '/', '-' }}-main">
+
     <!-- PERFORMANCE: Optimized GTM noscript fallback -->
     <noscript>
       <iframe
@@ -596,10 +597,26 @@
     {% render 'footer-bar' %}
 
     <script>
-         $(document).ready(function() {
-        var data_id = [];
+      //Added by velocity 04-08-2025 Add cart drawer script when page loaded.
+      $(document).on('click', '.view-details-link', function () {
+        const containers = document.querySelectorAll('.details-container');
+        const btns = document.querySelectorAll('.view-details-link');
 
-        $(".bundle_remove_btn").on("click", function(evt) {
+        const isHidden = containers[0].style.display === 'none' || !containers[0].style.display;
+
+        containers.forEach(container => {
+            container.style.display = isHidden ? 'flex' : 'none';
+        });
+
+        btns.forEach(btn => {
+          btn.textContent = isHidden ? 'Hide Details' : 'View Details';
+          });
+        });
+        $(document).ready(function() {
+                    
+        var data_id = [];
+        
+        $(document).on("click", ".bundle_remove_btn", function(evt) {
           evt.preventDefault();
           var itemsList = {};
 
