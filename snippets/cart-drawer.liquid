@@ -4,9 +4,284 @@
   Usage:
   {% render 'cart-drawer' %}
 {% endcomment %}
+<style>
+    #outOfStockPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+  }
 
+  .popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0d9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+
+  .popup-content h2 {
+    margin-bottom: 10px;
+  }
+
+  .popup-content ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .popup-content ul li {
+    margin: 5px 0;
+  }
+
+  #closePopupButton {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #closePopupButton:hover {
+    background: #0056b3;
+  }
+
+    .tooltip-container {
+    position: relative;
+    display: inline-block; /* Ensures the tooltip aligns with the element */
+  }
+
+  .tooltip-message {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 120%; /* Position above the element */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333; /* Tooltip background */
+    color: #fff; /* Tooltip text color */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+  }
+
+  .tooltip-container:hover .tooltip-message {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+    {% if template != 'cart' %}
+<script>
+  var max_allowed_hamper = 5; // Default value
+  
+  
+  // Velocity: Functions to handle BYOH quantity changes
+  $(document).ready(function () {
+    // Close popup and reload the page
+    $('#closePopupButton').on('click', function (event) {
+        event.preventDefault(); // Prevent default action (if any, like form submission or navigation)
+        $('#outOfStockPopup').hide();
+        window.location.reload(); // Explicitly reloads the page
+    });
+
+    // Increase quantity when + button is clicked
+$(document).on('click', '.byoh_quantity__button--increase', function (event) {
+      debugger;
+        if(parseInt($(".byoh_quantity__input").val()) + 1> max_allowed_hamper){
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default action, if any
+        adjustHamperQuantity($(this).closest('.quantity'), 1);
+    });
+
+    // Decrease quantity when - button is clicked
+$(document).on('click', '.byoh_quantity__button--decrease', function (event) {
+       if(parseInt($(".byoh_quantity__input").val())-1 > max_allowed_hamper){
+         var currentValue = parseInt($(".byoh_quantity__input").val(), 10) || 1; // Default to 1 if the value is invalid
+          if (currentValue > 1) { // Prevent values below 1
+            $(".byoh_quantity__input").val(currentValue - 1);
+          }
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default action, if any
+        adjustHamperQuantity($(this).closest('.quantity'), -1);
+    });
+
+    // Handle manual input change
+    $('.byoh_quantity__input').on('change', function (event) {
+       if(parseInt($(".byoh_quantity__input").val()) > max_allowed_hamper){
+           $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
+          return;
+        } else {
+           $('#Line-item-error-1 .cart-item__error-text').html('');
+        }
+        event.preventDefault(); // Prevent default behavior (e.g., form submission on Enter key)
+        adjustHamperQuantity($(this).closest('.quantity'), 0, 1);
+    });
+
+    // Validate input to allow only numeric values and prevent leading zeros
+    $('.byoh_quantity__input').on('input', function (event) {
+        event.preventDefault(); // Prevent default behavior, if any (like pasting invalid content)
+        this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+    });
+});
+
+
+  // Function to adjust the quantity
+  function adjustHamperQuantity(quantityContainer, change, manual_input = 0) {
+    let hamperId = quantityContainer.data('hamper-id');
+    let quantityInput = quantityContainer.find('.byoh_quantity__input');
+    let currentQuantity = parseInt(quantityInput.val(), 10);
+    let newQuantity = currentQuantity + change;
+
+    // Ensure quantity does not drop below 1
+    if (newQuantity < 1) return;
+
+    // Update the quantity input display
+    quantityInput.val(newQuantity);
+
+    // Update each product quantity within the hamper based on the new hamper quantity
+    updateHamperProductQuantities(hamperId, newQuantity);
+    return false;
+  }
+
+  // Function to update product quantities within the hamper
+  function updateHamperProductQuantities(bundleId, hamperQuantity) {
+    let itemsToUpdate = [];
+    let outOfStockMessages = [];
+    let productOutOfStock = false;
+    let productNameOutOfStock = '';
+
+    // Loop through each product within the hamper
+    $('.byoh_cart-item__details a').each(function (index) {
+      if (index === 0) return true; // Skip the first item if needed
+      let availbale_quantity = 0;
+      let setLocation = localStorage.getItem("location");
+
+      // Determine available inventory based on location
+      if (setLocation === 'location-mumbai') {
+        availbale_quantity = $(this).data('mumbai-inventory');
+      } else if (setLocation === 'location-kolkata') {
+        availbale_quantity = $(this).data('kolkata-inventory');
+      } else if (setLocation === 'location-gurgaon') {
+        availbale_quantity = $(this).data('gurgaon-inventory');
+      {% comment %} Added check for Banglore inventory for the product items {%endcomment %}
+       } else if (setLocation === 'location-bangalore') {
+        availbale_quantity = $(this).data('bangalore-inventory');
+      }
+
+      let productId = $(this).data('product-id');
+      let baseQuantity = parseInt($(this).data('base-quantity'), 10);
+      let newProductQuantity = baseQuantity * hamperQuantity;
+
+      // Check for out-of-stock condition
+      if (parseInt(newProductQuantity) > parseInt(availbale_quantity)) {
+        productOutOfStock = true;
+        productNameOutOfStock += `<li>${$(this).data('product-title')}</li>`;
+      }
+      if(productId && newProductQuantity){
+         itemsToUpdate.push({
+          id: productId,
+          quantity: newProductQuantity,
+        });
+      }
+    });
+
+    // Show popup if any product is out of stock
+    if (productOutOfStock) {
+      
+      $('#outOfStockList').html(productNameOutOfStock);
+      $('#outOfStockPopup').show();
+      return false;
+    }
+
+    // Attempt to update the cart with new quantities
+    function attemptUpdateWithRotation() {
+      console.log("Attempting cart update with payload:", itemsToUpdate);
+
+      $.ajax({
+        type: 'POST',
+        url: '/cart/update.js',
+        data: JSON.stringify({
+          updates: itemsToUpdate.reduce((obj, item) => {
+            obj[item.id] = item.quantity;
+            return obj;
+          }, {}),
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response) {
+          console.log("Cart updated successfully:", response);
+          window.location.reload(); // Reload the page on success
+        },
+        error: function (xhr) {
+          console.log("Cart update error:", xhr);
+
+          if (xhr.status === 422) {
+            let errorMessage = xhr.responseJSON && xhr.responseJSON.message
+              ? xhr.responseJSON.message
+              : "An unknown error occurred.";
+
+            let productName = errorMessage.match(/You can't add more (.*?) to the cart/);
+            productName = productName ? productName[1] : "An item";
+            outOfStockMessages.push(`${productName} is not available in the requested quantity.`);
+
+            itemsToUpdate.push(itemsToUpdate.shift()); // Rotate items array
+
+            if (outOfStockMessages.length < itemsToUpdate.length) {
+              attemptUpdateWithRotation();
+            } else {
+              alert(outOfStockMessages.join("\n"));
+            }
+          } else {
+            alert("An unknown error occurred while updating the cart.");
+          }
+        },
+      });
+    }
+
+    // Start the update process
+    attemptUpdateWithRotation();
+  }
+</script>
+
+<div id="outOfStockPopup" style="display: none;">
+  <div class="popup-overlay"></div>
+  <div class="popup-content" style="margin:0 0px;">
+    <h2>Out of Stock</h2>
+    <p>The following products are not available in the requested quantity:</p>
+    <ol id="outOfStockList" style="text-align: left;"></ol>
+    <button id="closePopupButton">Close</button>
+  </div>
+</div>
 <script src="{{ 'cart.aio.min.js' | asset_url }}" defer="defer"></script>
-
+{% endif %}
 <style>
     .drawer {
       visibility: hidden;
@@ -208,11 +483,18 @@
                           </th>
                         </tr>
                       </thead>
-
+                      {% assign bundle_product = false %}
+                      {%- for item in cart.items -%}
+                    {% for p in item.properties %}
+                    {% if p.first == 'bundle_id' %}
+                      {% assign bundle_product = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% endfor %}
                       <tbody role="rowgroup">
                         <!-- [custom code] -->
-
-                        <tr class="cart-item multi_product_outer BYOHCartBundle hide_multi_Product_div" id="CartItem-0">
+                        {% if bundle_product %}
+                        <tr class="cart-item multi_product_outer BYOHCartBundle" id="CartItem-0">
                           <td class="cart-item__media">
                             <a href="#" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
                             <div class="cart-item__image-container gradient global-media-settings">
@@ -229,9 +511,9 @@
                             </div>
                           </td>
 
-                          <td class="cart-item__details">
+                          <td class="cart-item__details byoh_cart-item__details">
                             <a
-                              href="/pages/hamper-collections?bundle_id=1015"
+                    href="/pages/hamper-collections?bundle_id=1015&edit_hamper=1"
                               class="cart-item__name h4"
                               id="bundle_prod_title"
                             >
@@ -251,21 +533,75 @@
                                 {{ total_custom_price | money }}
                               </span>
                             </div>
+                             {% assign byoh_delivery_date = '' %}
                             {%- for item in cart.items -%}
                               {% for p in item.properties %}
+                        {% if p.first == 'Delivery date' %}
+                        {% assign byoh_delivery_date = p.last %}
+                        {% assign easyecom_delivery_date = p.last %}
+                      {% endif %}
                                 {% if p.first == 'bundle_id' %}
-                                  <a
-                                    href="#"
-                                    class="product-option break cart_property_product_title"
-                                    data-product-id="{{ item.variant.id }}"
-                                    data-cart-prod-bundle-id="{{ p.last }}"
-                                    data-cart-prod-bundle-name="{{ item.properties['bundle_name'] }}"
-                                  >
-                                    {{ item.product.title | escape }}
-                                  </a>
-                                {% endif %}
-                              {% endfor %}
-                            {% endfor %}
+                        {% assign bundle_id = p.last %}
+                        <div
+                          class="product-line details-container"
+                          style="display: none; margin-top: 10px;"
+                        >
+                          <a
+                            href="#"
+                            class="product-option cart_property_product_title"
+                            data-product-title="{{ item.product.title | escape }}"
+                            data-kolkata-inventory="{{ item.product.metafields.custom.kolkata_inventory }}"
+                            {% comment %} Added check for Banglore inventory for the product items {%endcomment %}
+                            data-bangalore-inventory="{{ item.product.metafields.custom.bangalore_inventory }}"
+                            data-mumbai-inventory="{{ item.product.metafields.custom.mumbai_inventory }}"
+                            data-gurgaon-inventory="{{ item.product.metafields.custom.gurgaon_inventory }}"
+                            data-product-id="{{ item.variant.id }}"
+                            data-base-quantity="{{ item.properties['base_quantity'] }}"
+                            data-cart-prod-bundle-id="{{ p.last }}"
+                            data-cart-prod-bundle-name="{{ item.properties['bundle_name'] }}"
+                            data-cart-prod-type="{{ item.properties.product_type }}"
+                          >
+                            {{ item.product.title | escape }}
+                          </a>
+                          {% if item.properties.product_type != 'box' %}
+                            <cart-remove-button
+                              id="Remove-{{ item.index | plus: 1 }}"
+                              data-index="{{ item.index | plus: 1 }}"
+                              data-quantity-variant-id="{{ item.variant.id }}"
+                            >
+                              <a
+                                href="{{ item.url_to_remove }}"
+                                class="button button--tertiary"
+                                aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}"
+                              >
+                                {% render 'icon-remove' %}
+                              </a>
+                            </cart-remove-button>
+                          {% endif %}
+                        </div>
+                        {% assign base_quantity = item.properties.base_quantity %}
+                        {% assign quantity = item.quantity %}
+
+                        {% if base_quantity != 0 %}
+                          {% assign base_quantity_byoh = quantity | divided_by: base_quantity %}
+                        {% else %}
+                          {% assign base_quantity_byoh = 1 %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+
+                  <p id="delivery_date_byoh" style="font-weight: 300;">Delivery Date: {{ byoh_delivery_date }}</p>
+                  
+
+                  <!--
+                    <div class="product-option">
+                      <dt>Updated Delivery Date:</dt>
+                      <dd id="{{ bundle_id}}"></dd>
+                    </div>
+                  -->
+                  <div class="warning-msg-byoh" style="color:red;font-weight:100"></div>
+                  <a href="javascript:void(0);" class="view-details-link">View Details</a>
                           </td>
 
                           <td class="cart-item__totals right medium-hide large-up-hide">
@@ -316,13 +652,21 @@
                           <td class="cart-item__quantity">
                             <div class="cart-item__quantity-wrapper">
                               <label class="visually-hidden" for="Quantity-1"> Quantity </label>
-                              <quantity-input class="quantity cart-quantity">
+                    <quantity-input class="quantity cart-quantity byoh_quantity">
+                                    <button
+                        class="quantity__button byoh_quantity__button--decrease"
+                        type="button"
+                        aria-label="Decrease quantity"
+                      >
+                        <span class="visually-hidden">Decrease Quantity</span>
+                        {% render 'icon-minus' %}
+                      </button>
                                 <input
-                                  class="quantity__input"
+                                  class="quantity__input byoh_quantity__input"
                                   data-quantity-variant-id="44337043177779"
                                   type="number"
                                   name="updates[]"
-                                  value="1"
+                        value="{{ base_quantity_byoh }}"
                                   data-cart-quantity="1"
                                   min="1"
                                   step="1"
@@ -331,6 +675,14 @@
                                   data-index="1"
                                   disabled
                                 >
+                        <button
+                        class="quantity__button byoh_quantity__button--increase"
+                        type="button"
+                        aria-label="Increase quantity"
+                      >
+                        <span class="visually-hidden">Increase Quantity</span>
+                        {% render 'icon-plus' %}
+                      </button>
                               </quantity-input>
                               <div class="cart-item__price-wrapper">
                                 {% assign total_custom_price = 0 %}
@@ -349,24 +701,25 @@
                                   {{ total_custom_price | money }}
                                 </span>
                               </div>
-                              <cart-remove-button id="Remove-1" data-index="1" data-custom-bundle-prod="1">
-                                <a
-                                  href="#"
-                                  class="button button--tertiary bundle_remove_btn"
-                                  aria-label="Remove Shit Got Real"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                    aria-hidden="true"
-                                    focusable="false"
-                                    class="icon icon-remove"
-                                  >
-                                    <path d="M14 3h-3.53a3.07 3.07 0 00-.6-1.65C9.44.82 8.8.5 8 .5s-1.44.32-1.87.85A3.06 3.06 0 005.53 3H2a.5.5 0 000 1h1.25v10c0 .28.22.5.5.5h8.5a.5.5 0 00.5-.5V4H14a.5.5 0 000-1zM6.91 1.98c.23-.29.58-.48 1.09-.48s.85.19 1.09.48c.2.24.3.6.36 1.02h-2.9c.05-.42.17-.78.36-1.02zm4.84 11.52h-7.5V4h7.5v9.5z" fill="currentColor"></path>
-                                    <path d="M6.55 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5zM9.45 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5z" fill="currentColor"></path>
-                                  </svg>
-                                </a>
-                              </cart-remove-button>
+	 		 <cart-remove-button
+	                      id="Remove-1"
+	                      data-index="1"
+	                      data-custom-bundle-prod="1"
+	                      style="margin-left: 0;margin-top: 0;"
+	                    >
+	                      <a href="#" class="button button--tertiary bundle_remove_btn" aria-label="Remove Shit Got Real">
+	                        <svg
+	                          xmlns="http://www.w3.org/2000/svg"
+	                          viewBox="0 0 16 16"
+	                          aria-hidden="true"
+	                          focusable="false"
+	                          class="icon icon-remove"
+	                        >
+	                          <path d="M14 3h-3.53a3.07 3.07 0 00-.6-1.65C9.44.82 8.8.5 8 .5s-1.44.32-1.87.85A3.06 3.06 0 005.53 3H2a.5.5 0 000 1h1.25v10c0 .28.22.5.5.5h8.5a.5.5 0 00.5-.5V4H14a.5.5 0 000-1zM6.91 1.98c.23-.29.58-.48 1.09-.48s.85.19 1.09.48c.2.24.3.6.36 1.02h-2.9c.05-.42.17-.78.36-1.02zm4.84 11.52h-7.5V4h7.5v9.5z" fill="currentColor"></path>
+	                          <path d="M6.55 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5zM9.45 5.25a.5.5 0 00-.5.5v6a.5.5 0 001 0v-6a.5.5 0 00-.5-.5z" fill="currentColor"></path>
+	                        </svg>
+	                      </a>
+	                    </cart-remove-button>
                             </div>
 
                             <div class="cart-item__error" id="Line-item-error-1" role="alert">
@@ -397,6 +750,7 @@
                             </div>
                           </td>
                         </tr>
+                      {% endif %}
 
                         <!-- [custom code] -->
 
@@ -748,7 +1102,7 @@
                                     {% render 'icon-minus' %}
                                   </button>
                                   <input
-                                    class="quantity__input"
+                                    class="quantity__input byoh_quantity__input"
                                     type="number"
                                     data-quantity-variant-id="{{ item.variant.id }}"
                                     name="updates[]"

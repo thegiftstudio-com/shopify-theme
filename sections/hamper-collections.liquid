@@ -68,7 +68,7 @@
         }
         quant = `<div class="qty_selector ${item.item_var_id} variant-${item.item_var_id}">
                                       <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)'>-</span>
-                                      <input type="text" name="qty" value="${lastqunt}" class="qty" onchange='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0)' />
+                                      <input type="text" name="qty" value="${lastqunt}" class="qty" onchange='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,0,true)' />
                                       <span onclick='quantitySelector(${item.item_var_id},${item.item_var_id},1,0,0,0,1)'>+</span>
                                     </div>`
       } else {
@@ -130,7 +130,7 @@
                                           
                                           <div class="pd-title">
                                             <a
-                                              href="/products/${item.title}"
+                                              href="#"
                                               class="cart-item__name h4 break"
                                               >${item.title}</a
                                             >
@@ -168,7 +168,7 @@
                                       
                                       <div class="pd-title">
                                         <a
-                                          href="/products/${item.title}"
+                                          href="#"
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
@@ -208,7 +208,7 @@
                                       
                                       <div class="pd-title">
                                         <a
-                                          href="/products/${item.title}"
+                                          href="#"
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
@@ -251,7 +251,7 @@
                                       
                                       <div class="pd-title">
                                         <a
-                                          href="/products/${item.title}"
+                                          href="#"
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
@@ -291,7 +291,7 @@
                                       
                                       <div class="pd-title">
                                         <a
-                                          href="/products/${item.title}"
+                                          href="#"
                                           class="cart-item__name h4 break"
                                           >${item.title}</a
                                         >
@@ -667,8 +667,8 @@
             <!-- Check if product is in cart -->
             {% assign cart_item = cart.items | where: 'variant_id', product.variants.first.id | first %}
             {% assign is_in_cart = cart_item.quantity | default: 0 %} 
-
-            <div data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" class="product-card  {% unless product.tags contains 'Warehouse' %}content_hidden {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}">
+            {% comment %} Addded by velocity 04-08-2025 Update bangalore inventory attribute {% endcomment %}
+            <div data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" data_bangalore="{{ product.metafields.custom.bangalore_inventory }}" class="product-card  {% unless product.tags contains 'Warehouse' %}content_hidden {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}">
               <p id="{{ product.variants.first.id }}_tag" class="product_tag">{{ product.tags | join: ',' }}</p>
               <!-- Product Image -->
               <div class="product-img">
@@ -686,7 +686,7 @@
               <!-- Quantity Selector -->
               <div class="qty_selector {{ product.variants.first.id }} variant-{{ product.variants.first.id }}" style="{% if cart_item %}display:block;{% else %}display:none;{% endif %}"">
                 <span onclick='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 0)'>-</span>
-                <input type="text" name="qty" value="{% if cart_item %}{{ cart_item.properties.base_quantity }}{% else %}0{% endif %}" class="qty" onchange='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 0)' />
+                <input type="text" name="qty" value="{% if cart_item %}{{ cart_item.properties.base_quantity }}{% else %}0{% endif %}" class="qty" onchange='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 0, true)' />
                 <span onclick='quantitySelector("{{ product.variants.first.id }}", "{{ product.id }}", 1, 0, 0, 0, 1)'>+</span>
               </div>
 
@@ -841,7 +841,7 @@
                             <button type="button" class="varient-id-checkout">44260912070963:1,</button>
                             <div class="pd-title">
                               <a
-                                href="/products/kolkata-product-4?variant=44260912070963"
+                                href="#"
                                 class="cart-item__name h4 break"
                                 >Kolkata Product 4</a
                               >
@@ -1278,6 +1278,55 @@ function escapeClass(cls) {
 
   
   function addtocart(varient_id, loder_id, isAGift = 0, isABox = 0, isAAddon = 0, isACard = 0, quantity = 1) {
+    /*
+    * Added by Velocity
+    * Added inventory check functionality when product is added to cart localStorage
+    * 04-08-2025
+    */
+    
+    // Inventory check before adding to cart
+    const productCard = $(`.add_${varient_id}`).closest('.product-card');
+    if (productCard.length > 0) {
+      const currentLocation = localStorage.getItem('location');
+      const dataMumbai = productCard.attr('data_mumbai') || '0';
+      const dataKolkata = productCard.attr('data_kolkata') || '0';
+      const dataGurgaon = productCard.attr('data_gurgaon') || '0';
+      const dataDelhi = productCard.attr('data_delhi') || '0';
+      const dataBangalore = productCard.attr('data_bangalore') || '0';
+      
+      let currentInventory = 0;
+      
+      // Get inventory for current location
+      if (currentLocation === 'location-mumbai') {
+        currentInventory = parseInt(dataMumbai) || 0;
+      } else if (currentLocation === 'location-kolkata') {
+        currentInventory = parseInt(dataKolkata) || 0;
+      } else if (currentLocation === 'location-gurgaon') {
+        currentInventory = parseInt(dataGurgaon) || 0;
+      } else if (currentLocation === 'location-bangalore') {
+        currentInventory = parseInt(dataBangalore) || 0;
+      }
+      
+      // Check if inventory is sufficient
+      if (currentInventory <= 0) {
+        document.getElementById('warning-msg').textContent = "This product is currently out of stock.";
+        document.getElementById("warning-popup").style.display = "block";
+        document.getElementById("warning-overlay").style.display = "block";
+        return false;
+      }
+      
+      // Check if adding this quantity would exceed available inventory
+      const existingQuantity = addToCartData[varient_id] ? addToCartData[varient_id].quantity : 0;
+      const totalRequestedQuantity = existingQuantity + quantity;
+      
+      if (totalRequestedQuantity > currentInventory) {
+        document.getElementById('warning-msg').textContent = `Only ${currentInventory} units are available.`;
+        document.getElementById("warning-popup").style.display = "block";
+        document.getElementById("warning-overlay").style.display = "block";
+        return false;
+      }
+    }
+    
     if(varient_id){
 // const selector = `.qty_selector.${escapeClass(varient_id)}`;
       const selector = `.qty_selector.variant-${varient_id}`;
@@ -1533,6 +1582,57 @@ $(selector).css('display', 'block');
   }
   
   function checkout() {
+    /*
+    * Added By Velocity
+    * Added final inventory check before checkout
+    * 04-08-2025
+    */
+    
+    // Final inventory validation before checkout
+    const currentLocation = localStorage.getItem('location');
+    let inventoryIssues = [];
+    
+    // Check inventory for all items in cart
+    Object.keys(addToCartData).forEach(function (productId) {
+      const item = addToCartData[productId];
+      const productCard = $(`.add_${productId}`).closest('.product-card');
+      
+      if (productCard.length > 0) {
+        const dataMumbai = productCard.attr('data_mumbai') || '0';
+        const dataKolkata = productCard.attr('data_kolkata') || '0';
+        const dataGurgaon = productCard.attr('data_gurgaon') || '0';
+        const dataDelhi = productCard.attr('data_delhi') || '0';
+        const dataBangalore = productCard.attr('data_bangalore') || '0';
+        
+        let currentInventory = 0;
+        
+        // Get inventory for current location
+        if (currentLocation === 'location-mumbai') {
+          currentInventory = parseInt(dataMumbai) || 0;
+        } else if (currentLocation === 'location-kolkata') {
+          currentInventory = parseInt(dataKolkata) || 0;
+        } else if (currentLocation === 'location-gurgaon') {
+          currentInventory = parseInt(dataGurgaon) || 0;
+        } else if (currentLocation === 'location-bangalore') {
+          currentInventory = parseInt(dataBangalore) || 0;
+        } 
+        
+        // Check if requested quantity exceeds available inventory
+        if (item.quantity > currentInventory) {
+          const productTitle = productCard.find('.product-card-title').text().trim();
+          inventoryIssues.push(`${productTitle}: Only ${currentInventory} units available`);
+        }
+      }
+    });
+    
+    // If there are inventory issues, show warning and stop checkout
+    if (inventoryIssues.length > 0) {
+      document.getElementById('warning-msg').textContent = "Inventory issues detected: " + inventoryIssues.join(', ');
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      return false;
+    }
+    
     let total_product_tat = $("#total-product-tat").val();
     // Step 1: Update `base_quantity` and ensure properties are correctly structured
     Object.keys(addToCartData).forEach(function (productId) {
@@ -1622,7 +1722,11 @@ $(selector).css('display', 'block');
         })
         .then(() => {
             // Redirect to the cart after updating
-            window.location.href = '/cart';
+  // Cart drawer content reload happens here
+        $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
+            // After content is loaded, cart drawer is opened
+            $("cart-drawer.drawer").addClass("active");
+        });
         })
         .catch(error => {
             console.error('Error processing cart:', error);
@@ -2485,8 +2589,9 @@ $(selector).css('display', 'block');
             // Render product card only if available
             if (isAvailable) {
                const priceHtml = getPriceHtml(product);
+               // added by velocity 04-08-2025 Add inventory Attribute for checking the product inventory.
                 $('#perticular_collection').append(`
-                    <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}">
+                    <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass}" data_mumbai="${data_mumbai}" data_bangalore="${data_bangalore}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}">
                     <p id="${ variantId }_tag" class="product_tag">${ product.tags }</p>
                         <div class="product-img">
                    {% comment %} Pass the image of the product when click on the below product image 07-07-2025 added by Velocity{% endcomment %}
@@ -2500,7 +2605,7 @@ $(selector).css('display', 'block');
                              ${priceHtml}
                         <div class="qty_selector ${variantId} variant-${variantId}" style="display:none;">
                             <span onclick='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 0)'>-</span>
-                            <input type="text" name="qty" value="${addToCartData[variantId] && addToCartData[variantId]['quantity'] ? addToCartData[variantId]['quantity'] : 0}" class="qty" onchange='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 0)' />
+                            <input type="text" name="qty" value="${addToCartData[variantId] && addToCartData[variantId]['quantity'] ? addToCartData[variantId]['quantity'] : 0}" class="qty" onchange='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 0, true)' />
                             <span onclick='quantitySelector("${variantId}", "${productId}", 1, 0, 0, 0, 1)'>+</span>
                         </div>
                         <div class="addToBag">
@@ -2774,7 +2879,7 @@ $(selector).css('display', 'block');
         if ($(document).width() < 768) {
           $(".floating_box").css("top", ` ${totalHeight}px`);
         } else {
-          $(".floating_box").css("top", ` ${$("sticky-header").height()}px`);
+          $(".floating_box").css("top", `  ${totalHeight}px`); // Added by Velocity. To fix the floating css for Hamper collection menu. 04-08-2025
         }
       } else {
         $('.floating_box').removeClass('fixedtabs_scroll');
@@ -2826,7 +2931,7 @@ $(selector).css('display', 'block');
       get_high2 = false;
     });
   }
-  $('.modal-toggle').on('click', function(e) {
+    $(document).on('click', '.modal-toggle', function(e) {
     e.preventDefault();
     if (window.totalUserGiftItemsCount <= 0) {
     // Replace Alert warning with PopUp warning 07-07-2025 added by Velocity
@@ -2889,7 +2994,61 @@ $(selector).css('display', 'block');
   }
   clickAndDrag('.filters');
   
-  function quantitySelector(varient_id, loder_id, isAGift, isABox, isAAddon, isACard, sign) {
+  function quantitySelector(varient_id, loder_id, isAGift, isABox, isAAddon, isACard, sign, manualInput = false) {
+    /* Added by Velocity
+    * Added inventory check for manual quantity input changes
+    * 04-08-2025
+    */
+    
+    // Handle manual input changes
+    if (manualInput) {
+      const newQuantity = parseInt($(`.${varient_id} .qty`).val()) || 0;
+      
+      // Check inventory before allowing quantity change
+      const productCard = $(`.${varient_id} .qty`).closest('.product-card');
+      if (productCard.length > 0) {
+        const currentLocation = localStorage.getItem('location');
+        const dataMumbai = productCard.attr('data_mumbai') || '0';
+        const dataKolkata = productCard.attr('data_kolkata') || '0';
+        const dataGurgaon = productCard.attr('data_gurgaon') || '0';
+        const dataDelhi = productCard.attr('data_delhi') || '0';
+        const dataBangalore = productCard.attr('data_bangalore') || '0';
+        
+        let currentInventory = 0;
+        
+        // Get inventory for current location
+        if (currentLocation === 'location-mumbai') {
+          currentInventory = parseInt(dataMumbai) || 0;
+        } else if (currentLocation === 'location-kolkata') {
+          currentInventory = parseInt(dataKolkata) || 0;
+        } else if (currentLocation === 'location-gurgaon') {
+          currentInventory = parseInt(dataGurgaon) || 0;
+        } else if (currentLocation === 'location-bangalore') {
+          currentInventory = parseInt(dataBangalore) || 0;
+        } else {
+          // For ROI or other locations, use Delhi inventory as default
+          currentInventory = parseInt(dataDelhi) || 0;
+        }
+        
+        // Check if new quantity would exceed available inventory
+        if (newQuantity > currentInventory) {
+          document.getElementById('warning-msg').textContent = `Only ${currentInventory} units are available.`;
+          document.getElementById("warning-popup").style.display = "block";
+          document.getElementById("warning-overlay").style.display = "block";
+          // Reset to previous valid quantity
+          $(`.${varient_id} .qty`).val(addToCartData[varient_id] ? addToCartData[varient_id].quantity : 0);
+          return false;
+        }
+        
+        // Update the quantity in addToCartData
+        if (addToCartData[varient_id]) {
+          addToCartData[varient_id].quantity = newQuantity;
+          renderProduct(varient_id, loder_id, 0);
+        }
+        return true;
+      }
+    }
+    
     if (sign) {
       if ($(`#gdId-${varient_id}`).hasClass('liquor')) {
         numberOfLiuor++;
@@ -2907,6 +3066,45 @@ $(selector).css('display', 'block');
             // }
         })
       } else {
+        /* Added by Velocity
+        * Added inventory check when increasing product quantity
+        * 04-08-2025
+        */
+        
+        // Check inventory before increasing quantity
+        const productCard = $(`.${varient_id} .qty`).closest('.product-card');
+        if (productCard.length > 0) {
+          const currentLocation = localStorage.getItem('location');
+          const dataMumbai = productCard.attr('data_mumbai') || '0';
+          const dataKolkata = productCard.attr('data_kolkata') || '0';
+          const dataGurgaon = productCard.attr('data_gurgaon') || '0';
+          const dataDelhi = productCard.attr('data_delhi') || '0';
+          const dataBangalore = productCard.attr('data_bangalore') || '0';
+          
+          let currentInventory = 0;
+          
+          // Get inventory for current location
+          if (currentLocation === 'location-mumbai') {
+            currentInventory = parseInt(dataMumbai) || 0;
+          } else if (currentLocation === 'location-kolkata') {
+            currentInventory = parseInt(dataKolkata) || 0;
+          } else if (currentLocation === 'location-gurgaon') {
+            currentInventory = parseInt(dataGurgaon) || 0;
+          } else if (currentLocation === 'location-bangalore') {
+            currentInventory = parseInt(dataBangalore) || 0;
+          } 
+          
+          const newval = Number(val) + 1;
+          
+          // Check if new quantity would exceed available inventory
+          if (newval > currentInventory) {
+            document.getElementById('warning-msg').textContent = `Only ${currentInventory} units are available.`;
+            document.getElementById("warning-popup").style.display = "block";
+            document.getElementById("warning-overlay").style.display = "block";
+            return false;
+          }
+        }
+        
         new Promise((resolve, reject) => {
           let newval = Number(val) + 1;
           resolve(newval)
@@ -3121,6 +3319,13 @@ async function displayBoxProducts() {
                 needToHide = 'hidden';
               }
             }
+            
+            // Set inventory data variables for product card attributes  Added by Velocity 04-08-2025
+            var data_mumbai = inventoryMetafields['mumbai_inventory'] || '';
+            var data_kolkata = inventoryMetafields['kolkata_inventory'] || '';
+            var data_gurgaon = inventoryMetafields['gurgaon_inventory'] || '';
+            var data_delhi = inventoryMetafields['delhi_inventory'] || '';
+            var data_bangalore = inventoryMetafields['bangalore_inventory'] || '';
 
     if (isAvailable) {
       const priceHtml = getPriceHtml(product.node);
@@ -3163,7 +3368,7 @@ async function displayBoxProducts() {
       // Append product card to the container
       // Added Image Popup on BYOH Boxes Added by velocity 29-07-2025
       $('#product-card2').append(`
-        <div class="${needToHide} ${showBox} product-card bgs ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data-boxquant="${boxMaxQuantFinal}">
+        <div class="${needToHide} ${showBox} product-card bgs ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data-boxquant="${boxMaxQuantFinal}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}" data_bangalore="${data_bangalore}">
           <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
           <div class="product-img">
             <img src="${cardProdImg}" onclick="openProductPopup('${boxImages}')" alt="${product?.node?.handle}">
@@ -3253,6 +3458,13 @@ async function displayAddonsProducts(){
                 needToHide = 'hidden';
               }
             }
+            
+            // Set inventory data variables for product card attributes Added by Velocity 04-08-2025
+            var data_mumbai = inventoryMetafields['mumbai_inventory'] || '';
+            var data_kolkata = inventoryMetafields['kolkata_inventory'] || '';
+            var data_gurgaon = inventoryMetafields['gurgaon_inventory'] || '';
+            var data_delhi = inventoryMetafields['delhi_inventory'] || '';
+            var data_bangalore = inventoryMetafields['bangalore_inventory'] || '';
 
     if (isAvailable) {
       const priceHtml = getPriceHtml(product.node);
@@ -3294,7 +3506,7 @@ async function displayAddonsProducts(){
 
             // Append the product card
             $('#product-card3').append(`
-                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}">
+                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}" data_bangalore="${data_bangalore}">
                 <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
                     <div class="product-img">
                         <img src="${cardProdImg}" alt="${product?.node?.handle}">
@@ -3360,6 +3572,13 @@ async function displayAddonsProducts(){
                 needToHide = 'hidden';
               }
             }
+            
+            // Set inventory data variables for product card attributes  Added by Velocity 04-08-2025
+            var data_mumbai = inventoryMetafields['mumbai_inventory'] || '';
+            var data_kolkata = inventoryMetafields['kolkata_inventory'] || '';
+            var data_gurgaon = inventoryMetafields['gurgaon_inventory'] || '';
+            var data_delhi = inventoryMetafields['delhi_inventory'] || '';
+            var data_bangalore = inventoryMetafields['bangalore_inventory'] || '';
 
     if (isAvailable) {
       const priceHtml = getPriceHtml(product.node);
@@ -3403,7 +3622,7 @@ async function displayAddonsProducts(){
             // Append the product card
 	    // Append all the products of sleeve,bows, and card in the single page added by velocity 29-07-2025
             $('#product-card3').append(`
-                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}">
+                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}" data_bangalore="${data_bangalore}">
                 <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
                     <div class="product-img">
                         <img src="${cardProdImg}" alt="${product?.node?.handle}">
@@ -3470,6 +3689,13 @@ async function displayAddonsProducts(){
                 needToHide = 'hidden';
               }
             }
+            
+            // Set inventory data variables for product card attributes  Added by Velocity 04-08-2025
+            var data_mumbai = inventoryMetafields['mumbai_inventory'] || '';
+            var data_kolkata = inventoryMetafields['kolkata_inventory'] || '';
+            var data_gurgaon = inventoryMetafields['gurgaon_inventory'] || '';
+            var data_delhi = inventoryMetafields['delhi_inventory'] || '';
+            var data_bangalore = inventoryMetafields['bangalore_inventory'] || '';
 
     if (isAvailable) {
       const priceHtml = getPriceHtml(product.node);
@@ -3514,7 +3740,7 @@ async function displayAddonsProducts(){
             // Append the product card
 	    	    // Append all the products of sleeve,bows, and card in the single page added by velocity 29-07-2025
             $('#product-card3').append(`
-                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}">
+                <div class="${needToHide} product-card ${expressClass} ${standardClass} ${hideClass} ${kolkata_prd}" data_mumbai="${data_mumbai}" data_kolkata="${data_kolkata}" data_gurgaon="${data_gurgaon}" data_delhi="${data_delhi}" data_bangalore="${data_bangalore}">
                 <p id="${ variantId }_tag" class="product_tag">${ product?.node.tags }</p>
                     <div class="product-img">
                         <img src="${cardProdImg}" alt="${product?.node?.handle}">
