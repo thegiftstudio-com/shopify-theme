@@ -47,6 +47,15 @@
       var enableSundayDelivery ={{settings.enable_sunday_delivery}};
       // var istTime = new Date();
       console.log("IST-Time" + istTime);
+      // Added by Velocity 01-08-2025 - Fetch metafield value for flexible cutoff based on warehouse.
+      var warehouse_cutoff = [];
+      {% for warehouse in shop.metaobjects.warehouse_cutoff.values %}
+        warehouse_cutoff.push({
+          name: {{ warehouse.warehouse_name.value | json }},
+          cutoff: {{ warehouse.cutoff.value }}
+        });
+      {% endfor %}
+      //END 01-08-2025
     </script>
 
     <!-- PERFORMANCE: Defer all analytics scripts for better LCP -->

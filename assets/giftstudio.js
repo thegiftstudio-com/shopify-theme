@@ -14,8 +14,8 @@ function handleRedirectWithPopup(url, image_src='', isBannerClick = 0) {
   }
 }
 // 14-06-2025
-
-function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,cart_func,tag) {
+// Added by Velocity 01-08-2025 ADD selected warehouse name(selected_warehouse) into the function setMInDeliveryDate
+function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,cart_func,tag,selected_warehouse) {
  
     var today = istTime;
     var minDate = new Date(today);
@@ -35,7 +35,30 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
     var cutoffTimeFourPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
     var cutoffTimeSevenPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 19, 0, 0);
-
+    // Added by Velocity 01-08-2025 Flexible Cutoff based on warehouse and overide the Product tag based cutoff.
+    var selectedWarehouse=selected_warehouse.toLowerCase();
+    for (var i = 0; i < warehouse_cutoff.length; i++) {
+      var warehouseEntry = warehouse_cutoff[i];
+      var warehouseNames = warehouseEntry.name.map(function (c) {
+          return c.toLowerCase();
+      });
+  
+      if (warehouseNames.includes(selectedWarehouse)) {
+          // Override cutoff time with the one from the list
+          cutoffTimeSevenPm = new Date(
+              currentDateTime.getFullYear(),
+              currentDateTime.getMonth(),
+              currentDateTime.getDate(),
+              warehouseEntry.cutoff,
+              0,
+              0
+          );
+          cutoffTwoPm=cutoffTimeSevenPm;
+          cutoffTimethreePm=cutoffTimeSevenPm;
+          cutoffTimeFourPm=cutoffTimeSevenPm;
+          break;
+      }
+    }
     if (product_Tat < 0) {
         if (product_Tat == '-3') {
             if (currentDateTime < cutoffTimethreePm) {
@@ -182,9 +205,13 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
         // const [day, month, year] = datePart.split('/');
         // const istTime = `${year}-${month}-${day}T${timePart}`;
         const timestamp = timestampStr;
+        
         var warehouse = parseInt($(`._product_warehouse_tat_${index + 1}`).val());
+        var warehouseName =$(`._product_warehouse_${index + 1}`).val();
+
         // setMinDeliveryDate return Total product TAT(Warehouse TAT + Product TAT)
-        var warehouseTAT =setMinDeliveryDate(istTime,warehouse,'',index,1,'');
+        // Added by Velocity 01-08-2025 ADD selected warehouse name(warehouseName) into the function setMInDeliveryDate
+        var warehouseTAT =setMinDeliveryDate(istTime,warehouse,'',index,1,'',warehouseName);
         
         if(bundle_id!=null){
             // warehouseTAT=total_tat;
@@ -1443,8 +1470,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     }
-    
-    var total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag);
+    // Added by Velocity 01-08-2025 Pass selected warehouse name(selectedWarehouse) into the function setMInDeliveryDate
+    var total = setMinDeliveryDate(istTime, selected_warehouse_tat, "", "", 3, tag, selectedWarehouse);
     // In case product not available then selected_warehouse_tat is null. and consider as highest product TAT. Added by Velocity
     if(selected_warehouse_tat==null)total=5000;
 const stripElement = document.querySelector(`#strip_${productId}`);
