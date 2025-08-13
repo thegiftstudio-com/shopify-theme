@@ -91,7 +91,7 @@
     <h4>Add Gift Card : <span class="show_gift_prod_name"></span><span class="show_gift_prod_price"></span></h4>
     <div class="gift_products_wrap">
       <div class="gift_product">
-        <input type="radio" class="gift_product_checkbox" name="product_id" value="">
+        <input type="radio" id="no_card" class="gift_product_checkbox" name="product_id" value="">
         <img src="{{ 'no_card.jpg' | asset_img_url:'100x100' }}">
         <input type="hidden" value="" class="gift_pd_name">
    {% comment %}
@@ -104,8 +104,18 @@
   <input type="hidden" value="{{ collection_handle}}" class="collection_name">
       {% assign sorted_card_products = collections.card.products %}
       {% for product in sorted_card_products %}
+        {% comment %}
+        Get card inventory data for warehouse filtering
+        Added warehouse-based card filtering - Added by Velocity 13-08-2025
+        {% endcomment %}
+        {% assign card_mumbai_inventory = product.metafields.custom.mumbai_inventory | default: 0 %}
+        {% assign card_gurgaon_inventory = product.metafields.custom.gurgaon_inventory | default: 0 %}
+        {% assign card_bangalore_inventory = product.metafields.custom.bangalore_inventory | default: 0 %}
         {% if isRoiProduct and product.tags contains 'location-roi' %}
-          <div class="gift_product">
+          <div class="gift_product gift_card_product" 
+               data-mumbai-inventory="{{ card_mumbai_inventory }}"
+               data-gurgaon-inventory="{{ card_gurgaon_inventory }}"
+               data-bangalore-inventory="{{ card_bangalore_inventory }}">
             <input
               type="radio"
               class="gift_product_checkbox"
@@ -130,7 +140,10 @@
           </div>
         {% elsif isRoiProduct == false %}
           {% unless product.tags contains 'location-roi' %}
-              <div class="gift_product">
+              <div class="gift_product gift_card_product"
+                   data-mumbai-inventory="{{ card_mumbai_inventory }}"
+                   data-gurgaon-inventory="{{ card_gurgaon_inventory }}"
+                   data-bangalore-inventory="{{ card_bangalore_inventory }}">
                 <input
                   type="radio"
                   class="gift_product_checkbox"

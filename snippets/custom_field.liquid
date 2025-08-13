@@ -273,6 +273,10 @@
   }
 </style>
 <script>
+  // Added by velocity 13-08-2025 Call function filterGiftCardsByWarehouse() when PDP page loaded .
+  document.addEventListener("DOMContentLoaded", function () {
+    filterGiftCardsByWarehouse();
+  })
   function handleImageSelect(event) {
       const input = event.target;
       const file = input.files[0];
