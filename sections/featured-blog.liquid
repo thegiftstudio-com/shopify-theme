@@ -1,16 +1,59 @@
+{% comment %} /*
+* Added lazy loading to featured blog section to reduce LCP
+* 14-08-2025
+*/ {% endcomment %}
+<style>
+/* Lazy loading styles for featured blog */
+.featured_blog {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.featured_blog.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Loading placeholder */
+.featured_blog:not(.loaded)::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Optimize blog images for better performance */
+.article-card__image img {
+  opacity: 1 !important;
+  transition: transform 0.3s ease;
+}
+
+.article-card__image img:hover {
+  transform: scale(1.05);
+}
+</style>
+
 <link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-card.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-article-card.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'section-featured-blog.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
-
 
 <noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-article-card.css' | asset_url | stylesheet_tag }}</noscript>
 
 {{ 'section-featured-blog.css' | asset_url | stylesheet_tag }}
-
-
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -152,6 +195,44 @@
   </div>
 </div>
 
+<!-- Simple lazy loading for featured blog section -->
+<script>
+/*
+* Added simple lazy loading to reduce LCP for featured blog section
+* 14-08-2025
+*/
+document.addEventListener('DOMContentLoaded', function() {
+  const featuredBlog = document.querySelector('.featured_blog');
+  
+  if (featuredBlog) {
+    // Use Intersection Observer for lazy loading
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Load the blog section when it comes into view
+            setTimeout(() => {
+              entry.target.classList.add('loaded');
+              observer.unobserve(entry.target);
+            }, 200);
+          }
+        });
+      }, {
+        rootMargin: '100px 0px', // Start loading 100px before it comes into view
+        threshold: 0.1
+      });
+      
+      observer.observe(featuredBlog);
+    } else {
+      // Fallback for older browsers
+      setTimeout(() => {
+        featuredBlog.classList.add('loaded');
+      }, 500);
+    }
+  }
+});
+</script>
+
 {% schema %}
 {
   "name": "t:sections.featured-blog.name",
@@ -198,7 +279,7 @@
       "max": 8,
       "step": 1,
       "default": 3,
-      "label": "t:sections.featured-blog.settings.post_limit.label"
+      "label": "t:sections.featured_blog.settings.post_limit.label"
     },
     {
       "type": "range",
@@ -207,7 +288,7 @@
       "max": 4,
       "step": 1,
       "default": 3,
-      "label": "t:sections.featured-blog.settings.columns_desktop.label"
+      "label": "t:sections.featured_blog.settings.columns_desktop.label"
     },
     {
       "type": "select",
@@ -242,20 +323,20 @@
       "type": "checkbox",
       "id": "show_image",
       "default": true,
-      "label": "t:sections.featured-blog.settings.show_image.label",
-      "info": "t:sections.featured-blog.settings.show_image.info"
+      "label": "t:sections.featured_blog.settings.show_image.label",
+      "info": "t:sections.featured_blog.settings.show_image.info"
     },
     {
       "type": "checkbox",
       "id": "show_date",
       "default": true,
-      "label": "t:sections.featured-blog.settings.show_date.label"
+      "label": "t:sections.featured_blog.settings.show_date.label"
     },
     {
       "type": "checkbox",
       "id": "show_author",
       "default": false,
-      "label": "t:sections.featured-blog.settings.show_author.label"
+      "label": "t:sections.featured_blog.settings.show_author.label"
     },
     {
       "type": "checkbox",
@@ -267,7 +348,7 @@
       "type": "checkbox",
       "id": "show_view_all",
       "default": true,
-      "label": "t:sections.featured-blog.settings.show_view_all.label"
+      "label": "t:sections.featured_blog.settings.show_view_all.label"
     },
     {
       "type": "header",
@@ -296,7 +377,7 @@
   ],
   "presets": [
     {
-      "name": "t:sections.featured-blog.presets.name",
+      "name": "t:sections.featured_blog.presets.name",
       "settings": {
         "blog": "News"
       }
