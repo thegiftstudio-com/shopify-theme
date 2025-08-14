@@ -7,7 +7,6 @@
 <link rel="preload" href="{{ 'component-slideshow.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" fetchpriority="high">
 <noscript><link rel="stylesheet" href="{{ 'component-slideshow.aio.min.css' | asset_url }}"></noscript>
 
-
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
@@ -35,6 +34,43 @@
 {% endif %}
 
 <style>
+  /* LAYOUT SHIFT FIX: Reserve space before images load */
+  .slideshow__media {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Calculate proper aspect ratios based on actual images */
+  {% for block in section.blocks %}
+    {% if block.settings.image and block.settings.mob_banner %}
+      @media screen and (min-width: 768px) {
+        #Slide-{{ section.id }}-{{ forloop.index }} .slideshow__media::before {
+          content: '';
+          display: block;
+          padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;
+        }
+      }
+      
+      @media screen and (max-width: 767px) {
+        #Slide-{{ section.id }}-{{ forloop.index }} .slideshow__media::before {
+          content: '';
+          display: block;
+          padding-bottom: {{ 1 | divided_by: block.settings.mob_banner.aspect_ratio | times: 100 }}%;
+        }
+      }
+    {% endif %}
+  {% endfor %}
+  
+  /* Position images absolutely to prevent shifts */
+  .slideshow__media img, .slideshow__media picture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   /* PERFORMANCE: Critical CSS optimizations for slideshow */
   
   /* Optimize slideshow container for better LCP */
@@ -68,21 +104,6 @@
     .desktop_banner { 
       display: none !important; 
     }
-  }
-  
-  /* Reduce layout shifts */
-  .slideshow__media {
-    position: relative;
-    aspect-ratio: 16/9; /* Adjust based on your images */
-  }
-  
-  .slideshow__media img, .slideshow__media picture {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   /*   #Slide-template--18201551110451__782f453f-a109-43d1-8e49-de1598cb442d-3 .slideshow__text-wrapper .banner__box{
@@ -335,40 +356,34 @@
       style="cursor:pointer;"
     {% endif %}
   >
-<!-- Preload LCP images (first slide only) -->
-{% if forloop.index < 3 %}
+<!-- LAYOUT SHIFT FIX: Preload LCP images with proper dimensions -->
+{% if forloop.index <= 2 %}
+  {% if block.settings.mob_banner %}
   <link
     rel="preload"
     as="image"
     href="{{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }}"
     media="(max-width: 767px)"
-    imagesrcset="
-      {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
-      {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w
-    "
-    imagesizes="100vw"
   >
+  {% endif %}
+  {% if block.settings.image %}
   <link
     rel="preload"
     as="image"
     href="{{ block.settings.image | img_url: '1600x' }}"
     media="(min-width: 768px)"
-    imagesrcset="
-      {{ block.settings.image | img_url: '800x' }} 800w,
-      {{ block.settings.image | img_url: '1200x' }} 1200w,
-      {{ block.settings.image | img_url: '1600x' }} 1600w
-    "
-    imagesizes="100vw"
   >
+  {% endif %}
 {% endif %}
 
-<!-- Unified responsive image using <picture> -->
+<!-- LAYOUT SHIFT FIX: Unified responsive image -->
 <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
   {% if block.settings.image %}
     <picture>
+      {% if block.settings.mob_banner %}
       <!-- Mobile first -->
       <source
-            onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
+        onclick="handleImageClick('{{ block.settings.mob_banner | img_url: 'master' }}', '{{ block.settings.link }}')"
         srcset="
           {{ block.settings.mob_banner | img_url: '400x431', crop: 'center' }} 400w,
           {{ block.settings.mob_banner | img_url: '640x689', crop: 'center' }} 640w
@@ -376,10 +391,10 @@
         sizes="100vw"
         media="(max-width: 767px)"
       >
+      {% endif %}
       <!-- Desktop fallback -->
       <source
-            onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
-
+        onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
         srcset="
           {{ block.settings.image | img_url: '800x' }} 800w,
           {{ block.settings.image | img_url: '1200x' }} 1200w,
@@ -389,12 +404,12 @@
         media="(min-width: 768px)"
       >
       <img
-            onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
+        onclick="handleImageClick('{{ block.settings.image | img_url: 'master' }}', '{{ block.settings.link }}')"
         src="{{ block.settings.image | img_url: '800x' }}"
         width="{{ block.settings.image.width }}"
         height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round }}"
         alt="{{ block.settings.image.alt | escape }}"
-          loading="eager"
+        loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
         decoding="async"
       >
     </picture>
@@ -402,7 +417,6 @@
     {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
   {% endif %}
 </div>
-
 
     <!-- Text Overlay -->
     <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}">
