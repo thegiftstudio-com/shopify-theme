@@ -146,8 +146,18 @@
             "img_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
           }
         },
+        "text_HCTn9w": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/mobile-tilw.jpg",
+            "gift_title": "Baby & Kids",
+            "img_url": "shopify://collections/baby-kids"
+          }
+        },
         "text_DRiCe6": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/Unique.jpg",
@@ -279,6 +289,7 @@
         "text_yRtcYC",
         "text_GVe4yN",
         "text_bKwBTf",
+        "text_HCTn9w",
         "text_DRiCe6",
         "text_LgbzYm",
         "3bd9214b-9c07-4134-8ff2-db68f1656795",
