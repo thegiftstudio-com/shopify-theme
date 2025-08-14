@@ -3,7 +3,7 @@
   Purpose: Display collection description using a metaobject selected via Theme Editor.
 {% endcomment %}
 {% if section.settings.collection_description_ref and section.settings.collection_description_ref != blank %}
-  <div class="collection-description-container">
+  <div class="collection-description-container" data-lazy-load="true">
     <div class="collection page-width">
       <div id="content" class="collection-description-content">
         {{ section.settings.collection_description_ref }}
@@ -14,41 +14,101 @@
 {% endif %}
 
 <style>
+/*
+* Optimized collection description styles to prevent layout shifts
+* 14-08-2025
+*/
+.collection-description-container {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  contain: layout style paint; /* Prevent layout shifts */
+  min-height: 100px; /* Reserve space for lazy loading */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.collection-description-container.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.collection-description-content {
+  line-height: 1.6;
+  font-weight: 100;
+  max-height: 300px; /* initial collapsed height */
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  contain: layout style; /* Optimize rendering */
+}
+
+.expanded {
+  max-height: none; /* Use none instead of max-content for better performance */
+}
+
+.show-more-btn {
+  margin: 10px 0 0 0;
+  padding: 8px 16px;
+  cursor: pointer;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: white;
+  transition: all 0.2s ease;
+  contain: layout style; /* Prevent layout shifts */
+}
+
+.show-more-btn:hover {
+  background-color: #333;
+  color: white;
+}
+
+.collection-description-placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Loading skeleton for better UX */
+.collection-description-container:not(.loaded)::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.collection-description-container:not(.loaded)::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Prevent layout shifts on mobile */
+@media (max-width: 749px) {
   .collection-description-container {
-    padding: 2rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-
-    /* font-family: 'Helvetica Neue', sans-serif; */
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
   }
+  
   .collection-description-content {
-
-    line-height: 1.6;
-    font-weight:100;
-    max-height: 300px; /* initial collapsed height */
-      overflow: hidden;
-      transition: max-height 0.3s ease;
+    max-height: 250px;
   }
-    .expanded {
-      max-height: max-content; /* adjust based on content */
-    }
-
-    .show-more-btn {
-      margin: 10px;
-      padding: 6px 16px;
-      cursor: pointer;
-      border: 1px solid #333;
-      border-radius:5px;
-      background-color: white;
-      margin-left:0;
-    }
-
-
-  .collection-description-placeholder {
-    color: #999;
-    font-style: italic;
-  }
+}
 </style>
 
 {% schema %}
@@ -69,12 +129,70 @@
   ]
 }
 {% endschema %}
+
 <script>
+/*
+* Optimized collection description toggle functionality with lazy loading
+* 14-08-2025
+*/
+document.addEventListener('DOMContentLoaded', function() {
   const content = document.getElementById("content");
   const toggleBtn = document.getElementById("toggleBtn");
+  const container = document.querySelector('.collection-description-container');
 
-  toggleBtn.addEventListener("click", function () {
-    content.classList.toggle("expanded");
-    toggleBtn.textContent = content.classList.contains("expanded") ? "SHOW LESS" : "SHOW MORE";
-  });
+  if (content && toggleBtn && container) {
+    // Lazy loading implementation
+    const lazyLoadDescription = () => {
+      // Use Intersection Observer for better performance
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Load the content when it comes into view
+              setTimeout(() => {
+                container.classList.add('loaded');
+                observer.unobserve(entry.target);
+              }, 100); // Small delay for smooth animation
+            }
+          });
+        }, {
+          rootMargin: '50px 0px', // Start loading 50px before it comes into view
+          threshold: 0.1
+        });
+        
+        observer.observe(container);
+      } else {
+        // Fallback for older browsers
+        container.classList.add('loaded');
+      }
+    };
+
+    // Initialize lazy loading
+    lazyLoadDescription();
+
+    // Pre-calculate if content needs toggle button
+    const checkContentHeight = () => {
+      const contentHeight = content.scrollHeight;
+      const maxHeight = parseInt(window.getComputedStyle(content).maxHeight);
+      
+      if (contentHeight <= maxHeight) {
+        toggleBtn.style.display = 'none';
+      }
+    };
+
+    // Check content height after lazy loading
+    setTimeout(checkContentHeight, 600);
+
+    // Toggle functionality
+    toggleBtn.addEventListener("click", function () {
+      content.classList.toggle("expanded");
+      toggleBtn.textContent = content.classList.contains("expanded") ? "SHOW LESS" : "SHOW MORE";
+    });
+
+    // Recalculate on window resize
+    window.addEventListener('resize', debounce(checkContentHeight, 250));
+  }
+});
+
+
 </script>
