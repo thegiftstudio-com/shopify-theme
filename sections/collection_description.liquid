@@ -8,7 +8,7 @@
       <div id="content" class="collection-description-content">
         {{ section.settings.collection_description_ref }}
       </div>
-      <button id="toggleBtn" class="show-more-btn">SHOW MORE</button>
+      <button id="toggleBtn" class="show-more-btn" type="button">SHOW MORE</button>
     </div>
   </div>
 {% endif %}
@@ -44,8 +44,8 @@
   contain: layout style; /* Optimize rendering */
 }
 
-.expanded {
-  max-height: none; /* Use none instead of max-content for better performance */
+.collection-description-content.expanded {
+  max-height: none !important; /* Force expansion */
 }
 
 .show-more-btn {
@@ -57,11 +57,21 @@
   background-color: white;
   transition: all 0.2s ease;
   contain: layout style; /* Prevent layout shifts */
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 40px; /* Ensure touch target size */
+  touch-action: manipulation; /* Optimize for touch */
 }
 
-.show-more-btn:hover {
+.show-more-btn:hover,
+.show-more-btn:focus {
   background-color: #333;
   color: white;
+  outline: none;
+}
+
+.show-more-btn:active {
+  transform: scale(0.98);
 }
 
 .collection-description-placeholder {
@@ -108,6 +118,18 @@
   .collection-description-content {
     max-height: 250px;
   }
+  
+  .show-more-btn {
+    padding: 12px 20px; /* Larger touch target on mobile */
+    font-size: 16px;
+    min-height: 44px; /* iOS recommended touch target */
+  }
+}
+
+/* Debug styles - remove after testing */
+.collection-description-content.expanded {
+  max-height: none !important;
+  overflow: visible !important;
 }
 </style>
 
@@ -132,7 +154,7 @@
 
 <script>
 /*
-* Optimized collection description toggle functionality with lazy loading
+* Fixed collection description toggle functionality for mobile compatibility
 * 14-08-2025
 */
 document.addEventListener('DOMContentLoaded', function() {
@@ -152,6 +174,8 @@ document.addEventListener('DOMContentLoaded', function() {
               setTimeout(() => {
                 container.classList.add('loaded');
                 observer.unobserve(entry.target);
+                // Initialize toggle functionality after loading
+                initializeToggle();
               }, 100); // Small delay for smooth animation
             }
           });
@@ -164,35 +188,71 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         // Fallback for older browsers
         container.classList.add('loaded');
+        initializeToggle();
       }
+    };
+
+    // Initialize toggle functionality
+    const initializeToggle = () => {
+      // Pre-calculate if content needs toggle button
+      const checkContentHeight = () => {
+        const contentHeight = content.scrollHeight;
+        const maxHeight = parseInt(window.getComputedStyle(content).maxHeight);
+        
+        if (contentHeight <= maxHeight) {
+          toggleBtn.style.display = 'none';
+        } else {
+          toggleBtn.style.display = 'block';
+        }
+      };
+
+      // Check content height after lazy loading
+      setTimeout(checkContentHeight, 100);
+
+      // Toggle functionality with improved mobile support
+      toggleBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const isExpanded = content.classList.contains("expanded");
+        
+        if (isExpanded) {
+          content.classList.remove("expanded");
+          toggleBtn.textContent = "SHOW MORE";
+        } else {
+          content.classList.add("expanded");
+          toggleBtn.textContent = "SHOW LESS";
+        }
+        
+        // Force reflow for mobile
+        content.offsetHeight;
+      });
+
+      // Add touch event support for mobile
+      toggleBtn.addEventListener("touchend", function (e) {
+        e.preventDefault();
+        this.click();
+      });
+
+      // Recalculate on window resize
+      window.addEventListener('resize', debounce(checkContentHeight, 250));
     };
 
     // Initialize lazy loading
     lazyLoadDescription();
-
-    // Pre-calculate if content needs toggle button
-    const checkContentHeight = () => {
-      const contentHeight = content.scrollHeight;
-      const maxHeight = parseInt(window.getComputedStyle(content).maxHeight);
-      
-      if (contentHeight <= maxHeight) {
-        toggleBtn.style.display = 'none';
-      }
-    };
-
-    // Check content height after lazy loading
-    setTimeout(checkContentHeight, 600);
-
-    // Toggle functionality
-    toggleBtn.addEventListener("click", function () {
-      content.classList.toggle("expanded");
-      toggleBtn.textContent = content.classList.contains("expanded") ? "SHOW LESS" : "SHOW MORE";
-    });
-
-    // Recalculate on window resize
-    window.addEventListener('resize', debounce(checkContentHeight, 250));
   }
 });
 
-
+// Debounce utility function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 </script>
