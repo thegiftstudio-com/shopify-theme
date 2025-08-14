@@ -41,6 +41,10 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+    assign is_first_fold = false
+    if forloop.index <= 8
+      assign is_first_fold = true
+    endif
   -%}
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
@@ -76,6 +80,14 @@
             {% endif %}
             <div class="media media--transparent media--hover-effect">
               {% comment %}theme-check-disable ImgLazyLoading; re-enable lazy if parameter is passed{% endcomment %}
+              {% if is_first_fold %}
+                <!-- Preload critical images for first fold with optimized sizes -->
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533, scale: 2 }}" media="(min-width: 768px) and (-webkit-min-device-pixel-ratio: 2)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533 }}" media="(min-width: 768px)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 360, scale: 2 }}" media="(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 360 }}" media="(max-width: 767px)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 720 }}" media="(min-width: 1200px)">
+              {% endif %}
               <img
                 srcset="
                   {%- if card_product.featured_media.width >= 165 -%}{{ card_product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
@@ -90,9 +102,12 @@
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                 alt="{{ card_product.featured_media.alt | escape }}"
                 class="motion-reduce"
-                loading="lazy"
+                loading="{% if is_first_fold %}eager{% else %}lazy{% endif %}"
                 width="{{ card_product.featured_media.width }}"
                 height="{{ card_product.featured_media.height }}"
+                fetchpriority="{% if is_first_fold %}high{% else %}auto{% endif %}"
+                decoding="{% if is_first_fold %}sync{% else %}async{% endif %}"
+                onload="this.style.opacity='1'"
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
@@ -109,11 +124,12 @@
                   "
                   src="{{ card_product.media[1] | image_url: width: 533 }}"
                   sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-                  alt=""
+                  alt="{{ card_product.media[1].alt | escape }}"
                   class="motion-reduce"
                   loading="lazy"
                   width="{{ card_product.media[1].width }}"
                   height="{{ card_product.media[1].height }}"
+                  decoding="async"
                 >
               {%- endif -%}
             </div>
