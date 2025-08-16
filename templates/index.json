@@ -1404,6 +1404,7 @@
       "blocks": {
         "heading_wqFJEn": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "heading": "<p>Raksha Bandhan</p>",
             "color_pick_title": "",
@@ -1604,6 +1605,7 @@
         "collection_QGRUQ4",
         "collection_97TRNn"
       ],
+      "disabled": true,
       "settings": {
         "custom_class": "curated_category_sec",
         "category_title": "",
