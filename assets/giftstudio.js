@@ -1506,4 +1506,27 @@ if (stripElement) {
     });
 });
 
+/*
+* Added function to filter gift cards based on selected warehouse from inventory check.
+* Added By Velocity
+* 13-08-2025
+*/
+function filterGiftCardsByWarehouse(selectedWarehouse=null) {
+    // If no warehouse is selected yet, using primary warehouse and get the value from localstorage key name (location).
+    if (!selectedWarehouse) {
+        selectedWarehouse = localStorage.getItem("location")?.split("-")[1];
+    }
+    // Filter gift cards based on selected warehouse availability
+    $('.gift_product.gift_card_product').each(function() {
+        var cardElement = $(this);
+        var cardInventory = parseInt(cardElement.data(selectedWarehouse + '-inventory')) || 0;
+        
+        // Show card only if it has inventory in the selected warehouse
+        if (cardInventory > 0) {
+            cardElement.show();
+        } else {
+            cardElement.hide();
+        }
+    });
+}
 

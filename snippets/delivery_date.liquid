@@ -521,6 +521,12 @@ $('#delivery-date-5').on('change', function () {
                             <input id="product_warehouse_available_quantity" type="hidden" value="${selected_warehouse_inventory}">`)
                             .removeClass('invalid')
                             .addClass('valid');
+                            
+                        // Filter gift cards based on selected warehouse Added By Velocity 13-08-2025
+                        if (typeof filterGiftCardsByWarehouse === 'function') {
+                            filterGiftCardsByWarehouse(selected_warehouse);
+                           $('#no_card').click();
+                        }
                     } else {
                         $('.pincode_txt')
                             .html("<span class='red_txt'>Product is not available</span>")
