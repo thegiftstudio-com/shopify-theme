@@ -1568,6 +1568,17 @@
       "default": false
     }
   ]
+},
+{
+  "name": "Courier PickUp",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "disable_courier_pickup",
+      "label": "Disable Courier PickUp",
+      "default": false
+    }
+  ]
 }
 ]
 

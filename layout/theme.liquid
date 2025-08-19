@@ -45,6 +45,8 @@
         var nyDate = new Date(nyTimeString + 'Z'); // Parse as UTC
       var istTime = new Date(nyDate.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours to get IST
       var enableSundayDelivery ={{settings.enable_sunday_delivery}};
+      //Added by Velocity 20-08-2025 Access Courier Pickup Enable/Disable Value.
+      var disableCourierPickup ={{settings.disable_courier_pickup}};
       // var istTime = new Date();
       console.log("IST-Time" + istTime);
       // Added by Velocity 01-08-2025 - Fetch metafield value for flexible cutoff based on warehouse.
