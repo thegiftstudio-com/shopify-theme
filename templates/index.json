@@ -2029,6 +2029,7 @@
         },
         "collection_A8rW8G": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "tab_name": "Raksha Bandhan",
             "collection": "rakhis"
@@ -2040,6 +2041,13 @@
           "settings": {
             "tab_name": "Home Decor",
             "collection": "tgs-home"
+          }
+        },
+        "collection_aHpbq6": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Baby & Kids",
+            "collection": "baby-kids"
           }
         },
         "collection_xEVTb9": {
@@ -2071,14 +2079,6 @@
           "settings": {
             "tab_name": "Personal Care",
             "collection": "curated-hamper-personal-care"
-          }
-        },
-        "collection_aHpbq6": {
-          "type": "collection",
-          "disabled": true,
-          "settings": {
-            "tab_name": "Baby & Kids",
-            "collection": "baby-kids"
           }
         },
         "collection_JtnMTb": {
@@ -2113,11 +2113,11 @@
         "collection_RmYnrt",
         "collection_A8rW8G",
         "collection_qLwJry",
+        "collection_aHpbq6",
         "collection_xEVTb9",
         "95497a6c-1a3f-43e3-b060-b4338f167411",
         "ebe21f80-7b0a-47b8-999b-6e19aae1942b",
         "c42a29d1-4236-4e63-b627-e67378a15f7f",
-        "collection_aHpbq6",
         "collection_JtnMTb",
         "5f151a1f-c934-4de3-9084-0dc391af238a",
         "collection_Um4FMj"
