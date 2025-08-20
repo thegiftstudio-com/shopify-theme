@@ -182,11 +182,6 @@
         "disabled": false,
         "settings": {}
       },
-      "6174324309569838175": {
-        "type": "shopify://apps/smile-io/blocks/smile-shopify-app/2fae4e25-1841-4ea2-bc02-bd548478c4f6",
-        "disabled": true,
-        "settings": {}
-      },
       "14167655181940180261": {
         "type": "shopify://apps/quinn-shoppable-reel/blocks/app-embed/483fa771-9c4d-49e4-8c0d-0155f4b872d6",
         "disabled": false,
@@ -212,20 +207,13 @@
         "disabled": false,
         "settings": {}
       },
-      "3576686563519644491": {
-        "type": "shopify://apps/vwo/blocks/vwo-smartcode/2ce905b2-3842-4d20-b6b0-8c51fc208426",
-        "disabled": true,
-        "settings": {
-          "vwoAccountId": "1054201",
-          "codeType": "ASYNC",
-          "settingsTolerance": 2000,
-          "libraryTolerance": 2500,
-          "existingJquery": "false",
-          "enableThemeTesting": false
-        }
-      },
       "12973772748516043749": {
         "type": "shopify://apps/bitespeed-whatsapp-marketing/blocks/app-embed/9efdb9ca-2d01-4a12-b1ac-02679fe0f6fc",
+        "disabled": false,
+        "settings": {}
+      },
+      "7445024463111146658": {
+        "type": "shopify://apps/pwa-ios-android-app/blocks/app-block/4ac46764-72e4-4b90-933d-c63e9b80bb36",
         "disabled": false,
         "settings": {}
       }
