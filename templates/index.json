@@ -311,18 +311,17 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
-        "slide_XVwV3Q": {
+        "slide_JtFJ4k": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "custom_class": "",
-            "image": "shopify://shop_images/Rakhi-Brother-Hamper-Web.jpg",
-            "mob_banner": "shopify://shop_images/Rakhi-Brother-Hamper-MOB.jpg",
+            "image": "shopify://shop_images/AKNew-WEB.jpg",
+            "mob_banner": "shopify://shop_images/AK-New-MOB.jpg",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",
             "button_label": "",
-            "link": "shopify://collections/rakhi-gift-for-brother",
+            "link": "shopify://collections/exclusive-collection",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -332,18 +331,17 @@
             "text_alignment_mobile": "center"
           }
         },
-        "slide_cbn6km": {
+        "slide_q4JE4U": {
           "type": "slide",
-          "disabled": true,
           "settings": {
-            "custom_class": "BNR_1_Rakhi",
-            "image": "shopify://shop_images/rakhi-web_1.jpg",
-            "mob_banner": "shopify://shop_images/rakhi-mob_1.jpg",
+            "custom_class": "",
+            "image": "shopify://shop_images/WEB_1.jpg",
+            "mob_banner": "shopify://shop_images/baby-Hampers-_MoB.jpg",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",
             "button_label": "",
-            "link": "shopify://collections/rakhis",
+            "link": "https://thegiftstudio.com/collections/baby-kids",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -376,6 +374,7 @@
         },
         "slide_gM4BQ6": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "BNR_2_BYOH",
             "image": "shopify://shop_images/BYOH--Web.jpg",
@@ -396,6 +395,7 @@
         },
         "slide_tkc3pf": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/web-_BNR2.jpg",
@@ -1339,8 +1339,8 @@
         }
       },
       "block_order": [
-        "slide_XVwV3Q",
-        "slide_cbn6km",
+        "slide_JtFJ4k",
+        "slide_q4JE4U",
         "slide_fkyDBz",
         "slide_gM4BQ6",
         "slide_tkc3pf",
