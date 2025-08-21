@@ -35,6 +35,8 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     var cutoffTimethreePm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 15, 0, 0);
     var cutoffTimeFourPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 16, 0, 0);
     var cutoffTimeSevenPm = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth(), currentDateTime.getDate(), 19, 0, 0);
+    //Added by Velocity 18-08-2025 For identify the SDD/NDD order.
+    var ndd_flag=false;
     // Added by Velocity 01-08-2025 Flexible Cutoff based on warehouse and overide the Product tag based cutoff.
     var selectedWarehouse=selected_warehouse.toLowerCase();
     for (var i = 0; i < warehouse_cutoff.length; i++) {
@@ -102,13 +104,19 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
             product_Tat = 1;
         }
     }else{
+      ndd_flag=true;
       if (currentDateTime < cutoffTimeFourPm) {
             product_Tat += 0;
         } else {
             product_Tat += 1;
         }
     }
-
+    //Added by Velocity 18-08-2025 Increase by 1-day TAT in case courier pickup not happen.
+   if (selected_warehouse_tat+product_Tat > 0 && disableCourierPickup) {
+    if (ndd_flag || selected_warehouse_tat >0 ) {
+      product_Tat += 1;
+   }
+  }
     minDate.setDate(minDate.getDate() + selected_warehouse_tat + product_Tat);
     if($datePicker!=''){
     // $datePicker.addClass("ui-state-highlight");
@@ -125,7 +133,8 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
   var sunday = 0;
    if (selected_warehouse_tat+product_Tat > 0 && !enableSundayDelivery) {
     // To handle the scenerio when the product for the same day delivery post 7 PM was getting skipped
-    if ((currentDateTime > cutoffTimeSevenPm && product_Tat > 1) || selected_warehouse_tat >0 ) {
+    // Added by Velocity 18-08-2025 Handle all NDD orders except SDD.
+    if (ndd_flag || selected_warehouse_tat >0 ) {
  
     const today = new Date(istTime);
      const tempDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Stripped time
