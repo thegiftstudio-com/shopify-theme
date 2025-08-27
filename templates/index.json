@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_cKqi47": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/diwali_1.jpg",
+            "gift_title": "Diwali",
+            "img_url": "https://thegiftstudio.com/pages/concierge-query"
+          }
+        },
         "text_A9DaUG": {
           "type": "Text",
           "disabled": true,
@@ -275,6 +284,7 @@
         }
       },
       "block_order": [
+        "text_cKqi47",
         "text_A9DaUG",
         "text_f7QVXi",
         "text_zKNP6D",
