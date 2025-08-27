@@ -165,7 +165,6 @@
         
         if (!fileUrl || fileUrl === '' || fileUrl === 'undefined') {
           console.error('No download file URL provided');
-          alert('Please configure a download file URL in the theme settings.');
           return;
         }
         
@@ -257,11 +256,6 @@
           {% endif %}
           {{ section.settings.button_text | default: 'Download Catalogue' }}
         </button>
-      {% else %}
-        <div style="padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; text-align: center; color: #666;">
-          <p><strong>Configuration Required:</strong></p>
-          <p>Please add a download file URL in the theme settings to enable the download button.</p>
-        </div>
       {% endif %}
     </div>
   </div>
