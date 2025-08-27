@@ -106,7 +106,7 @@
 
     // Increase quantity when + button is clicked
 $(document).on('click', '.byoh_quantity__button--increase', function (event) {
-      debugger;
+
         if(parseInt($(".byoh_quantity__input").val()) + 1> max_allowed_hamper){
            $('#Line-item-error-1 .cart-item__error-text').html('Maximum Hamper allowed ' + max_allowed_hamper);
           return;
@@ -673,7 +673,6 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
                                   aria-label="Quantity for Shit Got Real"
                                   id="Quantity-1"
                                   data-index="1"
-                                  disabled
                                 >
                         <button
                         class="quantity__button byoh_quantity__button--increase"
@@ -1102,7 +1101,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
                                     {% render 'icon-minus' %}
                                   </button>
                                   <input
-                                    class="quantity__input byoh_quantity__input"
+                                    class="quantity__input"
                                     type="number"
                                     data-quantity-variant-id="{{ item.variant.id }}"
                                     name="updates[]"
