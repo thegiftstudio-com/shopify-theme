@@ -1,0 +1,748 @@
+<style>
+  /*
+   * Download catalogue section styles with configurable button properties
+   * 27-08-2025 Added By Velocity
+   */
+  
+     .download-catalogue-section {
+     padding: {{ section.settings.section_padding_vertical | default: 60 }}px {{ section.settings.section_padding_horizontal | default: 20 }}px;
+     text-align: {{ section.settings.text_alignment | default: 'center' }};
+     background-color: {{ section.settings.background_color | default: '#f8f9fa' }};
+     position: relative;
+     overflow: hidden;
+   }
+
+  .download-catalogue-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .download-catalogue-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .download-catalogue-heading {
+    font-size: {{ section.settings.heading_size | default: 36 }}px;
+    font-weight: {{ section.settings.heading_weight | default: 600 }};
+    color: {{ section.settings.heading_color | default: '#000000' }};
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .download-catalogue-description {
+    font-size: {{ section.settings.description_size | default: 16 }}px;
+    color: {{ section.settings.description_color | default: '#666666' }};
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .download-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding_vertical | default: 16 }}px {{ section.settings.button_padding_horizontal | default: 32 }}px;
+    background-color: {{ section.settings.button_background_color | default: '#000000' }};
+    color: {{ section.settings.button_text_color | default: '#ffffff' }};
+    text-decoration: none;
+    border: {{ section.settings.button_border_width | default: 2 }}px solid {{ section.settings.button_border_color | default: '#000000' }};
+    border-radius: {{ section.settings.button_border_radius | default: 8 }}px;
+    font-size: {{ section.settings.button_text_size | default: 16 }}px;
+    font-weight: {{ section.settings.button_text_weight | default: 600 }};
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: {{ section.settings.button_text_transform | default: 'none' }};
+    letter-spacing: {{ section.settings.button_letter_spacing | default: 0 }}px;
+    box-shadow: {{ section.settings.button_shadow | default: '0 2px 4px rgba(0,0,0,0.1)' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .download-button:hover {
+    background-color: {{ section.settings.button_hover_background_color | default: '#333333' }};
+    color: {{ section.settings.button_hover_text_color | default: '#ffffff' }};
+    border-color: {{ section.settings.button_hover_border_color | default: '#333333' }};
+    transform: translateY(-2px);
+    box-shadow: {{ section.settings.button_hover_shadow | default: '0 4px 8px rgba(0,0,0,0.2)' }};
+  }
+
+  .download-button:active {
+    transform: translateY(0);
+  }
+
+  .download-button.loading {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .download-button.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .download-button-icon {
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Background image styles */
+  .download-catalogue-section.has-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .download-catalogue-section.has-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: {{ section.settings.overlay_color | default: '#000000' }};
+    opacity: {{ section.settings.overlay_opacity | default: 0 | divided_by: 100.0 }};
+    z-index: 1;
+  }
+
+     /* Responsive styles */
+   @media (max-width: 768px) {
+     .download-catalogue-section {
+       padding: {{ section.settings.section_padding_vertical_mobile | default: 40 }}px {{ section.settings.section_padding_horizontal_mobile | default: 15 }}px;
+     }
+
+    .download-catalogue-heading {
+      font-size: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    }
+
+    .download-catalogue-description {
+      font-size: {{ section.settings.description_size_mobile | default: 14 }}px;
+    }
+
+    .download-button {
+      padding: {{ section.settings.button_padding_vertical_mobile | default: 14 }}px {{ section.settings.button_padding_horizontal_mobile | default: 24 }}px;
+      font-size: {{ section.settings.button_text_size_mobile | default: 14 }}px;
+    }
+  }
+
+     @media (max-width: 480px) {
+     .download-catalogue-section {
+       padding: {{ section.settings.section_padding_vertical_small | default: 30 }}px {{ section.settings.section_padding_horizontal_small | default: 10 }}px;
+     }
+   }
+</style>
+<script>
+  /*
+   * Download catalogue functionality with file handling
+   * 26-08-2025 Added By Velocity
+   */
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const downloadButton = document.querySelector('.download-catalogue-button');
+    
+    if (downloadButton) {
+      downloadButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get file URL and name from data attributes
+        let fileUrl = this.getAttribute('data-file-url');
+        let fileName = this.getAttribute('data-file-name') || 'catalogue.pdf';
+        
+        
+        if (!fileUrl || fileUrl === '' || fileUrl === 'undefined') {
+          console.error('No download file URL provided');
+          return;
+        }
+        
+                 // Show loading state
+         this.classList.add('loading');
+         const originalText = this.innerHTML;
+         const loadingText = this.getAttribute('data-loading-text') || 'Downloading...';
+         this.innerHTML = loadingText;
+        
+        fetch(fileUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch file: ${response.statusText}`);
+            }
+            return response.blob(); // Get the file as a blob
+        })
+        .then(blob => {
+            // Create a temporary link element
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = fileName; // Set the desired file name
+
+            // Trigger the download
+            document.body.appendChild(anchor);
+            anchor.click();
+
+            // Clean up
+            document.body.removeChild(anchor);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error downloading file:', error));
+        
+        // Reset button state after delay
+        setTimeout(() => {
+          this.classList.remove('loading');
+          this.innerHTML = originalText;
+        }, 2000);
+      });
+    } else {
+      console.warn('Download button not found on page');
+    }
+  });
+</script>
+
+<div 
+  class="download-catalogue-section{% if section.settings.background_image %} has-background{% endif %}"
+  {% if section.settings.background_image %}
+    style="background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');"
+  {% endif %}
+>
+  <div class="download-catalogue-container">
+    <div class="download-catalogue-content">
+      {% if section.settings.heading != blank %}
+        <h2 class="download-catalogue-heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+      
+      {% if section.settings.description != blank %}
+        <div class="download-catalogue-description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+      
+      {% if section.settings.download_file_url != blank %}
+                 <button 
+           type="button" 
+           class="download-button download-catalogue-button"
+           data-file-url="{{ section.settings.download_file_url }}"
+           data-file-name="{{ section.settings.download_file_name | default: 'catalogue.pdf' }}"
+           data-loading-text="{{ section.settings.loading_text | default: 'Downloading...' }}"
+           {% if section.settings.button_icon != blank %}
+             data-icon="{{ section.settings.button_icon }}"
+           {% endif %}
+         >
+          {% if section.settings.button_icon == 'download' %}
+            <svg class="download-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-5 4h10v-2H7v2z"/>
+            </svg>
+          {% elsif section.settings.button_icon == 'file' %}
+            <svg class="download-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+            </svg>
+          {% elsif section.settings.button_icon == 'arrow' %}
+            <svg class="download-button-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+            </svg>
+          {% endif %}
+          {{ section.settings.button_text | default: 'Download Catalogue' }}
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Download Catalogue",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Download Our Catalogue"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Get our latest product catalogue with detailed information about our offerings.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Download Catalogue"
+    },
+    {
+      "type": "url",
+      "id": "download_file_url",
+      "label": "Download File URL",
+      "info": "Enter the URL of the file to be downloaded"
+    },
+    {
+      "type": "text",
+      "id": "download_file_name",
+      "label": "Download File Name",
+      "default": "catalogue.pdf",
+      "info": "Name of the file when downloaded"
+    },
+    {
+      "type": "text",
+      "id": "loading_text",
+      "label": "Loading Text",
+      "default": "Downloading...",
+      "info": "Text shown while downloading"
+    },
+    {
+      "type": "select",
+      "id": "button_icon",
+      "label": "Button Icon",
+      "options": [
+        {
+          "value": "",
+          "label": "No Icon"
+        },
+        {
+          "value": "download",
+          "label": "Download Icon"
+        },
+        {
+          "value": "file",
+          "label": "File Icon"
+        },
+        {
+          "value": "arrow",
+          "label": "Arrow Icon"
+        }
+      ],
+      "default": "download"
+    },
+         {
+       "type": "header",
+       "content": "Layout Settings"
+     },
+     {
+       "type": "range",
+       "id": "section_padding_vertical",
+       "min": 20,
+       "max": 120,
+       "step": 10,
+       "unit": "px",
+       "label": "Section Padding Vertical (Desktop)",
+       "default": 60
+     },
+     {
+       "type": "range",
+       "id": "section_padding_horizontal",
+       "min": 10,
+       "max": 60,
+       "step": 5,
+       "unit": "px",
+       "label": "Section Padding Horizontal (Desktop)",
+       "default": 20
+     },
+     {
+       "type": "range",
+       "id": "section_padding_vertical_mobile",
+       "min": 20,
+       "max": 80,
+       "step": 10,
+       "unit": "px",
+       "label": "Section Padding Vertical (Mobile)",
+       "default": 40
+     },
+     {
+       "type": "range",
+       "id": "section_padding_horizontal_mobile",
+       "min": 10,
+       "max": 40,
+       "step": 5,
+       "unit": "px",
+       "label": "Section Padding Horizontal (Mobile)",
+       "default": 15
+     },
+     {
+       "type": "range",
+       "id": "section_padding_vertical_small",
+       "min": 15,
+       "max": 60,
+       "step": 5,
+       "unit": "px",
+       "label": "Section Padding Vertical (Small Mobile)",
+       "default": 30
+     },
+     {
+       "type": "range",
+       "id": "section_padding_horizontal_small",
+       "min": 5,
+       "max": 30,
+       "step": 5,
+       "unit": "px",
+       "label": "Section Padding Horizontal (Small Mobile)",
+       "default": 10
+     },
+     {
+       "type": "select",
+       "id": "text_alignment",
+       "label": "Text Alignment",
+       "options": [
+         {
+           "value": "left",
+           "label": "Left"
+         },
+         {
+           "value": "center",
+           "label": "Center"
+         },
+         {
+           "value": "right",
+           "label": "Right"
+         }
+       ],
+       "default": "center"
+     },
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "900",
+          "label": "Black"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Button Styling"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Width",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Vertical (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Horizontal (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical_mobile",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Vertical (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Horizontal (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Text Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_text_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Text Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "button_text_weight",
+      "label": "Button Text Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "button_text_transform",
+      "label": "Button Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Button Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "button_shadow",
+      "label": "Button Shadow",
+      "default": "0 2px 4px rgba(0,0,0,0.1)",
+      "info": "CSS box-shadow value"
+    },
+    {
+      "type": "header",
+      "content": "Hover Effects"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Button Hover Background Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "button_hover_shadow",
+      "label": "Button Hover Shadow",
+      "default": "0 4px 8px rgba(0,0,0,0.2)",
+      "info": "CSS box-shadow value for hover state"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Download Catalogue",
+      "settings": {
+        "heading": "Download Our Catalogue",
+        "description": "<p>Get our latest product catalogue with detailed information about our offerings.</p>",
+        "button_text": "Download Catalogue",
+        "text_alignment": "center"
+      }
+    }
+  ]
+}
+{% endschema %}
