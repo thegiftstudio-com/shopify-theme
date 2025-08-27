@@ -1,12 +1,10 @@
 {{ 'section-image-banner.aio.min.css' | asset_url | stylesheet_tag }}
 
 <!-- PERFORMANCE: Optimize CSS loading for slideshow -->
-<link rel="preload" href="{{ 'component-slider.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" fetchpriority="high">
-<noscript><link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}"></noscript>
+{% comment %}Improve CLS for the Home Page Added By velocity 27-08-2025{% endcomment %}
+<link rel="stylesheet" href="{{ 'component-slider.aio.min.css' | asset_url }}">
 
-<link rel="preload" href="{{ 'component-slideshow.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'" fetchpriority="high">
-<noscript><link rel="stylesheet" href="{{ 'component-slideshow.aio.min.css' | asset_url }}"></noscript>
-
+<link rel="stylesheet" href="{{ 'component-slideshow.aio.min.css' | asset_url }}">
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
