@@ -1079,7 +1079,7 @@ locationFunc = () => {
           $(".city-modal-header-mobile").find("button").remove();
        }
 
-    }, 1000); // 1000 milliseconds = 1 seconds 
+    }, 2000); // 1000 milliseconds = 1 seconds 
     }
   }
 
@@ -1108,7 +1108,7 @@ locationFunc = () => {
         if (window.location.href.includes("hamper-collections") || window.location.href.includes("same-day")) {
           setTimeout(() => {
             changeCity();
-          }, 1000); // 1000 milliseconds = 1 seconds
+          }, 2000); // 1000 milliseconds = 1 seconds
         }
 
         showProductsAccordingToCity();
