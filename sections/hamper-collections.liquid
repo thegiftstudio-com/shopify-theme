@@ -240,102 +240,6 @@
   * Added centralized inventory checking functions to eliminate code duplication
   * 07-01-2025
   */
-  
-  /*
-  * Fixed fetchProductsByCollectionId function to maintain GraphQL response structure  
-  * Uses original working GraphQL endpoint with proper error handling
-  * 07-01-2025
-  */
-  async function fetchProductsByCollectionId(collectionHandleValue) {
-    // Define the GraphQL query for the Storefront API
-    const query = `
-      query getProductsFromCollection($collectionHandle: String!) {
-        collectionByHandle(handle: $collectionHandle) {
-          products(first: 100) {
-            edges {
-              node {
-                id
-                title
-                tags
-                handle
-                images(first: 10) {
-                  edges {
-                    node {
-                      src
-                      altText
-                    }
-                  }
-                }
-                variants(first: 1) {
-                  edges {
-                    node {
-                      id
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      availableForSale
-                      compareAtPrice {
-                        amount
-                        currencyCode
-                      }
-                    }
-                  }
-                }
-                metafields(identifiers: [
-                  { key: "delhi_inventory", namespace: "custom" },
-                  { key: "gurgaon_inventory", namespace: "custom" },
-                  { key: "mumbai_inventory", namespace: "custom" },
-                  { key: "kolkata_inventory", namespace: "custom" },
-                  { key: "bangalore_inventory", namespace: "custom" }
-                ]) {
-                  value
-                  key
-                }
-              }
-            }
-          }
-        }
-      }
-    `;
-
-    // Variables for the query
-    const variables = {
-      collectionHandle: collectionHandleValue
-    };
-
-    try {
-      // Make the GraphQL request using the working endpoint
-      const response = await fetch('https://tgs-revamp.myshopify.com/api/2024-01/graphql.json', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Shopify-Storefront-Access-Token': '22ad5e2c245acbd1b0f1a27dd3d369ac'
-        },
-        body: JSON.stringify({
-          query: query,
-          variables: variables
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      if (data.errors) {
-        console.error('GraphQL errors:', data.errors);
-        return null;
-      }
-
-      return data;
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      return null;
-    }
-  }
-  
   function checkProductAvailability(productMetafields, currentLocation, requiredQuantity = 0) {
     return inventoryManager.validateQuantity(productMetafields, requiredQuantity);
   }
@@ -1401,7 +1305,78 @@
     }, 'slow');
   }
 
+  async function fetchProductsByCollectionId(collectionHandleValue) {
+    
+  // Define the GraphQL query for the Storefront API
+  const query = `
+    query getProductsFromCollection($collectionHandle: String!) {
+      collectionByHandle(handle: $collectionHandle) {
+        products(first: 100) {
+          edges {
+            node {
+              id
+              title
+              tags
+              images(first: 10) {
+                edges {
+                  node {
+                    src
+                    altText
+                  }
+                }
+              }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    availableForSale
+                    compareAtPrice {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+               metafields(identifiers: [
+            { key: "delhi_inventory", namespace: "custom" },
+            { key: "gurgaon_inventory", namespace: "custom" },
+            { key: "mumbai_inventory", namespace: "custom" },
+            { key: "kolkata_inventory", namespace: "custom" }
+            { key: "bangalore_inventory", namespace: "custom" }
+          ]) {
+            value
+            key
+          }
+            }
+          }
+        }
+      }
+    }
+  `;
 
+  // Define the variables
+  const variables = {
+    collectionHandle : collectionHandleValue,
+  };
+
+  // Send the request to the Storefront API
+  const response = await fetch('https://tgs-revamp.myshopify.com/api/2024-01/graphql.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': '22ad5e2c245acbd1b0f1a27dd3d369ac', // Use your API key here
+    },
+    body: JSON.stringify({ query, variables }) // Include variables in the request body
+  });
+
+  // Parse and return the response
+  const data = await response.json();
+  return data;
+}
 
 
 
@@ -3680,95 +3655,14 @@ async function setChooseBoxesData() {
   }
 }
 
-/*
-* Fixed fetchProductsByCollectionId function to maintain GraphQL response structure  
-* Uses original working GraphQL endpoint with proper error handling
-* 07-01-2025
-*/
-async function fetchProductsByCollectionId(collectionHandleValue) {
-  // Define the GraphQL query for the Storefront API
-  const query = `
-    query getProductsFromCollection($collectionHandle: String!) {
-      collectionByHandle(handle: $collectionHandle) {
-        products(first: 100) {
-          edges {
-            node {
-              id
-              title
-              tags
-              handle
-              images(first: 10) {
-                edges {
-                  node {
-                    src
-                    altText
-                  }
-                }
-              }
-              variants(first: 1) {
-                edges {
-                  node {
-                    id
-                    price {
-                      amount
-                      currencyCode
-                    }
-                    availableForSale
-                    compareAtPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-              }
-              metafields(identifiers: [
-                { key: "delhi_inventory", namespace: "custom" },
-                { key: "gurgaon_inventory", namespace: "custom" },
-                { key: "mumbai_inventory", namespace: "custom" },
-                { key: "kolkata_inventory", namespace: "custom" },
-                { key: "bangalore_inventory", namespace: "custom" }
-              ]) {
-                value
-                key
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  // Variables for the query
-  const variables = {
-    collectionHandle: collectionHandleValue
-  };
-
+// Optimized fetchProductsByCollectionId function
+async function fetchProductsByCollectionId(collectionHandle) {
   try {
-    // Make the GraphQL request using the working endpoint
-    const response = await fetch('https://tgs-revamp.myshopify.com/api/2024-01/graphql.json', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': '22ad5e2c245acbd1b0f1a27dd3d369ac'
-      },
-      body: JSON.stringify({
-        query: query,
-        variables: variables
-      })
-    });
-
+    const response = await fetch(`/collections/${collectionHandle}/products.json`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const data = await response.json();
-    
-    if (data.errors) {
-      console.error('GraphQL errors:', data.errors);
-      return null;
-    }
-
-    return data;
+    return await response.json();
   } catch (error) {
     console.error("Error fetching products:", error);
     return null;
@@ -4476,7 +4370,78 @@ $(document).ready(function() {
     }, 'slow');
   }
 
+  async function fetchProductsByCollectionId(collectionHandleValue) {
+    
+  // Define the GraphQL query for the Storefront API
+  const query = `
+    query getProductsFromCollection($collectionHandle: String!) {
+      collectionByHandle(handle: $collectionHandle) {
+        products(first: 100) {
+          edges {
+            node {
+              id
+              title
+              tags
+              images(first: 10) {
+                edges {
+                  node {
+                    src
+                    altText
+                  }
+                }
+              }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                    price {
+                      amount
+                      currencyCode
+                    }
+                    availableForSale
+                    compareAtPrice {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+               metafields(identifiers: [
+            { key: "delhi_inventory", namespace: "custom" },
+            { key: "gurgaon_inventory", namespace: "custom" },
+            { key: "mumbai_inventory", namespace: "custom" },
+            { key: "kolkata_inventory", namespace: "custom" }
+            { key: "bangalore_inventory", namespace: "custom" }
+          ]) {
+            value
+            key
+          }
+            }
+          }
+        }
+      }
+    }
+  `;
 
+  // Define the variables
+  const variables = {
+    collectionHandle : collectionHandleValue,
+  };
+
+  // Send the request to the Storefront API
+  const response = await fetch('https://tgs-revamp.myshopify.com/api/2024-01/graphql.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': '22ad5e2c245acbd1b0f1a27dd3d369ac', // Use your API key here
+    },
+    body: JSON.stringify({ query, variables }) // Include variables in the request body
+  });
+
+  // Parse and return the response
+  const data = await response.json();
+  return data;
+}
 
 
 
@@ -6755,95 +6720,14 @@ async function setChooseBoxesData() {
   }
 }
 
-/*
-* Fixed fetchProductsByCollectionId function to maintain GraphQL response structure  
-* Uses original working GraphQL endpoint with proper error handling
-* 07-01-2025
-*/
-async function fetchProductsByCollectionId(collectionHandleValue) {
-  // Define the GraphQL query for the Storefront API
-  const query = `
-    query getProductsFromCollection($collectionHandle: String!) {
-      collectionByHandle(handle: $collectionHandle) {
-        products(first: 100) {
-          edges {
-            node {
-              id
-              title
-              tags
-              handle
-              images(first: 10) {
-                edges {
-                  node {
-                    src
-                    altText
-                  }
-                }
-              }
-              variants(first: 1) {
-                edges {
-                  node {
-                    id
-                    price {
-                      amount
-                      currencyCode
-                    }
-                    availableForSale
-                    compareAtPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-              }
-              metafields(identifiers: [
-                { key: "delhi_inventory", namespace: "custom" },
-                { key: "gurgaon_inventory", namespace: "custom" },
-                { key: "mumbai_inventory", namespace: "custom" },
-                { key: "kolkata_inventory", namespace: "custom" },
-                { key: "bangalore_inventory", namespace: "custom" }
-              ]) {
-                value
-                key
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  // Variables for the query
-  const variables = {
-    collectionHandle: collectionHandleValue
-  };
-
+// Optimized fetchProductsByCollectionId function
+async function fetchProductsByCollectionId(collectionHandle) {
   try {
-    // Make the GraphQL request using the working endpoint
-    const response = await fetch('https://tgs-revamp.myshopify.com/api/2024-01/graphql.json', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': '22ad5e2c245acbd1b0f1a27dd3d369ac'
-      },
-      body: JSON.stringify({
-        query: query,
-        variables: variables
-      })
-    });
-
+    const response = await fetch(`/collections/${collectionHandle}/products.json`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const data = await response.json();
-    
-    if (data.errors) {
-      console.error('GraphQL errors:', data.errors);
-      return null;
-    }
-
-    return data;
+    return await response.json();
   } catch (error) {
     console.error("Error fetching products:", error);
     return null;
