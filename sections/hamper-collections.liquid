@@ -39,6 +39,51 @@
   
 </style>
 <script>
+// Core utilities and helpers
+const HamperUtils = {
+  CONFIG: {
+    DELIVERY_TYPES: {
+      EXPRESS: 'expressdel',
+      STANDARD: 'standarddel'
+    },
+    PRODUCT_TYPES: {
+      GIFT: 'gift',
+      BOX: 'box',
+      ADDON: 'addon',
+      CARD: 'card'
+    }
+  },
+  
+  inventory: {
+    checkAvailability(product, location) {
+      const inventoryKey = `${location.toLowerCase()}_inventory`;
+      const inventory = parseInt(product?.metafields?.[inventoryKey] || '0');
+      return inventory > 0;
+    },
+    
+    validateQuantity(inventoryData, location, quantity) {
+      const inventory = parseInt(inventoryData[`${location.toLowerCase()}_inventory`] || '0');
+      return quantity <= inventory;
+    }
+  },
+  
+  cart: {
+    addItem(item) {
+      if (!window.selectedItem) window.selectedItem = [];
+      const existingIndex = window.selectedItem.findIndex(i => i.item_var_id === item.item_var_id);
+      if (existingIndex > -1) {
+        window.selectedItem[existingIndex] = item;
+      } else {
+        window.selectedItem.push(item);
+      }
+    },
+    
+    removeItem(variantId) {
+      if (!window.selectedItem) return;
+      window.selectedItem = window.selectedItem.filter(item => item.item_var_id !== variantId);
+    }
+  }
+};
     
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
 
@@ -357,10 +402,42 @@
     $("#SubTotalPrice").prepend("&#8377;");
   }
   
-   var hamperCollectionData;
+ // Global Configuration
+const CONFIG = {
+  DELIVERY_TYPES: {
+    EXPRESS: 'expressdel',
+    STANDARD: 'standarddel'
+  },
+  PRODUCT_TYPES: {
+    GIFT: 'gift',
+    BOX: 'box',
+    ADDON: 'addon',
+    CARD: 'card'
+  },
+  INVENTORY_FIELDS: ['bangalore_inventory', 'mumbai_inventory', 'gurgaon_inventory', 'kolkata_inventory']
+};
+
+// State Management
+const CartState = {
+  selectedItems: [],
+  addToCartData: {},
+  updateItem(item) {
+    const index = this.selectedItems.findIndex(i => i.item_var_id === item.item_var_id);
+    if (index > -1) {
+      this.selectedItems[index] = item;
+    } else {
+      this.selectedItems.push(item);
+    }
+  },
+  removeItem(variantId) {
+    this.selectedItems = this.selectedItems.filter(item => item.item_var_id !== variantId);
+  }
+};
+
+  var hamperCollectionData;
   var displayChooseBoxProducts = false;
   var displayAddonProductsStatus = false;
-    var isliquor = false;
+  var isliquor = false;
   var liquirbagchange = false;
   var liquorCount = 0;
   var liquorBox = false;
@@ -1581,6 +1658,59 @@ $(selector).css('display', 'block');
     }
   }
   
+  // Cart Operations Handler
+  const CartOperations = {
+    async validateAndProcessCart() {
+      try {
+        const inventoryValid = await this.validateInventory();
+        if (!inventoryValid.success) {
+          throw new Error(inventoryValid.message);
+        }
+        
+        const requirements = this.validateRequirements();
+        if (!requirements.success) {
+          throw new Error(requirements.message);
+        }
+        
+        return await this.processCheckout();
+      } catch (error) {
+        document.getElementById('warning-msg').textContent = error.message;
+        document.getElementById("warning-popup").style.display = "block";
+        document.getElementById("warning-overlay").style.display = "block";
+        return false;
+      }
+    },
+    
+    async validateInventory() {
+      const currentLocation = localStorage.getItem('location');
+      const inventoryIssues = [];
+      
+      for (const [productId, item] of Object.entries(addToCartData)) {
+        const productCard = $(`.add_${productId}`).closest('.product-card');
+        if (!productCard.length) continue;
+        
+        if (!HamperUtils.inventory.validateQuantity(
+          {
+            mumbai_inventory: productCard.attr('data_mumbai'),
+            kolkata_inventory: productCard.attr('data_kolkata'),
+            gurgaon_inventory: productCard.attr('data_gurgaon'),
+            bangalore_inventory: productCard.attr('data_bangalore')
+          },
+          currentLocation,
+          item.quantity
+        )) {
+          const productTitle = productCard.find('.product-card-title').text().trim();
+          inventoryIssues.push(productTitle);
+        }
+      }
+      
+      return {
+        success: inventoryIssues.length === 0,
+        message: inventoryIssues.length ? `Inventory issues detected: ${inventoryIssues.join(', ')}` : ''
+      };
+    }
+  };
+
   function checkout() {
     /*
     * Added By Velocity
@@ -3422,8 +3552,38 @@ async function displayBoxProducts() {
 }
 
   
-async function displayAddonsProducts(){
+// Product Display Handler
+const ProductRenderer = {
+  async displayProduct(product, location) {
+    if (!HamperUtils.inventory.checkAvailability(product, location)) {
+      return '';
+    }
+    
+    const priceHtml = this.getPriceHtml(product);
+    const inventoryData = this.getInventoryData(product);
+    const variantData = this.getVariantData(product);
+    
+    return this.generateProductHtml(product, priceHtml, inventoryData, variantData, location);
+  },
+  
+  getInventoryData(product) {
+    return HamperUtils.CONFIG.INVENTORY_FIELDS.reduce((acc, field) => {
+      acc[field] = product.metafields?.[field] || '0';
+      return acc;
+    }, {});
+  },
+  
+  getVariantData(product) {
+    const variant = product.variants?.edges?.[0]?.node;
+    return {
+      id: variant?.id?.match(/\d+$/)?.[0],
+      price: variant?.price?.amount,
+      compareAtPrice: variant?.compareAtPrice?.amount
+    };
+  }
+};
 
+async function displayAddonsProducts(){
    // Fetch cart data
     const cartData = await fetch('/cart.js').then(response => response.json());
     const cartQuantities = {};
