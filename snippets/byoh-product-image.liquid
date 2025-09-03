@@ -144,9 +144,20 @@ function renderPopup() {
   const dotsContainer = document.getElementById('dotsContainer');
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
-
-  container.innerHTML = `<img loading="lazy" src="${images[currentIndex]}" alt="product_image">`;
-
+  // Added By Velocity for improve CLS/LCP of the BYOH page 27-08-2025
+  container.innerHTML = `<img 
+      loading="lazy" 
+      src="${images[currentIndex]}" 
+      srcset="
+        ${images[currentIndex]}&width=400 400w, 
+        ${images[currentIndex]}&width=800 800w, 
+        ${images[currentIndex]}&width=1200 1200w
+      "
+      sizes="(max-width: 768px) 80vw, 60vw"
+      alt="product_image"
+    >
+  `;
+  
   const showCarousel = images.length > 1;
   prevBtn.style.display = nextBtn.style.display = showCarousel ? 'block' : 'none';
   dotsContainer.style.display = showCarousel ? 'flex' : 'none';
