@@ -50,14 +50,15 @@
 
 .testimonial-slider__card {
   position: absolute;
-  width: 100%;
+  width: {{ section.settings.card_width }}px;
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: {{ section.settings.card_background_color }};
+  border-radius: {{ section.settings.card_border_radius }}px;
+  padding: {{ section.settings.card_padding }}px;
+  box-shadow: {{ section.settings.card_enable_shadow | default: true | json | replace: '"', '' | append: ' 0 4px 12px rgba(0, 0, 0, 0.1)' }};
+  margin: 0 auto;
 }
 
 .testimonial-slider__card.active {
@@ -143,6 +144,10 @@
     transform: none;
     margin-bottom: 20px;
     display: none;
+    width: {{ section.settings.mobile_card_width }}px;
+    border-radius: {{ section.settings.mobile_card_border_radius }}px;
+    padding: {{ section.settings.mobile_card_padding }}px;
+    background: {{ section.settings.card_background_color }};
   }
 
   .testimonial-slider__card.active {
@@ -150,18 +155,13 @@
     transform: none;
   }
 
-  .testimonial-slider__quote {
-    font-size: 18px;
-    margin-bottom: 16px;
-  }
-
   .testimonial-slider__image {
     width: 100%;
-    max-width: {{ section.settings.image_width }}px;
-    height: {{ section.settings.image_height }}px;
-    object-fit: {{ section.settings.image_fit }};
-    margin: {{ section.settings.image_margin }}px auto;
-    border-radius: {{ section.settings.image_border_radius }}px;
+    max-width: {{ section.settings.mobile_image_width }}px;
+    height: {{ section.settings.mobile_image_height }}px;
+    object-fit: {{ section.settings.mobile_image_fit }};
+    margin: {{ section.settings.mobile_image_margin }}px auto;
+    border-radius: {{ section.settings.mobile_image_border_radius }}px;
   }
 
   .testimonial-slider__hamper {
@@ -326,7 +326,53 @@
     },
     {
       "type": "header",
-      "content": "Image Settings"
+      "content": "Desktop Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Card Width",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Padding",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_enable_shadow",
+      "label": "Enable Card Shadow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Desktop Image Settings"
     },
     {
       "type": "range",
@@ -393,6 +439,104 @@
       "id": "enable_shadow",
       "label": "Enable Image Shadow",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mobile Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_width",
+      "min": 280,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile Card Width",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Card Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_padding",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Card Padding",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Mobile Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_width",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile Image Width",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 150,
+      "max": 500,
+      "step": 25,
+      "unit": "px",
+      "label": "Mobile Image Height",
+      "default": 175
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Image Border Radius",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Mobile Image Fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover - Fill container"
+        },
+        {
+          "value": "contain",
+          "label": "Contain - Show full image"
+        },
+        {
+          "value": "fill",
+          "label": "Fill - Stretch to fit"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_margin",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile Image Margin",
+      "default": 20
     }
   ],
   "blocks": [
