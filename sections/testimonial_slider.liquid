@@ -41,11 +41,11 @@
 
 .testimonial-slider__company {
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .testimonial-slider__company.active {
-  color: #ff4747;
+  color: #ff4747 !important;
 }
 
 .testimonial-slider__card {
@@ -65,30 +65,7 @@
   transform: translateY(0);
 }
 
-.testimonial-slider__quote {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
 
-.testimonial-slider__author {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.testimonial-slider__hamper {
-  margin-top: 20px;
-}
-
-.testimonial-slider__hamper-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.testimonial-slider__hamper-items {
-  list-style: none;
-  padding: 0;
-}
 
 .testimonial-slider__image {
   width: 100%;
@@ -229,8 +206,6 @@
         <div class="testimonial-slider__card{% if forloop.first %} active{% endif %}" 
              data-card="{{ block.id }}"
              {{ block.shopify_attributes }}>
-          <div class="testimonial-slider__quote">{{ block.settings.testimonial }}</div>
-          <div class="testimonial-slider__author">{{ block.settings.author }}</div>
           {%- if block.settings.image -%}
             <img 
               src="{{ block.settings.image | image_url: width: 600 }}"
@@ -240,14 +215,6 @@
               width="{{ block.settings.image.width }}"
               height="{{ block.settings.image.height }}"
             >
-          {%- endif -%}
-          {%- if block.settings.show_hamper_details -%}
-            <div class="testimonial-slider__hamper">
-              <div class="testimonial-slider__hamper-title">What's in the hamper</div>
-              <ul class="testimonial-slider__hamper-items">
-                {{ block.settings.hamper_items }}
-              </ul>
-            </div>
           {%- endif -%}
         </div>
       {%- endfor -%}
@@ -383,33 +350,9 @@
           "default": 18
         },
         {
-          "type": "textarea",
-          "id": "testimonial",
-          "label": "Testimonial Text",
-          "default": "Thank you so much for curating the hampers for us, everyone loved them."
-        },
-        {
-          "type": "text",
-          "id": "author",
-          "label": "Author",
-          "default": "-HR Manager"
-        },
-        {
           "type": "image_picker",
           "id": "image",
           "label": "Gift Hamper Image"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_hamper_details",
-          "label": "Show Hamper Details",
-          "default": true
-        },
-        {
-          "type": "richtext",
-          "id": "hamper_items",
-          "label": "Hamper Items List",
-          "default": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
         }
       ]
     }
