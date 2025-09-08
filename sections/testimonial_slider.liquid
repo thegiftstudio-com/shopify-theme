@@ -68,9 +68,13 @@
 
 
 .testimonial-slider__image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+  width: {{ section.settings.image_width }}px;
+  height: {{ section.settings.image_height }}px;
+  border-radius: {{ section.settings.image_border_radius }}px;
+  object-fit: {{ section.settings.image_fit }};
+  display: block;
+  margin: {{ section.settings.image_margin }}px auto;
+  box-shadow: {{ section.settings.enable_shadow | default: false | json | replace: '"', '' | append: ' 0 4px 12px rgba(0, 0, 0, 0.1)' }};
 }
 
 @media screen and (max-width: 768px) {
@@ -121,11 +125,16 @@
   .testimonial-slider__company {
     display: inline-block;
     padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    border: 1px solid #eee;
     white-space: nowrap;
   }
 
   .testimonial-slider__company.active {
-    color: #ff4747 !important;
+    background: #ff4747;
+    color: white !important;
+    border-color: #ff4747;
   }
 
   .testimonial-slider__card {
@@ -148,12 +157,11 @@
 
   .testimonial-slider__image {
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    margin: 16px 0;
-    display: block;
+    max-width: {{ section.settings.image_width }}px;
+    height: {{ section.settings.image_height }}px;
+    object-fit: {{ section.settings.image_fit }};
+    margin: {{ section.settings.image_margin }}px auto;
+    border-radius: {{ section.settings.image_border_radius }}px;
   }
 
   .testimonial-slider__hamper {
@@ -315,6 +323,76 @@
       "label": "Enable Lazy Loading",
       "default": true,
       "info": "If enabled, the content will be lazy loaded. Recommended to enable this if the section is not in the first fold."
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Image Width",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Image Height",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover - Fill container"
+        },
+        {
+          "value": "contain",
+          "label": "Contain - Show full image"
+        },
+        {
+          "value": "fill",
+          "label": "Fill - Stretch to fit"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "image_margin",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Image Margin",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Enable Image Shadow",
+      "default": true
     }
   ],
   "blocks": [
