@@ -475,12 +475,25 @@
             "show_hamper_details": true,
             "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
           }
+        },
+        "testimonial_48EXyR": {
+          "type": "testimonial",
+          "settings": {
+            "company_name": "Company Name",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "testimonial": "Thank you so much for curating the hampers for us, everyone loved them.",
+            "author": "-HR Manager",
+            "show_hamper_details": true,
+            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
+          }
         }
       },
       "block_order": [
         "testimonial_Bb4xAx",
         "testimonial_yQ9Hg7",
-        "testimonial_d6PTHx"
+        "testimonial_d6PTHx",
+        "testimonial_48EXyR"
       ],
       "name": "Testimonial Slider",
       "settings": {
