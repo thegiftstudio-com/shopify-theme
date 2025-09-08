@@ -311,7 +311,26 @@
         "subheading_color": "#666666",
         "subheading_font_size": 18,
         "background_color": "#fff5f5",
-        "lazy_load": true
+        "lazy_load": true,
+        "card_width": 650,
+        "card_border_radius": 8,
+        "card_padding": 10,
+        "card_background_color": "#ffffff",
+        "card_enable_shadow": true,
+        "image_width": 600,
+        "image_height": 400,
+        "image_border_radius": 8,
+        "image_fit": "cover",
+        "image_margin": 20,
+        "enable_shadow": true,
+        "mobile_card_width": 340,
+        "mobile_card_border_radius": 12,
+        "mobile_card_padding": 10,
+        "mobile_image_width": 300,
+        "mobile_image_height": 175,
+        "mobile_image_border_radius": 8,
+        "mobile_image_fit": "cover",
+        "mobile_image_margin": 20
       }
     },
     "image_banner_KLhtRY": {
