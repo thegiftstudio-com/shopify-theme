@@ -41,8 +41,6 @@
 
 .testimonial-slider__company {
   cursor: pointer;
-  color: {{ block.settings.company_color }};
-  font-size: {{ block.settings.company_font_size }}px;
   transition: color 0.3s ease;
 }
 
@@ -99,13 +97,112 @@
 }
 
 @media screen and (max-width: 768px) {
+  .testimonial-slider {
+    padding: 40px 0;
+  }
+
   .testimonial-slider__container {
     flex-direction: column;
     padding: 0 20px;
+    gap: 24px;
   }
 
   .testimonial-slider__left {
     flex: none;
+  }
+
+  .testimonial-slider__heading {
+    font-size: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .testimonial-slider__subheading {
+    font-size: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .testimonial-slider__companies {
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 16px;
+    gap: 16px;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .testimonial-slider__companies::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  .testimonial-slider__company {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    border: 1px solid #eee;
+    white-space: nowrap;
+  }
+
+  .testimonial-slider__company.active {
+    background: #ff4747;
+    color: white !important;
+    border-color: #ff4747;
+  }
+
+  .testimonial-slider__card {
+    position: relative;
+    opacity: 1;
+    transform: none;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .testimonial-slider__card.active {
+    display: block;
+    transform: none;
+  }
+
+  .testimonial-slider__quote {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-slider__image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    margin: 16px 0;
+    display: block;
+  }
+
+  .testimonial-slider__hamper {
+    background: #f8f8f8;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+
+  .testimonial-slider__hamper-title {
+    color: #333;
+    font-size: 16px;
+  }
+
+  .testimonial-slider__hamper-items {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .testimonial-slider__hamper-items li {
+    margin-bottom: 8px;
   }
 }
 {% endstyle %}
@@ -119,7 +216,8 @@
         {%- for block in section.blocks -%}
           <div class="testimonial-slider__company{% if forloop.first %} active{% endif %}" 
                data-company="{{ block.id }}"
-               data-index="{{ forloop.index0 }}">
+               data-index="{{ forloop.index0 }}"
+               style="color: {{ block.settings.company_color }}; font-size: {{ block.settings.company_font_size }}px;">
             {{ block.settings.company_name }}
           </div>
         {%- endfor -%}
@@ -135,7 +233,7 @@
           <div class="testimonial-slider__author">{{ block.settings.author }}</div>
           {%- if block.settings.image -%}
             <img 
-              src="{{ block.settings.image | img_url: '600x' }}"
+              src="{{ block.settings.image | image_url: width: 600 }}"
               alt="{{ block.settings.company_name }}"
               class="testimonial-slider__image"
               {{ section.settings.lazy_load | default: true | json | replace: '"', '' | prepend: 'loading=' }}
