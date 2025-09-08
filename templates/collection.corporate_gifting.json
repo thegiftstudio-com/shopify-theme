@@ -187,7 +187,7 @@
         "heading_size": 32,
         "heading_alignment": "center",
         "enable_lazy_loading": true,
-        "enable_horizontal_scroll": true,
+        "enable_horizontal_scroll": false,
         "background_color": "#000a33",
         "heading_color": "#000000",
         "columns_desktop": 6,
