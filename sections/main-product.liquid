@@ -215,6 +215,8 @@
                 data-handle="{{ product.handle }}"
                 data-product_id="{{ product.id }}"
               ></div>
+          {%- render 'product-personalizer' %}
+
             {%- when 'price' -%}
               <div
                 class="no-js-hidden price_badge_sec"
