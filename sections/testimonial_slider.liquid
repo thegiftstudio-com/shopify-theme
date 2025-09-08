@@ -1,0 +1,330 @@
+{% style %}
+.testimonial-slider {
+  padding: 80px 0;
+  background-color: {{ section.settings.background_color }};
+}
+
+.testimonial-slider__container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.testimonial-slider__left {
+  flex: 0 0 300px;
+}
+
+.testimonial-slider__right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-slider__heading {
+  color: {{ section.settings.heading_color }};
+  font-size: {{ section.settings.heading_font_size }}px;
+  margin-bottom: 30px;
+}
+
+.testimonial-slider__subheading {
+  color: {{ section.settings.subheading_color }};
+  font-size: {{ section.settings.subheading_font_size }}px;
+  margin-bottom: 40px;
+}
+
+.testimonial-slider__companies {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.testimonial-slider__company {
+  cursor: pointer;
+  color: {{ block.settings.company_color }};
+  font-size: {{ block.settings.company_font_size }}px;
+  transition: color 0.3s ease;
+}
+
+.testimonial-slider__company.active {
+  color: #ff4747;
+}
+
+.testimonial-slider__card {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-slider__card.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.testimonial-slider__quote {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.testimonial-slider__author {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.testimonial-slider__hamper {
+  margin-top: 20px;
+}
+
+.testimonial-slider__hamper-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.testimonial-slider__hamper-items {
+  list-style: none;
+  padding: 0;
+}
+
+.testimonial-slider__image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .testimonial-slider__container {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  .testimonial-slider__left {
+    flex: none;
+  }
+}
+{% endstyle %}
+
+<div class="testimonial-slider" data-testimonial-slider>
+  <div class="testimonial-slider__container">
+    <div class="testimonial-slider__left">
+      <h2 class="testimonial-slider__heading">{{ section.settings.heading }}</h2>
+      <p class="testimonial-slider__subheading">{{ section.settings.subheading }}</p>
+      <div class="testimonial-slider__companies">
+        {%- for block in section.blocks -%}
+          <div class="testimonial-slider__company{% if forloop.first %} active{% endif %}" 
+               data-company="{{ block.id }}"
+               data-index="{{ forloop.index0 }}">
+            {{ block.settings.company_name }}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="testimonial-slider__right">
+      {%- for block in section.blocks -%}
+        <div class="testimonial-slider__card{% if forloop.first %} active{% endif %}" 
+             data-card="{{ block.id }}"
+             {{ block.shopify_attributes }}>
+          <div class="testimonial-slider__quote">{{ block.settings.testimonial }}</div>
+          <div class="testimonial-slider__author">{{ block.settings.author }}</div>
+          {%- if block.settings.image -%}
+            <img 
+              src="{{ block.settings.image | img_url: '600x' }}"
+              alt="{{ block.settings.company_name }}"
+              class="testimonial-slider__image"
+              {{ section.settings.lazy_load | default: true | json | replace: '"', '' | prepend: 'loading=' }}
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+            >
+          {%- endif -%}
+          {%- if block.settings.show_hamper_details -%}
+            <div class="testimonial-slider__hamper">
+              <div class="testimonial-slider__hamper-title">What's in the hamper</div>
+              <ul class="testimonial-slider__hamper-items">
+                {{ block.settings.hamper_items }}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  class TestimonialSlider {
+    constructor(container) {
+      this.container = container;
+      this.companies = container.querySelectorAll('.testimonial-slider__company');
+      this.cards = container.querySelectorAll('.testimonial-slider__card');
+      this.activeIndex = 0;
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      this.companies.forEach((company, index) => {
+        company.addEventListener('click', () => this.switchCard(index));
+      });
+    }
+
+    switchCard(index) {
+      if (index === this.activeIndex) return;
+
+      // Update companies
+      this.companies[this.activeIndex].classList.remove('active');
+      this.companies[index].classList.add('active');
+
+      // Update cards with transition
+      this.cards[this.activeIndex].classList.remove('active');
+      this.cards[index].classList.add('active');
+
+      this.activeIndex = index;
+    }
+  }
+
+  // Initialize all sliders on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const sliders = document.querySelectorAll('[data-testimonial-slider]');
+    sliders.forEach(slider => new TestimonialSlider(slider));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See what our corporate clients have to say about their experience"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Font Size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFF5F5"
+    },
+    {
+      "type": "checkbox",
+      "id": "lazy_load",
+      "label": "Enable Lazy Loading",
+      "default": true,
+      "info": "If enabled, the content will be lazy loaded. Recommended to enable this if the section is not in the first fold."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "company_name",
+          "label": "Company Name",
+          "default": "Company Name"
+        },
+        {
+          "type": "color",
+          "id": "company_color",
+          "label": "Company Name Color",
+          "default": "#333333"
+        },
+        {
+          "type": "range",
+          "id": "company_font_size",
+          "min": 14,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Company Name Font Size",
+          "default": 18
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial Text",
+          "default": "Thank you so much for curating the hampers for us, everyone loved them."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "-HR Manager"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gift Hamper Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hamper_details",
+          "label": "Show Hamper Details",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "hamper_items",
+          "label": "Hamper Items List",
+          "default": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Slider",
+      "blocks": [
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
