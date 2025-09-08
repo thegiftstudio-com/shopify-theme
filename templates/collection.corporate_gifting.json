@@ -433,6 +433,66 @@
       "settings": {
         "collection_description_ref": "{{ collection.metafields.custom.collection_information | metafield_tag }}"
       }
+    },
+    "testimonial_slider_Q67B8Y": {
+      "type": "testimonial_slider",
+      "blocks": {
+        "testimonial_Bb4xAx": {
+          "type": "testimonial",
+          "settings": {
+            "company_name": "Company Name",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "testimonial": "",
+            "author": "",
+            "image": "shopify://shop_images/IMG_0994_87f7dc5a-db7d-4698-ba54-6ea11166be40.jpg",
+            "show_hamper_details": true,
+            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
+          }
+        },
+        "testimonial_yQ9Hg7": {
+          "type": "testimonial",
+          "settings": {
+            "company_name": "Company Name",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "testimonial": "",
+            "author": "",
+            "image": "shopify://shop_images/Happy_Teacher_s_Day_2.png",
+            "show_hamper_details": true,
+            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
+          }
+        },
+        "testimonial_d6PTHx": {
+          "type": "testimonial",
+          "settings": {
+            "company_name": "Company Name",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "testimonial": "",
+            "author": "",
+            "image": "shopify://shop_images/WhatsApp_Image_2025-09-06_at_13.04.08_e1b139e0.jpg",
+            "show_hamper_details": true,
+            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_Bb4xAx",
+        "testimonial_yQ9Hg7",
+        "testimonial_d6PTHx"
+      ],
+      "name": "Testimonial Slider",
+      "settings": {
+        "heading": "What Our Customers Say",
+        "subheading": "See what our corporate clients have to say about their experience",
+        "heading_color": "#333333",
+        "heading_font_size": 36,
+        "subheading_color": "#666666",
+        "subheading_font_size": 18,
+        "background_color": "#FFF5F5",
+        "lazy_load": true
+      }
     }
   },
   "order": [
@@ -448,6 +508,7 @@
     "featured_collection_FXBVeL",
     "product-grid",
     "8a78d8e3-e587-4c1a-b757-84aa50a661ea",
-    "collection_description_dmfELQ"
+    "collection_description_dmfELQ",
+    "testimonial_slider_Q67B8Y"
   ]
 }
