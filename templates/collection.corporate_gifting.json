@@ -103,6 +103,67 @@
         "padding_bottom": 0
       }
     },
+    "trending_gifts_r8c38H": {
+      "type": "trending-gifts",
+      "blocks": {
+        "gift_image_NpWNEG": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9349.png",
+            "gift_link": "#"
+          }
+        },
+        "gift_image_P8BKKq": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9434.png",
+            "gift_link": "#"
+          }
+        },
+        "gift_image_E393JT": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9432.png",
+            "gift_link": "#"
+          }
+        },
+        "gift_image_4h3CFk": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9433.png",
+            "gift_link": "#"
+          }
+        },
+        "gift_image_8Xy63f": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9434_1.png",
+            "gift_link": "#"
+          }
+        },
+        "gift_image_MagmiA": {
+          "type": "gift_image",
+          "settings": {
+            "gift_image": "shopify://shop_images/Frame_9435.png",
+            "gift_link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "gift_image_NpWNEG",
+        "gift_image_P8BKKq",
+        "gift_image_E393JT",
+        "gift_image_4h3CFk",
+        "gift_image_8Xy63f",
+        "gift_image_MagmiA"
+      ],
+      "name": "Trending Gifts (Configurable)",
+      "settings": {
+        "section_heading": "Trending Gifts at The Gift Studio",
+        "columns_desktop": 3,
+        "enable_scroll": false
+      }
+    },
     "icon_scroll_grid_Nfa834": {
       "type": "icon-scroll-grid",
       "blocks": {
@@ -184,76 +245,73 @@
       "name": "Icon Grid with Scroll",
       "settings": {
         "title": "",
-        "heading_size": 32,
+        "heading_size": 46,
         "heading_alignment": "center",
         "enable_lazy_loading": true,
         "enable_horizontal_scroll": false,
         "background_color": "#000a33",
         "heading_color": "#000000",
         "columns_desktop": 6,
-        "padding_top": 36,
+        "padding_top": 52,
         "padding_bottom": 36
       }
     },
-    "trending_gifts_r8c38H": {
-      "type": "trending-gifts",
+    "testimonial_slider_Q67B8Y": {
+      "type": "testimonial_slider",
       "blocks": {
-        "gift_image_NpWNEG": {
-          "type": "gift_image",
+        "testimonial_Bb4xAx": {
+          "type": "testimonial",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9349.png",
-            "gift_link": "#"
+            "company_name": "Wurfel",
+            "company_color": "#020919",
+            "company_font_size": 18,
+            "image": "shopify://shop_images/Wurfel_3.webp"
           }
         },
-        "gift_image_P8BKKq": {
-          "type": "gift_image",
+        "testimonial_yQ9Hg7": {
+          "type": "testimonial",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9434.png",
-            "gift_link": "#"
+            "company_name": "K Raheja",
+            "company_color": "#020919",
+            "company_font_size": 18,
+            "image": "shopify://shop_images/Raheja_0149b9e0-2482-41ad-87cc-91933b97daba.webp"
           }
         },
-        "gift_image_E393JT": {
-          "type": "gift_image",
+        "testimonial_d6PTHx": {
+          "type": "testimonial",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9432.png",
-            "gift_link": "#"
+            "company_name": "Accenture",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "image": "shopify://shop_images/Blue_d79c9001-b0d4-49df-9cd4-1c0a363043ca.webp"
           }
         },
-        "gift_image_4h3CFk": {
-          "type": "gift_image",
+        "testimonial_48EXyR": {
+          "type": "testimonial",
           "settings": {
-            "gift_image": "shopify://shop_images/Frame_9433.png",
-            "gift_link": "#"
-          }
-        },
-        "gift_image_8Xy63f": {
-          "type": "gift_image",
-          "settings": {
-            "gift_image": "shopify://shop_images/Frame_9434_1.png",
-            "gift_link": "#"
-          }
-        },
-        "gift_image_MagmiA": {
-          "type": "gift_image",
-          "settings": {
-            "gift_image": "shopify://shop_images/Frame_9435.png",
-            "gift_link": "#"
+            "company_name": "Bain & Company",
+            "company_color": "#333333",
+            "company_font_size": 18,
+            "image": "shopify://shop_images/Wurfel_1.webp"
           }
         }
       },
       "block_order": [
-        "gift_image_NpWNEG",
-        "gift_image_P8BKKq",
-        "gift_image_E393JT",
-        "gift_image_4h3CFk",
-        "gift_image_8Xy63f",
-        "gift_image_MagmiA"
+        "testimonial_Bb4xAx",
+        "testimonial_yQ9Hg7",
+        "testimonial_d6PTHx",
+        "testimonial_48EXyR"
       ],
-      "name": "Trending Gifts (Configurable)",
+      "name": "Testimonial Slider",
       "settings": {
-        "section_heading": "Trending Gifts at The Gift Studio",
-        "columns_desktop": 3,
-        "enable_scroll": false
+        "heading": "What Our Customers Say",
+        "subheading": "See what our corporate clients have to say about their experience",
+        "heading_color": "#333333",
+        "heading_font_size": 36,
+        "subheading_color": "#666666",
+        "subheading_font_size": 18,
+        "background_color": "#fff5f5",
+        "lazy_load": true
       }
     },
     "image_banner_KLhtRY": {
@@ -433,79 +491,6 @@
       "settings": {
         "collection_description_ref": "{{ collection.metafields.custom.collection_information | metafield_tag }}"
       }
-    },
-    "testimonial_slider_Q67B8Y": {
-      "type": "testimonial_slider",
-      "blocks": {
-        "testimonial_Bb4xAx": {
-          "type": "testimonial",
-          "settings": {
-            "company_name": "Company Name",
-            "company_color": "#333333",
-            "company_font_size": 18,
-            "testimonial": "",
-            "author": "",
-            "image": "shopify://shop_images/IMG_0994_87f7dc5a-db7d-4698-ba54-6ea11166be40.jpg",
-            "show_hamper_details": true,
-            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
-          }
-        },
-        "testimonial_yQ9Hg7": {
-          "type": "testimonial",
-          "settings": {
-            "company_name": "Company Name",
-            "company_color": "#333333",
-            "company_font_size": 18,
-            "testimonial": "",
-            "author": "",
-            "image": "shopify://shop_images/Happy_Teacher_s_Day_2.png",
-            "show_hamper_details": true,
-            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
-          }
-        },
-        "testimonial_d6PTHx": {
-          "type": "testimonial",
-          "settings": {
-            "company_name": "Company Name",
-            "company_color": "#333333",
-            "company_font_size": 18,
-            "testimonial": "",
-            "author": "",
-            "image": "shopify://shop_images/WhatsApp_Image_2025-09-06_at_13.04.08_e1b139e0.jpg",
-            "show_hamper_details": true,
-            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
-          }
-        },
-        "testimonial_48EXyR": {
-          "type": "testimonial",
-          "settings": {
-            "company_name": "Company Name",
-            "company_color": "#333333",
-            "company_font_size": 18,
-            "testimonial": "Thank you so much for curating the hampers for us, everyone loved them.",
-            "author": "-HR Manager",
-            "show_hamper_details": true,
-            "hamper_items": "<ul><li>Ferrero Rocher Chocolate</li><li>Choco Chunk Cookie</li><li>Potato Chips</li><li>UNO Playing Cards</li><li>Phab Protein Bar</li></ul>"
-          }
-        }
-      },
-      "block_order": [
-        "testimonial_Bb4xAx",
-        "testimonial_yQ9Hg7",
-        "testimonial_d6PTHx",
-        "testimonial_48EXyR"
-      ],
-      "name": "Testimonial Slider",
-      "settings": {
-        "heading": "What Our Customers Say",
-        "subheading": "See what our corporate clients have to say about their experience",
-        "heading_color": "#333333",
-        "heading_font_size": 36,
-        "subheading_color": "#666666",
-        "subheading_font_size": 18,
-        "background_color": "#FFF5F5",
-        "lazy_load": true
-      }
     }
   },
   "order": [
@@ -513,15 +498,15 @@
     "enquiry_hulk_form_rMXbL9",
     "categories_list_section_RJyRXR",
     "c5fba097-1ecc-4566-83d5-9c5db1b741c8",
-    "icon_scroll_grid_Nfa834",
     "trending_gifts_r8c38H",
+    "icon_scroll_grid_Nfa834",
+    "testimonial_slider_Q67B8Y",
     "image_banner_KLhtRY",
     "image_banner_k8yHTe",
     "a9376f36-a120-47c4-9ede-cb7aa6d83177",
     "featured_collection_FXBVeL",
     "product-grid",
     "8a78d8e3-e587-4c1a-b757-84aa50a661ea",
-    "collection_description_dmfELQ",
-    "testimonial_slider_Q67B8Y"
+    "collection_description_dmfELQ"
   ]
 }
