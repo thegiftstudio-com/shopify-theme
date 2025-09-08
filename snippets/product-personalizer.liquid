@@ -1,0 +1,780 @@
+{%- style -%}
+.personalization-controls {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.control-group {
+  margin-bottom: 1rem;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.control-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.image-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.image-input-container input[type="file"] {
+  width: calc(100% - 40px);
+}
+
+.image-clear-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 1px solid #ff4444;
+  border-radius: 50%;
+  color: #ff0000;
+  cursor: pointer;
+  font-size: 18px;
+  width: 24px;
+  height: 24px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.image-clear-button:hover {
+  color: #fff;
+  background: #ff4444;
+}
+
+.product__media-list,
+.product__media-item {
+  position: relative !important;
+}
+
+.personalization-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.custom-text-overlay {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+  color: #000;
+  padding: 5px;
+  font-size: 18px;
+  background: transparent;
+  pointer-events: auto;
+  z-index: 101;
+  min-width: 50px;
+  min-height: 30px;
+  touch-action: none;
+  border: 1px dashed transparent;
+  will-change: transform;
+}
+
+.custom-text-overlay:hover,
+.custom-text-overlay:active,
+.custom-text-overlay.selected {
+  border-color: #007bff;
+}
+
+.custom-image-overlay {
+  position: absolute;
+  cursor: move;
+  width: 150px;
+  height: auto;
+  pointer-events: auto;
+  z-index: 101;
+  touch-action: none;
+  border: 1px dashed transparent;
+  will-change: transform;
+}
+
+.custom-image-overlay:hover,
+.custom-image-overlay:active,
+.custom-image-overlay.selected {
+  border-color: #007bff;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #ffffff;
+  border: 2px solid #007bff;
+  border-radius: 50%;
+  z-index: 102;
+  display: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: se-resize;
+  font-size: 12px;
+  align-items: center;
+  justify-content: center;
+  color: #007bff;
+  font-weight: bold;
+  bottom: -11px;
+  right: -11px;
+}
+
+.resize-handle::before {
+  content: '⤡';
+  font-size: 14px;
+}
+
+.custom-text-overlay:hover .resize-handle,
+.custom-image-overlay:hover .resize-handle,
+.custom-text-overlay:active .resize-handle,
+.custom-image-overlay:active .resize-handle,
+.custom-text-overlay.selected .resize-handle,
+.custom-image-overlay.selected .resize-handle {
+  display: flex;
+}
+
+.resize-handle:hover {
+  background: #007bff;
+  color: white;
+  transform: scale(1.1);
+  transition: all 0.2s;
+}
+
+.rotate-handle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  border: 2px solid #28a745;
+  border-radius: 50%;
+  z-index: 102;
+  display: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: grab;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  color: #28a745;
+  font-weight: bold;
+  top: -12px;
+  right: -12px;
+}
+
+.rotate-handle::before {
+  content: '↻';
+  font-size: 16px;
+}
+
+.custom-text-overlay:hover .rotate-handle,
+.custom-image-overlay:hover .rotate-handle,
+.custom-text-overlay:active .rotate-handle,
+.custom-image-overlay:active .rotate-handle,
+.custom-text-overlay.selected .rotate-handle,
+.custom-image-overlay.selected .rotate-handle {
+  display: flex;
+}
+
+.rotate-handle:hover {
+  background: #28a745;
+  color: white;
+  transform: scale(1.1);
+  transition: all 0.2s;
+  cursor: grabbing;
+}
+
+.element-controls {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: none;
+  gap: 8px;
+  padding: 4px 8px;
+  z-index: 102;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.custom-text-overlay:hover .element-controls,
+.custom-image-overlay:hover .element-controls {
+  display: flex;
+}
+
+.control-button {
+  padding: 4px 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.control-button:hover {
+  background: #f0f0f0;
+  transform: scale(1.1);
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 768px) {
+  .personalization-controls {
+    padding: 0.5rem;
+  }
+  
+  .custom-text-overlay {
+    font-size: 16px;
+  }
+  
+  .custom-image-overlay {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  
+  .resize-handle,
+  .rotate-handle {
+    width: 26px;
+    height: 26px;
+  }
+}
+{%- endstyle -%}
+
+<div class="product-personalizer" data-product-id="{{ product.id }}">
+  <div class="personalization-controls">
+    <div class="control-group">
+      <label for="customText">Add Custom Text</label>
+      <input 
+        type="text" 
+        id="customText" 
+        placeholder="Enter your text here"
+        aria-label="Custom text for personalization"
+      >
+    </div>
+    
+    <div class="control-group">
+      <label for="customImage">Upload Custom Image</label>
+      <div class="image-input-container">
+        <input 
+          type="file" 
+          id="customImage" 
+          accept="image/png,image/jpeg"
+          aria-label="Custom image upload for personalization"
+        >
+        <button 
+          type="button" 
+          class="image-clear-button" 
+          id="clearImage" 
+          aria-label="Clear uploaded image"
+          style="display: none;"
+        >&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  class ProductPersonalizer {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.setupControls();
+      this.setupOverlay();
+      this.setupEventListeners();
+    }
+
+    setupControls() {
+      this.container = document.querySelector('.product-personalizer');
+      this.textInput = document.getElementById('customText');
+      this.imageInput = document.getElementById('customImage');
+      this.clearImageBtn = document.getElementById('clearImage');
+      this.fontSizeInput = document.getElementById('fontSize');
+      
+      this.textElement = null;
+      this.imageElement = null;
+      this.activeElement = null;
+
+      // Setup clear image button
+      if (this.clearImageBtn) {
+        this.clearImageBtn.addEventListener('click', () => this.clearImage());
+      }
+    }
+
+    setupOverlay() {
+      // Find the main product media container
+      const mediaContainer = document.querySelector('.product__media-item');
+      if (!mediaContainer) return;
+
+      // Create and append the overlay
+      this.overlay = document.createElement('div');
+      this.overlay.className = 'personalization-overlay';
+      mediaContainer.appendChild(this.overlay);
+    }
+
+    setupEventListeners() {
+      this.textInput.addEventListener('input', () => this.updateTextOverlay());
+      this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+      this.setupDraggable();
+    }
+
+    updateTextOverlay() {
+      const text = this.textInput.value.trim();
+      
+      // If there's text but no text element, create one
+      if (text && !this.textElement) {
+        this.textElement = this.createOverlayElement('div', 'custom-text-overlay');
+        this.addHandles(this.textElement);
+        this.addElementControls(this.textElement, 'text');
+      }
+      
+      // Update text content if element exists
+      if (this.textElement) {
+        this.textElement.textContent = text;
+        
+        // If text is empty, remove the element
+        if (!text) {
+          this.removeElement(this.textElement, 'text');
+        }
+      }
+    }
+
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      
+      // If no file is selected, clear everything
+      if (!file) {
+        this.clearImage();
+        return;
+      }
+      
+      // Show clear button when file is selected
+      if (this.clearImageBtn) {
+        this.clearImageBtn.style.display = 'flex';
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Remove existing image element if it exists
+        if (this.imageElement) {
+          this.removeElement(this.imageElement, 'image');
+        }
+        
+        // Create new image element
+        this.imageElement = this.createOverlayElement('img', 'custom-image-overlay');
+        this.imageElement.src = e.target.result;
+        this.addHandles(this.imageElement);
+        this.addElementControls(this.imageElement, 'image');
+      };
+      
+      reader.readAsDataURL(file);
+    }
+
+    clearImage() {
+      // Remove the image element if it exists
+      if (this.imageElement) {
+        this.removeElement(this.imageElement, 'image');
+      }
+
+      // Clear the file input value
+      if (this.imageInput) {
+        this.imageInput.value = '';
+      }
+
+      // Hide the clear button
+      if (this.clearImageBtn) {
+        this.clearImageBtn.style.display = 'none';
+      }
+    }
+
+    createOverlayElement(tagName, className) {
+      const element = document.createElement(tagName);
+      element.className = className;
+      
+      // Set initial position
+      element.style.transform = 'translate3d(20px, 20px, 0)';
+      
+      this.overlay.appendChild(element);
+      this.makeElementDraggable(element);
+      return element;
+    }
+
+    addHandles(element) {
+      // Add resize handle (bottom-right corner)
+      const resizeHandle = document.createElement('div');
+      resizeHandle.className = 'resize-handle';
+      element.appendChild(resizeHandle);
+      this.makeResizable(element, resizeHandle);
+      
+      // Add rotate handle (top-right corner)  
+      const rotateHandle = document.createElement('div');
+      rotateHandle.className = 'rotate-handle';
+      element.appendChild(rotateHandle);
+      this.makeRotatable(element, rotateHandle);
+    }
+
+    addElementControls(element, elementType) {
+      const controls = document.createElement('div');
+      controls.className = 'element-controls';
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'control-button';
+      deleteBtn.innerHTML = '×';
+      deleteBtn.title = 'Delete';
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.removeElement(element, elementType);
+      };
+      
+      controls.appendChild(deleteBtn);
+      element.appendChild(controls);
+    }
+
+    removeElement(element, elementType) {
+      if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+        
+        // Reset the appropriate reference
+        if (elementType === 'text') {
+          this.textElement = null;
+          // Clear the text input
+          if (this.textInput) {
+            this.textInput.value = '';
+          }
+        } else if (elementType === 'image') {
+          this.imageElement = null;
+          // Clear the image input and hide clear button
+          if (this.imageInput) {
+            this.imageInput.value = '';
+          }
+          if (this.clearImageBtn) {
+            this.clearImageBtn.style.display = 'none';
+          }
+        }
+      }
+    }
+
+    makeResizable(element, handle) {
+      let isResizing = false;
+      let startX = 0;
+      let startY = 0;
+      let startWidth = 0;
+      let startHeight = 0;
+
+      const resizeStart = (e) => {
+        isResizing = true;
+        e.stopPropagation();
+        e.preventDefault();
+
+        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
+        startX = clientX;
+        startY = clientY;
+        
+        const computedStyle = getComputedStyle(element);
+        startWidth = parseInt(computedStyle.width);
+        startHeight = parseInt(computedStyle.height);
+        
+        element.classList.add('selected');
+        handle.style.cursor = 'se-resize';
+        
+        console.log('Resize started', startWidth, startHeight);
+      };
+
+      const resize = (e) => {
+        if (!isResizing) return;
+        e.preventDefault();
+
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
+
+        let newWidth = startWidth + deltaX;
+        let newHeight = startHeight + deltaY;
+
+        // Apply minimum dimensions
+        newWidth = Math.max(50, newWidth);
+        newHeight = Math.max(30, newHeight);
+
+        // Apply maximum dimensions to keep within parent
+        const parentRect = this.overlay.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const maxWidth = parentRect.width - (elementRect.left - parentRect.left);
+        const maxHeight = parentRect.height - (elementRect.top - parentRect.top);
+        
+        newWidth = Math.min(newWidth, maxWidth - 20);
+        newHeight = Math.min(newHeight, maxHeight - 20);
+
+        // Update element size
+        element.style.width = `${newWidth}px`;
+        
+        if (element.tagName.toLowerCase() === 'img') {
+          if (e.shiftKey) {
+            // Maintain aspect ratio when shift is held
+            const aspectRatio = startWidth / startHeight;
+            newHeight = newWidth / aspectRatio;
+          }
+          element.style.height = `${newHeight}px`;
+        } else {
+          element.style.height = `${newHeight}px`;
+        }
+        
+        console.log('Resizing', newWidth, newHeight);
+      };
+
+      const resizeEnd = () => {
+        if (!isResizing) return;
+        isResizing = false;
+        element.classList.remove('selected');
+        handle.style.cursor = 'se-resize';
+        console.log('Resize ended');
+      };
+
+      // Add event listeners
+      handle.addEventListener('mousedown', resizeStart);
+      handle.addEventListener('touchstart', resizeStart);
+      document.addEventListener('mousemove', resize);
+      document.addEventListener('touchmove', resize);
+      document.addEventListener('mouseup', resizeEnd);
+      document.addEventListener('touchend', resizeEnd);
+    }
+
+    makeRotatable(element, handle) {
+      let isRotating = false;
+      let startAngle = 0;
+      let currentRotation = 0;
+      
+      const getAngle = (centerX, centerY, clientX, clientY) => {
+        return Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+      };
+
+      const rotateStart = (e) => {
+        isRotating = true;
+        e.stopPropagation();
+        e.preventDefault();
+        
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+        
+        startAngle = getAngle(centerX, centerY, clientX, clientY);
+        
+        // Get current rotation from transform
+        const transform = element.style.transform || '';
+        const rotateMatch = transform.match(/rotate\(([^)]+)deg\)/);
+        currentRotation = rotateMatch ? parseFloat(rotateMatch[1]) : 0;
+        
+        element.classList.add('selected');
+        handle.style.cursor = 'grabbing';
+        
+        console.log('Rotate started', currentRotation);
+      };
+
+      const rotate = (e) => {
+        if (!isRotating) return;
+        e.preventDefault();
+        
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+        
+        const currentAngle = getAngle(centerX, centerY, clientX, clientY);
+        const deltaAngle = currentAngle - startAngle;
+        const newRotation = currentRotation + deltaAngle;
+        
+        // Extract current transform values to preserve translation
+        const transform = element.style.transform || '';
+        let currentTranslateX = 0;
+        let currentTranslateY = 0;
+        
+        const translateMatch = transform.match(/translate3d\(([^,]+)px,\s*([^,]+)px/);
+        if (translateMatch) {
+          currentTranslateX = parseFloat(translateMatch[1]);
+          currentTranslateY = parseFloat(translateMatch[2]);
+        }
+        
+        // Apply new rotation while preserving translation
+        element.style.transform = `translate3d(${currentTranslateX}px, ${currentTranslateY}px, 0) rotate(${newRotation}deg)`;
+        
+        console.log('Rotating', newRotation);
+      };
+
+      const rotateEnd = () => {
+        if (!isRotating) return;
+        isRotating = false;
+        element.classList.remove('selected');
+        handle.style.cursor = 'grab';
+        console.log('Rotate ended');
+      };
+
+      handle.addEventListener('mousedown', rotateStart);
+      handle.addEventListener('touchstart', rotateStart);
+      document.addEventListener('mousemove', rotate);
+      document.addEventListener('touchmove', rotate);
+      document.addEventListener('mouseup', rotateEnd);
+      document.addEventListener('touchend', rotateEnd);
+    }
+
+    makeElementDraggable(element) {
+      let isDragging = false;
+      let currentX = 0;
+      let currentY = 0;
+      let initialX = 0;
+      let initialY = 0;
+      let xOffset = 20; // Initial offset
+      let yOffset = 20; // Initial offset
+
+      const dragStart = (e) => {
+        // Don't drag if clicking on handles or controls
+        if (e.target.classList.contains('control-button') || 
+            e.target.classList.contains('resize-handle') ||
+            e.target.classList.contains('rotate-handle') ||
+            e.target.closest('.element-controls')) {
+          return;
+        }
+
+        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
+        initialX = clientX - xOffset;
+        initialY = clientY - yOffset;
+
+        if (e.target === element) {
+          isDragging = true;
+          element.style.cursor = 'grabbing';
+        }
+      };
+
+      const drag = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+        currentX = clientX - initialX;
+        currentY = clientY - initialY;
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        // Get parent boundaries
+        const parentRect = this.overlay.getBoundingClientRect();
+        const elemRect = element.getBoundingClientRect();
+
+        // Keep element within parent boundaries
+        const maxX = parentRect.width - elemRect.width;
+        const maxY = parentRect.height - elemRect.height;
+
+        currentX = Math.min(Math.max(0, currentX), maxX);
+        currentY = Math.min(Math.max(0, currentY), maxY);
+
+        this.setTranslate(currentX, currentY, element);
+      };
+
+      const dragEnd = () => {
+        if (!isDragging) return;
+        
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+        element.style.cursor = 'move';
+      };
+
+      // Add event listeners
+      element.addEventListener('mousedown', dragStart);
+      element.addEventListener('touchstart', dragStart);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag);
+      document.addEventListener('mouseup', dragEnd);
+      document.addEventListener('touchend', dragEnd);
+    }
+
+    setTranslate(xPos, yPos, element) {
+      // Preserve rotation if it exists
+      const currentTransform = element.style.transform || '';
+      const rotateMatch = currentTransform.match(/rotate\([^)]+\)/);
+      const rotation = rotateMatch ? ` ${rotateMatch[0]}` : '';
+      
+      element.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)${rotation}`;
+    }
+
+    setupDraggable() {
+      // Additional touch handling if needed
+      this.overlay.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
+      this.overlay.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
+      this.overlay.addEventListener('touchend', () => {
+        this.activeTouchElement = null;
+      });
+    }
+
+    handleTouchStart(evt) {
+      const touches = evt.changedTouches[0];
+      const element = document.elementFromPoint(touches.clientX, touches.clientY);
+      if (element && (element.classList.contains('custom-text-overlay') || 
+          element.classList.contains('custom-image-overlay'))) {
+        this.activeTouchElement = element;
+        
+        const rect = element.getBoundingClientRect();
+        const parentRect = this.overlay.getBoundingClientRect();
+        
+        this.initialX = touches.clientX - (rect.left - parentRect.left);
+        this.initialY = touches.clientY - (rect.top - parentRect.top);
+      }
+    }
+
+    handleTouchMove(evt) {
+      if (!this.activeTouchElement) return;
+      
+      evt.preventDefault();
+      const touches = evt.changedTouches[0];
+      
+      const newLeft = touches.clientX - this.initialX;
+      const newTop = touches.clientY - this.initialY;
+      
+      const parentRect = this.overlay.getBoundingClientRect();
+      const elemRect = this.activeTouchElement.getBoundingClientRect();
+      
+      // Keep within bounds
+      const maxLeft = parentRect.width - elemRect.width;
+      const maxTop = parentRect.height - elemRect.height;
+      
+      const constrainedLeft = Math.max(0, Math.min(newLeft, maxLeft));
+      const constrainedTop = Math.max(0, Math.min(newTop, maxTop));
+      
+      this.setTranslate(constrainedLeft, constrainedTop, this.activeTouchElement);
+    }
+  }
+
+  // Initialize the personalizer when the DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new ProductPersonalizer();
+  });
+</script>
