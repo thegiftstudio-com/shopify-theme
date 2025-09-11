@@ -16,9 +16,9 @@
           "type": "Text",
           "settings": {
             "city_hide": "",
-            "gift_img": "shopify://shop_images/diwali_1.jpg",
+            "gift_img": "shopify://shop_images/diwali.jpg",
             "gift_title": "Diwali",
-            "img_url": "https://thegiftstudio.com/pages/concierge-query"
+            "img_url": "shopify://collections/diwali-gift-hampers"
           }
         },
         "text_A9DaUG": {
