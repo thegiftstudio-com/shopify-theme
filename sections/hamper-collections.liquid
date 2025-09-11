@@ -1,28 +1,11 @@
 {%- comment -%}
-* Enhanced CSS loading strategy for optimal performance
-* Uses modern loading techniques with fallbacks
-* Implements resource hints for faster page loads
-* Optimizes critical rendering path
-* 10-09-2025
+* Replaced standard stylesheet_tag with <link rel="preload"> for critical CSS to improve LCP.
+* Preloads hamper-collections.css as style, then loads it with onload for non-blocking render.
+* Ensures CSS is applied as soon as possible for faster Largest Contentful Paint.
+* 29-08-2025
 {%- endcomment -%}
 
-<link rel="preload" href="{{ 'hamper-collections.css' | asset_url }}" as="style">
-<link rel="preload" href="{{ 'cart.js' | asset_url }}" as="script">
-
-<!-- Critical CSS -->
-<style>
-  .data-boxquant-hide { display: none !important; }
-  #smile-ui-lite-launcher-frame-container { display: none !important; }
-  .loaderr { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; display: none; }
-  .progress-wrap { margin: 20px 0; }
-  .line-progress-bar { position: relative; }
-</style>
-
-<!-- Async CSS loading with fallback -->
-<link rel="stylesheet" href="{{ 'hamper-collections.css' | asset_url }}" media="print" onload="this.media='all'">
-<noscript>
-  <link rel="stylesheet" href="{{ 'hamper-collections.css' | asset_url }}">
-</noscript>
+  <link href="{{ 'hamper-collections.css' | asset_url }}" rel="stylesheet">
 {% comment %}
 * Advanced LCP (Largest Contentful Paint) optimization implemented
 * WebP image format with responsive srcset for better compression
@@ -442,45 +425,14 @@
   window.userAppliedDiscount = "", window.boxVarId = "", window.boxProdId = "";
   window.totalGiftItemsCount = 0, window.totalCardItemsCount = 0, window.totalUserItemsCount = 0, window.totalUserGiftItemsCount = 0, window.totalUserBoxItemsCount = 0, window.totalUserAddonItemsCount = 0;
   
-    // Use strict mode for better error catching and performance
-  'use strict';
+    var addToCartData = {};
 
-  // Initialize state management
-  const state = {
-    totalUserGiftItemsCount: 0,
-    totalUserBoxItemsCount: 0,
-    totalGiftItemsCount: 0,
-    selectedItem: [],
-    addToCartData: {},
-    // Debounce timer for performance optimization
-    debounceTimer: null
-  };
-
-  // Event delegation setup for better performance
-  document.addEventListener('click', (e) => {
-    // Delegate click events
-    if (e.target.matches('.remove_btn')) {
-      const variantId = e.target.dataset.variantId;
-      const productId = e.target.dataset.productId;
-      removeFromCart(variantId, productId, 1, 0, 0);
-    }
-  });
-
-  // Debounce function for performance optimization
-  function debounce(func, wait) {
-    return function executedFunction(...args) {
-      const later = () => {
-        state.debounceTimer = null;
-        func(...args);
-      };
-      clearTimeout(state.debounceTimer);
-      state.debounceTimer = setTimeout(later, wait);
-    };
-  }
-
-  // Efficient state management
-  window.selectedItem = state.selectedItem;
-  window.addToCartData = state.addToCartData;
+    // Initialize JavaScript variables
+    window.totalUserGiftItemsCount = 0;
+    window.totalUserBoxItemsCount = 0;
+    window.totalGiftItemsCount = 0;
+    window.selectedItem = [];
+    window.addToCartData = {};
 
     {% for item in cart.items %}
     // Determine product type
