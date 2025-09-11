@@ -62,11 +62,21 @@
 </style>
 <script>
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
-
-    let list = document.getElementById("selectproduct");
-    $("#selectproduct").empty();
-    $('#add_row').empty();
-    $('#mobile_cart_data').empty();
+    // Cache DOM elements
+    const list = document.getElementById("selectproduct");
+    const addRow = document.getElementById("add_row");
+    const mobileCartData = document.getElementById("mobile_cart_data");
+    
+    // Clear elements using native JS for better performance
+    while (list.firstChild) list.removeChild(list.firstChild);
+    while (addRow.firstChild) addRow.removeChild(addRow.firstChild);
+    while (mobileCartData.firstChild) mobileCartData.removeChild(mobileCartData.firstChild);
+    
+    // Create document fragments for batch DOM updates
+    const listFragment = document.createDocumentFragment();
+    const addRowFragment = document.createDocumentFragment();
+    const mobileFragment = document.createDocumentFragment();
+    
     totalprice = 0;
     selectedItem.forEach((item, index) => {
       let val = $(`.${item.item_var_id} .qty`).val();
@@ -361,21 +371,36 @@
                             ></span>
                           </div>`);
     });
+    // Cache DOM elements for better performance
+    const hiddenItemsCount = document.getElementById('hiddenItemsCount');
+    const totalPriceElements = document.querySelectorAll('.total-price, .total-price1, #SubTotalPrice');
+    
+    // Update hidden items count
     if (window.totalUserItemsCount > 15) {
-      $("#hiddenItemsCount").text("and " + (window.totalUserItemsCount - 15) + " more items").show();
+      hiddenItemsCount.textContent = `and ${window.totalUserItemsCount - 15} more items`;
+      hiddenItemsCount.style.display = 'block';
     } else {
-      $("#hiddenItemsCount").text("").hide();
+      hiddenItemsCount.textContent = '';
+      hiddenItemsCount.style.display = 'none';
     }
-    totalprice = totalprice*0.01 ;
-    if (isRemoved) $(`.add_${varient_id}`).show();
-    else $(`.remove_${varient_id}`).show();
-    $(`.loader_${loder_id}`).hide();
-    $(".total-price").text(totalprice);
-    $(".total-price").prepend("&#8377;");
-    $(".total-price1").text(totalprice);
-    $(".total-price1").prepend("&#8377;");
-    $("#SubTotalPrice").text(totalprice);
-    $("#SubTotalPrice").prepend("&#8377;");
+
+    // Calculate total price
+    totalprice = totalprice * 0.01;
+    
+    // Update visibility
+    const elementToShow = isRemoved ? 
+      document.querySelector(`.add_${varient_id}`) : 
+      document.querySelector(`.remove_${varient_id}`);
+    if (elementToShow) elementToShow.style.display = 'block';
+    
+    // Hide loader
+    const loader = document.querySelector(`.loader_${loder_id}`);
+    if (loader) loader.style.display = 'none';
+    
+    // Update all price elements at once
+    totalPriceElements.forEach(element => {
+      element.innerHTML = `&#8377;${totalprice}`;
+    });
   }
   
    var hamperCollectionData;
