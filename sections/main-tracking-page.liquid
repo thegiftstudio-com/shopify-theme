@@ -723,21 +723,6 @@
                   document.getElementById('order_status').textContent = 'Delivered';
                 }
               }
-            } else if (trackingUrl != '') {
-              document.getElementById('order_status').textContent = 'Shipped';
-              stages.forEach((stage, index) => {
-                if (index <= 2) stage.classList.add('completed');
-                if (cancelled == 1) {
-                  if (index == 2) {
-                    stage.classList.add('order_cancelled');
-                  }
-                  // Mark all future stages as cancelled
-                  for (let i = 3; i < stages.length; i++) {
-                    stages[i].classList.add('order_cancelled');
-                  }
-                  document.getElementById('order_status').textContent = 'Cancelled';
-                }
-              });
             } else if (fulfillment_status === 'fulfilled') {
               document.getElementById('order_status').textContent = 'Fulfilled';
               stages.forEach((stage, index) => {
