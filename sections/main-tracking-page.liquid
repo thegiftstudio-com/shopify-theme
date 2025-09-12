@@ -676,14 +676,9 @@
                 stages[latestStageIndex].classList.remove('active');
               }
 
-              // Mark the latest_shipment_status stage as cancelled
-              if (latestStageIndex !== undefined && stages[latestStageIndex] && latestStageIndex!=0 ) {
-                stages[latestStageIndex].classList.add('order_cancelled');
-              }
-
               // Mark all stages from latest_shipment_status onwards as cancelled (red)
               if (latestStageIndex !== undefined || latestStageIndex!=0) {
-                for (let i = latestStageIndex; i < stages.length; i++) {
+                for (let i = latestStageIndex+1; i < stages.length; i++) {
                   stages[i].classList.add('order_cancelled');
                 }
               } else {
