@@ -682,7 +682,7 @@
               }
 
               // Mark all stages from latest_shipment_status onwards as cancelled (red)
-              if (latestStageIndex !== undefined) {
+              if (latestStageIndex !== undefined || latestStageIndex!=0) {
                 for (let i = latestStageIndex; i < stages.length; i++) {
                   stages[i].classList.add('order_cancelled');
                 }
