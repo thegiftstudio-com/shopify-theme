@@ -697,6 +697,7 @@
               document.getElementById('order_status').textContent = 'Cancelled';
             }
           } else {
+            // Below code for the old orders that not having shippment history Added by Velocity 12-09-2025
             // Fallback to old logic if no shipment history
             // Always show order placed as completed with created date
             if (created_at) {
