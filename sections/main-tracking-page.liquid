@@ -758,10 +758,6 @@
               stages.forEach((stage, index) => {
                 if (index === 0) stage.classList.add('completed');
                 if (cancelled == 1) {
-                  if (index === 0) {
-                    stage.classList.add('order_cancelled');
-                  }
-                  // Mark all future stages as cancelled
                   for (let i = 1; i < stages.length; i++) {
                     stages[i].classList.add('order_cancelled');
                   }
