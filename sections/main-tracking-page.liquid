@@ -1,13 +1,13 @@
+{% comment %} Modify Order tracking UI and API response . also included timestamp for each shippment status Added by Velocity 10-09-2025 {% endcomment %}
 <div class="content inner_page">
-  
   <div class="container">
     <!-- Input Section -->
-   <div class="order-input-section">
+    <div class="order-input-section">
       <label for="order-id">Enter Order ID:</label>
       <div class="input-field">
         <input type="text" id="order-id" placeholder="Enter your order ID" value="#TGS">
         <div class="error-class"></div>
-        </div>
+      </div>
       <button id="fetch-order-status" class="fetch-button">
         <span class="button-text">Track Order</span>
         <span class="button-loader" style="display: none;"></span>
@@ -20,12 +20,18 @@
       <div class="tracking-header">
         <h1>Tracking Order No: <span id="order_number">Loading...</span></h1>
       </div>
-
+      {% comment %} Add more shippment status based on API response and add timestamp for corresponding shippment status {% endcomment %}
       <!-- Progress Section -->
       <div class="tracking-progress">
         <div class="stage" id="stage-order-placed">
           <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="21.204" height="20.309" viewBox="0 0 21.204 20.309" class="shopping-cart-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21.204"
+              height="20.309"
+              viewBox="0 0 21.204 20.309"
+              class="shopping-cart-icon"
+            >
               <g id="Icon_feather-shopping-cart" data-name="Icon feather-shopping-cart" transform="translate(-0.75 -0.75)">
                 <path id="Path_29341" data-name="Path 29341" d="M13.791,30.9a.9.9,0,1,1-.9-.9A.9.9,0,0,1,13.791,30.9Z" transform="translate(-4.23 -11.483)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
                 <path id="Path_29342" data-name="Path 29342" d="M30.291,30.9a.9.9,0,1,1-.9-.9A.9.9,0,0,1,30.291,30.9Z" transform="translate(-10.878 -11.483)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
@@ -34,37 +40,69 @@
             </svg>
           </div>
           <span>Order Placed</span>
+          <div class="timestamp" id="timestamp-order-placed"></div>
         </div>
-       <div class="stage" id="stage-order-packed">
-        <div class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em">
-            <path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2zm0 5h16v2H4v-2z" fill="currentColor" />
-          </svg>
-        </div>
-        <span>Order Packed</span>
-      </div>
 
-       <div class="stage" id="stage-shipped">
-        <div class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em">
-            <path d="M21 6h-3.02L12 0 6.02 6H3a2 2 0 0 0-2 2v14h4v-2h14v2h4V8a2 2 0 0 0-2-2zM12 3.27L14.73 6H9.27L12 3.27zM4 18v-4h16v4H4zm16-6H4V8h16v4z" fill="currentColor" />
-          </svg>
+        <div class="stage" id="stage-ready-for-pickup">
+          <div class="icon">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em">
+              <path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2zm0 5h16v2H4v-2z" fill="currentColor" />
+            </svg>
+          </div>
+          <span>Ready for Pickup</span>
+          <div class="timestamp" id="timestamp-ready-for-pickup"></div>
         </div>
-        <span>Shipped</span>
-      </div>
+
+        <div class="stage" id="stage-picked">
+          <div class="icon">
+           <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 505 511.62"><path d="m336.11 39.84-115.38 68.94 135.38 18.4 111.32-69.44-131.32-17.9zm26.72 204.57c73.79 0 133.6 59.82 133.6 133.61 0 73.78-59.81 133.6-133.6 133.6-73.79 0-133.6-59.82-133.6-133.6 0-73.79 59.81-133.61 133.6-133.61zm-34.4 114.76 19.91 18.66 45.73-46.46c4.46-4.53 7.28-8.18 12.79-2.51l17.88 18.33c5.88 5.81 5.58 9.22.04 14.62l-66.23 65.01c-11.66 11.46-9.64 12.15-21.48.41l-38.75-38.52c-2.47-2.68-2.19-5.37.51-8.06l20.75-21.52c3.15-3.3 5.64-3.02 8.85.04zm-123.6-233.04-.09 141.71-51.45-35.04-51.46 29.07 6.1-148.91-88.54-12.03v312.98l178.95 23.14c2.52 7.09 5.47 13.98 8.85 20.62L9.3 432.08c-5.17-.21-9.3-4.48-9.3-9.69V89.86c.27-4.05 1.89-6.89 5.72-8.81L182.48.85c1.58-.72 3.52-1.01 5.25-.77l308.18 42.04c5.09.59 8.58 4.77 8.58 9.99v.02L505 280.9c-5.72-8.46-15.57-20.29-19.93-27.77V69.56l-115.81 74.93v59.81a174.846 174.846 0 0 0-19.39.36v-58.82l-145.04-19.71zm-81.52-30.58 112.17-69.44-47.58-6.49L44.24 84.8l79.07 10.75z"/></svg>
+          </div>
+          <span>Shipped</span>
+          <div class="timestamp" id="timestamp-picked"></div>
+        </div>
+
+        <div class="stage" id="stage-in-transit">
+          <div class="icon">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" enable-background="new 0 0 50 50">
+    <path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M 0 8 L 0 10 L 28.09375 10 C 28.49375 10 29 10.50625 29 10.90625 L 29 18 L 29 38 L 18.90625 38 C 18.431434 35.165217 15.964985 33 13 33 C 10.035015 33 7.5685656 35.165217 7.09375 38 L 3 38 C 2.4454545 38 2 37.554545 2 37 L 2 28 L 0 28 L 0 37 C 0 38.645455 1.3545455 40 3 40 L 7.09375 40 C 7.5685656 42.834783 10.035015 45 13 45 C 15.964985 45 18.431434 42.834783 18.90625 40 L 30 40 L 34.09375 40 C 34.568566 42.834783 37.035015 45 40 45 C 42.964985 45 45.431434 42.834783 45.90625 40 L 47 40 C 47.833333 40 48.561615 39.625885 49.09375 39.09375 C 49.625885 38.561615 50 37.833333 50 37 L 50 27.40625 C 50 26.28174 49.572192 25.251873 49.1875 24.46875 C 48.802808 23.685627 48.40625 23.125 48.40625 23.125 L 48.40625 23.09375 L 44.3125 17.59375 L 44.28125 17.59375 L 44.28125 17.5625 C 43.39491 16.454575 41.971429 15 40 15 L 32 15 C 31.642361 15 31.311741 15.066769 31 15.1875 L 31 10.90625 C 31 9.30625 29.69375 8 28.09375 8 L 0 8 z M 0 12 L 0 14 L 18 14 L 18 12 L 0 12 z M 0 16 L 0 18 L 15 18 L 15 16 L 0 16 z M 32 17 L 36 17 L 36 26 C 36 26.833333 36.374115 27.561615 36.90625 28.09375 C 37.438385 28.625885 38.166667 29 39 29 L 48 29 L 48 37 C 48 37.166667 47.874115 37.438385 47.65625 37.65625 C 47.438385 37.874115 47.166667 38 47 38 L 45.90625 38 C 45.431434 35.165217 42.964985 33 40 33 C 37.035015 33 34.568566 35.165217 34.09375 38 L 31 38 L 31 18 C 31 17.833333 31.125885 17.561615 31.34375 17.34375 C 31.561615 17.125885 31.833333 17 32 17 z M 38 17 L 40 17 C 40.823399 17 41.972579 17.925528 42.6875 18.8125 L 46.78125 24.28125 L 46.8125 24.3125 C 46.83268 24.34158 47.101885 24.724149 47.40625 25.34375 C 47.659125 25.85853 47.793194 26.471743 47.875 27 L 39 27 C 38.833333 27 38.561615 26.874115 38.34375 26.65625 C 38.125885 26.438385 38 26.166667 38 26 L 38 17 z M 0 20 L 0 22 L 12 22 L 12 20 L 0 20 z M 0 24 L 0 26 L 9 26 L 9 24 L 0 24 z M 13 35 C 15.220984 35 17 36.779016 17 39 C 17 41.220984 15.220984 43 13 43 C 10.779016 43 9 41.220984 9 39 C 9 36.779016 10.779016 35 13 35 z M 40 35 C 42.220984 35 44 36.779016 44 39 C 44 41.220984 42.220984 43 40 43 C 37.779016 43 36 41.220984 36 39 C 36 36.779016 37.779016 35 40 35 z"/>
+</svg>
+
+          </div>
+          <span>In Transit</span>
+          <div class="timestamp" id="timestamp-in-transit"></div>
+        </div>
+
+        <div class="stage" id="stage-out-for-delivery">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
+  <g id="Hand">
+    <path d="M85.2324,40.7676a5.9535,5.9535,0,0,0-8.414,0L76,41.5859V10a1,1,0,0,0-1-1H25a1,1,0,0,0-1,1V45.0165a21.9449,21.9449,0,0,0-4.3291,1.8771L19,47.2769V44a1,1,0,0,0-1-1H10a1,1,0,0,0-1,1v2H2a1,1,0,0,0,0,2H9V74H2a1,1,0,0,0,0,2H9v2a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V74H60a.9993.9993,0,0,0,.707-.293L85.2324,49.1816A5.957,5.957,0,0,0,85.2324,40.7676ZM74,19H57V11H74ZM55,23.8652l-4.3594-3.6338a1.0024,1.0024,0,0,0-1.2812,0L45,23.8652V11H55ZM26,11H43v8H26Zm0,10H43v5a1.0008,1.0008,0,0,0,1.6406.7686L50,22.3018l5.3594,4.4668A1.0008,1.0008,0,0,0,57,26V21H74V43.5859l-9.1394,9.1394A6.008,6.008,0,0,0,59,48H43.2832l-1.2061-.7422A21.8476,21.8476,0,0,0,26,44.49ZM17,77H11V45h6ZM83.8184,47.7676,59.5859,72H19V49.58l1.6631-.95a19.9622,19.9622,0,0,1,20.3652.331l1.4473.8907A1.0051,1.0051,0,0,0,43,50H59a4,4,0,0,1,0,8H40a1,1,0,0,0,0,2H59a6.0066,6.0066,0,0,0,5.7639-4.35L78.2324,42.1816a3.95,3.95,0,0,1,5.586,5.586Z" 
+          fill="none" 
+          stroke="currentColor" 
+          stroke-width="2"
+          stroke-linejoin="round"></path>
+  </g>
+</svg>
+          </div>
+          <span>Out for Delivery</span>
+          <div class="timestamp" id="timestamp-out-for-delivery"></div>
+        </div>
+
         <div class="stage" id="stage-delivered">
           <div class="icon">
-           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.237 23.266" width="1em" height="1em">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.237 23.266" width="1em" height="1em">
               <path d="M25.093,14.341l-4.124-4.134a.493.493,0,0,0-.349-.145H16.956v-1.2a.493.493,0,0,0,.394-.483V4.436a.493.493,0,0,0-.493-.493h-4.24A2.464,2.464,0,1,0,8.675.988,2.464,2.464,0,1,0,4.733,3.943H.493A.493.493,0,0,0,0,4.436V8.38a.493.493,0,0,0,.493.493H7V19.319l0,.005a2.463,2.463,0,0,0-4.076.2H1.38v-7.2a.493.493,0,1,0-.986,0v7.689a.493.493,0,0,0,.493.493h1.69a2.446,2.446,0,0,0,.476,1.774H.493a.493.493,0,1,0,0,.986H8.967a2.459,2.459,0,0,0,2.446-2.76h7.139a2.5,2.5,0,0,0-.018.3,2.452,2.452,0,0,0,.494,1.479H14.891a.493.493,0,0,0,0,.986H21A2.467,2.467,0,0,0,23.463,20.8a2.5,2.5,0,0,0-.018-.3h1.3a.493.493,0,0,0,.493-.493V14.689A.493.493,0,0,0,25.093,14.341Zm-.842,1.63H20.907l2.213-2.213,1.132,1.135Zm-5.028-.493V14.466l2.3-2.3.9.9-2.879,2.879A.493.493,0,0,1,19.224,15.477Zm1.608-4.013-1.608,1.608V11.048h1.192ZM16.365,7.887H10.351V4.929h6.014Zm-7.4,10.45a2.452,2.452,0,0,0-.982.2V4.929h1.38v13.44A2.472,2.472,0,0,0,8.967,18.336ZM10.647.986a1.479,1.479,0,0,1,0,2.957H9.865l.851-.851a.493.493,0,0,0-.7-.7l-.851.851V2.465A1.48,1.48,0,0,1,10.647.986ZM5.225,2.465a1.479,1.479,0,1,1,2.957,0v.782L7.332,2.4a.493.493,0,0,0-.7.7l.851.851H6.7A1.48,1.48,0,0,1,5.225,2.465ZM.986,7.887V4.929H7V7.887ZM3.545,20.8A1.479,1.479,0,1,1,5.024,22.28,1.48,1.48,0,0,1,3.545,20.8ZM7,22.278v0h0Zm1.972,0A1.479,1.479,0,1,1,10.446,20.8,1.48,1.48,0,0,1,8.967,22.28Zm5.475-2.76H11.071a2.484,2.484,0,0,0-.72-.756V8.872H15.97V19.519ZM21,22.28A1.479,1.479,0,1,1,22.477,20.8,1.48,1.48,0,0,1,21,22.28Zm2.1-2.76a2.463,2.463,0,0,0-4.209,0H16.956V11.048h1.282v4.43a1.48,1.48,0,0,0,1.479,1.479h4.535v2.563Zm0,0"></path>
             </svg>
           </div>
           <span>Delivered</span>
+          <div class="timestamp" id="timestamp-delivered"></div>
         </div>
       </div>
+
       <!-- Details Section -->
       <div class="tracking-details">
         <span>Shipped Via: <strong id="shipped_via" class="tracking_details_value">Loading...</strong></span>
-        <span>Status: <strong id="order_status"class="tracking_details_value" >Loading...</strong></span>
+        <span>Status: <strong id="order_status" class="tracking_details_value">Loading...</strong></span>
         <span>Track Order: <strong id="tracking_url" class="tracking_details_value">Loading...</strong></span>
       </div>
     </div>
@@ -72,461 +110,677 @@
 </div>
 
 <style>
-  .order-input-section {
-    margin: 20px 0;
-    text-align: center;
-  }
-
-  .order-input-section input {
-    padding: 10px;
-    font-size: 16px;
-    width: 300px;
-    margin-right: 10px;
-  }
-
-  .order-input-section .fetch-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    /* background-color: #007bff; */
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px; /* Fixed height */
-    width: 160px; /* Fixed width */
-  }
-
-  .order-input-section .fetch-button:hover {
-    background-color: #fff;
-  }
-
-  .button-text {
-    display: inline;
-  }
-
-  .button-loader {
-    border: 3px solid white;
-    border-top: 3px solid #3498db;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    animation: spin 1s linear infinite;
-    display: inline-block;
-    margin-left: 10px;
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .tracking-container {
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #fff;
-  }
-
-  .tracking-header {
-    background-color: #333;
-    color: #fff;
-    padding: 15px 20px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    text-align: center;
-  }
-
-  .tracking-header h1 {
-    font-size: 16px;
-    margin: 0;
-    font-weight: normal;
-    color: white;
-  }
-
-  .tracking-details {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-  }
-
-  .tracking-progress {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
-    width:100%;
-    overflow:auto;
-  }
-
-  .stage {
-    text-align: center;
-    flex: 1;
-    position: relative;
-  }
-
-  .stage::after {
-    content: '';
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    width: 100%;
-    height: 4px;
-    background: #ddd;
-    z-index: 0;
-  }
-
-  .stage.completed.active::after {
-    background: #4bcd83;
-  }
-   .stage.completed::after {
-    background: #4bcd83;
-  }
-  .stage.completed.order_cancelled::after {
-    background: #e45f5f;
-  }
-  
-  .stage.completed.order_cancelled .icon {
-      background-color: #e45f5f;
-  }
-
-  
- .stage.completed .icon svg {
-    color: #fff; /* White color for the icons */
-    fill: currentColor; /* Ensure fill matches the inherited color */
-}
-  .stage.completed .shopping-cart-icon {
-    color: #fff; /* Set the desired color */
-}
-  .stage.active::after {
-    background: #007bff;
-  }
-
-  .stage:last-child::after {
-    content: none;
-  }
-
-  .stage .icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    z-index: 2;
-    position:relative;
-    border: 1px solid #e5e6e8;
-  }
-
-  .stage.completed .icon {
-    background-color: #4bcd83;
-  }
-
-  .stage.active .icon {
-    background-color: #007bff;
-  }
-
-  .stage span {
-    margin-top: 10px;
-    display: block;
-    font-size: 12px;
-    padding: 0 2px;
-  }
-
-  .tracking-progress::-webkit-scrollbar {
-      height: 5px;
-  }
-  
-  @media (max-width: 565px)  {
-    .stage .icon {
-      width: 50px;
-      height: 50px;
-      font-size:20px;
-    }
-    .stage::after {
-      top: 24px;
-    }
-    .tracking_details_value{
-      display: block;
-    }
-    .tracking-details {
-      display: grid;
-      grid-template-columns: repeat(3, 33.33%);
-      font-size: 12px;
+    .order-input-section {
+      margin: 20px 0;
       text-align: center;
     }
+
+    .order-input-section input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+      margin-right: 10px;
+    }
+
+    .order-input-section .fetch-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      width: 160px;
+    }
+
+    .order-input-section .fetch-button:hover {
+      background-color: #fff;
+    }
+
+    .button-text {
+      display: inline;
+    }
+
+    .button-loader {
+      border: 3px solid white;
+      border-top: 3px solid #3498db;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .tracking-container {
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+    }
+
+    .tracking-header {
+      background-color: #333;
+      color: #fff;
+      padding: 15px 20px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      text-align: center;
+    }
+
+    .tracking-header h1 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: normal;
+      color: white;
+    }
+
+    .tracking-details {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .tracking-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px;
+      width:100%;
+      overflow:auto;
+    }
+
+    .stage {
+      text-align: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .stage::after {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      width: 100%;
+      height: 4px;
+      background: #ddd;
+      z-index: 0;
+    }
+
+    .stage.completed.active::after {
+      background: #4bcd83;
+    }
+     .stage.completed::after {
+      background: #4bcd83;
+    }
+
+   .stage.completed .icon svg {
+      color: #fff;
+      fill: currentColor;
   }
-
-     #order-id {
-        height: 50px;
-        border-radius: 5px;
-        border: 1px solid #1e1e1e;
+    .stage.completed .shopping-cart-icon {
+      color: #fff;
+  }
+    .stage.active::after {
+      background: #007bff;
     }
 
-    .error-class {
+    .stage:last-child::after {
+      content: none;
+    }
+
+    .stage .icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      z-index: 2;
+      position:relative;
+      border: 1px solid #e5e6e8;
+    }
+
+    .stage.completed .icon {
+      background-color: #4bcd83;
+    }
+
+    .stage.active .icon {
+      background-color: #007bff;
+    }
+  .stage.order_cancelled .icon {
+        background-color: #e45f5f;
+    }
+     .stage.order_cancelled::after {
+      background: #e45f5f;
+    }
+    .stage span {
+      margin-top: 10px;
+      display: block;
+      font-size: 12px;
+      padding: 0 2px;
+    }
+
+    .stage .timestamp {
+      margin-top: 5px;
+      font-size: 10px;
+      color: #666;
+      text-align: center;
+      min-height: 12px;
+    }
+
+    .tracking-progress::-webkit-scrollbar {
+        height: 5px;
+    }
+    .icon svg{
+      width :35px;
+      height:35px;
+    }
+
+    @media (max-width: 565px)  {
+      .tracking-progress {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .stage {
+        flex: none;
         width: 100%;
-        text-align: left;
-        color: red;
-        font-weight: 400;
-    }
-    .order-input-section {
-        padding: 10px 15px;
-        display: flex;
-        justify-content: center;
-    }
-    .order-input-section label {
-        line-height: 50px;
-        margin-right: 10px;
-    }
-    
-    @media (max-width: 767px) {
-        #order-id {
-            width: 100%;
-        }
-        
-        .order-input-section { 
-            flex-wrap: wrap;
-        }
-        .order-input-section label {
-            display: block;
-            width: 100%;
-            text-align: left;
-            margin-bottom: 8px;
-            line-height: normal;
-            margin-right: 0;
-        }
-        .input-field {
-            width: calc(100% - 132px);
-            margin-right: 10px;
-        }
-        #fetch-order-status {
-            width: 120px;
-        }
+        max-width: 300px;
+      }
+
+      .stage::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 4px;
+        height: 20px;
+        background: #ddd;
+        z-index: 0;
+        transform: translateX(-50%);
+      }
+
+      .stage:last-child::after {
+        content: none;
+      }
+
+      .stage.completed::after {
+        background: #4bcd83;
+      }
+
+      .stage.active::after {
+        background: #007bff;
+      }
+
+      .stage.order_cancelled::after {
+        background: #e45f5f;
+      }
+
+      .stage .icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .tracking_details_value{
+        display: block;
+      }
+      .tracking-details {
+        display: grid;
+        grid-template-columns: repeat(3, 33.33%);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .stage span {
+        font-size: 10px;
+      }
+
+      .stage .timestamp {
+        font-size: 8px;
+      }
     }
 
-  .fetch-button:hover {
-    border: 1px solid var(--color_black);
-    color: var(--color_black);
-    background-color: #fff #important;
-}
-  
+       #order-id {
+          height: 50px;
+          border-radius: 5px;
+          border: 1px solid #1e1e1e;
+      }
+
+      .error-class {
+          width: 100%;
+          text-align: left;
+          color: red;
+          font-weight: 400;
+      }
+      .order-input-section {
+          padding: 10px 15px;
+          display: flex;
+          justify-content: center;
+      }
+      .order-input-section label {
+          line-height: 50px;
+          margin-right: 10px;
+      }
+
+      @media (max-width: 767px) {
+          #order-id {
+              width: 100%;
+          }
+
+          .order-input-section {
+              flex-wrap: wrap;
+          }
+          .order-input-section label {
+              display: block;
+              width: 100%;
+              text-align: left;
+              margin-bottom: 8px;
+              line-height: normal;
+              margin-right: 0;
+          }
+          .input-field {
+              width: calc(100% - 132px);
+              margin-right: 10px;
+          }
+          #fetch-order-status {
+              width: 120px;
+          }
+           .icon svg{
+      width :20px;
+      height:20px;
+    }
+      }
+
+    .fetch-button:hover {
+      border: 1px solid var(--color_black);
+      color: var(--color_black);
+      background-color: #fff #important;
+  }
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const fetchButton = document.getElementById("fetch-order-status");
-    const buttonText = fetchButton.querySelector(".button-text");
-    const buttonLoader = fetchButton.querySelector(".button-loader");
-    const orderInput = document.getElementById("order-id");
-    const trackingContainer = document.getElementById("tracking-container");
+  document.addEventListener('DOMContentLoaded', () => {
+    const fetchButton = document.getElementById('fetch-order-status');
+    const buttonText = fetchButton.querySelector('.button-text');
+    const buttonLoader = fetchButton.querySelector('.button-loader');
+    const orderInput = document.getElementById('order-id');
+    const trackingContainer = document.getElementById('tracking-container');
 
-    const errorDiv = document.querySelector(".error-class");
-    const defaultPrefix = "#TGS";
-    const orderIdPattern = /^#TGS\d+$/i; // Pattern to validate order IDs (e.g., #TGS12345)
+    const errorDiv = document.querySelector('.error-class');
+    const defaultPrefix = '#TGS';
+    const orderIdPattern = /^#TGS\d+$/i;
 
     // Function to normalize the input
     const normalizeOrderId = (input) => {
-        const plainNumberMatch = input.match(/^\d+$/); // If input is a plain number
-        const tgsNumberMatch = input.match(/^tgs(\d+)$/i); // If input starts with TGS
-        const fullPatternMatch = input.match(/^#tgs\d+$/i); // If input matches the full pattern
+      const plainNumberMatch = input.match(/^\d+$/);
+      const tgsNumberMatch = input.match(/^tgs(\d+)$/i);
+      const fullPatternMatch = input.match(/^#tgs\d+$/i);
 
-        if (plainNumberMatch) return `${defaultPrefix}${plainNumberMatch[0]}`;
-        if (tgsNumberMatch) return `${defaultPrefix}${tgsNumberMatch[1]}`;
-        if (fullPatternMatch) return input.toUpperCase(); // Ensure consistency
-        return null; // Invalid input
+      if (plainNumberMatch) return `${defaultPrefix}${plainNumberMatch[0]}`;
+      if (tgsNumberMatch) return `${defaultPrefix}${tgsNumberMatch[1]}`;
+      if (fullPatternMatch) return input.toUpperCase();
+      return null;
     };
 
     // Function to display error messages
     const displayError = (message) => {
-        errorDiv.textContent = message;
-        errorDiv.style.display = "block"; // Show the error message
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
     };
 
     // Function to clear error messages
     const clearError = () => {
-        errorDiv.textContent = "";
-        errorDiv.style.display = "none"; // Hide the error message
+      errorDiv.textContent = '';
+      errorDiv.style.display = 'none';
     };
 
     // Handle input change
-    orderInput.addEventListener("input", () => {
-        clearError();
-        const normalized = normalizeOrderId(orderInput.value.trim());
-        if (normalized) {
-            orderInput.value = normalized;
-        } else {
-            orderInput.value = defaultPrefix; // Reset to default prefix on invalid input
-        }
+    orderInput.addEventListener('input', () => {
+      clearError();
+      const normalized = normalizeOrderId(orderInput.value.trim());
+      if (normalized) {
+        orderInput.value = normalized;
+      } else {
+        orderInput.value = defaultPrefix;
+      }
     });
 
     // Handle paste events
-    orderInput.addEventListener("paste", (event) => {
-        const clipboardData = event.clipboardData.getData("text").trim();
+    orderInput.addEventListener('paste', (event) => {
+      const clipboardData = event.clipboardData.getData('text').trim();
 
-        setTimeout(() => {
-            const normalized = normalizeOrderId(clipboardData);
-            if (normalized) {
-                orderInput.value = normalized;
-                clearError();
-            } else {
-                event.preventDefault();
-                displayError("Please enter a valid order ID (e.g., #TGS12345).");
-            }
-        }, 0);
+      setTimeout(() => {
+        const normalized = normalizeOrderId(clipboardData);
+        if (normalized) {
+          orderInput.value = normalized;
+          clearError();
+        } else {
+          event.preventDefault();
+          displayError('Please enter a valid order ID (e.g., #TGS12345).');
+        }
+      }, 0);
     });
 
     // Validate input on change
-    orderInput.addEventListener("change", () => {
-        if (!normalizeOrderId(orderInput.value)) {
-            displayError("Please enter a valid order ID (e.g., #TGS12345).");
-            orderInput.value = defaultPrefix; // Reset to default prefix
-        } else {
-            clearError(); // Clear error if input is valid
-        }
+    orderInput.addEventListener('change', () => {
+      if (!normalizeOrderId(orderInput.value)) {
+        displayError('Please enter a valid order ID (e.g., #TGS12345).');
+        orderInput.value = defaultPrefix;
+      } else {
+        clearError();
+      }
     });
 
     // Handle button click
-    fetchButton.addEventListener("click", async () => {
-        const orderId = orderInput.value.trim();
+    fetchButton.addEventListener('click', async () => {
+      const orderId = orderInput.value.trim();
 
-        // Validate input value
-        if (!normalizeOrderId(orderId)) {
-            displayError("Please enter a valid order ID (e.g., #TGS12345).");
-            return;
-        }
+      // Validate input value
+      if (!normalizeOrderId(orderId)) {
+        displayError('Please enter a valid order ID (e.g., #TGS12345).');
+        return;
+      }
 
-        // Disable the button and input field, show loader
-        fetchButton.disabled = true;
-        orderInput.disabled = true;
-        fetchButton.classList.add("disabled");
-        buttonText.style.display = "none";
-        buttonLoader.style.display = "inline-block";
+      // Disable the button and input field, show loader
+      fetchButton.disabled = true;
+      orderInput.disabled = true;
+      fetchButton.classList.add('disabled');
+      buttonText.style.display = 'none';
+      buttonLoader.style.display = 'inline-block';
 
-        try {
-            // Make API call to fetch order status
-            const response = await fetch("https://tgs.velsof.com/order_status", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-api-key": "339308f5c7eac7cdaffd9646d61109a7", // Include API key if needed
-                },
-                body: JSON.stringify({ order_number: orderId }),
+      try {
+        // Make API call to fetch order status
+        const response = await fetch('https://tgs.velsof.com/new_order_status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': '339308f5c7eac7cdaffd9646d61109a7',
+          },
+          body: JSON.stringify({ order_number: orderId }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status) {
+          // Populate tracking data with new response format Added By Velocity 10-09-2025
+          const {
+            order_number,
+            tracking_info,
+            fulfillment_status,
+            latest_shipment_status,
+            shipment_history,
+            cancelled,
+            created_at,
+          } = result.data;
+          // Mapping of Shopify statuses to human-readable text
+          const statusMap = {
+            confirmed: 'Confirmed',
+            out_for_delivery: "Out for Delivery",
+            in_transit: 'In Transit',
+            ready_for_pickup: 'Ready for Pickup',
+            delivered: 'Delivered',
+            fulfilled: 'Fulfilled',
+            failure: 'Failed',
+          };
+
+          // Function to format status if not in the map
+          function formatStatus(status) {
+            if (!status) return '';
+            return statusMap[status] || status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+          }
+          document.getElementById('order_number').textContent = order_number;
+          document.getElementById('shipped_via').textContent = tracking_info[0]?.company || 'Not Available';
+          const displayStatus = formatStatus(latest_shipment_status || fulfillment_status);
+
+          document.getElementById("order_status").textContent = displayStatus;
+
+          var trackingUrl = '';
+          var trackingUrlElement = document.getElementById('tracking_url');
+          trackingUrlElement.textContent = 'Not Available';
+
+          if (tracking_info.length > 0) {
+            trackingUrl = tracking_info[0]?.url;
+            if (tracking_info[0]?.company.toLowerCase() === 'rpsg') {
+              document.getElementById('shipped_via').textContent = 'Local Partner';
+              const phoneNumber = tracking_info[0]?.number;
+              if (phoneNumber) {
+                trackingUrlElement.innerHTML = `<a href="tel:${phoneNumber}" target="_blank">Click Here</a>`;
+              } else {
+                trackingUrlElement.textContent = 'Phone number not available';
+              }
+            } else if (trackingUrl) {
+              trackingUrlElement.innerHTML = `<a href="${trackingUrl}" target="_blank">Click Here</a>`;
+            } else {
+              trackingUrlElement.textContent = 'No Tracking URL Available';
+            }
+          }
+
+          // Function to format timestamp Added By Velocity 10-09-2025
+          const formatTimestamp = (timestamp) => {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            });
+          };
+
+          // Clear all timestamps first
+          const timestampElements = document.querySelectorAll('.timestamp');
+          timestampElements.forEach((el) => (el.textContent = ''));
+
+          // Update stages and timestamps based on shipment history
+          const stages = document.querySelectorAll('.stage');
+          stages.forEach((stage) => {
+            stage.classList.remove('completed', 'order_cancelled', 'active');
+          });
+
+          // Map status to stage index Added by Velocity 10-09-2025
+          const statusToStageMap = {
+            order_placed: 0,
+            ready_for_pickup: 1,
+            picked: 2,
+            in_transit: 3,
+            out_for_delivery: 4,
+            delivered: 5,
+            failure: 5, // Failure maps to the same stage as delivered (final stage)
+          };
+
+          // Process shipment history and update stages
+          if (shipment_history && shipment_history.length > 0) {
+            // Always show order placed as completed with created date first
+            if (created_at) {
+              const orderPlacedTimestamp = stages[0].querySelector('.timestamp');
+              if (orderPlacedTimestamp) {
+                orderPlacedTimestamp.textContent = formatTimestamp(created_at);
+              }
+            }
+            stages[0].classList.add('completed');
+
+            // Sort by timestamp (oldest first)
+            const sortedHistory = [...shipment_history].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            // Find the highest completed stage based on available statuses
+            let highestCompletedStage = 0; // Start from 0 since order placed is always completed
+
+            sortedHistory.forEach((item) => {
+              const stageIndex = statusToStageMap[item.status];
+              if (stageIndex !== undefined && stages[stageIndex]) {
+                // Mark stage as completed
+                stages[stageIndex].classList.add('completed');
+
+                // Track the highest completed stage
+                if (stageIndex > highestCompletedStage) {
+                  highestCompletedStage = stageIndex;
+                }
+
+                // Add timestamp
+                const timestampEl = stages[stageIndex].querySelector('.timestamp');
+                if (timestampEl) {
+                  timestampEl.textContent = formatTimestamp(item.timestamp);
+                }
+              }
             });
 
-            const result = await response.json();
-
-            if (response.ok && result.status) {
-                // Populate tracking data
-                const { order_number, tracking_info, fulfillment_status, shipment_status , cancelled} = result.data;
-                document.getElementById("order_number").textContent = order_number;
-                document.getElementById("shipped_via").textContent =
-                    tracking_info[0]?.company || "Not Available";
-                document.getElementById("order_status").textContent = fulfillment_status;
-
-                var trackingUrl = "";
-                var trackingUrlElement = document.getElementById("tracking_url");
-                trackingUrlElement.textContent = "Not Available";
-                
-              if(tracking_info.length>0) {
-                   trackingUrl = tracking_info[0]?.url;
-                   if (tracking_info[0]?.company.toLowerCase() === "rpsg") {
-                      document.getElementById("shipped_via").textContent = "Local Partner";
-                        const phoneNumber = tracking_info[0]?.number;
-                        if (phoneNumber) {
-                            trackingUrlElement.innerHTML = `<a href="tel:${phoneNumber}" target="_blank">Click Here</a>`;
-                        } else {
-                            trackingUrlElement.textContent = "Phone number not available";
-                        }
-                    } else if (trackingUrl) {
-                        trackingUrlElement.innerHTML = `<a href="${trackingUrl}" target="_blank">Click Here</a>`;
-                    } else {
-                        trackingUrlElement.textContent = "No Tracking URL Available";
-                    }
+            // Fill in intermediate stages as completed (for missing middle statuses)
+            if (highestCompletedStage >= 0) {
+              for (let i = 0; i <= highestCompletedStage; i++) {
+                if (!stages[i].classList.contains('completed')) {
+                  stages[i].classList.add('completed');
+                  // Add a placeholder timestamp for missing stages
+                  const timestampEl = stages[i].querySelector('.timestamp');
+                  if (timestampEl && !timestampEl.textContent) {
+                    timestampEl.textContent = '';
+                  }
                 }
-               
-
-                // Update stages based on shipment status
-               const stages = document.querySelectorAll(".stage");
-                stages.forEach((stage) => {
-                    stage.classList.remove("completed", "order_cancelled", "active");
-                });
-
-                if (shipment_status === "delivered") {
-                    stages.forEach((stage) => stage.classList.add("completed"));
-                    document.getElementById("order_status").textContent = "Delivered";
-                    stages.forEach((stage, index) => {
-                        stage.classList.add("completed");
-                        if(index == 3 && cancelled == 1) {
-                           stage.classList.add("order_cancelled");
-                            document.getElementById("order_status").textContent = "Cancelled";
-                        }
-                    });
-
-                } else if (trackingUrl != "") {
-                   document.getElementById("order_status").textContent = "Shipped";
-                    stages.forEach((stage, index) => {
-                        if (index <= 2) stage.classList.add("completed");
-                        else stage.classList.remove("completed", "active");
-                         if(index == 2 && cancelled == 1) {
-                             stage.classList.add("order_cancelled");
-                             document.getElementById("order_status").textContent = "Cancelled";
-                          }
-                    });
-                   
-                }  else if (fulfillment_status === "fulfilled") {
-                   document.getElementById("order_status").textContent = "Fulfilled";
-                    stages.forEach((stage, index) => {
-                        if (index <= 1) stage.classList.add("completed");
-                        else stage.classList.remove("completed", "active");
-                       if(index == 1 && cancelled == 1) {
-                           stage.classList.add("order_cancelled");
-                         document.getElementById("order_status").textContent = "Cancelled";
-                        }
-                    });
-                   
-                } else if (fulfillment_status === "unfulfilled") {
-                  document.getElementById("order_status").textContent = "Unfulfilled";
-                    stages.forEach((stage, index) => {
-                        if (index === 0) stage.classList.add("completed");
-                        else stage.classList.remove("completed", "active");
-                       if(index == 0 && cancelled == 1) {
-                           stage.classList.add("order_cancelled");
-                         document.getElementById("order_status").textContent = "Cancelled";
-                        }
-                    });
-                   
-                } else {
-                    stages.forEach((stage) => stage.classList.remove("completed", "active"));
-                }
-
-                trackingContainer.style.display = "block";
-                clearError(); // Clear any previous error messages
-            } else {
-                displayError(result.message || "Order not found. Please try again.");
+              }
             }
-        } catch (error) {
-            console.error("Error fetching order status:", error);
-            displayError("An error occurred. Please try again.");
-        } finally {
-            // Re-enable the button and input field
-            fetchButton.disabled = false;
-            orderInput.disabled = false;
-            fetchButton.classList.remove("disabled");
-            buttonText.style.display = "inline";
-            buttonLoader.style.display = "none";
+
+            // Set the latest status as active
+            const latestStageIndex = statusToStageMap[latest_shipment_status];
+            if (latestStageIndex !== undefined && stages[latestStageIndex]) {
+              // Don't set active class for delivered stage since it's the final stage
+              if (latest_shipment_status !== 'delivered' && latest_shipment_status !== 'failure') {
+                stages[latestStageIndex].classList.add('active');
+              }
+            }
+
+            // Handle cancellation
+            if (cancelled == 1) {
+              // Remove active class from current stage
+              const latestStageIndex = statusToStageMap[latest_shipment_status];
+              if (latestStageIndex !== undefined && stages[latestStageIndex]) {
+                stages[latestStageIndex].classList.remove('active');
+              }
+
+              // Mark all stages from latest_shipment_status onwards as cancelled (red)
+              if (latestStageIndex !== undefined || latestStageIndex!=0) {
+                for (let i = latestStageIndex+1; i < stages.length; i++) {
+                  stages[i].classList.add('order_cancelled');
+                }
+              } else {
+                // If latest_shipment_status is null, mark all stages after order placed as cancelled
+                for (let i = 1; i < stages.length; i++) {
+                  stages[i].classList.add('order_cancelled');
+                }
+              }
+
+              // Update status text
+              document.getElementById('order_status').textContent = 'Cancelled';
+            }
+          } else {
+            // Below code for the old orders that not having shippment history Added by Velocity 12-09-2025
+            // Fallback to old logic if no shipment history
+            // Always show order placed as completed with created date
+            if (created_at) {
+              const orderPlacedTimestamp = stages[0].querySelector('.timestamp');
+              if (orderPlacedTimestamp) {
+                orderPlacedTimestamp.textContent = formatTimestamp(created_at);
+              }
+            }
+            stages[0].classList.add('completed');
+
+            if (latest_shipment_status === 'delivered' || latest_shipment_status === 'failure') {
+              stages.forEach((stage) => stage.classList.add('completed'));
+              if (cancelled == 1) {
+                // Mark all stages as cancelled
+                stages.forEach((stage) => {
+                  stage.classList.add('order_cancelled');
+                });
+                document.getElementById('order_status').textContent = 'Cancelled';
+              } else {
+                if (latest_shipment_status === 'failure') {
+                  document.getElementById('order_status').textContent = 'Failed';
+                } else {
+                  document.getElementById('order_status').textContent = 'Delivered';
+                }
+              }
+            } else if (fulfillment_status === 'fulfilled') {
+              document.getElementById('order_status').textContent = 'Fulfilled';
+              stages.forEach((stage, index) => {
+                if (index <= 1) stage.classList.add('completed');
+                if (cancelled == 1) {
+                  if (index == 1) {
+                    stage.classList.add('order_cancelled');
+                  }
+                  // Mark all future stages as cancelled
+                  for (let i = 2; i < stages.length; i++) {
+                    stages[i].classList.add('order_cancelled');
+                  }
+                  document.getElementById('order_status').textContent = 'Cancelled';
+                }
+              });
+            } else if (fulfillment_status === 'unfulfilled') {
+              document.getElementById('order_status').textContent = 'Unfulfilled';
+              stages.forEach((stage, index) => {
+                if (index === 0) stage.classList.add('completed');
+                if (cancelled == 1) {
+                  for (let i = 1; i < stages.length; i++) {
+                    stages[i].classList.add('order_cancelled');
+                  }
+                  document.getElementById('order_status').textContent = 'Cancelled';
+                }
+              });
+            } else {
+              // At minimum, show order placed as completed
+              if (created_at) {
+                const orderPlacedTimestamp = stages[0].querySelector('.timestamp');
+                if (orderPlacedTimestamp) {
+                  orderPlacedTimestamp.textContent = formatTimestamp(created_at);
+                }
+              }
+              stages[0].classList.add('completed');
+
+              // Handle cancellation for minimal data
+              if (cancelled == 1) {
+                // Mark all future stages as cancelled
+                for (let i = 1; i < stages.length; i++) {
+                  stages[i].classList.add('order_cancelled');
+                }
+                document.getElementById('order_status').textContent = 'Cancelled';
+              }
+            }
+          }
+
+          trackingContainer.style.display = 'block';
+          clearError();
+        } else {
+          displayError(result.message || 'Order not found. Please try again.');
         }
+      } catch (error) {
+        console.error('Error fetching order status:', error);
+        displayError('An error occurred. Please try again.');
+      } finally {
+        // Re-enable the button and input field
+        fetchButton.disabled = false;
+        orderInput.disabled = false;
+        fetchButton.classList.remove('disabled');
+        buttonText.style.display = 'inline';
+        buttonLoader.style.display = 'none';
+      }
     });
-});
+  });
 </script>
