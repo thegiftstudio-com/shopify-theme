@@ -587,6 +587,16 @@
         });
 
       }
+      {% comment %} Added by Velocity on 11-09-2025 to push the events data for concierge form submissions {% endcomment %}
+         function push_concierge_form_query(response) {
+        // Push normalized data to GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'concierge_form_filled',
+          concierge_form_data: response
+        });
+
+      }
   // Added by Velocity 16-07-2025: Function to push the WhatsApp Enquiry For International Products event to the  GTM and Meta
    function pushEnquiryOnWhatsAppEvent() {
     window.dataLayer = window.dataLayer || [];
