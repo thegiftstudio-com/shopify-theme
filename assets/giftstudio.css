@@ -80,7 +80,7 @@ margin-bottom: 100px;
 }
 @media (max-width: 600px) {
   .announcement-bar__message {
-    font-size: 10px;
+    font-size: 10px !important;
   }
 }
 .shopify-section-header-sticky {
