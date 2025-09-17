@@ -95,7 +95,7 @@
       ],
       "custom_css": [
         ".announcement-bar__message {font-size: 13px;}",
-        "@media (max-width: 600px) {.announcement-bar__message {font-size: 11px; }}"
+        "@media (max-width: 600px) {.announcement-bar__message {font-size: 10px; }}"
       ],
       "settings": {
         "auto_scroll": false
