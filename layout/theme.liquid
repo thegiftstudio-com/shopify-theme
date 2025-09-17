@@ -824,6 +824,22 @@
                   push_international_form_query(normalizedFormResponse);
                    console.log("formResponse -->", rawFormResponse);
                    break;
+                 case "CONCIERGE":
+                 console.log(event);
+                     rawFormResponse = JSON.parse(event.data.formResponse);
+                     // Normalize the raw response data
+                      var normalizedFormResponse = {
+                          name: rawFormResponse["Full Name"], 
+                          email: rawFormResponse["Email"],
+                          phoneNumber: rawFormResponse["Phone Number"],
+                          city: rawFormResponse["City"],
+                          enquiryDetails: rawFormResponse["Enquiry Details"]
+                      };
+                      // Sending data to GTM for the form response
+                      push_concierge_form_query(normalizedFormResponse);
+                      console.log("formResponse -->", rawFormResponse);
+                      break;
+
               }
           }
       }
