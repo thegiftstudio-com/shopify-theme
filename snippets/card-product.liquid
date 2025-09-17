@@ -193,7 +193,9 @@
           {% comment %}
             <div class="wc_product_review_badge" data-handle="{{ card_product.handle }}" data-product_id="{{ card_product.id }}"></div>
           {% endcomment %}
-          <div class="card-information">
+          <div class="card-information" style="
+    text-align: center;
+">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light vendor_name center">{{ card_product.vendor }}</div>
@@ -201,7 +203,13 @@
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
-            {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
+            <!-- Start of Judge.me code -->
+              {% comment %}
+              To hide the default badge, please comment out the line below. 
+              <div class='jdgm-widget jdgm-preview-badge'>
+                {{ card_product.metafields.judgeme.badge }}
+              </div> {% endcomment %}
+            <!-- End of Judge.me code -->
               {% liquid
                 assign rating_decimal = 0
                 assign decimal = card_product.metafields.reviews.rating.value.rating | modulo: 1
@@ -211,6 +219,7 @@
                   assign rating_decimal = 1
                 endif
               %}
+               {%- if  card_product.metafields.reviews.rating.value != blank -%}
               <div
                 class="rating"
                 role="img"
@@ -235,8 +244,14 @@
                   {{ 'accessibility.total_reviews' | t -}}
                 </span>
               </p>
-            {%- endif -%}
-
+            {%  else %}
+              {% comment %} Hide empty ratings and show a blank space {% endcomment %}
+              <div
+                class="rating"
+                role="img"
+              >
+              </div>
+            {% endif %}
             {% render 'price', product: card_product, price_class: '' %}
 
             
