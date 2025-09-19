@@ -387,11 +387,8 @@
     // Calculate total price
     totalprice = totalprice * 0.01;
     
-    // Update visibility
-    const elementToShow = isRemoved ? 
-      document.querySelector(`.add_${varient_id}`) : 
-      document.querySelector(`.remove_${varient_id}`);
-    if (elementToShow) elementToShow.style.display = 'block';
+    if (isRemoved) $(`.add_${varient_id}`).show();
+    else $(`.remove_${varient_id}`).show();
     
     // Hide loader
     const loader = document.querySelector(`.loader_${loder_id}`);
