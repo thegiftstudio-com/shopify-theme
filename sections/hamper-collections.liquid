@@ -386,7 +386,7 @@
 
     // Calculate total price
     totalprice = totalprice * 0.01;
-    
+    {% comment %} Display the remove and add buttons, keeping them centered. Added by Velocity 19-09-2025 {% endcomment %}
     if (isRemoved) $(`.add_${varient_id}`).show();
     else $(`.remove_${varient_id}`).show();
     
