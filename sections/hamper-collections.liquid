@@ -386,12 +386,9 @@
 
     // Calculate total price
     totalprice = totalprice * 0.01;
-    
-    // Update visibility
-    const elementToShow = isRemoved ? 
-      document.querySelector(`.add_${varient_id}`) : 
-      document.querySelector(`.remove_${varient_id}`);
-    if (elementToShow) elementToShow.style.display = 'block';
+    {% comment %} Display the remove and add buttons, keeping them centered. Added by Velocity 19-09-2025 {% endcomment %}
+    if (isRemoved) $(`.add_${varient_id}`).show();
+    else $(`.remove_${varient_id}`).show();
     
     // Hide loader
     const loader = document.querySelector(`.loader_${loder_id}`);
@@ -1881,6 +1878,8 @@ $(selector).css('display', 'block');
         displayBoxProducts();
         displayChooseBoxProducts = true;
       }
+      {% comment %}
+       As per the recent discussion with TGS team the below functionality to hide the boxes is commented by Velocity on 18-09-2025 
       $("#product-card2 > .product-card").each(function() { 
 	
         	$(this).removeClass("data-boxquant-hide");
@@ -1893,6 +1892,7 @@ $(selector).css('display', 'block');
         
         	}
         }); 
+       {% endcomment %}
       
       $('.checkout-bar .progressbar-steps .progressbar-dots').removeClass('active');
       $(".tab-pane").hide();
@@ -1932,6 +1932,8 @@ $(selector).css('display', 'block');
         displayBoxProducts();
         displayChooseBoxProducts = true;
       }
+      {% comment %} 
+      As per the recent discussion with TGS team the below functionality to hide the boxes is commented by Velocity on 18-09-2025  
       $("#product-card2 > .product-card").each(function() { 
 	
         	$(this).removeClass("data-boxquant-hide");
@@ -1944,6 +1946,7 @@ $(selector).css('display', 'block');
         
         	}
         }); 
+       {% endcomment %}
       
       $('.checkout-bar .progressbar-steps .progressbar-dots').removeClass('active');
       $(".tab-pane").hide();
@@ -3445,9 +3448,12 @@ async function displayBoxProducts() {
       const boxMaxQuantData = tagsString.match(/quant-(\d+)/);
       const boxMaxQuantFinal = boxMaxQuantData ? parseInt(boxMaxQuantData[1]) : 0;
       var showBox = '';
+      {% comment %}
+      As per the recent discussion with TGS team the below functionality to hide the boxes is commented by Velocity on 18-09-2025 
       if(boxMaxQuantFinal < window.totalGiftItemsCount){
         showBox = 'data-boxquant-hide'
       }
+      {% endcomment %}
 
       // Determine classes based on location and tags
       let expressClass = tagsString.toLowerCase().includes(getLocation) ? "expressdel" : "";
