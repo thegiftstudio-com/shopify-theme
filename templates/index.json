@@ -1677,6 +1677,15 @@
     "popular_categories_fWTBcV": {
       "type": "popular_categories",
       "blocks": {
+        "collection_3xARHC": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Wedding.jpg",
+            "coll_title": "Diwali",
+            "card_url": "https://thegiftstudio.com/collections/diwali-gift-hampers"
+          }
+        },
         "collection_W4QE4W": {
           "type": "collection",
           "settings": {
@@ -1693,15 +1702,6 @@
             "coll_img": "shopify://shop_images/Annivarsary.jpg",
             "coll_title": "Anniversary Range",
             "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
-          }
-        },
-        "collection_3xARHC": {
-          "type": "collection",
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Wedding.jpg",
-            "coll_title": "Wedding Series",
-            "card_url": "https://thegiftstudio.com/collections/curated-hamper-wedding"
           }
         },
         "collection_Cadbx8": {
@@ -1774,9 +1774,9 @@
         }
       },
       "block_order": [
+        "collection_3xARHC",
         "collection_W4QE4W",
         "collection_gqbbat",
-        "collection_3xARHC",
         "collection_Cadbx8",
         "collection_qyaELf",
         "collection_Lawqce",

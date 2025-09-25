@@ -278,19 +278,19 @@
         "include_margins": true
       }
     },
-    "featured_collection_i4pY8K": {
+    "featured_collection_DEBAfJ": {
       "type": "featured-collection",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "custom_class": "",
-        "title": "Bestselling Hampers",
+        "title": "Featured collection",
         "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
         "collection": "curated-hamper-bestseller",
         "products_to_show": 6,
-        "columns_desktop": 5,
+        "columns_desktop": 4,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
@@ -315,6 +315,6 @@
     "0d50ffb3-5985-4056-bf58-288e07994640",
     "16921934035dda6431",
     "17448981608c2c1bb0",
-    "featured_collection_i4pY8K"
+    "featured_collection_DEBAfJ"
   ]
 }
