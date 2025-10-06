@@ -2745,6 +2745,22 @@
         "padding_bottom": 36
       }
     },
+    "custom_liquid_D4mDeP": {
+      "type": "custom-liquid",
+      "custom_css": [
+        ".install-container {text-align: center; margin: 20px auto;}",
+        ".install-description {font-size: 16px; margin-bottom: 10px; color: #333;}",
+        ".sp_install_msg {display: inline-block; background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;}",
+        ".sp_install_msg:hover {background-color: #0056b3;}"
+      ],
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"install-container\">\n<p class=\"install-description\">\n    Install our app to get faster access and a better experience.\n  </p>\n  <div class=\"sp_install_msg\">Install Now</div>\n</div>",
+        "color_scheme": "background-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "fa1d9243-eb3c-4312-ae61-28962e9dc32f": {
       "type": "newsletter",
       "blocks": {
@@ -2801,6 +2817,7 @@
     "44e68644-3ce5-453b-995b-15d6d7cb8043",
     "21f5ca95-8e9a-471b-9d38-0ef4ea8de445",
     "2dcbf66e-06c1-4847-ad43-081470cca6b4",
+    "custom_liquid_D4mDeP",
     "fa1d9243-eb3c-4312-ae61-28962e9dc32f"
   ]
 }
