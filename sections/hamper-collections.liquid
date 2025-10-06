@@ -2975,13 +2975,14 @@ $(selector).css('display', 'block');
     let navHeight;
     $(window).bind('scroll', function() {
       if (get_high) {
-        navHeight = $('.floating_box').offset().top;
+        navHeight = $('.progress-wrap').height() + $('.page-info').height() ;
       }
       if ($(document).scrollTop() > navHeight) {
         $('.floating_box').addClass('fixedtabs_scroll');
-        let totalHeight = $(".announcement-bar").height() + $("sticky-header").height() - 5;
+        let totalHeight = $(".announcement-bar").height() + $("sticky-header").height() - 10;
+        let mobileH=$(".header--mobile-center").height() + $(".announcement-bar").height() - 10;
         if ($(document).width() < 768) {
-          $(".floating_box").css("top", ` ${totalHeight}px`);
+          $(".floating_box").css("top", ` ${mobileH}px`);
         } else {
           $(".floating_box").css("top", `  ${totalHeight}px`); // Added by Velocity. To fix the floating css for Hamper collection menu. 04-08-2025
         }
@@ -2998,9 +2999,9 @@ $(selector).css('display', 'block');
     $(window).bind('scroll', function() {
       if (get_high2) {
         if ($(window).width() > 768) {
-          orderHeight = $('footer').offset().top - ($("footer").height() * 1.5);
+          orderHeight = $('footer').offset().top;
         } else {
-          orderHeight = $('footer').offset().top - ($("footer").height());
+          orderHeight = $('footer').offset().top;
         }
       }
       $('body').on('scroll', '.card-container', function() {});
