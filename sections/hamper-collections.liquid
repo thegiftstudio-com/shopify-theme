@@ -2970,18 +2970,20 @@ $(selector).css('display', 'block');
     return discountedPrice;
   }
   const storedDiscountedPrice = localStorage.getItem("discountedPrice")
+  // Made changes in the below function to fix the CLS issue. Added by Velocity 08-10-2025
   $(document).ready(function() {
     let get_high = true;
     let navHeight;
     $(window).bind('scroll', function() {
       if (get_high) {
-        navHeight = $('.floating_box').offset().top;
+        navHeight = $('.progress-wrap').height() + $('.page-info').height() ;
       }
       if ($(document).scrollTop() > navHeight) {
         $('.floating_box').addClass('fixedtabs_scroll');
-        let totalHeight = $(".announcement-bar").height() + $("sticky-header").height() - 5;
+        let totalHeight = $(".announcement-bar").height() + $("sticky-header").height() - 10;
+        let mobileH=$(".header--mobile-center").height() + $(".announcement-bar").height() - 10;
         if ($(document).width() < 768) {
-          $(".floating_box").css("top", ` ${totalHeight}px`);
+          $(".floating_box").css("top", ` ${mobileH}px`);
         } else {
           $(".floating_box").css("top", `  ${totalHeight}px`); // Added by Velocity. To fix the floating css for Hamper collection menu. 04-08-2025
         }
@@ -2991,16 +2993,16 @@ $(selector).css('display', 'block');
       get_high = false;
     });
   });
-  
+  // Made changes in the order Height for fixing the BYOH CLS Issue. Added by Velocity 08-10-2025
   function orderscroller() {
     let get_high2 = true;
     let orderHeight;
     $(window).bind('scroll', function() {
       if (get_high2) {
         if ($(window).width() > 768) {
-          orderHeight = $('footer').offset().top - ($("footer").height() * 1.5);
+          orderHeight = $('footer').offset().top;
         } else {
-          orderHeight = $('footer').offset().top - ($("footer").height());
+          orderHeight = $('footer').offset().top;
         }
       }
       $('body').on('scroll', '.card-container', function() {});
