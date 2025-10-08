@@ -2970,6 +2970,7 @@ $(selector).css('display', 'block');
     return discountedPrice;
   }
   const storedDiscountedPrice = localStorage.getItem("discountedPrice")
+  // Made changes in the below function to fix the CLS issue. Added by Velocity 08-10-2025
   $(document).ready(function() {
     let get_high = true;
     let navHeight;
@@ -2992,7 +2993,7 @@ $(selector).css('display', 'block');
       get_high = false;
     });
   });
-  
+  // Made changes in the order Height for fixing the BYOH CLS Issue. Added by Velocity 08-10-2025
   function orderscroller() {
     let get_high2 = true;
     let orderHeight;
