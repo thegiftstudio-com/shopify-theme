@@ -615,4 +615,15 @@
     };
     window.dataLayer.push(eventData);
     }
+    // Added by Velocity 14-10-2025: Function to push the PWA App install event to the  GTM, Posthog and Meta.
+   function pushInstallNow() {
+    window.dataLayer = window.dataLayer || [];
+    const eventData = {
+        event: "install_now_click",
+        ecommerce: {
+            user_id: getCustomerId(),
+        }
+    };
+    window.dataLayer.push(eventData);
+    }
 </script>
