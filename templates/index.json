@@ -1411,6 +1411,7 @@
     },
     "custom_liquid_D4mDeP": {
       "type": "custom-liquid",
+      "disabled": true,
       "custom_css": [
         ".install-container {text-align: center; margin: 20px auto;}",
         ".install-description {font-size: 16px; margin-bottom: 10px; color: #333;}",
