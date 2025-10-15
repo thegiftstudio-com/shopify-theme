@@ -17,7 +17,7 @@
         "announcement_RnxM4p": {
           "type": "announcement",
           "settings": {
-            "text": "For Any Queries Please Call Us On +91-8976449556",
+            "text": "FOR QUERIES PLEASE CALL: +91-8422040732 / +91-8108190591",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": "https://wa.me/918976449556"
@@ -95,7 +95,7 @@
       ],
       "custom_css": [
         ".announcement-bar__message {font-size: 11px;}",
-        "@media (max-width: 600px) {.announcement-bar__message {font-size: 9px; }}"
+        "@media (max-width: 600px) {.announcement-bar__message {font-size: 8.5px; }}"
       ],
       "settings": {
         "auto_scroll": false
