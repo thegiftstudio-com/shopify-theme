@@ -2359,9 +2359,9 @@ $(selector).css('display', 'block');
         }
     
     if(parseInt(maxTAT) > 0) {
-      maxTAT = parseInt(maxTAT) + parseInt(cityTat)+6;
+      maxTAT = parseInt(maxTAT) + parseInt(cityTat)+6;  //Added by velocity 16-10-2025 add 6 days buffer for order delivery.
     } else {
-      maxTAT = parseInt(cityTat)+6; 
+      maxTAT = parseInt(cityTat)+6; //Added by velocity 16-10-2025 add 6 days buffer for order delivery.
     }
 
     const mobileDatePicker = $("#delivery-date-byoh-mobile");
