@@ -2441,7 +2441,7 @@ $(selector).css('display', 'block');
     webDatePicker.datepicker("option", "minDate", minDate);
     webDatePicker.datepicker("setDate", finalDate);
     }
-    return maxTAT+sundayCount;
+    return maxTAT+sundayCount+6; //Added by velocity 16-10-2025 add 6 days buffer for order delivery.
 }
     
   async function fetchFilterProducts(perticularCollectionId,isfirst=0) {
