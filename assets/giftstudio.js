@@ -114,7 +114,7 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     //Added by Velocity 18-08-2025 Increase by 1-day TAT in case courier pickup not happen.
    if (selected_warehouse_tat+product_Tat > 0 && disableCourierPickup) {
     if (ndd_flag || selected_warehouse_tat >0 ) {
-      product_Tat += 1;
+      product_Tat += 3;  // Added by Velocity 15-10-2025, As per discussion with TGS team, we need to increase +3 days for NDD orders.
    }
   }
     minDate.setDate(minDate.getDate() + selected_warehouse_tat + product_Tat);
