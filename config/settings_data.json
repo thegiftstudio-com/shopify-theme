@@ -138,7 +138,7 @@
     "show_cart_note": false,
     "cart_drawer_collection": "",
     "enable_sunday_delivery": false,
-    "disable_courier_pickup": false,
+    "disable_courier_pickup": true,
     "checkout_logo_image": "shopify://shop_images/revised-logo.svg",
     "checkout_accent_color": "#121212",
     "checkout_button_color": "#121212",
