@@ -191,7 +191,9 @@
       {% render 'facebook_og_tags' %}
             {% render 'twitter_cards' %}
     {% endcomment %}
-    
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
 
     {% render 'meta-tags' %}
 
