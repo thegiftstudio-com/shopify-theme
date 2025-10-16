@@ -76,7 +76,6 @@
     {% if request.path contains '/tagged/' %}
       <meta name="robots" content="noindex">
     {% endif %}
-    <meta name="description" content="{{ page_description | escape }}">
     <meta name="format-detection" content="telephone=no">
     
     <!-- Analytics noscript fallbacks -->
@@ -192,9 +191,7 @@
       {% render 'facebook_og_tags' %}
             {% render 'twitter_cards' %}
     {% endcomment %}
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    
 
     {% render 'meta-tags' %}
 
