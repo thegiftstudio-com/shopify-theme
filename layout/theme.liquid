@@ -1,27 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
-    <!-- Other head content -->
-  <!-- PERFORMANCE: Critical CSS for above-the-fold slideshow content -->
-    {% comment %}
-      Preload fonts loaded by giftstudio.css
-    {% endcomment %}
 
-    <!-- Open Graph Meta Tags -->
-    {% if collection %}
-      <meta property="og:title" content="{{ collection.title }}">
-      <meta property="og:type" content="website">
-      <meta property="og:url" content="{{ collection.url | absolute_url }}">
-      <meta property="og:image" content="{{ collection.image | img_url: '1200x630' | absolute_url }}">
-      <meta property="og:description" content="{{ collection.description | strip_html | truncate: 160 }}">
-    {% else %}
-      <!-- Default OG tags if no collection page -->
-      <meta property="og:title" content="{{ shop.name }}">
-      <meta property="og:type" content="website">
-      <meta property="og:url" content="{{ shop.url }}">
-      <meta property="og:image" content="{{ shop.logo | img_url: '1200x630' | absolute_url }}">
-      <meta property="og:description" content="{{ shop.description }}">
-    {% endif %}
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- Other meta tags -->
