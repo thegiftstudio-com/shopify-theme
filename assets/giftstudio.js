@@ -117,7 +117,6 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
       product_Tat += 1;
    }
   }
-    product_Tat += 6; // Added by Velocity, 15-10-25 As per discussion with Team (Mohit), Add 6 days buffer to all the orders for delivery.
     minDate.setDate(minDate.getDate() + selected_warehouse_tat + product_Tat);
     if($datePicker!=''){
     // $datePicker.addClass("ui-state-highlight");
