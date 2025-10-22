@@ -63,11 +63,11 @@
 
     {% if collection.metafields.custom.custom_collection_title != blank %}
     <div class="collection-hero__text-wrapper page-width">
-      <h1 class="collection-hero__title center">
+      {% comment %} <h1 class="collection-hero__title center"> {% endcomment %}
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
       {% comment %}  {{- collection.title | escape -}}{% endcomment %}
       {{ collection.metafields.custom.custom_collection_title.value }}
-      </h1>
+      {% comment %} </h1> {% endcomment %}
 {% comment %}
       {%- if section.settings.show_collection_description -%}
         <div class="collection-hero__description rte">{{ collection.description | replace: '<img', '<img loading="lazy"' }}</div>
