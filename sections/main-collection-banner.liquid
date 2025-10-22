@@ -64,7 +64,7 @@
     {% if collection.metafields.custom.custom_collection_title != blank %}
     <div class="collection-hero__text-wrapper page-width">
       {% comment %} <h1 class="collection-hero__title center"> {% endcomment %}
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+        <span class="visually-hidden center">{{ 'sections.collection_template.title' | t }}: </span>
       {% comment %}  {{- collection.title | escape -}}{% endcomment %}
       {{ collection.metafields.custom.custom_collection_title.value }}
       {% comment %} </h1> {% endcomment %}
