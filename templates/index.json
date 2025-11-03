@@ -14,6 +14,7 @@
       "blocks": {
         "text_cKqi47": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/diwali.jpg",
@@ -51,15 +52,6 @@
             "img_url": "https://thegiftstudio.com/collections/fathers-day-special"
           }
         },
-        "55a0072b-ab8c-4303-8172-e45a1c3213af": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "gift_img": "shopify://shop_images/BYOH.jpg",
-            "gift_title": "Build YourOwn Hamper",
-            "img_url": "https://thegiftstudio.com/pages/hamper-collections?bundle_id=1015"
-          }
-        },
         "text_UyRWRf": {
           "type": "Text",
           "settings": {
@@ -67,6 +59,15 @@
             "gift_img": "shopify://shop_images/BIRTHDAY_4d1b6376-e4be-4e73-9cb4-5164caf2cbe3.jpg",
             "gift_title": "Birthday",
             "img_url": "https://thegiftstudio.com/collections/birthday-gifts-hampers"
+          }
+        },
+        "55a0072b-ab8c-4303-8172-e45a1c3213af": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/BYOH.jpg",
+            "gift_title": "Build YourOwn Hamper",
+            "img_url": "https://thegiftstudio.com/pages/hamper-collections?bundle_id=1015"
           }
         },
         "text_kMcpwt": {
@@ -288,8 +289,8 @@
         "text_A9DaUG",
         "text_f7QVXi",
         "text_zKNP6D",
-        "55a0072b-ab8c-4303-8172-e45a1c3213af",
         "text_UyRWRf",
+        "55a0072b-ab8c-4303-8172-e45a1c3213af",
         "text_kMcpwt",
         "text_JKAPRb",
         "text_RRwDm3",
