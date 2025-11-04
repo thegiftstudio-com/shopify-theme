@@ -2594,6 +2594,70 @@
         "padding_bottom": 36
       }
     },
+    "media_gallery_qXcxTW": {
+      "type": "media-gallery",
+      "blocks": {
+        "media_card_A73kLz": {
+          "type": "media_card",
+          "settings": {
+            "title": "Shashwat Goenka",
+            "video_url": "https://www.youtube.com/embed/XQVaiHnzqYU?si=bp4odIVHWMcjF6wj",
+            "image": "shopify://shop_images/21270.jpg",
+            "button_link": "#"
+          }
+        },
+        "media_card_nNhTNC": {
+          "type": "media_card",
+          "settings": {
+            "title": "Shashwat Goenka",
+            "video_url": "",
+            "image": "shopify://shop_images/21270.jpg",
+            "button_link": ""
+          }
+        },
+        "media_card_KHkMFB": {
+          "type": "media_card",
+          "settings": {
+            "title": "Shashwat Goenka",
+            "video_url": "",
+            "image": "shopify://shop_images/21270.jpg",
+            "button_link": ""
+          }
+        },
+        "media_card_dDQPHd": {
+          "type": "media_card",
+          "settings": {
+            "title": "Shashwat Goenka",
+            "video_url": "",
+            "image": "shopify://shop_images/21270.jpg",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "media_card_A73kLz",
+        "media_card_nNhTNC",
+        "media_card_KHkMFB",
+        "media_card_dDQPHd"
+      ],
+      "name": "Media Gallery Carousel",
+      "settings": {
+        "title": "Latest News",
+        "subtitle": "What the Media Says About Us",
+        "description": "Stay updated with the latest news, achievements, and industry recognition that highlight our commitment innovation.",
+        "title_font_size": 26,
+        "title_font_weight": "700",
+        "title_color": "#000000",
+        "subtitle_font_size": 16,
+        "subtitle_font_weight": "600",
+        "subtitle_color": "#000000",
+        "description_font_size": 15,
+        "description_font_weight": "400",
+        "description_color": "#555555",
+        "enable_lazy_loading": true,
+        "view_all_link": "#"
+      }
+    },
     "9e0c5693-7e15-4e09-9216-56a8736bf20c": {
       "type": "image-banner",
       "blocks": {
@@ -2817,6 +2881,7 @@
     "6fe28f13-5fef-462e-84b9-9b167f6c2b84",
     "image_banner_cnJg7y",
     "70084562-acce-489e-9a47-dc0461d14617",
+    "media_gallery_qXcxTW",
     "9e0c5693-7e15-4e09-9216-56a8736bf20c",
     "44e68644-3ce5-453b-995b-15d6d7cb8043",
     "21f5ca95-8e9a-471b-9d38-0ef4ea8de445",
