@@ -1,0 +1,119 @@
+{% if template == 'index' %}
+  <div id="install-popup" class="install-popup">
+    <div class="install-popup-content">
+      <button id="closed-popup" class="close-btn">&times;</button>
+      <div class="install-text">
+        <div class="install-icon">
+          <svg width="25" height="38" viewBox="0 0 25 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.05797 37.8461C2.21021 37.8461 1.48861 37.5484 0.893169 36.9529C0.297723 36.3575 0 35.6365 0 34.79V3.05607C0 2.18561 0.292046 1.45897 0.876137 0.876138C1.46023 0.293308 2.18751 0.00126154 3.05797 0H19.7973C20.6425 0 21.3635 0.297723 21.9602 0.893168C22.5557 1.48861 22.8534 2.21021 22.8534 3.05797V9.13984C23.3239 9.1903 23.7327 9.38584 24.0796 9.72645C24.4265 10.0658 24.6 10.4745 24.6 10.9527V14.3002C24.6 14.7783 24.4265 15.187 24.0796 15.5264C23.7327 15.8657 23.3239 16.0613 22.8534 16.113V34.7882C22.8534 35.6334 22.5557 36.3543 21.9602 36.9511C21.3648 37.5465 20.6438 37.8442 19.7973 37.8442L3.05797 37.8461ZM3.05797 35.9538H19.7973C20.1367 35.9538 20.4155 35.8447 20.6337 35.6264C20.8519 35.4082 20.9611 35.1294 20.9611 34.79V3.05607C20.9611 2.71672 20.8519 2.43792 20.6337 2.21967C20.4155 2.00143 20.1367 1.89231 19.7973 1.89231H3.05797C2.71735 1.89231 2.43792 2.00143 2.21967 2.21967C2.00143 2.43792 1.89231 2.71735 1.89231 3.05797V34.79C1.89231 35.1294 2.00143 35.4082 2.21967 35.6264C2.43792 35.8447 2.71735 35.9538 3.05797 35.9538ZM11.4276 8.15205C11.8414 8.15205 12.1871 8.01328 12.4646 7.73575C12.7422 7.45821 12.8809 7.11129 12.8809 6.69498C12.8809 6.27867 12.7422 5.93238 12.4646 5.6561C12.1871 5.37983 11.8408 5.24106 11.4257 5.23979C11.0107 5.23853 10.6644 5.3773 10.3869 5.6561C10.1093 5.9349 9.97056 6.28182 9.97056 6.69687C9.97056 7.11192 10.1093 7.45758 10.3869 7.73385C10.6644 8.01013 11.0113 8.15079 11.4276 8.15205Z" fill="black"/>
+          </svg>
+        </div>
+        <div class="install-message">
+          <strong>Still browsing?</strong><br>
+          Install for a better experience!
+        </div>
+      </div>
+      <button id="install-btn" class="install-btn sp_install_msg" onclick="pushInstallNow()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" viewBox="0 0 26 23" fill="none">
+          <path d="M13 16.7917L4.875 9.79514L7.15 7.76615L11.375 11.4043V0H14.625V11.4043L18.85 7.76615L21.125 9.79514L13 16.7917ZM3.25 22.3889C2.35625 22.3889 1.59142 22.1151 0.9555 21.5675C0.319583 21.0199 0.00108333 20.3608 0 19.5903V15.3924H3.25V19.5903H22.75V15.3924H26V19.5903C26 20.3599 25.682 21.019 25.0461 21.5675C24.4102 22.116 23.6448 22.3898 22.75 22.3889H3.25Z" fill="black"/>
+        </svg>
+        Install App
+      </button>
+    </div>
+  </div>
+{% endif %}
+<style>
+    .install-popup {
+      position: fixed;
+      bottom: 20px;
+      left: -350px; /* hidden off-screen */
+      width: 300px;
+      background: #fff0d9;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 16px;
+      z-index: 9999;
+      font-family: 'Helvetica', sans-serif;
+    }
+
+    .install-popup.show {
+      left: 20px; /* slide in */
+    }
+
+    .install-popup-content {
+      position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        background: none;
+        border: none;
+        font-size: 25px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .install-text {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .install-icon svg {
+    flex-shrink: 0;
+  }
+
+  .install-message {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+  }
+
+    .install-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #ffffff;
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      font-size:18px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .install-popup {
+        width: 75%;
+        left: -100%;
+      }
+
+      .install-popup.show {
+        left: 5%;
+      }
+    }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const $popup = $('#install-popup');
+
+    // Show popup with slide-in animation
+    setTimeout(function () {
+      $popup.addClass('show');
+    }, 500);
+
+    // Close popup on button click
+    $('#closed-popup , #install-btn').on('click', function () {
+      $popup.removeClass('show');
+    });
+  });
+</script>
