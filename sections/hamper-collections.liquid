@@ -1647,9 +1647,10 @@ $(selector).css('display', 'block');
     // Final inventory validation before checkout
     const currentLocation = localStorage.getItem('location');
     let inventoryIssues = [];
-    console.log(addToCartData)
+    
     // Check inventory for all items in cart
     Object.keys(addToCartData).forEach(function (productId) {
+      const item = addToCartData[productId];
       const productCard = $(`.add_${productId}`).closest('.product-card');
       
       if (productCard.length > 0) {
@@ -1670,8 +1671,8 @@ $(selector).css('display', 'block');
           currentInventory = parseInt(dataGurgaon) || 0;
         } else if (currentLocation === 'location-bangalore') {
           currentInventory = parseInt(dataBangalore) || 0;
-        }         
-        console.log(productCard.find('.product-card-title').text().trim());
+        } 
+        
         // Check if requested quantity exceeds available inventory
         if (item.quantity > currentInventory) {
           const productTitle = productCard.find('.product-card-title').text().trim();
@@ -1733,6 +1734,7 @@ $(selector).css('display', 'block');
         .then(cartData => {
             const itemsToRemove = [];
             const itemsToAdd = Object.values(addToCartData);
+
             // Identify items in the cart that need to be removed
             cartData.items.forEach(cartItem => {
                 const inAddToCartData = addToCartData[cartItem.variant_id];
@@ -1773,7 +1775,6 @@ $(selector).css('display', 'block');
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: Object.values(addToCartData) })
             });
-
         })
         .then(() => {
             // Redirect to the cart after updating
