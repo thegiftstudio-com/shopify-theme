@@ -1692,7 +1692,7 @@ $(selector).css('display', 'block');
     // Step 1: Update `base_quantity` and ensure properties are correctly structured
     Object.keys(addToCartData).forEach(function (productId) {
         var item = addToCartData[productId];
-        console.log(item + '1');
+        console.log(item);
         item.properties.base_quantity = item.quantity;
         item.properties.product_type = item.properties['product_type'];
         item.properties.tags = item.properties['tags'];
