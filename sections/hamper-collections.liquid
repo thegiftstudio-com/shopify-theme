@@ -1734,7 +1734,7 @@ $(selector).css('display', 'block');
         .then(cartData => {
             const itemsToRemove = [];
             const itemsToAdd = Object.values(addToCartData);
-
+            console.log(addToCartData);
             // Identify items in the cart that need to be removed
             cartData.items.forEach(cartItem => {
                 const inAddToCartData = addToCartData[cartItem.variant_id];

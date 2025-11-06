@@ -626,4 +626,49 @@
     };
     window.dataLayer.push(eventData);
     }
+
+    function addToCartBYOHEvent(line) {
+          var currentUrl = window.location.href;
+          var source = 'BYOH';
+         
+          //Velocity 05-07-2024 fetching the values from the hidden input fields defined on the cart page.
+          var cart_productId = document.getElementById('line_product_id_' + line).value;
+          var cart_productName = document.getElementById('line_product_name_' + line).value;
+          var cart_productBrand = document.getElementById('line_product_brand_' + line).value;
+          var cart_productQuantity = document.getElementById('line_product_quantity_' + line).value;
+          var cart_productPrice = document.getElementById('line_product_price_' + line).value;
+          var cart_productType = document.getElementById('line_product_type_' + line).value;
+          var cart_productSku = document.getElementById('line_product_sku_' + line).value;
+          var cart_productVariantId = document.getElementById('line_product_variant_id_' + line).value;
+          var cart_productVariantTitle = document.getElementById('line_product_variant_title_' + line).value;
+          var cart_pincode = document.getElementById('line_product_pincode_' + line).value;
+          var cart_value_final = document.getElementById('cart_value_final').value;
+          // Clear dataLayer
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.length = 0; // Clear the existing dataLayer array
+
+          // Push addToCart event
+          window.dataLayer.push({
+              'event': 'addToCart',
+             'user_id': getCustomerId(),
+              'ecommerce': {
+                  'currencyCode': shop_currency_code, // Assuming v_shopCurrency is defined globally
+                   'source': source,
+                      'products': [{
+                           'product_id': cart_productId,
+                          'product_name': cart_productName,
+                          'category': '', // Replace with v_productCollection if available
+                          'brand': cart_productBrand,
+                          'variant_name': cart_productVariantTitle,
+                          'price': cart_productPrice,
+                          'offer_price': 0, // Replace with v_productOfferPrice if available
+                          'discount': 0, // Replace with v_productDiscount if available
+                          'quantity': cart_productQuantity,
+                          'cart_value': cart_value_final
+                      }]
+              }
+          });
+     }
+
+
 </script>
