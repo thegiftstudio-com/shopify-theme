@@ -628,7 +628,6 @@
     }
 
     function addToCartBYOHEvent(data) {
-      debugger;
           var source = 'BYOH';
          
           //Velocity 05-07-2024 fetching the values from the hidden input fields defined on the cart page.
@@ -642,7 +641,7 @@
           var cart_productVariantId = '';
           var cart_productVariantTitle = '';
           var cart_pincode = '';
-          var cart_value_final = document.getElementById('cart_value_final').value;
+          var cart_value_final = '';
           // Clear dataLayer
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.length = 0; // Clear the existing dataLayer array
