@@ -1684,7 +1684,7 @@ $(selector).css('display', 'block');
                   Product_ID: productId,
                   title: productCard.find('.product-card-title').text().trim(),
                   price: productCard.find('.price-item--sale').text().trim(),
-                  quantity: addToCartData[productId]['base_quantity'],
+                  quantity: item.properties.base_quantity,
                 };
             addToCartBYOHEvent(data1);
 
