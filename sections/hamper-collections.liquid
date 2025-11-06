@@ -1647,10 +1647,9 @@ $(selector).css('display', 'block');
     // Final inventory validation before checkout
     const currentLocation = localStorage.getItem('location');
     let inventoryIssues = [];
-    
+    console.log(addToCartData)
     // Check inventory for all items in cart
     Object.keys(addToCartData).forEach(function (productId) {
-      const item = addToCartData[productId];
       const productCard = $(`.add_${productId}`).closest('.product-card');
       
       if (productCard.length > 0) {
@@ -1693,6 +1692,7 @@ $(selector).css('display', 'block');
     // Step 1: Update `base_quantity` and ensure properties are correctly structured
     Object.keys(addToCartData).forEach(function (productId) {
         var item = addToCartData[productId];
+        console.log(item + '1');
         item.properties.base_quantity = item.quantity;
         item.properties.product_type = item.properties['product_type'];
         item.properties.tags = item.properties['tags'];
@@ -1769,7 +1769,6 @@ $(selector).css('display', 'block');
         })
         .then(() => {
             // Add items to the cart
-            console.log(addToCartData);
             return fetch('/cart/add.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
