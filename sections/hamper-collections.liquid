@@ -1670,9 +1670,8 @@ $(selector).css('display', 'block');
           currentInventory = parseInt(dataGurgaon) || 0;
         } else if (currentLocation === 'location-bangalore') {
           currentInventory = parseInt(dataBangalore) || 0;
-        } 
-        console.log(item);
-        
+        }         
+        console.log(productCard.find('.product-card-title').text().trim());
         // Check if requested quantity exceeds available inventory
         if (item.quantity > currentInventory) {
           const productTitle = productCard.find('.product-card-title').text().trim();
