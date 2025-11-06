@@ -1671,6 +1671,7 @@ $(selector).css('display', 'block');
         } else if (currentLocation === 'location-bangalore') {
           currentInventory = parseInt(dataBangalore) || 0;
         } 
+        console.log(item);
         
         // Check if requested quantity exceeds available inventory
         if (item.quantity > currentInventory) {
