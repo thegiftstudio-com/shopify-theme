@@ -1679,7 +1679,6 @@ $(selector).css('display', 'block');
           const productTitle = productCard.find('.product-card-title').text().trim();
           inventoryIssues.push(`${productTitle}: Only ${currentInventory} units available`);
         }else{
-          debugger;
           data1={
                   Product_ID: productId,
                   title: productCard.find('.product-card-title').text().trim(),
