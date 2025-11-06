@@ -627,21 +627,21 @@
     window.dataLayer.push(eventData);
     }
 
-    function addToCartBYOHEvent(line) {
+    function addToCartBYOHEvent(data) {
           var currentUrl = window.location.href;
           var source = 'BYOH';
          
           //Velocity 05-07-2024 fetching the values from the hidden input fields defined on the cart page.
-          var cart_productId = document.getElementById('line_product_id_' + line).value;
-          var cart_productName = document.getElementById('line_product_name_' + line).value;
-          var cart_productBrand = document.getElementById('line_product_brand_' + line).value;
-          var cart_productQuantity = document.getElementById('line_product_quantity_' + line).value;
-          var cart_productPrice = document.getElementById('line_product_price_' + line).value;
-          var cart_productType = document.getElementById('line_product_type_' + line).value;
-          var cart_productSku = document.getElementById('line_product_sku_' + line).value;
-          var cart_productVariantId = document.getElementById('line_product_variant_id_' + line).value;
-          var cart_productVariantTitle = document.getElementById('line_product_variant_title_' + line).value;
-          var cart_pincode = document.getElementById('line_product_pincode_' + line).value;
+          var cart_productId = data['Product_ID']
+          var cart_productName = data['title'];
+          var cart_productBrand = '';
+          var cart_productQuantity = data['quantity'];
+          var cart_productPrice = data['price'];
+          var cart_productType = 'BYOH';
+          var cart_productSku = '';
+          var cart_productVariantId = '';
+          var cart_productVariantTitle = '';
+          var cart_pincode = '';
           var cart_value_final = document.getElementById('cart_value_final').value;
           // Clear dataLayer
           window.dataLayer = window.dataLayer || [];
