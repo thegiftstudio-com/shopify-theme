@@ -1778,7 +1778,7 @@ $(selector).css('display', 'block');
         })
         .then(() => {
             const cartData = await fetch('/cart.js').then(response => response.json());
-            console.log(cartData['items']);
+            console.log(cartData);
             debugger;
             // Redirect to the cart after updating
   // Cart drawer content reload happens here
