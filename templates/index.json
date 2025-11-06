@@ -1698,6 +1698,7 @@
       "blocks": {
         "collection_3xARHC": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/Wedding.jpg",
