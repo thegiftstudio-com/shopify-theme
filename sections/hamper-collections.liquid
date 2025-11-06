@@ -1734,7 +1734,6 @@ $(selector).css('display', 'block');
         .then(cartData => {
             const itemsToRemove = [];
             const itemsToAdd = Object.values(addToCartData);
-            console.log(addToCartData);
             // Identify items in the cart that need to be removed
             cartData.items.forEach(cartItem => {
                 const inAddToCartData = addToCartData[cartItem.variant_id];
@@ -1770,11 +1769,13 @@ $(selector).css('display', 'block');
         })
         .then(() => {
             // Add items to the cart
+            console.log(addToCartData);
             return fetch('/cart/add.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: Object.values(addToCartData) })
             });
+
         })
         .then(() => {
             // Redirect to the cart after updating
