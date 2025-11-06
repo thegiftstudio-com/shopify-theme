@@ -1777,8 +1777,9 @@ $(selector).css('display', 'block');
             });
         })
         .then(() => {
-          debugger;
-          console.log(addToCartData);
+            const cartData = await fetch('/cart.js').then(response => response.json());
+            console.log(cartData['items']);
+            debugger;
             // Redirect to the cart after updating
   // Cart drawer content reload happens here
         $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
