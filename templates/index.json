@@ -2600,37 +2600,37 @@
         "media_card_A73kLz": {
           "type": "media_card",
           "settings": {
-            "title": "Shashwat Goenka",
-            "video_url": "https://www.youtube.com/embed/XQVaiHnzqYU?si=bp4odIVHWMcjF6wj",
+            "title": "Luxury Indulgence Hamper",
+            "video_url": "https://www.youtube.com/embed/33Y0D6I2w6g?si=33bZOs45ulepJYpW",
             "image": "shopify://shop_images/21270.jpg",
-            "button_link": "#"
+            "button_link": "https://www.youtube.com/shorts/33Y0D6I2w6g"
           }
         },
         "media_card_nNhTNC": {
           "type": "media_card",
           "settings": {
-            "title": "Shashwat Goenka",
+            "title": "AdGully",
             "video_url": "",
-            "image": "shopify://shop_images/21270.jpg",
-            "button_link": ""
+            "image": "shopify://shop_images/Adgully_1.jpg",
+            "button_link": "https://www.adgully.com/post/6504/masaba-gupta-brings-bold-design-to-the-gift-studios-festive-hamper-collection"
           }
         },
         "media_card_KHkMFB": {
           "type": "media_card",
           "settings": {
-            "title": "Shashwat Goenka",
+            "title": "Idiva",
             "video_url": "",
-            "image": "shopify://shop_images/21270.jpg",
-            "button_link": ""
+            "image": "shopify://shop_images/Masaba_Pink_IDIVA.jpg",
+            "button_link": "https://www.idiva.com/lifestyle/hot-takes/the-gift-studio-and-masaba-create-self-care-diwali-hamper/18093684"
           }
         },
         "media_card_dDQPHd": {
           "type": "media_card",
           "settings": {
-            "title": "Shashwat Goenka",
+            "title": "Robb Report",
             "video_url": "",
-            "image": "shopify://shop_images/21270.jpg",
-            "button_link": ""
+            "image": "shopify://shop_images/MasabaBeige_Robb_Report.jpg",
+            "button_link": "https://www.robbreportindia.com/style/bespoke/luxury-gifting-festive-season-the-gift-studio-masaba-gupta"
           }
         }
       },
@@ -2642,9 +2642,9 @@
       ],
       "name": "Media Gallery Carousel",
       "settings": {
-        "title": "Latest News",
-        "subtitle": "What the Media Says About Us",
-        "description": "Stay updated with the latest news, achievements, and industry recognition that highlight our commitment innovation.",
+        "title": "In the Spotlight",
+        "subtitle": "As Seen & Celebrated",
+        "description": "From luxury hampers to unforgettable gifting moments, see how our creations have been featured across leading media and influencer platforms.",
         "title_font_size": 26,
         "title_font_weight": "700",
         "title_color": "#000000",
