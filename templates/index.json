@@ -322,6 +322,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_BQypfe": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/birthday-banner-WEB.jpg",
+            "mob_banner": "shopify://shop_images/birthday-banner-MOB.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/birthday-gifts-hampers",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_Di6tzy": {
           "type": "slide",
           "settings": {
@@ -344,6 +364,7 @@
         },
         "slide_q4JE4U": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Masaba-web-banner-WEB_1.jpg",
@@ -353,47 +374,6 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/limited-edition-hampers",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_JtFJ4k": {
-          "type": "slide",
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/Diwali-WEb-_BNR.jpg",
-            "mob_banner": "shopify://shop_images/Diwali-MOB-_BNR.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "shopify://collections/diwali-gift-hampers",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_fkyDBz": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/fatehrs-day-BNR-WEb.jpg",
-            "mob_banner": "shopify://shop_images/fatehrs-day-BNR-MOB.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1370,10 +1350,9 @@
         }
       },
       "block_order": [
+        "slide_BQypfe",
         "slide_Di6tzy",
         "slide_q4JE4U",
-        "slide_JtFJ4k",
-        "slide_fkyDBz",
         "slide_gM4BQ6",
         "slide_tkc3pf",
         "slide_JAEFEH",
