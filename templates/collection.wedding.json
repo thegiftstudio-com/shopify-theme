@@ -1,1 +1,148 @@
-{"sections":{"banner":{"type":"main-collection-banner","settings":{"show_collection_description":false,"show_collection_image":true,"color_scheme":"background-1"}},"68e40dee-3213-40ea-b061-79831acf8d6e":{"type":"multicolumn","blocks":{"template--18686420156723__68e40dee-3213-40ea-b061-79831acf8d6e-16813746107e9c60e7-0":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/wedding-front-op.jpg","title":"","text":"","city_text":"","link_label":"","link":""}}},"block_order":["template--18686420156723__68e40dee-3213-40ea-b061-79831acf8d6e-16813746107e9c60e7-0"],"settings":{"custom_class":"wedding_corporate","title":"","subtitle":"","heading_size":"h1","image_width":"full","image_ratio":"adapt","columns_desktop":1,"column_alignment":"center","background_style":"none","button_label":"","button_link":"","color_scheme":"background-1","columns_mobile":"1","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"a7f476ab-0703-424a-86af-c55bfcfbfee2":{"type":"custom-liquid","settings":{"custom_liquid":"{% render 'wedding_form' %}","color_scheme":"background-1","padding_top":40,"padding_bottom":0}},"product-grid":{"type":"main-collection-product-grid","disabled":true,"settings":{"products_per_page":16,"columns_desktop":4,"image_ratio":"adapt","show_secondary_image":false,"show_vendor":false,"show_rating":false,"enable_quick_add":false,"enable_filtering":false,"filter_type":"horizontal","enable_sorting":true,"columns_mobile":"2","padding_top":0,"padding_bottom":36}}},"order":["banner","68e40dee-3213-40ea-b061-79831acf8d6e","a7f476ab-0703-424a-86af-c55bfcfbfee2","product-grid"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": false,
+        "show_collection_image": true,
+        "color_scheme": "background-1"
+      }
+    },
+    "banner_mothersday_jMJ3hH": {
+      "type": "banner-mothersday",
+      "blocks": {
+        "heading_gDELJU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_Xff6AJ": {
+          "type": "text",
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_Y8pBWx": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_gDELJU",
+        "text_Xff6AJ",
+        "buttons_Y8pBWx"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "custom_class": "",
+        "image": "shopify://shop_images/wedding-WEB-BNR.jpg",
+        "mob_banner": "shopify://shop_images/wedding-bnr-_MOB.jpg",
+        "banner_link": "",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-1",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "page_width": false,
+        "margin_top": 36,
+        "margin_bottom": 36
+      }
+    },
+    "68e40dee-3213-40ea-b061-79831acf8d6e": {
+      "type": "multicolumn",
+      "blocks": {
+        "template--18686420156723__68e40dee-3213-40ea-b061-79831acf8d6e-16813746107e9c60e7-0": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/wedding-front-op.jpg",
+            "title": "",
+            "text": "",
+            "city_text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--18686420156723__68e40dee-3213-40ea-b061-79831acf8d6e-16813746107e9c60e7-0"
+      ],
+      "settings": {
+        "custom_class": "wedding_corporate",
+        "title": "",
+        "subtitle": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 1,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "a7f476ab-0703-424a-86af-c55bfcfbfee2": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'wedding_form' %}",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "image_ratio": "adapt",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "banner_mothersday_jMJ3hH",
+    "68e40dee-3213-40ea-b061-79831acf8d6e",
+    "a7f476ab-0703-424a-86af-c55bfcfbfee2",
+    "product-grid"
+  ]
+}
