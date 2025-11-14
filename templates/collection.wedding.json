@@ -11,7 +11,6 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "disabled": true,
       "settings": {
         "show_collection_description": false,
         "show_collection_image": true,
@@ -56,6 +55,7 @@
         "text_AMTFXP",
         "buttons_7J8G6X"
       ],
+      "disabled": true,
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "custom_class": "",
@@ -63,13 +63,13 @@
         "mob_banner": "shopify://shop_images/wedding-bnr-_MOB.jpg",
         "banner_link": "",
         "image_overlay_opacity": 0,
-        "image_height": "medium",
+        "image_height": "adapt",
         "desktop_content_position": "middle-center",
         "show_text_box": true,
         "desktop_content_alignment": "center",
         "color_scheme": "background-1",
         "mobile_content_alignment": "center",
-        "stack_images_on_mobile": true,
+        "stack_images_on_mobile": false,
         "show_text_below": true,
         "page_width": false,
         "margin_top": 0,
