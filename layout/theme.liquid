@@ -817,7 +817,23 @@
                       push_concierge_form_query(normalizedFormResponse);
                       console.log("formResponse -->", rawFormResponse);
                       break;
-
+                  // Added by Velocity 14-11-2025 Send the wedding form filled data to analytics.    
+                  case "WEDDING":
+                     rawFormResponse = JSON.parse(event.data.formResponse);
+                     // Normalize the raw response data
+                      var normalizedFormResponse = {
+                          name: rawFormResponse["Full Name"], 
+                          email: rawFormResponse["Email"],
+                          phoneNumber: rawFormResponse["Phone Number"],
+                          city: rawFormResponse["City"],
+                          estimatedQuantity:rawFormResponse["Estimated Quantity"],
+                          budget:rawFormResponse["Preferred Budget Per Hamper"],
+                          enquiryDetails: rawFormResponse["Please spare a minute to share some details on Requirement-"]
+                      };
+                      // Sending data to GTM for the form response
+                      push_wedding_form_query(normalizedFormResponse);
+                      console.log("formResponse -->", rawFormResponse);
+                      break;
               }
           }
       }
