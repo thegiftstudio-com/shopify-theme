@@ -11,10 +11,33 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
+      "disabled": true,
       "settings": {
         "show_collection_description": false,
         "show_collection_image": true,
         "color_scheme": "background-1"
+      }
+    },
+    "image_banner_xzXRgd": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "custom_class": "",
+        "image": "shopify://shop_images/wedding-WEB-BNR.jpg",
+        "mob_banner": "shopify://shop_images/wedding-bnr-_MOB.jpg",
+        "banner_link": "#",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-1",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "page_width": false,
+        "margin_top": 0,
+        "margin_bottom": 0
       }
     },
     "banner_mothersday_jMJ3hH": {
@@ -51,6 +74,7 @@
         "text_Xff6AJ",
         "buttons_Y8pBWx"
       ],
+      "disabled": true,
       "name": "t:sections.image-banner.presets.name",
       "settings": {
         "custom_class": "",
@@ -139,6 +163,7 @@
   },
   "order": [
     "banner",
+    "image_banner_xzXRgd",
     "banner_mothersday_jMJ3hH",
     "68e40dee-3213-40ea-b061-79831acf8d6e",
     "a7f476ab-0703-424a-86af-c55bfcfbfee2",
