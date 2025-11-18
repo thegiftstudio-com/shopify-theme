@@ -2478,6 +2478,70 @@
         "margin_bottom": 36
       }
     },
+    "media_gallery_qXcxTW": {
+      "type": "media-gallery",
+      "blocks": {
+        "media_card_A73kLz": {
+          "type": "media_card",
+          "settings": {
+            "title": "Luxury Indulgence Hamper",
+            "video_url": "https://www.youtube.com/embed/33Y0D6I2w6g?si=33bZOs45ulepJYpW",
+            "image": "shopify://shop_images/21270.jpg",
+            "button_link": "https://www.youtube.com/shorts/33Y0D6I2w6g"
+          }
+        },
+        "media_card_nNhTNC": {
+          "type": "media_card",
+          "settings": {
+            "title": "AdGully",
+            "video_url": "",
+            "image": "shopify://shop_images/Adgully_1.jpg",
+            "button_link": "https://www.adgully.com/post/6504/masaba-gupta-brings-bold-design-to-the-gift-studios-festive-hamper-collection"
+          }
+        },
+        "media_card_KHkMFB": {
+          "type": "media_card",
+          "settings": {
+            "title": "Idiva",
+            "video_url": "",
+            "image": "shopify://shop_images/Masaba_Pink_IDIVA.jpg",
+            "button_link": "https://www.idiva.com/lifestyle/hot-takes/the-gift-studio-and-masaba-create-self-care-diwali-hamper/18093684"
+          }
+        },
+        "media_card_dDQPHd": {
+          "type": "media_card",
+          "settings": {
+            "title": "Robb Report",
+            "video_url": "",
+            "image": "shopify://shop_images/MasabaBeige_Robb_Report.jpg",
+            "button_link": "https://www.robbreportindia.com/style/bespoke/luxury-gifting-festive-season-the-gift-studio-masaba-gupta"
+          }
+        }
+      },
+      "block_order": [
+        "media_card_A73kLz",
+        "media_card_nNhTNC",
+        "media_card_KHkMFB",
+        "media_card_dDQPHd"
+      ],
+      "name": "Media Gallery Carousel",
+      "settings": {
+        "title": "In the Spotlight",
+        "subtitle": "As Seen & Celebrated",
+        "description": "From luxury hampers to unforgettable gifting moments, see how our creations have been featured across leading media and influencer platforms.",
+        "title_font_size": 16,
+        "title_font_weight": "700",
+        "title_color": "#000000",
+        "subtitle_font_size": 16,
+        "subtitle_font_weight": "600",
+        "subtitle_color": "#000000",
+        "description_font_size": 15,
+        "description_font_weight": "400",
+        "description_color": "#555555",
+        "enable_lazy_loading": true,
+        "view_all_link": "https://thegiftstudio.com/blogs/article"
+      }
+    },
     "70084562-acce-489e-9a47-dc0461d14617": {
       "type": "categories_list_section",
       "blocks": {
@@ -2592,70 +2656,6 @@
         "columns_mobile": "1",
         "padding_top": 8,
         "padding_bottom": 36
-      }
-    },
-    "media_gallery_qXcxTW": {
-      "type": "media-gallery",
-      "blocks": {
-        "media_card_A73kLz": {
-          "type": "media_card",
-          "settings": {
-            "title": "Luxury Indulgence Hamper",
-            "video_url": "https://www.youtube.com/embed/33Y0D6I2w6g?si=33bZOs45ulepJYpW",
-            "image": "shopify://shop_images/21270.jpg",
-            "button_link": "https://www.youtube.com/shorts/33Y0D6I2w6g"
-          }
-        },
-        "media_card_nNhTNC": {
-          "type": "media_card",
-          "settings": {
-            "title": "AdGully",
-            "video_url": "",
-            "image": "shopify://shop_images/Adgully_1.jpg",
-            "button_link": "https://www.adgully.com/post/6504/masaba-gupta-brings-bold-design-to-the-gift-studios-festive-hamper-collection"
-          }
-        },
-        "media_card_KHkMFB": {
-          "type": "media_card",
-          "settings": {
-            "title": "Idiva",
-            "video_url": "",
-            "image": "shopify://shop_images/Masaba_Pink_IDIVA.jpg",
-            "button_link": "https://www.idiva.com/lifestyle/hot-takes/the-gift-studio-and-masaba-create-self-care-diwali-hamper/18093684"
-          }
-        },
-        "media_card_dDQPHd": {
-          "type": "media_card",
-          "settings": {
-            "title": "Robb Report",
-            "video_url": "",
-            "image": "shopify://shop_images/MasabaBeige_Robb_Report.jpg",
-            "button_link": "https://www.robbreportindia.com/style/bespoke/luxury-gifting-festive-season-the-gift-studio-masaba-gupta"
-          }
-        }
-      },
-      "block_order": [
-        "media_card_A73kLz",
-        "media_card_nNhTNC",
-        "media_card_KHkMFB",
-        "media_card_dDQPHd"
-      ],
-      "name": "Media Gallery Carousel",
-      "settings": {
-        "title": "In the Spotlight",
-        "subtitle": "As Seen & Celebrated",
-        "description": "From luxury hampers to unforgettable gifting moments, see how our creations have been featured across leading media and influencer platforms.",
-        "title_font_size": 16,
-        "title_font_weight": "700",
-        "title_color": "#000000",
-        "subtitle_font_size": 16,
-        "subtitle_font_weight": "600",
-        "subtitle_color": "#000000",
-        "description_font_size": 15,
-        "description_font_weight": "400",
-        "description_color": "#555555",
-        "enable_lazy_loading": true,
-        "view_all_link": "https://thegiftstudio.com/blogs/article"
       }
     },
     "9e0c5693-7e15-4e09-9216-56a8736bf20c": {
@@ -2880,8 +2880,8 @@
     "image_with_text_iHknDP",
     "6fe28f13-5fef-462e-84b9-9b167f6c2b84",
     "image_banner_cnJg7y",
-    "70084562-acce-489e-9a47-dc0461d14617",
     "media_gallery_qXcxTW",
+    "70084562-acce-489e-9a47-dc0461d14617",
     "9e0c5693-7e15-4e09-9216-56a8736bf20c",
     "44e68644-3ce5-453b-995b-15d6d7cb8043",
     "21f5ca95-8e9a-471b-9d38-0ef4ea8de445",
