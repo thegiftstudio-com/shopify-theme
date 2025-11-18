@@ -2645,7 +2645,7 @@
         "title": "In the Spotlight",
         "subtitle": "As Seen & Celebrated",
         "description": "From luxury hampers to unforgettable gifting moments, see how our creations have been featured across leading media and influencer platforms.",
-        "title_font_size": 26,
+        "title_font_size": 16,
         "title_font_weight": "700",
         "title_color": "#000000",
         "subtitle_font_size": 16,
@@ -2655,7 +2655,7 @@
         "description_font_weight": "400",
         "description_color": "#555555",
         "enable_lazy_loading": true,
-        "view_all_link": "https://thegiftstudio-dev.myshopify.com/pages/media-gallery"
+        "view_all_link": "https://thegiftstudio.com/blogs/article"
       }
     },
     "9e0c5693-7e15-4e09-9216-56a8736bf20c": {
