@@ -1,4 +1,4 @@
-<script> 
+<script>
   // (function() {
   //     var scrollDepthTriggered = {};
 
@@ -626,7 +626,14 @@
     };
     window.dataLayer.push(eventData);
     }
+    {% comment %} Added by Velocity on 14-11-2025 to push the events data for wedding form submissions {% endcomment %}
+         function push_wedding_form_query(response) {
+        // Push normalized data to GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'wedding_form_filled',
+          wedding_form_data: response
+        });
 
-    
-
+      }
 </script>
