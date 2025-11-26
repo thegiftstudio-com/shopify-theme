@@ -1,3 +1,4 @@
+    {% comment %} Added By Velocity 26-11-2025, Dynamic interlinking for collection pages {% endcomment %}
     {%- if collection.metafields.custom.interlinking != blank -%}
 
 <div style="padding-left: 3rem; padding-right: 3rem; margin-top: 2rem; color: black;">
@@ -25,40 +26,7 @@
               {%- unless forloop.last -%}<span> | </span>{%- endunless -%}
             {%- endfor -%}
           </p>
-      {%- endfor -%}
-      {% comment %}
-    
-    {%- else -%}
-      {# -- Default fallback (static content) -- #}
-      <p><strong>For Birthdays</strong></p>
-      <p>
-        <a href="/collections/birthday-curated-hampers">Birthday Hampers</a> |
-        <a href="/collections/birthday-cakes">Birthday Cakes</a> |
-        <a href="/collections/birthday-flowers">Birthday Plants and Flowers</a> |
-        <a href="/collections/birthday-balloons">Birthday Balloons</a> |
-        <a href="/collections/birthday-hamper-for-her">Birthday Gifts for Her</a> |
-        <a href="/collections/birthday-hamper-for-him">Birthday Gifts for Him</a>
-      </p>
-
-      <p><strong>For Anniversaries</strong></p>
-      <p>
-        <a href="/collections/anniversary-curated-hampers">Anniversary Hampers</a> |
-        <a href="/collections/anniversary-cakes">Anniversary Cakes</a> |
-        <a href="/collections/anniversary-flowers">Anniversary Flowers</a> |
-        <a href="/collections/jewellry">Jewelry</a>
-      </p>
-
-      <p><strong>Unique Offerings</strong></p>
-      <p>
-        <a href="/collections/international-shipping">International Delivery</a> |
-        <a href="/collections/sdd-4pm-cut-off">Same Day Delivery</a> |
-        <a href="/pages/hamper-collections">Build Your Own Hamper</a> |
-        <a href="/collections/exclusive-collection">Exclusive Collection</a> |
-        <a href="/collections/corporate-gifting">Corporate Gifting</a>
-      </p>
-      {% endcomment %}
-
-         
+      {%- endfor -%}         
   </div>
 </div>
     {%- endif -%}
