@@ -439,6 +439,8 @@
     ]
   }
 </script>
+{%comment %} Added By Velocity 26-11-2025, Add FAQ schema for collection pages{% endcomment %}
+
 {% if collection.metafields.custom.faq %}
   
   {% assign faq_items = collection.metafields.custom.faq.value %}
@@ -461,6 +463,7 @@
     }
     </script>
 {% endif %}
+{% comment %} Code END Added By Velocity 26-11-2025 {% endcomment %}
 {% if collection.metafields.custom.filter.value == true %}
   <script>
      $(document).ready(function() {
