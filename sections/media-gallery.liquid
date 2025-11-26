@@ -1,0 +1,418 @@
+<section class="media-gallery page-width">
+  <div class="media-gallery__header">
+    <!--
+      * Added backend-configurable title font-weight and color; preserved existing font-size
+      * 26-11-2025
+    -->
+    <h2
+      class="media-gallery__title"
+      style="font-size: {{ section.settings.title_font_size }}px; font-weight: {{ section.settings.title_font_weight }}; color: {{ section.settings.title_color }};"
+    >
+      {{ section.settings.title | default: 'Latest News' }}
+    </h2>
+    <!--
+      * Added backend-configurable subtitle font-weight and color; preserved existing font-size
+      * 26-11-2025
+    -->
+    <h3
+      class="media-gallery__subtitle"
+      style="font-size: {{ section.settings.subtitle_font_size }}px; font-weight: {{ section.settings.subtitle_font_weight }}; color: {{ section.settings.subtitle_color }};"
+    >
+      {{ section.settings.subtitle | default: 'What the Media Says About Us' }}
+    </h3>
+    <!--
+      * Added backend-configurable description font-weight and color; preserved existing font-size
+      * 26-11-2025
+    -->
+    <p
+      class="media-gallery__description"
+      style="font-size: {{ section.settings.description_font_size }}px; font-weight: {{ section.settings.description_font_weight }}; color: {{ section.settings.description_color }};"
+    >
+      {{
+        section.settings.description
+        | default: 'Stay updated with the latest news, achievements, and industry recognition that highlight our commitment to renewable energy innovation.'
+      }}
+    </p>
+  </div>
+
+  <div class="media-grid">
+    {% for block in section.blocks limit: 4 %}
+      {% assign article_link = block.settings.button_link | default: '#' %}
+
+      <div class="media-card card card--media">
+        <div class="media-card__media">
+          <div class="media media--transparent media--hover-effect">
+            {%- comment -%}
+              /*
+              * Conditionally apply lazy loading to iframe based on backend toggle
+              * 26-11-2025
+              */
+            {%- endcomment -%}
+            {% if block.settings.video_url != blank %}
+              <iframe
+                width="560"
+                height="315"
+                src="{{ block.settings.video_url }}"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                {% if section.settings.enable_lazy_loading %}
+                  loading="lazy"
+                {% else %}
+                  loading="eager"
+                {% endif %}
+                allowfullscreen
+              ></iframe>
+              <a
+                class="media-card__media-link"
+                href="{{ block.settings.video_url }}"
+                target="_blank"
+                rel="noopener"
+                aria-label="Open video: {{ block.settings.title | escape }}"
+              ></a>
+            {% elsif block.settings.image != blank %}
+              {%- comment -%}
+                /*
+                * Conditionally apply lazy loading to image based on backend toggle
+                * 26-11-2025
+                */
+              {%- endcomment -%}
+              <img
+                src="{{ block.settings.image | img_url: '900x' }}"
+                alt="{{ block.settings.title | escape }}"
+                {% if section.settings.enable_lazy_loading %}
+                  loading="lazy"
+                {% else %}
+                  loading="eager"
+                {% endif %}
+              >
+              <a
+                class="media-card__media-link"
+                href="{{ article_link }}"
+                aria-label="Open article: {{ block.settings.title | escape }}"
+              ></a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="media-card__content">
+          <h3 class="media-card__title">
+            <a href="{{ article_link }}" class="full-unstyled-link font_text font_lg font_weight_400">
+              {{- block.settings.title -}}
+            </a>
+          </h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- View All Button -->
+  {% if section.settings.view_all_link != blank %}
+    <div class="media-gallery__footer">
+      <a
+        href="{{ section.settings.view_all_link }}"
+        class="media-gallery__btn button font_weight_400 cmn_btn button--primary"
+        >View All</a
+      >
+    </div>
+  {% endif %}
+</section>
+
+<!--
+  * Schema updates: added title/subtitle/description color pickers and font-weight selectors
+  * 26-11-2025
+-->
+{%- comment -%}
+  /*
+  * Schema update: add checkbox to enable/disable lazy loading for media
+  * 26-11-2025
+  */
+{%- endcomment -%}
+{% schema %}
+{
+  "name": "Media Gallery Carousel",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section Title", "default": "Latest News" },
+    { "type": "text", "id": "subtitle", "label": "Section Subtitle", "default": "What the Media Says About Us" },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Section Description",
+      "default": "Stay updated with the latest news, achievements, and industry recognition that highlight our commitment to renewable energy innovation."
+    },
+
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700"
+    },
+    { "type": "color", "id": "title_color", "label": "Title Color", "default": "#000000" },
+    {
+      "type": "range",
+      "id": "subtitle_font_size",
+      "label": "Subtitle Font Size (px)",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "subtitle_font_weight",
+      "label": "Subtitle Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "600"
+    },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle Color", "default": "#000000" },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Description Font Size (px)",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "description_font_weight",
+      "label": "Description Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "400"
+    },
+    { "type": "color", "id": "description_color", "label": "Description Color", "default": "#555555" },
+
+    { "type": "checkbox", "id": "enable_lazy_loading", "label": "Enable lazy loading for media", "default": true },
+
+    { "type": "url", "id": "view_all_link", "label": "View All Button Link" }
+  ],
+  "blocks": [
+    {
+      "type": "media_card",
+      "name": "Media Card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Article Title" },
+        { "type": "text", "id": "video_url", "label": "YouTube Video URL" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "url", "id": "button_link", "label": "Article Link" }
+      ]
+    }
+  ],
+  "max_blocks": 7,
+  "presets": [{ "name": "Media Gallery Carousel", "category": "Media" }]
+}
+{% endschema %}
+
+{% stylesheet %}
+  .media-gallery {
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .media-gallery__header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .media-gallery__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .media-gallery__subtitle {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .media-gallery__description {
+    color: #555;
+    font-size: 1rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+
+
+  .media-card {
+    flex: 0 0 90%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    margin: 0 10px;
+    overflow: hidden;
+  }
+
+  .media-card__media {
+    position: relative;
+    min-height: 250px;
+    width: 100%;
+  }
+
+  .media-card__media iframe,
+  .media-card__media img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+
+  .media-card__media-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    text-indent: -9999px;
+    background: transparent;
+  }
+
+  .media-card__content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+
+
+  .media-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+
+  .media-card__desc-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .media-card__desc {
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .media-card__read-more {
+    color: #020919;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+
+
+  .media-card__btn {
+    align-self: flex-start;
+    background: #020919;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+
+  .media-card__btn:hover {
+    background: #020919;
+  }
+
+  .media-gallery__footer {
+    text-align: center;
+    margin: 20px;
+  }
+
+  .media-gallery__btn {
+    background: #020919;
+    color: #fff;
+    padding: 10px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+
+  .media-gallery__btn:hover {
+    background: #020919;
+  }
+
+
+  @media (max-width: 1000px) {
+    .media-grid {
+      margin:10px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+
+  @media (min-width: 1000px) {
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+     .media-card__media {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .media-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    margin: 0;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+
+
+  .media-card__media {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+{% endstylesheet %}
