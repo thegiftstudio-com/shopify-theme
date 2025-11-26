@@ -630,7 +630,7 @@
     function addToCartBYOHEvent(data) {
           var source = 'BYOH';
          
-          //Velocity 05-07-2024 fetching the values from the hidden input fields defined on the cart page.
+          //Velocity  fetching the values from the hidden input fields defined on the cart page.
           var cart_productId = data.Product_ID
           var cart_productName = data.title;
           var cart_productBrand = '';
@@ -641,7 +641,7 @@
           var cart_productVariantId = '';
           var cart_productVariantTitle = '';
           var cart_pincode = '';
-          var cart_value_final = '';
+          var cart_value_final = $('#SubTotalPrice').text();
           // Clear dataLayer
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.length = 0; // Clear the existing dataLayer array
