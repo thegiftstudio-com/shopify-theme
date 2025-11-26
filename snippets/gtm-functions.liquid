@@ -636,4 +636,40 @@
         });
 
       }
+          //Velocity  26-11-2025  Function to push the Add to cart event when BYOH product added into the cart.
+    function addToCartBYOHEvent(productsArray) {
+    var source = 'BYOH';
+    var cart_value_final = $('#SubTotalPrice').text();
+
+    // Build products list for GTM array
+    var gtmProducts = productsArray.map(function(item) {
+        return {
+            'product_id': item.Product_ID,
+            'product_name': item.title,
+            'category': '', // Replace if you have category data
+            'brand': '',
+            'variant_name': '',
+            'price': item.price,
+            'offer_price': 0, 
+            'discount': 0, 
+            'quantity': item.quantity,
+            'cart_value': cart_value_final
+        };
+    });
+
+    // GTM event push – only once
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.length = 0;
+
+    window.dataLayer.push({
+        'event': 'addToCart',
+        'user_id': getCustomerId(),
+        'ecommerce': {
+            'currencyCode': shop_currency_code,
+            'source': source,
+            'products': gtmProducts
+        }
+    });
+}
+
 </script>
