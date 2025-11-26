@@ -626,8 +626,9 @@
     };
     window.dataLayer.push(eventData);
     }
-    //Velocity  26-11-2025  Function to push the Add to cart event when BYOH product added into the cart.
-    function addToCartBYOHEvent(data) {
+
+    function addToCartBYOHEvent(line) {
+          var currentUrl = window.location.href;
           var source = 'BYOH';
          
           var cart_productId = data.Product_ID
