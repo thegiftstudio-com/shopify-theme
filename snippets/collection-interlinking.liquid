@@ -1,0 +1,32 @@
+    {% comment %} Added By Velocity 26-11-2025, Dynamic interlinking for collection pages {% endcomment %}
+    {%- if collection.metafields.custom.interlinking != blank -%}
+
+<div style="padding-left: 3rem; padding-right: 3rem; margin-top: 2rem; color: black;">
+  <h2 class="rich-text__heading rte h2" style="font-weight: bold;">Explore Our Offerings</h2>
+
+  <style>
+    .custom-links-black a {
+      color: black !important;
+      text-decoration: underline;
+      font-weight: normal;
+    }
+    .custom-links-black a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <div class="custom-links-black">
+      {%- assign interlinking_object = collection.metafields.custom.interlinking.value -%}
+
+      {%- for item in interlinking_object -%}
+        <p><strong>{{ item.heading }}</strong></p>
+          <p>
+            {%- for linked_collection in item.collection_name.value -%}
+              <a href="{{ linked_collection.url }}">{{ linked_collection.title }}</a>
+              {%- unless forloop.last -%}<span> | </span>{%- endunless -%}
+            {%- endfor -%}
+          </p>
+      {%- endfor -%}         
+  </div>
+</div>
+    {%- endif -%}
