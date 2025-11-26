@@ -2,95 +2,95 @@
 {{ 'component-collection-hero.aio.min.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
-
- .collection-hero{
-   padding:0 !important;
-   position:relative;
- }
- 
-  
-  .collection-hero__inner{
-    display:block;
-        position: relative;
-   height:auto;
-
-  }
-  
-  .collection-hero__image-container{
-    margin-left:0;
-    position:absolute;
-    height:100%;
-    width:100%;
-    left: 0;
-    top: 0;
-  }
-  
-
-   .collection-hero__image-container img{
-     height:auto !important;
-   }
-
-  .collection-hero__inner:before, .collection-hero__image-container:before{
-    padding-bottom: {{ 1 | divided_by: collection.image.aspect_ratio | times: 100 }}%;
-      content: '';
-      display: block;
-  }
-  @media (min-width: 768px) and (max-width: 1023px) {
-    .collection-hero--with-image .collection-hero__text-wrapper{
-      display:none;
-    }
+.collection-hero {
+  padding: 0 !important;
+  position: relative;
 }
 
-
-  @media screen and (max-width: 749px) {
-    .collection-hero--with-image .collection-hero__inner {
-      padding-bottom: 0 !important;
-    }
+.collection-hero__inner {
+  display: block;
+  position: relative;
+  height: auto;
+}
 
 .collection-hero__image-container {
-    height: 11rem !important;
+  margin-left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
 }
-   
-    .collection-hero--with-image .collection-hero__text-wrapper {
-    padding: 1rem 0 0 !important;
-      display: none;
+
+.collection-hero__image-container img {
+  height: auto !important;
 }
+
+.collection-hero__inner:before,
+.collection-hero__image-container:before {
+  padding-bottom: {{ 1 | divided_by: collection.image.aspect_ratio | times: 100 }}%;
+  content: '';
+  display: block;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .collection-hero--with-image .collection-hero__text-wrapper {
+    display: none;
   }
+}
+
+@media screen and (max-width: 749px) {
+  .collection-hero--with-image .collection-hero__inner {
+    padding-bottom: 0 !important;
+  }
+
+  .collection-hero__image-container {
+    height: 11rem !important;
+  }
+
+  .collection-hero--with-image .collection-hero__text-wrapper {
+    padding: 1rem 0 0 !important;
+    display: none;
+  }
+}
 {%- endstyle -%}
 
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+{%- comment -%}
+=========================================================
+MAIN LOGIC CHANGE:
+If collection image is disabled OR missing → show ONLY title.
+=========================================================
+{%- endcomment -%}
+
+{% if section.settings.show_collection_image and collection.image %}
+
+<!-- ===========================
+     IMAGE BANNER ACTIVE
+=========================== -->
+<div class="collection-hero collection-hero--with-image color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner">
 
     {% if collection.metafields.custom.custom_collection_title != blank %}
-    <div class="collection-hero__text-wrapper page-width">
-      <h2 class="collection-hero__title center">
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+      <div class="collection-hero__text-wrapper page-width">
+        <h1 class="center">
+          <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
       {% comment %}  {{- collection.title | escape -}}{% endcomment %}
       {{ collection.metafields.custom.custom_collection_title.value }}
-      </h2>
+      </h1>
 {% comment %}
       {%- if section.settings.show_collection_description -%}
         <div class="collection-hero__description rte">{{ collection.description | replace: '<img', '<img loading="lazy"' }}</div>
       {%- endif -%}
       {% endcomment %}
-    </div>
-      {% endif %}
-    
+      </div>
+    {% endif %}
 
-
-    {%- if section.settings.show_collection_image and collection.image -%}
-      <div class="collection-hero__image-container media gradient">
-
-        {%-liquid
+    <div class="collection-hero__image-container media gradient">
+      {%- liquid
         assign image_height = collection.image.width | divided_by: collection.image.aspect_ratio
-        
-        if collection.image != blank 
-         
-          assign sizes = "100vw"
-        else
-          assign sizes = "100vw"
-        endif
+        assign sizes = "100vw"
       -%}
+
       {{ collection.image | image_url: width: 1500 | image_tag:
         loading: 'lazy',
         width: collection.image.width,
@@ -100,7 +100,7 @@
         widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
         alt: section.settings.image.alt | escape
       }}
-
+    </div>
         {% comment %}
         <img loading="lazy"
           srcset="
@@ -119,10 +119,26 @@
           height="{{ collection.image.height }}"
         >
       {% endcomment %}
-      </div>
-    {%- endif -%}
   </div>
 </div>
+
+{% else %}
+
+<!-- ===========================
+     NO IMAGE → SIMPLE TITLE ONLY
+=========================== -->
+<div class="page-width" style="padding: 2rem 0;">
+  <h1 class="center">
+    {% if collection.metafields.custom.custom_collection_title != blank %}
+      {{ collection.metafields.custom.custom_collection_title.value }}
+    {% else %}
+      {{ collection.title }}
+    {% endif %}
+  </h1>
+</div>
+
+{% endif %}
+
 
 {% schema %}
 {
@@ -150,26 +166,11 @@
       "type": "select",
       "id": "color_scheme",
       "options": [
-        {
-          "value": "accent-1",
-          "label": "t:sections.all.colors.accent_1.label"
-        },
-        {
-          "value": "accent-2",
-          "label": "t:sections.all.colors.accent_2.label"
-        },
-        {
-          "value": "background-1",
-          "label": "t:sections.all.colors.background_1.label"
-        },
-        {
-          "value": "background-2",
-          "label": "t:sections.all.colors.background_2.label"
-        },
-        {
-          "value": "inverse",
-          "label": "t:sections.all.colors.inverse.label"
-        }
+        { "value": "accent-1", "label": "t:sections.all.colors.accent_1.label" },
+        { "value": "accent-2", "label": "t:sections.all.colors.accent_2.label" },
+        { "value": "background-1", "label": "t:sections.all.colors.background_1.label" },
+        { "value": "background-2", "label": "t:sections.all.colors.background_2.label" },
+        { "value": "inverse", "label": "t:sections.all.colors.inverse.label" }
       ],
       "default": "background-1",
       "label": "t:sections.all.colors.label"
