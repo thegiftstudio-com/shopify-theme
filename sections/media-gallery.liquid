@@ -2,7 +2,7 @@
   <div class="media-gallery__header">
     <!--
       * Added backend-configurable title font-weight and color; preserved existing font-size
-      * 30-10-2025
+      * 26-11-2025
     -->
     <h2
       class="media-gallery__title"
@@ -12,7 +12,7 @@
     </h2>
     <!--
       * Added backend-configurable subtitle font-weight and color; preserved existing font-size
-      * 30-10-2025
+      * 26-11-2025
     -->
     <h3
       class="media-gallery__subtitle"
@@ -22,7 +22,7 @@
     </h3>
     <!--
       * Added backend-configurable description font-weight and color; preserved existing font-size
-      * 30-10-2025
+      * 26-11-2025
     -->
     <p
       class="media-gallery__description"
@@ -45,7 +45,7 @@
             {%- comment -%}
               /*
               * Conditionally apply lazy loading to iframe based on backend toggle
-              * 30-10-2025
+              * 26-11-2025
               */
             {%- endcomment -%}
             {% if block.settings.video_url != blank %}
@@ -75,7 +75,7 @@
               {%- comment -%}
                 /*
                 * Conditionally apply lazy loading to image based on backend toggle
-                * 30-10-2025
+                * 26-11-2025
                 */
               {%- endcomment -%}
               <img
@@ -121,12 +121,12 @@
 
 <!--
   * Schema updates: added title/subtitle/description color pickers and font-weight selectors
-  * 30-10-2025
+  * 26-11-2025
 -->
 {%- comment -%}
   /*
   * Schema update: add checkbox to enable/disable lazy loading for media
-  * 30-10-2025
+  * 26-11-2025
   */
 {%- endcomment -%}
 {% schema %}
