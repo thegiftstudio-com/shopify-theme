@@ -1647,7 +1647,7 @@ $(selector).css('display', 'block');
     // Final inventory validation before checkout
     const currentLocation = localStorage.getItem('location');
     let inventoryIssues = [];
-    
+    let byohProducts = [];
     // Check inventory for all items in cart
     Object.keys(addToCartData).forEach(function (productId) {
       const item = addToCartData[productId];
@@ -1677,9 +1677,21 @@ $(selector).css('display', 'block');
         if (item.quantity > currentInventory) {
           const productTitle = productCard.find('.product-card-title').text().trim();
           inventoryIssues.push(`${productTitle}: Only ${currentInventory} units available`);
+        }else{
+          // Added by Velocity 26-11-2025 , Send the data to GTM event (add to cart) When BYOH product added into cart
+          byohProducts.push({
+        Product_ID: productId,
+        title: productCard.find('.product-card-title').text().trim(),
+        price: productCard.find('.price-item--sale').text().trim(),
+        quantity: item.properties.base_quantity,
+      });
+
         }
       }
     });
+   if (byohProducts.length > 0) {
+  addToCartBYOHEvent(byohProducts);
+}
     
     // If there are inventory issues, show warning and stop checkout
     if (inventoryIssues.length > 0) {
