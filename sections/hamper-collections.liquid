@@ -1677,6 +1677,16 @@ $(selector).css('display', 'block');
         if (item.quantity > currentInventory) {
           const productTitle = productCard.find('.product-card-title').text().trim();
           inventoryIssues.push(`${productTitle}: Only ${currentInventory} units available`);
+        }else{
+          // Added by Velocity 26-11-2025 , Send the data to GTM event (add to cart) When BYOH product added into cart
+          data1={
+                  Product_ID: productId,
+                  title: productCard.find('.product-card-title').text().trim(),
+                  price: productCard.find('.price-item--sale').text().trim(),
+                  quantity: item.properties.base_quantity,
+                };
+            addToCartBYOHEvent(data1);
+
         }
       }
     });
