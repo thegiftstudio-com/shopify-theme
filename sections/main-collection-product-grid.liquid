@@ -452,11 +452,11 @@
         {% for item in faq_items %}
           {
             "@type": "Question",
-            "name": {{ item.question }},
+            "name": "{{ item.question | escape }}",
             "acceptedAnswer": {
-              "@type": "Answer",
-              "text": {{ item.answer }}
-            }
+            "@type": "Answer",
+            "text": "{{ item.answer | escape }}"
+          }
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ]
