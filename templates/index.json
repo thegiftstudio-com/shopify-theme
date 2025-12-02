@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_kMcpwt": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/Mob-Tile.jpg",
+            "gift_title": "Christmas Hamper",
+            "img_url": "shopify://collections/christmas-hamper"
+          }
+        },
         "text_cKqi47": {
           "type": "Text",
           "disabled": true,
@@ -68,15 +77,6 @@
             "gift_img": "shopify://shop_images/BYOH.jpg",
             "gift_title": "Build YourOwn Hamper",
             "img_url": "https://thegiftstudio.com/pages/hamper-collections?bundle_id=1015"
-          }
-        },
-        "text_kMcpwt": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "gift_img": "shopify://shop_images/Internatinal-shipping.jpg",
-            "gift_title": "International Delivery",
-            "img_url": "shopify://pages/international-shipping"
           }
         },
         "text_JKAPRb": {
@@ -285,13 +285,13 @@
         }
       },
       "block_order": [
+        "text_kMcpwt",
         "text_cKqi47",
         "text_A9DaUG",
         "text_f7QVXi",
         "text_zKNP6D",
         "text_UyRWRf",
         "55a0072b-ab8c-4303-8172-e45a1c3213af",
-        "text_kMcpwt",
         "text_JKAPRb",
         "text_RRwDm3",
         "text_BDVGWE",
