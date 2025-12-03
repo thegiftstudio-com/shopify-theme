@@ -208,13 +208,13 @@
         "disabled": false,
         "settings": {}
       },
-      "12973772748516043749": {
-        "type": "shopify://apps/bitespeed-whatsapp-marketing/blocks/app-embed/9efdb9ca-2d01-4a12-b1ac-02679fe0f6fc",
+      "7445024463111146658": {
+        "type": "shopify://apps/pwa-ios-android-app/blocks/app-block/4ac46764-72e4-4b90-933d-c63e9b80bb36",
         "disabled": false,
         "settings": {}
       },
-      "7445024463111146658": {
-        "type": "shopify://apps/pwa-ios-android-app/blocks/app-block/4ac46764-72e4-4b90-933d-c63e9b80bb36",
+      "11989736685688860011": {
+        "type": "shopify://apps/easy-variant-images/blocks/embed_via/bfecabd5-49af-4d37-8214-f0f4649f4cb3",
         "disabled": false,
         "settings": {}
       }
