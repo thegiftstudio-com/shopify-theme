@@ -21,6 +21,15 @@
             "img_url": "shopify://collections/christmas-hamper"
           }
         },
+        "text_JKAPRb": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/Mob-TileArtists.jpg",
+            "gift_title": "Celebrity Hampers",
+            "img_url": "https://thegiftstudio.com/collections/special-offers"
+          }
+        },
         "text_cKqi47": {
           "type": "Text",
           "disabled": true,
@@ -77,15 +86,6 @@
             "gift_img": "shopify://shop_images/BYOH.jpg",
             "gift_title": "Build YourOwn Hamper",
             "img_url": "https://thegiftstudio.com/pages/hamper-collections?bundle_id=1015"
-          }
-        },
-        "text_JKAPRb": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "gift_img": "shopify://shop_images/tiles.jpg",
-            "gift_title": "Special Offer",
-            "img_url": "https://thegiftstudio.com/collections/special-offers"
           }
         },
         "text_RRwDm3": {
@@ -286,13 +286,13 @@
       },
       "block_order": [
         "text_kMcpwt",
+        "text_JKAPRb",
         "text_cKqi47",
         "text_A9DaUG",
         "text_f7QVXi",
         "text_zKNP6D",
         "text_UyRWRf",
         "55a0072b-ab8c-4303-8172-e45a1c3213af",
-        "text_JKAPRb",
         "text_RRwDm3",
         "text_BDVGWE",
         "text_bqVxpE",
