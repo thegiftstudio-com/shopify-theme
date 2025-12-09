@@ -530,7 +530,8 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    // Added by Velocity 09-12-2025 : Hide the Header from llm pages.
+        {% comment %} Added by Velocity 09-12-2025 : Hide the Header from llm pages. {%  endcomment %}
+
     {% if page.handle != 'llm' and page.handle != 'llm-json' and page.handle != 'llm_corporate' %}
     {% sections 'header-group' %}
       {%endif %}
@@ -543,7 +544,7 @@
     >
       {{ content_for_layout }}
     </main>
-    // Added by Velocity 09-12-2025 : Hide the Footer from llm pages.
+       {% comment %} Added by Velocity 09-12-2025 : Hide the Footer from llm pages. {%  endcomment %}
 
     {% if page.handle != 'llm' and page.handle != 'llm-json' and page.handle != 'llm_corporate' %}
 

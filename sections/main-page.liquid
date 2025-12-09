@@ -17,11 +17,13 @@
     }
   }
 {%- endstyle -%}
-
+ {% comment %} Added by Velocity 09-12-2025 : Hide the Title from llm pages. {%  endcomment %}
 <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  {% if page.handle != 'llm' and page.handle != 'llm-json' and page.handle != 'llm_corporate' %}
   <h1 class="main-page-title page-title h0">
     {{ page.title | escape }}
   </h1>
+  {% endif %}
   <div class="rte">
     {{ page.content }}
   </div>
