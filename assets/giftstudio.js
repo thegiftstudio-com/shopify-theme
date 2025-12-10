@@ -1086,7 +1086,8 @@ locationFunc = () => {
   // if ( localStorage.getItem("is-manually-set") == '1' &&  window.location.href.includes("hamper-collections")) {
   //          changeCity();
   //   } else 
-    if (localStorage.getItem("location") == null || localStorage.getItem("warehouseTAT") == null) {
+  // Added by Velocity: 10-12-2025 : if location is gurgaon set default location at user end.
+    if (localStorage.getItem("location") == null || localStorage.getItem("warehouseTAT") == null || localStorage.getItem("location") == 'location-gurgaon') {
         localStorage.setItem("location", "location-mumbai" ); 
         localStorage.setItem("location-city", "Mumbai"); 
       localStorage.setItem("userPincode", ""); 
@@ -1451,10 +1452,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("li[data-product-id]").forEach((li) => {
     const productId = li.getAttribute("data-product-id");
     const tag = parseInt(li.getAttribute("data-tag")); // Or get this from your template
-    
+    // Added by Velocity: 10-12-2025 Disable GGN warehouse inventory
    const inventoryMap = {
   mumbai: parseInt(li.getAttribute("data_mumbai") || 0),
-  gurgaon: parseInt(li.getAttribute("data_gurgaon") || 0),
+  gurgaon: 0,
   bangalore: parseInt(li.getAttribute("data_bangalore") || 0),
 };
     const locationKey = localStorage.getItem("location")?.split("-")[1];
