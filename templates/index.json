@@ -1695,6 +1695,15 @@
     "popular_categories_fWTBcV": {
       "type": "popular_categories",
       "blocks": {
+        "collection_cgqUcC": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/image_df9e16f5-405f-4e7c-956a-9667604f9f66.jpg",
+            "coll_title": "Celebrity Hamper",
+            "card_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
+          }
+        },
         "collection_3xARHC": {
           "type": "collection",
           "disabled": true,
@@ -1775,6 +1784,7 @@
         },
         "collection_M6nA8g": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/Home_Decor.jpg",
@@ -1793,6 +1803,7 @@
         }
       },
       "block_order": [
+        "collection_cgqUcC",
         "collection_3xARHC",
         "collection_W4QE4W",
         "collection_gqbbat",
