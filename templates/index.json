@@ -21,6 +21,15 @@
             "img_url": "shopify://collections/christmas-hamper"
           }
         },
+        "text_ipFwRU": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/image_1.jpg",
+            "gift_title": "Worldwide Christmas Gifting",
+            "img_url": "https://thegiftstudio.com/collections/international-christmas-delivery-send-christmas-and-christmas-gift-hampers-abroad"
+          }
+        },
         "text_JKAPRb": {
           "type": "Text",
           "settings": {
@@ -286,6 +295,7 @@
       },
       "block_order": [
         "text_kMcpwt",
+        "text_ipFwRU",
         "text_JKAPRb",
         "text_cKqi47",
         "text_A9DaUG",
