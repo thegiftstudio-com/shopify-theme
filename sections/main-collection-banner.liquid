@@ -84,7 +84,12 @@ If collection image is disabled OR missing → show ONLY title.
       {% endcomment %}
       </div>
     {% endif %}
-
+    {% comment %}
+      Added By Velocity 15-12-2025 Adding WhatsApp chat link on wedding-page
+    {% endcomment %}
+     {%- if collection.handle == 'wedding-page' -%}
+        <a href="https://wa.me/919147321916" class="collection-hero__image-link">
+      {%- endif -%}
     <div class="collection-hero__image-container media gradient">
       {%- liquid
         assign image_height = collection.image.width | divided_by: collection.image.aspect_ratio
@@ -101,6 +106,7 @@ If collection image is disabled OR missing → show ONLY title.
         alt: section.settings.image.alt | escape
       }}
     </div>
+    
         {% comment %}
         <img loading="lazy"
           srcset="
@@ -119,6 +125,9 @@ If collection image is disabled OR missing → show ONLY title.
           height="{{ collection.image.height }}"
         >
       {% endcomment %}
+        {%- if collection.handle == 'wedding-page' -%}
+        </a>
+      {%- endif -%}
   </div>
 </div>
 
