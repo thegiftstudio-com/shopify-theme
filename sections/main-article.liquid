@@ -413,7 +413,11 @@
 
     // Function to add IDs to headings if they don't have them
     function addIdsToHeadings() {
-      const articleContent = document.getElementById('article-content');
+      /*
+      * Updated heading container selector to use existing article content class instead of missing #article-content id
+      * 17-12-2025
+      */
+      const articleContent = document.querySelector('.article-template__content');
       if (!articleContent) return;
 
       const headings = articleContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -437,7 +441,11 @@
 
     // Function to generate table of contents
     function generateTableOfContents() {
-      const articleContent = document.getElementById('article-content');
+      /*
+      * Updated TOC article container selector to use existing article content class instead of missing #article-content id
+      * 17-12-2025
+      */
+      const articleContent = document.querySelector('.article-template__content');
       const tocList = document.getElementById('table-of-contents-list');
       
       if (!articleContent || !tocList) return;
