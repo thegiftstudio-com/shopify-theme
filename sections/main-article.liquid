@@ -1,5 +1,5 @@
-{{ 'jquery.js' | asset_url | script_tag }}
-{{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{{ 'jquery.aio.min.js' | asset_url | script_tag }}
+{{ 'section-blog-post.aio.min.css' | asset_url | stylesheet_tag }}
 
 <article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
   {%- for block in section.blocks -%}
@@ -32,7 +32,7 @@
                 "
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
                 src="{{ article.image | image_url: width: 1100 }}"
-                loading="eager"
+                loading="lazy"
                 fetchpriority="high"
                 width="{{ article.image.width }}"
                 height="{{ article.image.height }}"
@@ -40,7 +40,7 @@
               >
          
                {% else %}
-              <img src="{{ article.metafields.custom.blog_banner.value | img_url:'master' }}" alt="article_banner" class="article_banner" loading = "lazy">
+              <img loading="lazy" src="{{ article.metafields.custom.blog_banner.value | img_url:'master' }}" alt="article_banner" class="article_banner" loading = "lazy">
                 {% endif %}
             </div>
           </div>
@@ -62,14 +62,12 @@
         </header>
 
       {%- when 'content' -%}
-       
         <div
           class="article-template__content page-width page-width--narrowxx rte"
-          id="article-content"
           itemprop="articleBody"
           {{ block.shopify_attributes }}
         >
-          {{ article.content }}
+          {{ article.content | replace: '<img', '<img loading="lazy"' }}
         </div>
 
       {%- when 'share' -%}
