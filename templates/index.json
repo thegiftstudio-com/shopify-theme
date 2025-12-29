@@ -17,7 +17,7 @@
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/Mob-Tile.jpg",
-            "gift_title": "Christmas Hampers",
+            "gift_title": "New Year Hampers",
             "img_url": "shopify://collections/christmas-hamper"
           }
         },
@@ -336,13 +336,13 @@
           "type": "slide",
           "settings": {
             "custom_class": "",
-            "image": "shopify://shop_images/ChatGPT_Image_Dec_28_2025_02_27_33_PM.png",
-            "mob_banner": "shopify://shop_images/transparent-Photoroom_9.png",
+            "image": "shopify://shop_images/transparent-Photoroom_9.png",
+            "mob_banner": "shopify://shop_images/Christmas_MOB-BNR-_1.jpg",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",
             "button_label": "",
-            "link": "https://thegiftstudio.com/collections/christmas-hamper",
+            "link": "https://thegiftstudio.com/collections/new-year",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
