@@ -334,6 +334,7 @@
       "blocks": {
         "slide_EyN76V": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/transparent-Photoroom_9.png",
