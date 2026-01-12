@@ -269,8 +269,16 @@
     {% assign number = 7 %}
   {% elsif product.tags contains '8-days' %}
     {% assign number = 8 %}
+  {% comment %} Added By Velocity : 12-01-2026, TGS team requested to add 9-days Tag as well {% endcomment %}
+  {% elsif product.tags contains '9-days' %}
+    {% assign number = 9 %}
+  {% comment %} EOC {% endcomment %}
   {% elsif product.tags contains '10-days' %}
     {% assign number = 10 %}
+  {% comment %} Added By Velocity : 12-01-2026, Add 11-days Tag as well {% endcomment %}
+  {% elsif product.tags contains '11-days' %}
+    {% assign number = 11 %}
+  {% comment %} EOC {% endcomment %}
   {% elsif product.tags contains '12-days' %}
     {% assign number = 12 %}
   {% elsif product.tags contains '13-days' %}
