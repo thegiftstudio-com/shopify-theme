@@ -14,6 +14,7 @@
       "blocks": {
         "text_kMcpwt": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/NY_784b8d2a-a69d-4b2f-91b4-a01fa8ed22bb.jpg",
