@@ -376,16 +376,15 @@
         },
         "slide_Di6tzy": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "custom_class": "",
-            "image": "shopify://shop_images/wedding-bridesgroom-hamper-BNR-Landing-Page.jpg",
-            "mob_banner": "shopify://shop_images/wedding_MOB.jpg",
+            "image": "shopify://shop_images/stole-WEB-banner.jpg",
+            "mob_banner": "shopify://shop_images/stole--MOB-banner.jpg",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",
             "button_label": "",
-            "link": "https://thegiftstudio.com/collections/curated-hamper-wedding",
+            "link": "https://thegiftstudio.com/collections/fashion-personal-care",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -397,6 +396,7 @@
         },
         "slide_q4JE4U": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Masaba-web-banner-WEB_1.jpg",
