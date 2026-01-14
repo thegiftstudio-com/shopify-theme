@@ -333,6 +333,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_hAVmbz": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/V-day-WEB-BNR.jpg",
+            "mob_banner": "shopify://shop_images/V-day-WEB-BNR_6de5e991-b375-42da-8f51-213e0a2dd0d2.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/valentines-day-2",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_EyN76V": {
           "type": "slide",
           "disabled": true,
@@ -1361,6 +1381,7 @@
         }
       },
       "block_order": [
+        "slide_hAVmbz",
         "slide_EyN76V",
         "slide_BQypfe",
         "slide_Di6tzy",
