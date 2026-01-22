@@ -17,7 +17,7 @@
         "announcement_RnxM4p": {
           "type": "announcement",
           "settings": {
-            "text": "FOR QUERIES PLEASE CALL:  9147321916 / 02248963766",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": "https://wa.me/919147321916"
@@ -27,7 +27,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "Get 20% off for Mother's Day - Apply TGS20",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": ""
@@ -37,7 +37,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "This Women's Day, Get Flat 15% off on Your Orders, Use Code: DIFY15",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "left",
             "color_scheme": "inverse",
             "link": ""
@@ -47,7 +47,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "Get 10% discount on your order! Use Code: TGS10",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": ""
@@ -57,7 +57,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "Get 10% discount on your order! Use Code: TGS10",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": ""
@@ -67,7 +67,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "Get 15% Off on Shopping for Rs. 999! Use Code: FESTIVE15",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": "https://thegiftstudio.com/collections/diwali-gift-hampers"
@@ -77,7 +77,7 @@
           "type": "announcement",
           "disabled": true,
           "settings": {
-            "text": "Get 15% Off on Shopping for Rs. 999! Use Code: DIWALI15",
+            "richtext": "<p>Welcome to our store</p>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": "https://thegiftstudio.com/collections/diwali-gift-hampers"
@@ -94,8 +94,8 @@
         "announcement_FQLWQY"
       ],
       "custom_css": [
-        ".announcement-bar__message {font-size: 11px;}",
-        "@media (max-width: 600px) {.announcement-bar__message {font-size: 8.5px; }}"
+        "h5 {color: rgb(var(--color-foreground)); text-transform: uppercase; padding: 8px 0%; white-space: nowrap; box-sizing: border-box; text-align: center; margin: 0px;}",
+        "@media (max-width: 600px) {h5 {font-size: 8px; }}"
       ],
       "settings": {
         "auto_scroll": false
