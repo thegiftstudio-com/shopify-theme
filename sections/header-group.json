@@ -17,10 +17,10 @@
         "announcement_RnxM4p": {
           "type": "announcement",
           "settings": {
-            "richtext": "<p>Welcome to our store</p>",
+            "richtext": "<h5>FOR QUERIES PLEASE CALL  - <a href=\"tel:02248963766\">02248963766  </a>OR WHATSAPP  - <a href=\"https://wa.me/919147321916\" target=\"_blank\">9147321916  </a></h5>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
-            "link": "https://wa.me/919147321916"
+            "link": ""
           }
         },
         "announcement_3htE96": {
