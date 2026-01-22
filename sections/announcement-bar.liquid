@@ -8,7 +8,8 @@
           aria-label="{{ 'sections.header.announcement' | t }}"
           {{ block.shopify_attributes }}
         >
-          {%- if block.settings.text != blank -%}
+          {% comment %}Added by Velocity: 22-01-2026 : Updated the implementation to add anchor links. Replace test key to richtext key{% endcomment %}
+          {%- if block.settings.richtext != blank -%}
             {%- if block.settings.link != blank -%}
               <a
                 href="{{ block.settings.link }}"
@@ -16,12 +17,10 @@
               >
             {%- endif -%}
             <div class="page-width">
-              <p class="announcement-bar__message {{ block.settings.text_alignment }} h5">
-                {{ block.settings.text | escape }}
-                {%- if block.settings.link != blank -%}
-                  {% render 'icon-arrow' %}
-                {%- endif -%}
-              </p>
+              {{ block.settings.richtext }}
+              {%- if block.settings.link != blank -%}
+                {% render 'icon-arrow' %}
+              {%- endif -%}
             </div>
             {%- if block.settings.link != blank -%}
               </a>
@@ -30,8 +29,14 @@
         </div>
     {%- endcase -%}
   {%- endfor -%}
+  {% comment %}Added by Velocity: 22-01-2026 : Updated the implementation to add anchor links. Replace test key to richtext key{% endcomment %}
   <style>
-    .announcement-bar__message {font-size:10px;color:rgb(var(--color-foreground));text-transform: uppercase; padding: 5px 0%; white-space: nowrap; box-sizing: border-box;  }
+        .announcement-bar__message {font-size:10px;color:rgb(var(--color-foreground));text-transform: uppercase; padding: 5px 0%; white-space: nowrap; box-sizing: border-box;  }
+        .announcement-bar a {
+      color: inherit;
+      font-weight: 600;
+      text-decoration: none;
+    }
   </style>
 {% else %}
   <div
@@ -44,12 +49,12 @@
         <div class="marquee_item">
           <div class="marquee_item_inner">
             {%- for block in section.blocks -%}
-              <div class="mii_item font_xs">{{ block.settings.text | escape }}</div>
+              <div class="mii_item font_xs">{{ block.settings.richtext | escape }}</div>
             {%- endfor -%}
           </div>
           <div class="marquee_item_inner">
             {%- for block in section.blocks -%}
-              <div class="mii_item font_xs">{{ block.settings.text | escape }}</div>
+              <div class="mii_item font_xs">{{ block.settings.richtext | escape }}</div>
             {%- endfor -%}
           </div>
         </div>
@@ -80,7 +85,7 @@
         .sticky-announcement-bar{position: sticky;top: 0;}
   </style>
 {% endunless %}
-
+{% comment %}Added by Velocity: 22-01-2026 : Updated the implementation to add anchor links. Replace test key to richtext key{% endcomment %}
 {% schema %}
 {
   "name": "New announcement bar",
@@ -100,9 +105,9 @@
       "name": "t:sections.announcement-bar.blocks.announcement.name",
       "settings": [
         {
-          "type": "text",
-          "id": "text",
-          "default": "Welcome to our store",
+          "type": "richtext",
+          "id": "richtext",
+          "default": "<p>Welcome to our store</p>",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
         },
         {
