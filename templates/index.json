@@ -1725,9 +1725,70 @@
         "padding_bottom": 20
       }
     },
+    "collection_list_qUTwcm": {
+      "type": "collection-list",
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Collections",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "background-1",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "popular_categories_fWTBcV": {
       "type": "popular_categories",
       "blocks": {
+        "collection_Cadbx8": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Hug_me_tight.jpg",
+            "coll_title": "Hug Me Tight",
+            "card_url": "https://thegiftstudio.com/collections/hug-day"
+          }
+        },
+        "collection_gqbbat": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Annivarsary.jpg",
+            "coll_title": "Anniversary Range",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
+          }
+        },
+        "collection_qyaELf": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Seal_with_Kiss.jpg",
+            "coll_title": "Seal with kiss",
+            "card_url": "https://thegiftstudio.com/collections/kiss-day"
+          }
+        },
+        "collection_Lawqce": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Rosey_Surprise.jpg",
+            "coll_title": "Rosey Surprise",
+            "card_url": "https://thegiftstudio.com/collections/rose-day"
+          }
+        },
+        "collection_ffnX7w": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Heartfelt_Promises.jpg",
+            "coll_title": "heartfelt promises",
+            "card_url": "https://thegiftstudio.com/collections/promise-day"
+          }
+        },
         "collection_cgqUcC": {
           "type": "collection",
           "settings": {
@@ -1735,6 +1796,15 @@
             "coll_img": "shopify://shop_images/WEB-SECTION-tiles.jpg",
             "coll_title": "Celebrity Hamper",
             "card_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
+          }
+        },
+        "collection_W4QE4W": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Birthday_5963d1eb-2d99-46c2-883c-8df2a903e7b5.jpg",
+            "coll_title": "Birthday Selection",
+            "card_url": "https://thegiftstudio.com/collections/birthday-curated-hampers"
           }
         },
         "collection_3xARHC": {
@@ -1747,67 +1817,8 @@
             "card_url": "https://thegiftstudio.com/collections/diwali-gift-hampers"
           }
         },
-        "collection_W4QE4W": {
-          "type": "collection",
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Birthday_5963d1eb-2d99-46c2-883c-8df2a903e7b5.jpg",
-            "coll_title": "Birthday Selection",
-            "card_url": "https://thegiftstudio.com/collections/birthday-curated-hampers"
-          }
-        },
-        "collection_gqbbat": {
-          "type": "collection",
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Annivarsary.jpg",
-            "coll_title": "Anniversary Range",
-            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
-          }
-        },
-        "collection_Cadbx8": {
-          "type": "collection",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Hug_me_tight.jpg",
-            "coll_title": "Hug Me Tight",
-            "card_url": "https://thegiftstudio.com/collections/hug-day"
-          }
-        },
-        "collection_qyaELf": {
-          "type": "collection",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Seal_with_Kiss.jpg",
-            "coll_title": "Seal with kiss",
-            "card_url": "https://thegiftstudio.com/collections/kiss-day"
-          }
-        },
-        "collection_Lawqce": {
-          "type": "collection",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Rosey_Surprise.jpg",
-            "coll_title": "Rosey Surprise",
-            "card_url": "https://thegiftstudio.com/collections/rose-day"
-          }
-        },
-        "collection_ffnX7w": {
-          "type": "collection",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Heartfelt_Promises.jpg",
-            "coll_title": "heartfelt promises",
-            "card_url": "https://thegiftstudio.com/collections/promise-day"
-          }
-        },
         "collection_enDdkr": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/Evening_Gaze_v2.jpg",
@@ -1836,14 +1847,14 @@
         }
       },
       "block_order": [
-        "collection_cgqUcC",
-        "collection_3xARHC",
-        "collection_W4QE4W",
-        "collection_gqbbat",
         "collection_Cadbx8",
+        "collection_gqbbat",
         "collection_qyaELf",
         "collection_Lawqce",
         "collection_ffnX7w",
+        "collection_cgqUcC",
+        "collection_W4QE4W",
+        "collection_3xARHC",
         "collection_enDdkr",
         "collection_M6nA8g",
         "collection_mKdDh8"
@@ -2914,6 +2925,7 @@
     "popular_categories_4LQxF9",
     "popular_categories_3Dz4Vj",
     "rich_text_KtPPtn",
+    "collection_list_qUTwcm",
     "popular_categories_fWTBcV",
     "multicolumn_3VG8GE",
     "23ab7808-7e1e-4528-ad91-6b6c873b4243",
