@@ -1674,8 +1674,8 @@
         "enable_desktop_slider": true,
         "columns_mobile": "2",
         "swipe_on_mobile": true,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "rich_text_KtPPtn": {
@@ -1683,6 +1683,7 @@
       "blocks": {
         "heading_U4QxHi": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "heading": "<p>Curated Gifts</p>",
             "color_pick_title": "",
@@ -1984,13 +1985,13 @@
       ],
       "settings": {
         "custom_class": "curated_category_sec",
-        "category_title": "",
+        "category_title": "Curated Gifts",
         "columns_desktop": 3,
         "enable_desktop_slider": true,
         "columns_mobile": "2",
         "swipe_on_mobile": true,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 48,
+        "padding_bottom": 56
       }
     },
     "multicolumn_3VG8GE": {
