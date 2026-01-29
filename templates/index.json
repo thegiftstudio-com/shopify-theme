@@ -1753,15 +1753,6 @@
             "card_url": "https://thegiftstudio.com/collections/hug-day"
           }
         },
-        "collection_gqbbat": {
-          "type": "collection",
-          "settings": {
-            "city_hide": "",
-            "coll_img": "shopify://shop_images/Annivarsary.jpg",
-            "coll_title": "Anniversary Range",
-            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
-          }
-        },
         "collection_qyaELf": {
           "type": "collection",
           "settings": {
@@ -1796,6 +1787,15 @@
             "coll_img": "shopify://shop_images/WEB-SECTION-tiles.jpg",
             "coll_title": "Celebrity Hamper",
             "card_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
+          }
+        },
+        "collection_gqbbat": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Annivarsary.jpg",
+            "coll_title": "Anniversary Range",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
           }
         },
         "collection_W4QE4W": {
@@ -1848,11 +1848,11 @@
       },
       "block_order": [
         "collection_Cadbx8",
-        "collection_gqbbat",
         "collection_qyaELf",
         "collection_Lawqce",
         "collection_ffnX7w",
         "collection_cgqUcC",
+        "collection_gqbbat",
         "collection_W4QE4W",
         "collection_3xARHC",
         "collection_enDdkr",
