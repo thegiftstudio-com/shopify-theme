@@ -1725,52 +1725,6 @@
         "padding_bottom": 20
       }
     },
-    "collection_list_slider_Rqqy4g": {
-      "type": "collection_list_slider",
-      "blocks": {
-        "featured_collection_Bkifqw": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "",
-            "collection_coll_title": ""
-          }
-        },
-        "featured_collection_jnPeP9": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "",
-            "collection_coll_title": ""
-          }
-        },
-        "featured_collection_HKpqVa": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "",
-            "collection_coll_title": ""
-          }
-        }
-      },
-      "block_order": [
-        "featured_collection_Bkifqw",
-        "featured_collection_jnPeP9",
-        "featured_collection_HKpqVa"
-      ],
-      "name": "Collection Slider List",
-      "settings": {
-        "custom_class": "Valentine's Day",
-        "title": "Valentine's Day",
-        "heading_size": "h1",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "enable_desktop_slider": false,
-        "color_scheme": "background-1",
-        "show_view_all": false,
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "popular_categories_fWTBcV": {
       "type": "popular_categories",
       "blocks": {
@@ -1897,6 +1851,140 @@
       "settings": {
         "custom_class": "curated_category_sec",
         "category_title": "",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "popular_categories_WBURqk": {
+      "type": "popular_categories",
+      "blocks": {
+        "collection_n7mEkf": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/WEB-SECTION-tiles.jpg",
+            "coll_title": "Celebrity Hamper",
+            "card_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
+          }
+        },
+        "collection_i36tDk": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Wedding.jpg",
+            "coll_title": "Diwali",
+            "card_url": "https://thegiftstudio.com/collections/diwali-gift-hampers"
+          }
+        },
+        "collection_RhiDfR": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Birthday_5963d1eb-2d99-46c2-883c-8df2a903e7b5.jpg",
+            "coll_title": "Birthday Selection",
+            "card_url": "https://thegiftstudio.com/collections/birthday-curated-hampers"
+          }
+        },
+        "collection_6m7pFN": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Annivarsary.jpg",
+            "coll_title": "Anniversary Range",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
+          }
+        },
+        "collection_RTQKFi": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Hug_me_tight.jpg",
+            "coll_title": "Hug Me Tight",
+            "card_url": "https://thegiftstudio.com/collections/hug-day"
+          }
+        },
+        "collection_7xATy7": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Seal_with_Kiss.jpg",
+            "coll_title": "Seal with kiss",
+            "card_url": "https://thegiftstudio.com/collections/kiss-day"
+          }
+        },
+        "collection_mHVJrj": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Rosey_Surprise.jpg",
+            "coll_title": "Rosey Surprise",
+            "card_url": "https://thegiftstudio.com/collections/rose-day"
+          }
+        },
+        "collection_gTQxkx": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Heartfelt_Promises.jpg",
+            "coll_title": "heartfelt promises",
+            "card_url": "https://thegiftstudio.com/collections/promise-day"
+          }
+        },
+        "collection_LV7dPt": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Evening_Gaze_v2.jpg",
+            "coll_title": "Anniversary Gifts",
+            "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
+          }
+        },
+        "collection_tMBPET": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Home_Decor.jpg",
+            "coll_title": "Home Decor",
+            "card_url": "https://thegiftstudio.com/collections/tgs-home"
+          }
+        },
+        "collection_nGAkGY": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "city_hide": "",
+            "coll_img": "shopify://shop_images/Couple_Games_e8b632e6-8f16-4a4f-ad6c-0ff820ac1c0f.jpg",
+            "coll_title": "Couple Games",
+            "card_url": "https://thegiftstudio.com/collections/couple-games"
+          }
+        }
+      },
+      "block_order": [
+        "collection_n7mEkf",
+        "collection_i36tDk",
+        "collection_RhiDfR",
+        "collection_6m7pFN",
+        "collection_RTQKFi",
+        "collection_7xATy7",
+        "collection_mHVJrj",
+        "collection_gTQxkx",
+        "collection_LV7dPt",
+        "collection_tMBPET",
+        "collection_nGAkGY"
+      ],
+      "settings": {
+        "custom_class": "curated_category_sec",
+        "category_title": "Valentine's Collection",
         "columns_desktop": 3,
         "enable_desktop_slider": true,
         "columns_mobile": "2",
@@ -2960,8 +3048,8 @@
     "popular_categories_4LQxF9",
     "popular_categories_3Dz4Vj",
     "rich_text_KtPPtn",
-    "collection_list_slider_Rqqy4g",
     "popular_categories_fWTBcV",
+    "popular_categories_WBURqk",
     "multicolumn_3VG8GE",
     "23ab7808-7e1e-4528-ad91-6b6c873b4243",
     "43489cf9-cc66-4660-ac72-60536b0acc48",
