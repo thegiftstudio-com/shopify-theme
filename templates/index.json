@@ -2205,6 +2205,13 @@
     "43489cf9-cc66-4660-ac72-60536b0acc48": {
       "type": "best_sellers_section",
       "blocks": {
+        "collection_HyraAj": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Love Edition",
+            "collection": "valentines-day-2"
+          }
+        },
         "collection_miCHjW": {
           "type": "collection",
           "disabled": true,
@@ -2315,6 +2322,7 @@
         }
       },
       "block_order": [
+        "collection_HyraAj",
         "collection_miCHjW",
         "collection_pT4PXM",
         "collection_Mj8xkH",
