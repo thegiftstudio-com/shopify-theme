@@ -1,0 +1,778 @@
+{% comment %}
+  Added by Velocity:03-02-2026
+  Festival Section
+  Displays a horizontal scrollable list of festival items with images, dates, and titles.
+  Features include:
+  - Configurable heading and subheading
+  - Festival items with images, dates (optional), and titles
+  - Date display can be enabled/disabled from section settings
+  - Responsive design with mobile-specific settings
+  - Customizable styling for colors, fonts, spacing, and hover effects
+  - Lazy loading support for images
+{% endcomment %}
+<style>
+   .collection-raksha_bandhan .festival_section{
+      display: block;
+         overflow: auto;
+     padding-bottom: 10px !important;
+     padding-top: 15px !important;
+   }
+
+   .collection-raksha_bandhan .festival_section .festival_inner_sec {
+       display: flex;
+      justify-content: center;
+       padding-left: 0px;
+     margin-left: 0;
+     margin-right: 0;}
+
+   /* Festival Section Heading Styles */
+   .festival_section .festival_heading {
+     text-align: {{ section.settings.heading_alignment }};
+     color: {{ section.settings.heading_color }};
+     font-size: {{ section.settings.heading_font_size }}px;
+     font-weight: {{ section.settings.heading_font_weight }};
+     margin-bottom: {{ section.settings.heading_margin_bottom }}px;
+     line-height: 1.2;
+   }
+
+   .festival_section .festival_subheading {
+     text-align: {{ section.settings.subheading_alignment }};
+     color: {{ section.settings.subheading_color }};
+     font-size: {{ section.settings.subheading_font_size }}px;
+     font-weight: {{ section.settings.subheading_font_weight }};
+     margin-bottom: {{ section.settings.subheading_margin_bottom }}px;
+     line-height: 1.4;
+   }
+
+   /* Festival Circular Icon Layout */
+   .festival_section .festival_inner_sec {
+     display: flex;
+     flex-wrap: nowrap;
+     justify-content: flex-start;
+     align-items: flex-start;
+     gap: {{ section.settings.icon_spacing }}px;
+     padding: 20px 0;
+     overflow-x: auto;
+     overflow-y: hidden;
+     scrollbar-width: none;
+     scrollbar-color: {{ section.settings.scrollbar_color }} transparent;
+   }
+
+   .festival_section .festival_inner_sec::-webkit-scrollbar {
+     height: 6px;
+   }
+
+   .festival_section .festival_inner_sec::-webkit-scrollbar-track {
+     background: transparent;
+   }
+
+   .festival_section .festival_inner_sec::-webkit-scrollbar-thumb {
+     background: {{ section.settings.scrollbar_color }};
+     border-radius: 3px;
+   }
+
+   .festival_section .festival_inner_sec::-webkit-scrollbar-thumb:hover {
+     background: {{ section.settings.scrollbar_hover_color }};
+   }
+
+   .festival_section .festival_inner_sec .festival_item {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     text-align: center;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     width: {{ section.settings.icon_size }}px;
+     flex-shrink: 0;
+   }
+
+   .festival_section .festival_inner_sec .festival_item:hover {
+     {% if section.settings.enable_hover_animation %}
+       transform: translateY(-5px);
+     {% endif %}
+   }
+   .festival_section .festival_inner_sec .festival_item .festival_date_wrapper {
+     height: 25px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin-bottom: 0px;
+   }
+
+   .festival_section .festival_inner_sec .festival_item .festival_date {
+     color: {{ section.settings.item_date_color }};
+     background-color: {{ section.settings.item_date_bg_color }};
+     font-size: {{ section.settings.item_date_font_size }}px;
+     font-weight: {{ section.settings.item_date_font_weight }};
+     text-align: center;
+     padding: 4px 8px;
+     border-radius: 4px;
+     line-height: 1.2;
+     display: inline-block;
+   }
+
+   .festival_section .festival_inner_sec .festival_item .festival_icon_wrapper {
+     width: {{ section.settings.icon_size }}px;
+     height: {{ section.settings.icon_size }}px;
+     border-radius: {{ section.settings.icon_border_radius }}px;
+     background: {{ section.settings.icon_bg_color }};
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin-bottom: 12px;
+     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+     transition: all 0.3s ease;
+     overflow: hidden;
+     position: relative;
+   }
+
+   .festival_section .festival_inner_sec .festival_item:hover .festival_icon_wrapper {
+     {% if section.settings.enable_hover_animation %}
+       box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+       transform: scale(1.05);
+     {% endif %}
+   }
+
+   .festival_section .festival_inner_sec .festival_item .festival_icon_wrapper::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     background: linear-gradient(45deg, {{ section.settings.icon_gradient_color_1 }}, {{ section.settings.icon_gradient_color_2 }});
+     opacity: 0;
+     transition: opacity 0.3s ease;
+     border-radius: {{ section.settings.icon_border_radius }}px;
+   }
+
+   .festival_section .festival_inner_sec .festival_item:hover .festival_icon_wrapper::before {
+     {% if section.settings.enable_hover_animation %}
+       opacity: 0.1;
+     {% endif %}
+   }
+
+   .festival_section .festival_inner_sec .festival_item .festival_icon_wrapper img {
+     width: 100%;
+     height: 100%;
+     position: relative;
+     z-index: 2;
+   }
+   .festival_section .festival_inner_sec .festival_item .festival_image_heading {
+     color: {{ section.settings.image_heading_color }};
+     font-size: {{ section.settings.image_heading_font_size }}px;
+     font-weight: {{ section.settings.image_heading_font_weight }};
+     text-align: center;
+     line-height: 1.3;
+     margin: 0;
+     max-width: {{ section.settings.icon_size }}px;
+     word-wrap: break-word;
+   }
+
+   @media (min-width: 0px) and (max-width: 767px) {
+     .festival_section {
+       display: block;
+         overflow: auto;
+     padding-bottom: 10px !important;
+     padding-top: 15px !important;}
+
+   .festival_section::-webkit-scrollbar{
+      height:0px;
+    }
+
+    .festival_section .festival_inner_sec::-webkit-scrollbar{
+      height:1px;
+    }
+     .festival_section .festival_inner_sec::-webkit-scrollbar-track{
+       box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+     }
+     .festival_section .festival_heading {
+       font-size: {{ section.settings.heading_font_size_mobile }}px;
+     }
+
+     .festival_section .festival_subheading {
+       font-size: {{ section.settings.subheading_font_size_mobile }}px;
+     }
+     .festival_section .festival_inner_sec {
+       gap: {{ section.settings.icon_spacing_mobile }}px;
+       padding: 15px 0;
+     }
+
+     .festival_section .festival_inner_sec .festival_item {
+       width: {{ section.settings.icon_size_mobile }}px;
+     }
+
+     .festival_section .festival_inner_sec .festival_item .festival_icon_wrapper {
+       width: {{ section.settings.icon_size_mobile }}px;
+       height: {{ section.settings.icon_size_mobile }}px;
+       margin-bottom: 8px;
+     }
+     .festival_section .festival_inner_sec .festival_item .festival_date_wrapper {
+       height: 25px;
+       margin-bottom: 6px;
+     }
+
+     .festival_section .festival_inner_sec .festival_item .festival_date {
+       font-size: {{ section.settings.item_date_font_size_mobile }}px;
+     }
+
+     .festival_section .festival_inner_sec .festival_item .festival_image_heading {
+       font-size: {{ section.settings.image_heading_font_size_mobile }}px;
+       max-width: {{ section.settings.icon_size_mobile }}px;
+       font-weight: 400;
+       text-align: center;
+       font-family: var(--font-text);
+       padding-top: 0px;
+       margin: 0;
+       line-height: 1.2;
+       letter-spacing: 0;
+     }
+   }
+</style>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="festival_section page-width section_margin section-{{ section.id }}-padding">
+  {% if section.settings.show_heading and section.settings.heading != blank %}
+    <h2 class="festival_heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+  
+  {% if section.settings.show_subheading and section.settings.subheading != blank %}
+    <div class="festival_subheading">{{ section.settings.subheading }}</div>
+  {% endif %}
+
+  <div class="festival_inner_sec">
+    {%- for block in section.blocks -%}
+      <div
+        class="festival_item {{ block.settings.city_hide }}"
+        onclick="window.location.href='{{ block.settings.img_url }}';"
+      >
+        {% if section.settings.enable_date_display %}
+          <div class="festival_date_wrapper">
+            {% if block.settings.festival_date != blank %}
+              <div class="festival_date">{{ block.settings.festival_date }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+        <div class="festival_icon_wrapper">
+                     <img
+             src="{{ block.settings.gift_img | img_url: '120x120' }}"
+             srcset="
+               {{ block.settings.gift_img | img_url: '120x120' }} 1x,
+               {{ block.settings.gift_img | img_url: '240x240' }} 2x
+             "
+             alt="{{ block.settings.gift_title }}"
+             loading="{% if section.settings.enable_lazy_loading %}{% if forloop.index < 4 %}eager{% else %}lazy{% endif %}{% else %}eager{% endif %}"
+             decoding="{% if section.settings.enable_lazy_loading %}async{% else %}sync{% endif %}"
+           >
+        </div>
+        <p class="festival_image_heading">{{ block.settings.gift_title }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Festival Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+    "type": "range",
+    "id": "padding_top",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Padding Top",
+    "default": 36
+  },
+  {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Padding Bottom",
+    "default": 36
+  },
+  {
+    "type": "header",
+    "content": "Heading Settings"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_heading",
+    "label": "Show Heading",
+    "default": true
+  },
+  {
+    "type": "text",
+    "id": "heading",
+    "label": "Heading Text",
+    "default": "Festival Collection"
+  },
+  {
+    "type": "color",
+    "id": "heading_color",
+    "label": "Heading Color",
+    "default": "#000000"
+  },
+  {
+    "type": "range",
+    "id": "heading_font_size",
+    "min": 16,
+    "max": 60,
+    "step": 2,
+    "unit": "px",
+    "label": "Heading Font Size (Desktop)",
+    "default": 32
+  },
+  {
+    "type": "range",
+    "id": "heading_font_size_mobile",
+    "min": 14,
+    "max": 40,
+    "step": 2,
+    "unit": "px",
+    "label": "Heading Font Size (Mobile)",
+    "default": 24
+  },
+  {
+    "type": "select",
+    "id": "heading_font_weight",
+    "label": "Heading Font Weight",
+    "options": [
+      {
+        "value": "300",
+        "label": "Light"
+      },
+      {
+        "value": "400",
+        "label": "Regular"
+      },
+      {
+        "value": "500",
+        "label": "Medium"
+      },
+      {
+        "value": "600",
+        "label": "Semi Bold"
+      },
+      {
+        "value": "700",
+        "label": "Bold"
+      }
+    ],
+    "default": "600"
+  },
+  {
+    "type": "select",
+    "id": "heading_alignment",
+    "label": "Heading Alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+    ],
+    "default": "center"
+  },
+  {
+    "type": "range",
+    "id": "heading_margin_bottom",
+    "min": 0,
+    "max": 50,
+    "step": 2,
+    "unit": "px",
+    "label": "Heading Bottom Margin",
+    "default": 16
+  },
+  {
+    "type": "header",
+    "content": "Subheading Settings"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_subheading",
+    "label": "Show Subheading",
+    "default": true
+  },
+  {
+    "type": "textarea",
+    "id": "subheading",
+    "label": "Subheading Text",
+    "default": "Discover our special collection for this festive season"
+  },
+  {
+    "type": "color",
+    "id": "subheading_color",
+    "label": "Subheading Color",
+    "default": "#666666"
+  },
+  {
+    "type": "range",
+    "id": "subheading_font_size",
+    "min": 12,
+    "max": 24,
+    "step": 1,
+    "unit": "px",
+    "label": "Subheading Font Size (Desktop)",
+    "default": 16
+  },
+  {
+    "type": "range",
+    "id": "subheading_font_size_mobile",
+    "min": 10,
+    "max": 18,
+    "step": 1,
+    "unit": "px",
+    "label": "Subheading Font Size (Mobile)",
+    "default": 14
+  },
+  {
+    "type": "select",
+    "id": "subheading_font_weight",
+    "label": "Subheading Font Weight",
+    "options": [
+      {
+        "value": "300",
+        "label": "Light"
+      },
+      {
+        "value": "400",
+        "label": "Regular"
+      },
+      {
+        "value": "500",
+        "label": "Medium"
+      },
+      {
+        "value": "600",
+        "label": "Semi Bold"
+      }
+    ],
+    "default": "400"
+  },
+  {
+    "type": "select",
+    "id": "subheading_alignment",
+    "label": "Subheading Alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+    ],
+    "default": "center"
+  },
+  {
+    "type": "range",
+    "id": "subheading_margin_bottom",
+    "min": 0,
+    "max": 50,
+    "step": 2,
+    "unit": "px",
+    "label": "Subheading Bottom Margin",
+    "default": 24
+  },
+     {
+     "type": "header",
+     "content": "Icon Layout Settings"
+   },
+       {
+      "type": "checkbox",
+      "id": "enable_hover_animation",
+      "label": "Enable Hover Animation",
+      "default": true,
+      "info": "Enable or disable container animations on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lazy_loading",
+      "label": "Enable Lazy Loading",
+      "default": true,
+      "info": "Enable lazy loading for images to improve page performance"
+    },
+  {
+    "type": "range",
+    "id": "icon_size",
+    "min": 60,
+    "max": 150,
+    "step": 5,
+    "unit": "px",
+    "label": "Icon Size (Desktop)",
+    "default": 100
+  },
+  {
+    "type": "range",
+    "id": "icon_size_mobile",
+    "min": 50,
+    "max": 120,
+    "step": 5,
+    "unit": "px",
+    "label": "Icon Size (Mobile)",
+    "default": 80
+  },
+  {
+    "type": "range",
+    "id": "icon_spacing",
+    "min": 10,
+    "max": 50,
+    "step": 5,
+    "unit": "px",
+    "label": "Icon Spacing (Desktop)",
+    "default": 20
+  },
+  {
+    "type": "range",
+    "id": "icon_spacing_mobile",
+    "min": 5,
+    "max": 30,
+    "step": 5,
+    "unit": "px",
+    "label": "Icon Spacing (Mobile)",
+    "default": 15
+  },
+  {
+    "type": "range",
+    "id": "icon_border_radius",
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "unit": "px",
+    "label": "Icon Container Border Radius",
+    "default": 15
+  },
+  {
+    "type": "color",
+    "id": "icon_bg_color",
+    "label": "Icon Background Color",
+    "default": "#f8f9fa"
+  },
+  {
+    "type": "color",
+    "id": "icon_gradient_color_1",
+    "label": "Icon Hover Gradient Color 1",
+    "default": "#ff6b6b"
+  },
+  {
+    "type": "color",
+    "id": "icon_gradient_color_2",
+    "label": "Icon Hover Gradient Color 2",
+    "default": "#4ecdc4"
+  },
+  {
+    "type": "header",
+    "content": "Scrollbar Settings"
+  },
+  {
+    "type": "color",
+    "id": "scrollbar_color",
+    "label": "Scrollbar Color",
+    "default": "#cccccc"
+  },
+  {
+    "type": "color",
+    "id": "scrollbar_hover_color",
+    "label": "Scrollbar Hover Color",
+    "default": "#999999"
+  },
+  {
+    "type": "header",
+    "content": "Item Date Settings"
+  },
+  {
+    "type": "checkbox",
+    "id": "enable_date_display",
+    "label": "Enable Date Display",
+    "default": true,
+    "info": "Show date above festival item images"
+  },
+  {
+    "type": "color",
+    "id": "item_date_color",
+    "label": "Item Date Text Color",
+    "default": "#ffffff"
+  },
+  {
+    "type": "color",
+    "id": "item_date_bg_color",
+    "label": "Item Date Background Color",
+    "default": "#ff6b6b"
+  },
+  {
+    "type": "range",
+    "id": "item_date_font_size",
+    "min": 10,
+    "max": 18,
+    "step": 1,
+    "unit": "px",
+    "label": "Item Date Font Size (Desktop)",
+    "default": 12
+  },
+  {
+    "type": "range",
+    "id": "item_date_font_size_mobile",
+    "min": 8,
+    "max": 14,
+    "step": 1,
+    "unit": "px",
+    "label": "Item Date Font Size (Mobile)",
+    "default": 10
+  },
+  {
+    "type": "select",
+    "id": "item_date_font_weight",
+    "label": "Item Date Font Weight",
+    "options": [
+      {
+        "value": "400",
+        "label": "Regular"
+      },
+      {
+        "value": "500",
+        "label": "Medium"
+      },
+      {
+        "value": "600",
+        "label": "Semi Bold"
+      },
+      {
+        "value": "700",
+        "label": "Bold"
+      }
+    ],
+    "default": "600"
+  },
+  {
+    "type": "header",
+    "content": "Icon Text Settings"
+  },
+  {
+    "type": "color",
+    "id": "image_heading_color",
+    "label": "Icon Text Color",
+    "default": "#000000"
+  },
+  {
+    "type": "range",
+    "id": "image_heading_font_size",
+    "min": 10,
+    "max": 20,
+    "step": 1,
+    "unit": "px",
+    "label": "Icon Text Font Size (Desktop)",
+    "default": 14
+  },
+  {
+    "type": "range",
+    "id": "image_heading_font_size_mobile",
+    "min": 8,
+    "max": 16,
+    "step": 1,
+    "unit": "px",
+    "label": "Icon Text Font Size (Mobile)",
+    "default": 12
+  },
+  {
+    "type": "select",
+    "id": "image_heading_font_weight",
+    "label": "Icon Text Font Weight",
+    "options": [
+      {
+        "value": "300",
+        "label": "Light"
+      },
+      {
+        "value": "400",
+        "label": "Regular"
+      },
+      {
+        "value": "500",
+        "label": "Medium"
+      },
+      {
+        "value": "600",
+        "label": "Semi Bold"
+      }
+    ],
+    "default": "400"
+  }
+  ],
+    "blocks": [
+      {
+        "type": "festival_item",
+        "name": "Festival Item",
+        "settings":
+        [
+          {
+            "type": "text",
+            "id": "city_hide",
+            "label": "Add City Hide Class"
+          },
+          {
+            "type": "text",
+            "id": "festival_date",
+            "label": "Festival Date",
+            "info": "Enter the date to display above the image (e.g., '15 Aug' or 'Aug 15, 2024')"
+          },
+          {
+            "type": "image_picker",
+            "id": "gift_img",
+            "label": "Add Festival Icon"
+          },
+         
+          {
+            "type": "text",
+            "id": "gift_title",
+            "label": "Add Festival Title"
+          },
+          {
+            "type": "url",
+            "id": "img_url",
+            "label": "Add Festival Link"
+          }
+        ]
+      }
+  ],
+ "presets": [
+    {
+      "name": "Festival Section"
+    }
+]
+}
+{% endschema %}
