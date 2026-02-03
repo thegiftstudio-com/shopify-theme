@@ -1459,7 +1459,7 @@
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
+            "festival_date": "",
             "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
             "gift_title": "Hug Day",
             "img_url": "shopify://collections/hug-day"
