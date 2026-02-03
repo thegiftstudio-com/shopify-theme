@@ -1444,10 +1444,135 @@
     },
     "festival_section_HThWep": {
       "type": "festival-section",
+      "blocks": {
+        "festival_item_QV4EDx": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_xXxLJ4": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_47iqig": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_33d3kB": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_zkPBNB": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_EVNAxB": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_inzRL6": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_QgUxNq": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_UneqwF": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_xHgtp9": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        },
+        "festival_item_EccEbY": {
+          "type": "festival_item",
+          "settings": {
+            "city_hide": "",
+            "festival_date": "10th FEB",
+            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
+            "gift_title": "Hug Day",
+            "img_url": "shopify://collections/hug-day"
+          }
+        }
+      },
+      "block_order": [
+        "festival_item_QV4EDx",
+        "festival_item_xXxLJ4",
+        "festival_item_47iqig",
+        "festival_item_33d3kB",
+        "festival_item_zkPBNB",
+        "festival_item_EVNAxB",
+        "festival_item_inzRL6",
+        "festival_item_QgUxNq",
+        "festival_item_UneqwF",
+        "festival_item_xHgtp9",
+        "festival_item_EccEbY"
+      ],
       "name": "Festival Section",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36,
+        "padding_top": 12,
+        "padding_bottom": 12,
         "show_heading": true,
         "heading": "Festival Collection",
         "heading_color": "#000000",
@@ -1463,8 +1588,8 @@
         "subheading_font_size_mobile": 14,
         "subheading_font_weight": "400",
         "subheading_alignment": "center",
-        "subheading_margin_bottom": 24,
-        "enable_hover_animation": true,
+        "subheading_margin_bottom": 4,
+        "enable_hover_animation": false,
         "enable_lazy_loading": true,
         "icon_size": 100,
         "icon_size_mobile": 80,
