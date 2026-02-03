@@ -275,8 +275,9 @@
                {{ block.settings.gift_img | img_url: '240x240' }} 2x
              "
              alt="{{ block.settings.gift_title }}"
-             loading="{% if section.settings.enable_lazy_loading %}{% if forloop.index < 4 %}eager{% else %}lazy{% endif %}{% else %}eager{% endif %}"
+             loading="{% if section.settings.enable_lazy_loading %}lazy{% else %}eager{% endif %}"
              decoding="{% if section.settings.enable_lazy_loading %}async{% else %}sync{% endif %}"
+             fetchpriority="high"
            >
         </div>
         <p class="festival_image_heading">{{ block.settings.gift_title }}</p>
