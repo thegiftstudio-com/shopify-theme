@@ -1569,6 +1569,7 @@
         "festival_item_xHgtp9",
         "festival_item_EccEbY"
       ],
+      "disabled": true,
       "name": "Festival Section",
       "settings": {
         "padding_top": 12,
