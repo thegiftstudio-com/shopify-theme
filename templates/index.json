@@ -1596,7 +1596,7 @@
         "enable_lazy_loading": true,
         "icon_size": 125,
         "icon_size_mobile": 80,
-        "icon_spacing": 20,
+        "icon_spacing": 30,
         "icon_spacing_mobile": 15,
         "icon_border_radius": 15,
         "icon_bg_color": "#f8f9fa",
