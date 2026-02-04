@@ -1449,30 +1449,30 @@
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "7th FEB",
+            "gift_img": "shopify://shop_images/ForeverRose_1471971_2_1.jpg",
+            "gift_title": "ROSE DAY",
+            "img_url": "shopify://collections/v-rose-day"
           }
         },
         "festival_item_xXxLJ4": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "8th FEB",
+            "gift_img": "shopify://shop_images/You_Me_Romantic_Keepsake_Hamper_1.jpg",
+            "gift_title": "PROPOSE DAY",
+            "img_url": "shopify://collections/v-propose-day"
           }
         },
         "festival_item_47iqig": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "9th FEB",
+            "gift_img": "shopify://shop_images/224RoseInfusedRubyChocolateBar_1471974_2.jpg",
+            "gift_title": "CHOCOLATE DAY",
+            "img_url": "shopify://collections/v-chocolate"
           }
         },
         "festival_item_33d3kB": {
@@ -1480,53 +1480,54 @@
           "settings": {
             "city_hide": "",
             "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "gift_img": "shopify://shop_images/Soft_Toy_Teddy_Love_1471977_2.jpg",
+            "gift_title": "TEDDY DAY",
+            "img_url": "shopify://collections/v-teddy"
           }
         },
         "festival_item_zkPBNB": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "11th FEB",
+            "gift_img": "shopify://shop_images/XOXOTreats_1457731_2_512778e3-edcc-4da6-84fd-e407031796f4.jpg",
+            "gift_title": "PROMISE DAY",
+            "img_url": "shopify://collections/v-promise"
           }
         },
         "festival_item_EVNAxB": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "12th FEB",
+            "gift_img": "shopify://shop_images/HugmeTight_1.jpg",
+            "gift_title": "HUG DAY",
+            "img_url": "shopify://collections/v-hug"
           }
         },
         "festival_item_inzRL6": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "13th FEB",
+            "gift_img": "shopify://shop_images/Kiss_Day_32276d37-e58b-4126-b1f4-c86ce246da87.jpg",
+            "gift_title": "KISS DAY",
+            "img_url": "shopify://collections/kiss-day-1"
           }
         },
         "festival_item_QgUxNq": {
           "type": "festival_item",
           "settings": {
             "city_hide": "",
-            "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/v-day-bnr-coupn-mob.jpg",
-            "gift_title": "Hug Day",
-            "img_url": "shopify://collections/hug-day"
+            "festival_date": "14th FEB",
+            "gift_img": "shopify://shop_images/TheLuxeLoveAffairHamper_1472262_1.jpg",
+            "gift_title": "VALENTINE'S DAY",
+            "img_url": "shopify://collections/valentines-day-2"
           }
         },
         "festival_item_UneqwF": {
           "type": "festival_item",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "festival_date": "10th FEB",
@@ -1537,6 +1538,7 @@
         },
         "festival_item_xHgtp9": {
           "type": "festival_item",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "festival_date": "10th FEB",
@@ -1547,6 +1549,7 @@
         },
         "festival_item_EccEbY": {
           "type": "festival_item",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "festival_date": "10th FEB",
@@ -1569,19 +1572,18 @@
         "festival_item_xHgtp9",
         "festival_item_EccEbY"
       ],
-      "disabled": true,
       "name": "Festival Section",
       "settings": {
-        "padding_top": 12,
+        "padding_top": 28,
         "padding_bottom": 12,
         "show_heading": true,
         "heading": "Festival Collection",
         "heading_color": "#000000",
-        "heading_font_size": 32,
+        "heading_font_size": 36,
         "heading_font_size_mobile": 24,
         "heading_font_weight": "600",
         "heading_alignment": "center",
-        "heading_margin_bottom": 16,
+        "heading_margin_bottom": 18,
         "show_subheading": true,
         "subheading": "Discover our special collection for this festive season",
         "subheading_color": "#666666",
