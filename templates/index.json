@@ -1594,7 +1594,7 @@
         "subheading_margin_bottom": 4,
         "enable_hover_animation": false,
         "enable_lazy_loading": true,
-        "icon_size": 100,
+        "icon_size": 140,
         "icon_size_mobile": 80,
         "icon_spacing": 20,
         "icon_spacing_mobile": 15,
