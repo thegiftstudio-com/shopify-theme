@@ -1450,7 +1450,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "7th FEB",
-            "gift_img": "shopify://shop_images/ForeverRose_1471971_2_1.jpg",
+            "gift_img": "shopify://shop_images/Rose_Day_8b35ce3c-bf03-4e00-a3cd-0fba8059c6f7.jpg",
             "gift_title": "ROSE DAY",
             "img_url": "shopify://collections/v-rose-day"
           }
@@ -1460,7 +1460,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "8th FEB",
-            "gift_img": "shopify://shop_images/You_Me_Romantic_Keepsake_Hamper_1.jpg",
+            "gift_img": "shopify://shop_images/Propose-Day_cbd52b79-f2c6-4a9b-bd4d-1b6a1335d391.jpg",
             "gift_title": "PROPOSE DAY",
             "img_url": "shopify://collections/v-propose-day"
           }
@@ -1470,7 +1470,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "9th FEB",
-            "gift_img": "shopify://shop_images/224RoseInfusedRubyChocolateBar_1471974_2.jpg",
+            "gift_img": "shopify://shop_images/Chocolate_Day_1fcfde99-acdb-4598-8976-10064652258e.jpg",
             "gift_title": "CHOCOLATE DAY",
             "img_url": "shopify://collections/v-chocolate"
           }
@@ -1480,7 +1480,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "10th FEB",
-            "gift_img": "shopify://shop_images/Soft_Toy_Teddy_Love_1471977_2.jpg",
+            "gift_img": "shopify://shop_images/Teddy_Day_b4d85ddc-b4bf-4bcf-9a5e-c458d4617abd.jpg",
             "gift_title": "TEDDY DAY",
             "img_url": "shopify://collections/v-teddy"
           }
@@ -1490,7 +1490,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "11th FEB",
-            "gift_img": "shopify://shop_images/XOXOTreats_1457731_2_512778e3-edcc-4da6-84fd-e407031796f4.jpg",
+            "gift_img": "shopify://shop_images/Promise_Day_848e5631-fce0-4424-b817-adb61778278a.jpg",
             "gift_title": "PROMISE DAY",
             "img_url": "shopify://collections/v-promise"
           }
@@ -1500,7 +1500,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "12th FEB",
-            "gift_img": "shopify://shop_images/HugmeTight_1.jpg",
+            "gift_img": "shopify://shop_images/Hug_Day_5c9e5ecc-1243-47ce-9331-244dbec8b095.jpg",
             "gift_title": "HUG DAY",
             "img_url": "shopify://collections/v-hug"
           }
@@ -1520,7 +1520,7 @@
           "settings": {
             "city_hide": "",
             "festival_date": "14th FEB",
-            "gift_img": "shopify://shop_images/TheLuxeLoveAffairHamper_1472262_1.jpg",
+            "gift_img": "shopify://shop_images/Valentine_s_day.png",
             "gift_title": "VALENTINE'S DAY",
             "img_url": "shopify://collections/valentines-day-2"
           }
@@ -1594,7 +1594,7 @@
         "subheading_margin_bottom": 4,
         "enable_hover_animation": false,
         "enable_lazy_loading": true,
-        "icon_size": 130,
+        "icon_size": 100,
         "icon_size_mobile": 80,
         "icon_spacing": 20,
         "icon_spacing_mobile": 15,
