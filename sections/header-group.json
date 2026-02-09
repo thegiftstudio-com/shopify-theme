@@ -17,7 +17,7 @@
         "announcement_RnxM4p": {
           "type": "announcement",
           "settings": {
-            "richtext": "<h5>FOR QUERIES PLEASE CALL  - <a href=\"tel:02248963766\">02248963766  </a>OR WHATSAPP  -    <a href=\"https://wa.me/9147321916\" target=\"_blank\" title=\"https://wa.me/9147321916\">9147321916 </a> / <a href=\"https://wa.me/917506210892\" target=\"_blank\" title=\"https://wa.me/917506210892\">7506210892 </a></h5>",
+            "richtext": "<h5>FOR QUERIES PLEASE CALL  - <a href=\"tel:02248963766\">02248963766 </a>  / <a href=\"tel:9147321916\" target=\"_blank\" title=\"tel:9147321916\"> 9147321916</a>  OR WHATSAPP  -    <a href=\"https://wa.me/9147321916\" target=\"_blank\" title=\"https://wa.me/9147321916\">9147321916 </a> / <a href=\"https://wa.me/917506210892\" target=\"_blank\" title=\"https://wa.me/917506210892\">7506210892 </a></h5>",
             "text_alignment": "center",
             "color_scheme": "accent-1",
             "link": ""
@@ -94,7 +94,7 @@
         "announcement_FQLWQY"
       ],
       "custom_css": [
-        "h5 {color: rgb(var(--color-foreground)); text-transform: uppercase; padding: 8px 0%; white-space: nowrap; box-sizing: border-box; text-align: center; margin: 0px;}",
+        "h5 {color: rgb(var(--color-foreground)); text-transform: uppercase; padding: 8px 0%; white-space: nowrap; box-sizing: border-box; text-align: center; margin: 0px; overflow: auto; scrollbar-width: none;}",
         "@media (max-width: 600px) {h5 {font-size: 8px; }}"
       ],
       "settings": {
