@@ -164,12 +164,6 @@ if (!isNaN(pincode_val)) {
                 if (data.status === true && data.matching_pincodes.length > 0) {
                     // Create a list of matched pincodes and their cities
                     let suggestions = data.matching_pincodes.slice(0, 5).map(function(item) {
-                        // Added by Velocity: 10-12-2025 Disable GGN warehouse 
-                        if(item.primary_warehouse=='gurgaon'){
-                          item.primary_warehouse='mumbai';
-                          item.isPerishable=0;
-                        }
-                        //EOC 10-12-2025
                         const cityId = item.city.toLowerCase().replace(/\s+/g, '-'); // safe ID format
                         const location = "location-" + item.primary_warehouse;
                         return `
@@ -248,10 +242,6 @@ if (!isNaN(pincode_val)) {
                     // Check if the response contains matching pincodes
                     if (data.status === true && data.matching_pincodes.length > 0) {
                         // Display only the first 5 matching pincodes and their cities
-                        if(item.primary_warehouse=='gurgaon'){
-                          item.primary_warehouse='mumbai';
-                          item.isPerishable=0;
-                        }
                         let suggestions = data.matching_pincodes.slice(0, 5).map(function(item) {
                             const cityId = item.city.toLowerCase().replace(/\s+/g, '-'); // safe ID format
                             const location = "location-" + item.primary_warehouse;

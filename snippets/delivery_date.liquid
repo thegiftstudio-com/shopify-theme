@@ -351,12 +351,6 @@ $(document).ready(function() {
             },
             success: function(data) {
                 if (data.status === true) { 
-                  // Added by Velocity: 10-12-2025 Disable GGN warehouse 
-                  if(data.primary_warehouse=='gurgaon'){
-                          data.primary_warehouse='mumbai';
-                          data.isPerishable=0;
-                        }
-                        // EOC 10-12-2025
                   let perishableItem = 0; 
                                     // To append the location in front of the location.
                   const primaryWarehouseTat = data.tat[data.primary_warehouse];
@@ -414,9 +408,6 @@ $(document).ready(function() {
 
                     // Function to get inventory from hidden input fields
                     function getInventory(location, variantId) {
-                      // Added by Velocity: 10-12-2025 Disable GGN warehouse inventory
-                        if(location=='gurgaon')return 0;
-                        //EOC 10-12-2025
                         let selector = `#inventory_${location}_${variantId}`;
                         let inventoryValue = $(selector).val();
                         return inventoryValue ? parseInt(inventoryValue) : 0;
