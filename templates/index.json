@@ -335,6 +335,7 @@
       "blocks": {
         "slide_hAVmbz": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/V-day-WEB-BNR-Coupon.jpg",
