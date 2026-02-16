@@ -1572,6 +1572,7 @@
         "festival_item_xHgtp9",
         "festival_item_EccEbY"
       ],
+      "disabled": true,
       "name": "Festival Section",
       "settings": {
         "padding_top": 28,
@@ -2023,6 +2024,7 @@
         "collection_tMBPET",
         "collection_nGAkGY"
       ],
+      "disabled": true,
       "settings": {
         "custom_class": "curated_category_sec",
         "category_title": "Valentine's Collection",
@@ -2381,6 +2383,7 @@
       "blocks": {
         "collection_HyraAj": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "tab_name": "Love Edition",
             "collection": "valentine-hampers"
