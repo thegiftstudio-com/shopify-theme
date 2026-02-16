@@ -377,6 +377,7 @@
         },
         "slide_BQypfe": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/monopoly-games-baner-web2.jpg",
@@ -386,6 +387,26 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/personalised-games",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "slide_q4JE4U": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/Masaba-web-banner-WEB_1.jpg",
+            "mob_banner": "shopify://shop_images/Masaba-MOB_BNR_1.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/limited-edition-hampers",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -406,27 +427,6 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/fashion-personal-care",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_q4JE4U": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/Masaba-web-banner-WEB_1.jpg",
-            "mob_banner": "shopify://shop_images/Masaba-MOB_BNR_1.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/limited-edition-hampers",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1385,8 +1385,8 @@
         "slide_hAVmbz",
         "slide_EyN76V",
         "slide_BQypfe",
-        "slide_Di6tzy",
         "slide_q4JE4U",
+        "slide_Di6tzy",
         "slide_tkc3pf",
         "slide_JAEFEH",
         "slide_6TL9Vr",
