@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_yRtcYC": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/Holi-tile-for-web.jpg",
+            "gift_title": "Holi Hampers",
+            "img_url": "https://thegiftstudio.com/collections/holi-hampers"
+          }
+        },
         "text_kMcpwt": {
           "type": "Text",
           "disabled": true,
@@ -137,16 +146,6 @@
             "gift_img": "shopify://shop_images/X-mas-Tile.jpg",
             "gift_title": "Christmas",
             "img_url": "https://thegiftstudio.com/collections/christmas-1"
-          }
-        },
-        "text_yRtcYC": {
-          "type": "Text",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "gift_img": "shopify://shop_images/Holi-tile-for-web.jpg",
-            "gift_title": "Holi",
-            "img_url": "https://thegiftstudio.com/collections/holi-gift-hampers"
           }
         },
         "text_GVe4yN": {
@@ -296,6 +295,7 @@
         }
       },
       "block_order": [
+        "text_yRtcYC",
         "text_kMcpwt",
         "text_ipFwRU",
         "text_JKAPRb",
@@ -309,7 +309,6 @@
         "text_BDVGWE",
         "text_bqVxpE",
         "9b3a379c-6539-48e8-99af-b517286d879d",
-        "text_yRtcYC",
         "text_GVe4yN",
         "text_bKwBTf",
         "text_HCTn9w",
