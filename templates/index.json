@@ -24,6 +24,7 @@
         },
         "text_ipFwRU": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/image_3.jpg",
