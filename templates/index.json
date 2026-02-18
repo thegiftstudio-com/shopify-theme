@@ -418,6 +418,7 @@
         },
         "slide_q4JE4U": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Masaba-web-banner-WEB_1.jpg",
