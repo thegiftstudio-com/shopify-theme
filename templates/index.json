@@ -333,6 +333,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_GnzJWp": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/Holi-MOB_BNR.jpg",
+            "mob_banner": "shopify://shop_images/Holi-WEB_BNR.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/holi-hampers",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_hAVmbz": {
           "type": "slide",
           "disabled": true,
@@ -1382,6 +1402,7 @@
         }
       },
       "block_order": [
+        "slide_GnzJWp",
         "slide_hAVmbz",
         "slide_EyN76V",
         "slide_BQypfe",
