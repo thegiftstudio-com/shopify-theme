@@ -333,6 +333,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_fbw9Pg": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/Womens-Day-WEB_BNR.jpg",
+            "mob_banner": "shopify://shop_images/Womens-Day-MOB_BNR.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/curated-hamper-women",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_GnzJWp": {
           "type": "slide",
           "settings": {
@@ -1403,6 +1423,7 @@
         }
       },
       "block_order": [
+        "slide_fbw9Pg",
         "slide_GnzJWp",
         "slide_hAVmbz",
         "slide_EyN76V",
