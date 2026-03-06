@@ -23,6 +23,7 @@
         },
         "text_yRtcYC": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/Holi-tile-for-web.jpg",
@@ -365,6 +366,7 @@
         },
         "slide_GnzJWp": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Holi-WEB_BNR.jpg",
