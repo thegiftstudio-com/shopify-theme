@@ -2690,13 +2690,24 @@
     "4be75465-cfbc-46b6-b61b-15a20b63f2d7": {
       "type": "limited_edition_section",
       "blocks": {
+        "column_nMdt4R": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-09-12_at_12.22.51_PM.jpg",
+            "second_image": "shopify://shop_images/Front-side.jpg",
+            "title": "Masaba Gupta",
+            "text": "<p>Fusing Bold Elegance with Vibrant Indian Motifs in a Striking Handpicked Curation<br/></p>",
+            "link_label": "Shop Now",
+            "link": "https://thegiftstudio.com/search?q=masaba+gupta&options%5Bprefix%5D=last"
+          }
+        },
         "665dd073-5588-4f63-9ce7-4b730da2283f": {
           "type": "column",
           "settings": {
             "image": "shopify://shop_images/Anamika_Khanna.jpg",
             "second_image": "shopify://shop_images/AK_work.jpg",
             "title": "Anamika Khanna",
-            "text": "<p>Redefining Style with an <br/>Artistic Twist in a <br/>Handpicked Curation</p>",
+            "text": "<p>Redefining Style with an <br/>Artistic Twist in a <br/>Handpicked Curation </p><p></p><p></p><p></p>",
             "link_label": "Shop Now",
             "link": "https://thegiftstudio.com/products/out-doors-with-anamika-khanna-new"
           }
@@ -2737,6 +2748,7 @@
         }
       },
       "block_order": [
+        "column_nMdt4R",
         "665dd073-5588-4f63-9ce7-4b730da2283f",
         "c73519f9-1986-40f0-95c2-95a04719f7c2",
         "a6029e6e-236e-4c1c-9251-44258864f4fc",
@@ -2749,7 +2761,7 @@
         "heading_size": "h1",
         "image_width": "full",
         "image_ratio": "adapt",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "column_alignment": "left",
         "background_style": "none",
         "button_label": "",
@@ -2758,6 +2770,122 @@
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "70084562-acce-489e-9a47-dc0461d14617": {
+      "type": "categories_list_section",
+      "blocks": {
+        "8eaf0777-52e4-4c9a-bb92-bab277005c4e": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-1.jpg",
+            "category_title": "",
+            "img_url": "https://in.hellomagazine.com/lifestyle/20221018301523/anshula-kapoor-recommends-the-gift-studio/"
+          }
+        },
+        "251a3221-c4da-4a2e-9530-24db7ce925ca": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-5.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "e2d230a3-1259-4f37-8095-f9baecb89f96": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-4.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "17a7202c-928c-47dd-9428-978fe040f050": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-6.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-3.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "b2a0f6ea-0ecd-490e-9790-f65acb6b44df": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-9.jpg",
+            "category_title": "",
+            "img_url": "https://www.tollywood.net/telugu-actress-ties-rakhi-to-kajal-agarwal-husband-gautam-kitchlu/"
+          }
+        },
+        "da6494f6-3e46-4279-9b86-e0136cbcda62": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-2.jpg",
+            "category_title": "",
+            "img_url": "https://www.pinkvilla.com/entertainment/news/pinkvilla-style-icons-2-anamika-khanna-won-the-gift-studio-presents-trailblazing-fashion-designer-of-the-year-1216441"
+          }
+        },
+        "29bf7b35-79a4-4c61-a338-72d15f76e933": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-7.jpg",
+            "category_title": "",
+            "img_url": "https://www.pinkvilla.com/entertainment/news/the-gift-studio-partners-with-pinkvilla-as-gifting-partner-for-pinkvilla-style-icons-2-1214528"
+          }
+        },
+        "70ba1674-d94f-400d-96cb-b2dc03b3af7a": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-8.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "d8205e41-fdfa-4d88-bda8-27932a6b1780": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-10.jpg",
+            "category_title": "",
+            "img_url": "https://www.pinkvilla.com/entertainment/news/the-ultimate-bollywood-gifting-guide-1220812"
+          }
+        }
+      },
+      "block_order": [
+        "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
+        "251a3221-c4da-4a2e-9530-24db7ce925ca",
+        "e2d230a3-1259-4f37-8095-f9baecb89f96",
+        "17a7202c-928c-47dd-9428-978fe040f050",
+        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05",
+        "b2a0f6ea-0ecd-490e-9790-f65acb6b44df",
+        "da6494f6-3e46-4279-9b86-e0136cbcda62",
+        "29bf7b35-79a4-4c61-a338-72d15f76e933",
+        "70ba1674-d94f-400d-96cb-b2dc03b3af7a",
+        "d8205e41-fdfa-4d88-bda8-27932a6b1780"
+      ],
+      "settings": {
+        "custom_class": "wall_fame_section",
+        "title": "Wall Of Fame",
+        "subtitle": "",
+        "columns_desktop": 4,
+        "columns_mobile": "1",
+        "padding_top": 8,
         "padding_bottom": 36
       }
     },
@@ -2940,122 +3068,6 @@
         "view_all_link": "https://thegiftstudio.com/blogs/article"
       }
     },
-    "70084562-acce-489e-9a47-dc0461d14617": {
-      "type": "categories_list_section",
-      "blocks": {
-        "8eaf0777-52e4-4c9a-bb92-bab277005c4e": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-1.jpg",
-            "category_title": "",
-            "img_url": "https://in.hellomagazine.com/lifestyle/20221018301523/anshula-kapoor-recommends-the-gift-studio/"
-          }
-        },
-        "da6494f6-3e46-4279-9b86-e0136cbcda62": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-2.jpg",
-            "category_title": "",
-            "img_url": "https://www.pinkvilla.com/entertainment/news/pinkvilla-style-icons-2-anamika-khanna-won-the-gift-studio-presents-trailblazing-fashion-designer-of-the-year-1216441"
-          }
-        },
-        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-3.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "e2d230a3-1259-4f37-8095-f9baecb89f96": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-4.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "251a3221-c4da-4a2e-9530-24db7ce925ca": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-5.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "17a7202c-928c-47dd-9428-978fe040f050": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-6.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "29bf7b35-79a4-4c61-a338-72d15f76e933": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-7.jpg",
-            "category_title": "",
-            "img_url": "https://www.pinkvilla.com/entertainment/news/the-gift-studio-partners-with-pinkvilla-as-gifting-partner-for-pinkvilla-style-icons-2-1214528"
-          }
-        },
-        "70ba1674-d94f-400d-96cb-b2dc03b3af7a": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-8.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "b2a0f6ea-0ecd-490e-9790-f65acb6b44df": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-9.jpg",
-            "category_title": "",
-            "img_url": "https://www.tollywood.net/telugu-actress-ties-rakhi-to-kajal-agarwal-husband-gautam-kitchlu/"
-          }
-        },
-        "d8205e41-fdfa-4d88-bda8-27932a6b1780": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-10.jpg",
-            "category_title": "",
-            "img_url": "https://www.pinkvilla.com/entertainment/news/the-ultimate-bollywood-gifting-guide-1220812"
-          }
-        }
-      },
-      "block_order": [
-        "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
-        "da6494f6-3e46-4279-9b86-e0136cbcda62",
-        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05",
-        "e2d230a3-1259-4f37-8095-f9baecb89f96",
-        "251a3221-c4da-4a2e-9530-24db7ce925ca",
-        "17a7202c-928c-47dd-9428-978fe040f050",
-        "29bf7b35-79a4-4c61-a338-72d15f76e933",
-        "70ba1674-d94f-400d-96cb-b2dc03b3af7a",
-        "b2a0f6ea-0ecd-490e-9790-f65acb6b44df",
-        "d8205e41-fdfa-4d88-bda8-27932a6b1780"
-      ],
-      "settings": {
-        "custom_class": "wall_fame_section",
-        "title": "Wall Of Fame",
-        "subtitle": "",
-        "columns_desktop": 4,
-        "columns_mobile": "1",
-        "padding_top": 8,
-        "padding_bottom": 36
-      }
-    },
     "44e68644-3ce5-453b-995b-15d6d7cb8043": {
       "type": "testimonial_section",
       "blocks": {
@@ -3105,7 +3117,7 @@
       "settings": {
         "custom_class": "",
         "title": "Words Of Acclaim",
-        "subtitle": "celebrated voices echo their admiration for<br class=\"large-up-hide medium-hide\"> The Gift<br class=\"small-hide\">Studio's exquisite gifting experience.",
+        "subtitle": "celebrated voices echo their admiration for The GiftStudio's exquisite gifting experience.",
         "columns_desktop": 3,
         "columns_mobile": "1",
         "padding_top": 0,
@@ -3212,11 +3224,11 @@
     "43489cf9-cc66-4660-ac72-60536b0acc48",
     "116758a2-1b1d-4de4-9df3-f6cd9df997b9",
     "4be75465-cfbc-46b6-b61b-15a20b63f2d7",
+    "70084562-acce-489e-9a47-dc0461d14617",
     "1a2d7d67-33da-4b9e-89eb-9891e98752d6",
     "image_with_text_iHknDP",
     "image_banner_cnJg7y",
     "media_gallery_qXcxTW",
-    "70084562-acce-489e-9a47-dc0461d14617",
     "44e68644-3ce5-453b-995b-15d6d7cb8043",
     "21f5ca95-8e9a-471b-9d38-0ef4ea8de445",
     "2dcbf66e-06c1-4847-ad43-081470cca6b4",
