@@ -2794,6 +2794,15 @@
             "img_url": ""
           }
         },
+        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/celeb-3.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
         "e2d230a3-1259-4f37-8095-f9baecb89f96": {
           "type": "Text",
           "settings": {
@@ -2808,15 +2817,6 @@
           "settings": {
             "city_hide": "",
             "category_img": "shopify://shop_images/celeb-6.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/celeb-3.jpg",
             "category_title": "",
             "img_url": ""
           }
@@ -2870,9 +2870,9 @@
       "block_order": [
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
         "251a3221-c4da-4a2e-9530-24db7ce925ca",
+        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05",
         "e2d230a3-1259-4f37-8095-f9baecb89f96",
         "17a7202c-928c-47dd-9428-978fe040f050",
-        "f2db0806-ab53-4f3b-8fc4-2a38db77aa05",
         "b2a0f6ea-0ecd-490e-9790-f65acb6b44df",
         "da6494f6-3e46-4279-9b86-e0136cbcda62",
         "29bf7b35-79a4-4c61-a338-72d15f76e933",
