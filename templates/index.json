@@ -2777,6 +2777,42 @@
     "70084562-acce-489e-9a47-dc0461d14617": {
       "type": "categories_list_section",
       "blocks": {
+        "text_d4bTGU": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_Sunil_Shetty_IOI_Day_1.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_mx8Bpk": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_Anil_Kapoor_IOI_Day_2.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_pxafiH": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_Shashi_Tharoor_IOI_Day2.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_ffK3Qh": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_SRK_IOI_26.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e": {
           "type": "Text",
           "settings": {
@@ -2869,6 +2905,10 @@
         }
       },
       "block_order": [
+        "text_d4bTGU",
+        "text_mx8Bpk",
+        "text_pxafiH",
+        "text_ffK3Qh",
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
         "251a3221-c4da-4a2e-9530-24db7ce925ca",
         "17a7202c-928c-47dd-9428-978fe040f050",
