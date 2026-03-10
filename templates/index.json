@@ -2795,24 +2795,6 @@
             "img_url": ""
           }
         },
-        "text_pxafiH": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/TGS_Shashi_Tharoor_IOI_Day2.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
-        "text_ffK3Qh": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/TGS_SRK_IOI_26.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e": {
           "type": "Text",
           "settings": {
@@ -2827,6 +2809,24 @@
           "settings": {
             "city_hide": "",
             "category_img": "shopify://shop_images/celeb-5.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_pxafiH": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_Shashi_Tharoor_IOI_Day2.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_ffK3Qh": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_SRK_IOI_26.jpg",
             "category_title": "",
             "img_url": ""
           }
@@ -2907,10 +2907,10 @@
       "block_order": [
         "text_d4bTGU",
         "text_mx8Bpk",
-        "text_pxafiH",
-        "text_ffK3Qh",
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
         "251a3221-c4da-4a2e-9530-24db7ce925ca",
+        "text_pxafiH",
+        "text_ffK3Qh",
         "17a7202c-928c-47dd-9428-978fe040f050",
         "f2db0806-ab53-4f3b-8fc4-2a38db77aa05",
         "e2d230a3-1259-4f37-8095-f9baecb89f96",
