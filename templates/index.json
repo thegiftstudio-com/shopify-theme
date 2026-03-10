@@ -345,8 +345,29 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_ymY3NY": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/web-BNR-mar-end-yellow-shoot_1.webp",
+            "mob_banner": "shopify://shop_images/mob-BNR-mar-end-yellow-shoot.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/exclusive-collection",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_fbw9Pg": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Womens-Day-WEB_BNR.jpg",
@@ -585,27 +606,6 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/mothers-day",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_ymY3NY": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/web-BNR-mar-end-yellow-shoot_1.webp",
-            "mob_banner": "shopify://shop_images/mob-BNR-mar-end-yellow-shoot.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/exclusive-collection",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1436,6 +1436,7 @@
         }
       },
       "block_order": [
+        "slide_ymY3NY",
         "slide_fbw9Pg",
         "slide_GnzJWp",
         "slide_hAVmbz",
@@ -1448,7 +1449,6 @@
         "slide_6TL9Vr",
         "slide_GYCEg7",
         "slide_d6CPkx",
-        "slide_ymY3NY",
         "slide_CzGPeh",
         "slide_aDgfHx",
         "slide_TKi7yM",
