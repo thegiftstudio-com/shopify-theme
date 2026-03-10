@@ -14,6 +14,7 @@
       "blocks": {
         "text_3q3ddF": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "Women's Day",
             "gift_img": "shopify://shop_images/image_6.jpg",
