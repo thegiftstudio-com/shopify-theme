@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_3QqmFQ": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "Mother's Day",
+            "gift_img": "shopify://shop_images/Mom_sTimelessTreasuresHamper_16eeeee9-c4a1-4673-a6ec-79ee1cc5d7a5.jpg",
+            "gift_title": "Mother's Day",
+            "img_url": "https://thegiftstudio.com/collections/mothers-day"
+          }
+        },
         "text_3q3ddF": {
           "type": "Text",
           "disabled": true,
@@ -306,6 +315,7 @@
         }
       },
       "block_order": [
+        "text_3QqmFQ",
         "text_3q3ddF",
         "text_yRtcYC",
         "text_kMcpwt",
