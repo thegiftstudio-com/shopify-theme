@@ -355,6 +355,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_QELFGM": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/mothers-day-web-bnr-fnl.jpg",
+            "mob_banner": "shopify://shop_images/mothers-day-web-MOB.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "shopify://collections/mothers-day",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_ymY3NY": {
           "type": "slide",
           "settings": {
@@ -503,6 +523,7 @@
         },
         "slide_Di6tzy": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/stole-WEB-banner_1.jpg",
@@ -1446,6 +1467,7 @@
         }
       },
       "block_order": [
+        "slide_QELFGM",
         "slide_ymY3NY",
         "slide_fbw9Pg",
         "slide_GnzJWp",
