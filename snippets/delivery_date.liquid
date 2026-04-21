@@ -441,6 +441,7 @@ $(document).ready(function() {
                             'gurgaon': ['mumbai'],
                             'bangalore': ['mumbai']
                         };
+                        debugger;
                         var fallback_warehouses = (fallback_order[primary_warehouse] || [])
                             .filter(warehouse => getInventory(warehouse, window.currentVariantId) >= required_quantity);
 
