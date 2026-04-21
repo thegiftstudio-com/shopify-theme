@@ -434,12 +434,17 @@ $(document).ready(function() {
                           isAutoPincodeFilled = 0;
                           return;
                         }
-                        // If not enough, check other warehouses
-                        var available_warehouses = Object.keys(data.inventory)
-                            .filter(warehouse => getInventory(warehouse, window.currentVariantId) >= required_quantity)
-                            .sort((a, b) => data.tat[a] - data.tat[b]);
+                        // Fallback warehouses based on primary warehouse mapping:
+                        // mumbai → no fallback, gurgaon → mumbai only, bangalore → mumbai only
+                        var fallback_order = {
+                            'mumbai': [],
+                            'gurgaon': ['mumbai'],
+                            'bangalore': ['mumbai']
+                        };
+                        var fallback_warehouses = (fallback_order[primary_warehouse] || [])
+                            .filter(warehouse => getInventory(warehouse, window.currentVariantId) >= required_quantity);
 
-                        selected_warehouse = available_warehouses.length > 0 ? available_warehouses[0] : null;
+                        selected_warehouse = fallback_warehouses.length > 0 ? fallback_warehouses[0] : null;
                         selected_warehouse_tat = data.tat[selected_warehouse] || 0;
                         selected_warehouse_inventory = getInventory(selected_warehouse, window.currentVariantId);
                     }
