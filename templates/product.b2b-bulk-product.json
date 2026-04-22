@@ -35,6 +35,25 @@
           "type": "price",
           "settings": {}
         },
+        "text_aCQrWb": {
+          "type": "text",
+          "settings": {
+            "text": "Final price on request",
+            "text_style": "body"
+          }
+        },
+        "icon_with_text_rWbFiP": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "heart",
+            "heading_1": "Volume discounts",
+            "icon_2": "return",
+            "heading_2": "Customization Available",
+            "icon_3": "truck",
+            "heading_3": "GST Credit"
+          }
+        },
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76": {
           "type": "variant_picker",
           "settings": {
@@ -66,7 +85,6 @@
         },
         "buy_buttons": {
           "type": "buy_buttons",
-          "disabled": true,
           "settings": {
             "show_dynamic_checkout": false
           }
@@ -165,6 +183,8 @@
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4",
         "title",
         "price",
+        "text_aCQrWb",
+        "icon_with_text_rWbFiP",
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
         "judge_me_reviews_preview_badge_rzEHCL",
         "quantity_selector",
@@ -243,7 +263,12 @@
       "blocks": {
         "judge_me_reviews_review_widget_Y3XpM6": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
         }
       },
       "block_order": [
