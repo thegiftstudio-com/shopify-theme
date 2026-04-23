@@ -2128,6 +2128,15 @@
     "popular_categories_fWTBcV": {
       "type": "popular_categories",
       "blocks": {
+        "collection_8PUTWE": {
+          "type": "collection",
+          "settings": {
+            "city_hide": "Mother's Day Hamper",
+            "coll_img": "shopify://shop_images/Mothers-day.jpg",
+            "coll_title": "Mother's Day Hamper",
+            "card_url": "https://thegiftstudio.com/collections/mothers-day"
+          }
+        },
         "collection_cgqUcC": {
           "type": "collection",
           "settings": {
@@ -2236,6 +2245,7 @@
         }
       },
       "block_order": [
+        "collection_8PUTWE",
         "collection_cgqUcC",
         "collection_3xARHC",
         "collection_W4QE4W",
