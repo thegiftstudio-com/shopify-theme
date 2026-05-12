@@ -2130,6 +2130,7 @@
       "blocks": {
         "collection_8PUTWE": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "Mother's Day Hamper",
             "coll_img": "shopify://shop_images/Mothers-day.jpg",
