@@ -357,6 +357,7 @@
       "blocks": {
         "slide_QELFGM": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/mothers-day-web-bnr-fnl.jpg",
@@ -481,7 +482,6 @@
         },
         "slide_BQypfe": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/monopoly-games-baner-web2.jpg",
