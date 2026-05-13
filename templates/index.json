@@ -2856,6 +2856,15 @@
             "img_url": ""
           }
         },
+        "text_AjMGfa": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/Event_Images.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e": {
           "type": "Text",
           "settings": {
@@ -2952,6 +2961,7 @@
         "text_mx8Bpk",
         "text_pxafiH",
         "text_ffK3Qh",
+        "text_AjMGfa",
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
         "251a3221-c4da-4a2e-9530-24db7ce925ca",
         "17a7202c-928c-47dd-9428-978fe040f050",
