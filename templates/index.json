@@ -2838,20 +2838,20 @@
             "img_url": ""
           }
         },
-        "text_pxafiH": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/TGS_Shashi_Tharoor_IOI_Day2.jpg",
-            "category_title": "",
-            "img_url": ""
-          }
-        },
         "text_ffK3Qh": {
           "type": "Text",
           "settings": {
             "city_hide": "",
             "category_img": "shopify://shop_images/TGS_SRK_IOI_26.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
+        "text_pxafiH": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/TGS_Shashi_Tharoor_IOI_Day2.jpg",
             "category_title": "",
             "img_url": ""
           }
@@ -2959,8 +2959,8 @@
       "block_order": [
         "text_d4bTGU",
         "text_mx8Bpk",
-        "text_pxafiH",
         "text_ffK3Qh",
+        "text_pxafiH",
         "text_AjMGfa",
         "8eaf0777-52e4-4c9a-bb92-bab277005c4e",
         "251a3221-c4da-4a2e-9530-24db7ce925ca",
