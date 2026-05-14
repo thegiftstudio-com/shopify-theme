@@ -61,6 +61,58 @@
   
 </style>
 <script>
+  {% comment %}
+  * Added by Velocity - Packaging & Styling Charges configuration
+  * Map: box product tag -> packaging product to auto-add to cart.
+  * Replace product_id / variant_id with real Shopify IDs after creating the products.
+  * Matching is by tag, first match wins (array order = priority).
+  * Only the BOX product's tags are checked (1 box per bundle).
+  * If no tag matches, no packaging charge is added.
+  {% endcomment %}
+  const PACKAGING_CHARGES_CONFIG = [
+    { tag: 'packaging-tier-1', name: 'Standard Packaging & Styling',  price_paise: 29900, product_id: 'REPLACE_WITH_PRODUCT_ID_1', variant_id: 'REPLACE_WITH_VARIANT_ID_1' },
+    { tag: 'packaging-tier-2', name: 'Premium Packaging & Styling',   price_paise: 39900, product_id: 'REPLACE_WITH_PRODUCT_ID_2', variant_id: 'REPLACE_WITH_VARIANT_ID_2' },
+    { tag: 'packaging-tier-3', name: 'Deluxe Packaging & Styling',    price_paise: 49900, product_id: 'REPLACE_WITH_PRODUCT_ID_3', variant_id: 'REPLACE_WITH_VARIANT_ID_3' },
+    { tag: 'packaging-tier-4', name: 'Luxury Packaging & Styling',    price_paise: 59900, product_id: 'REPLACE_WITH_PRODUCT_ID_4', variant_id: 'REPLACE_WITH_VARIANT_ID_4' },
+    { tag: 'packaging-tier-5', name: 'Signature Packaging & Styling', price_paise: 69900, product_id: 'REPLACE_WITH_PRODUCT_ID_5', variant_id: 'REPLACE_WITH_VARIANT_ID_5' }
+  ];
+
+  function findPackagingForCurrentBox() {
+    const items = window.selectedItem || [];
+    const boxItem = items.find(it => it && (it.isABox == 1 || it.isABox === true));
+    if (!boxItem) return null;
+    const rawTags = (boxItem.tags || '').toString().toLowerCase();
+    if (!rawTags) return null;
+    const tagList = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+    for (const cfg of PACKAGING_CHARGES_CONFIG) {
+      if (tagList.includes(cfg.tag.toLowerCase())) return cfg;
+    }
+    return null;
+  }
+
+  function syncPackagingToCart(packagingConfig) {
+    PACKAGING_CHARGES_CONFIG.forEach(cfg => {
+      if (cfg.variant_id && window.addToCartData && window.addToCartData[cfg.variant_id]) {
+        delete window.addToCartData[cfg.variant_id];
+      }
+    });
+    if (!packagingConfig) return;
+    const vid = packagingConfig.variant_id;
+    if (!vid || String(vid).indexOf('REPLACE_') === 0) return;
+    window.addToCartData = window.addToCartData || {};
+    window.addToCartData[vid] = {
+      quantity: 1,
+      id: vid,
+      properties: {
+        'bundle_id': (window.currentBundleData && window.currentBundleData.bundle_id) || '',
+        'bundle_name': (window.currentBundleData && window.currentBundleData.bundle_name) || '',
+        'product_type': 'packaging',
+        'base_quantity': 1,
+        'packaging_tag': packagingConfig.tag
+      }
+    };
+  }
+
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
     // Cache DOM elements
     const list = document.getElementById("selectproduct");
@@ -384,6 +436,59 @@
       hiddenItemsCount.style.display = 'none';
     }
 
+    {% comment %}
+    * Added by Velocity - Tag-driven Packaging & Styling Charges
+    * Reads the BOX product's tags from selectedItem, matches against PACKAGING_CHARGES_CONFIG (first match wins),
+    * adds the mapped packaging variant to addToCartData (so it's actually charged at checkout),
+    * and renders a non-removable row in the bottom cart strip, summary table, and mobile cart.
+    * No box or no tag match -> no packaging shown and any prior packaging is removed from addToCartData.
+    {% endcomment %}
+    const packagingConfig = findPackagingForCurrentBox();
+    syncPackagingToCart(packagingConfig);
+
+    if (packagingConfig) {
+      const packagingDisplayPrice = (packagingConfig.price_paise * 0.01).toFixed(2);
+      totalprice += packagingConfig.price_paise;
+
+      const packagingListItem = document.createElement("li");
+      packagingListItem.id = "bottom_cart_item_packaging_charges";
+      packagingListItem.innerHTML = `<div class="item-details">
+        <div class="item-img"></div>
+        <div class="item-title">
+          <p>${packagingConfig.name}</p>
+          <p>&#x20b9;${packagingDisplayPrice}</p>
+        </div>
+        <div class="item-remove_btn">
+          <span style="font-size:11px;color:#888;font-weight:600;">Mandatory</span>
+        </div>
+      </div>`;
+      list.appendChild(packagingListItem);
+
+      $('#add_row').append(`<tr id="main_bundle_checkout_packaging_charges" class="packaging-charges-row">
+        <td>
+          <div class="priduct-card">
+            <div class="pd-details">
+              <div class="pd-title">
+                <a href="#" class="cart-item__name h4 break">${packagingConfig.name}</a>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td><span class="price">&#x20b9;${packagingDisplayPrice}</span></td>
+        <td></td>
+        <td><span class="subtotle">&#x20b9;${packagingDisplayPrice}</span></td>
+        <td><span style="font-size:11px;color:#888;font-weight:600;">Mandatory</span></td>
+      </tr>`);
+
+      $('#mobile_cart_data').append(`<div class="product-cart packaging-charges-item">
+        <div class="text" style="flex:1;">
+          <h3 class="title">${packagingConfig.name}</h3>
+          <h3 class="price">&#x20b9;${packagingDisplayPrice}</h3>
+        </div>
+        <span style="font-size:11px;color:#888;font-weight:600;align-self:center;">Mandatory</span>
+      </div>`);
+    }
+
     // Calculate total price
     totalprice = totalprice * 0.01;
     {% comment %} Display the remove and add buttons, keeping them centered. Added by Velocity 19-09-2025 {% endcomment %}
@@ -453,6 +558,7 @@
         });
 
         // Prepare new item
+        {% comment %} Added by Velocity - include product tags so packaging tier can be matched on page reload (addtocart already stores tags in item.properties.tags). {% endcomment %}
         var newItem = {
             img: "{{ item.image | default: '' }}",
             isAAddon: productType === 'addon' ? 1 : 0,
@@ -464,7 +570,8 @@
             price: {{ item.price }},
             title: "{{ item.title }}",
             available_quantity: {{ item.properties.base_quantity | default: 0 }},
-            base_quantity: {{ item.properties.base_quantity }}
+            base_quantity: {{ item.properties.base_quantity }},
+            tags: "{{ item.properties.tags | default: '' | replace: '"', '' | escape }}"
         };
 
         // Update or push item to selectedItem
