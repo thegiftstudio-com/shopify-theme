@@ -67,7 +67,8 @@
   * Replace product_id / variant_id with real Shopify IDs after creating the products.
   * Matching is by tag, first match wins (array order = priority).
   * Only the BOX product's tags are checked (1 box per bundle).
-  * If no tag matches, no packaging charge is added.
+  * If a box is selected but has no matching tag, the cheapest tier (by price_paise) is applied as the standard packaging charge.
+  * If no box is selected at all, no packaging charge is added.
   {% endcomment %}
   const PACKAGING_CHARGES_CONFIG = [
     { tag: 'packaging_tier_1', name: 'Standard Packaging & Styling',  price_paise: 29900, product_id: '10175410962739', variant_id: '53344929939763' },
@@ -82,12 +83,13 @@
     const boxItem = items.find(it => it && (it.isABox == 1 || it.isABox === true));
     if (!boxItem) return null;
     const rawTags = (boxItem.tags || '').toString().toLowerCase();
-    if (!rawTags) return null;
-    const tagList = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+    const tagList = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : [];
     for (const cfg of PACKAGING_CHARGES_CONFIG) {
       if (tagList.includes(cfg.tag.toLowerCase())) return cfg;
     }
-    return null;
+    {% comment %} Fallback: a box is selected but no tag matched - apply the cheapest tier as the standard packaging charge. {% endcomment %}
+    if (!PACKAGING_CHARGES_CONFIG.length) return null;
+    return PACKAGING_CHARGES_CONFIG.reduce((cheapest, cfg) => (cfg.price_paise < cheapest.price_paise ? cfg : cheapest));
   }
 
   function syncPackagingToCart(packagingConfig) {
