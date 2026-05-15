@@ -456,6 +456,17 @@
                   {%- endif -%}
                 </div>
               </div>
+	      {% comment %} Added by Velocity 15-05-2026 Bulk feature added on the PDP page with WA click {% endcomment %}
+              {% if section.settings.bulk %}
+              <p class="bulkOrderPtag" style='font-size: 1.3rem;'>
+                <span class="bulk-buy">
+                  Want to buy this in bulk?
+                  <a href="https://wa.me/917506210892?text=I want to buy {{ product.title }} - {{ product.selected_or_first_available_variant.sku }} in bulk. Can you please help me for the same?">
+                    Click here
+                  </a>
+                </span>
+              </p>
+              {% endif %}
             {%- when 'popup' -%}
               <modal-opener
                 class="product-popup-modal__opener no-js-hidden quick-add-hidden"
@@ -2478,6 +2489,12 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+    "type": "checkbox",
+    "id": "bulk",
+    "label": "Enable Bulk Order Button",
+    "default": true
     }
   ]
 }
