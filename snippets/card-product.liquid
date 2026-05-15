@@ -18,11 +18,17 @@
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
 
-{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.aio.min.css' | asset_url | stylesheet_tag }}
 
- {%- if card_product.price < card_product.compare_at_price -%}
-      {%- assign savings = card_product.compare_at_price | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price | round | append: '%' -%}
-  {% endif %}
+{%- if card_product.price < card_product.compare_at_price -%}
+  {%- assign savings = card_product.compare_at_price
+    | minus: card_product.price
+    | times: 100.0
+    | divided_by: card_product.compare_at_price
+    | round
+    | append: '%'
+  -%}
+{% endif %}
 
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -34,6 +40,10 @@
     endif
     if ratio == 0 or ratio == null
       assign ratio = 1
+    endif
+    assign is_first_fold = false
+    if forloop.index <= 8
+      assign is_first_fold = true
     endif
   -%}
   <div class="card-wrapper product-card-wrapper underline-links-hover">
@@ -55,19 +65,29 @@
       >
         {%- if card_product.featured_media -%}
           <div class="card__media">
-          {% if card_product.tags contains 'Non-Veg' %}
-               <div class="label_img">
-                <img src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/non-veg-icon.svg?v=1691504652" class="non_veg_label img-repsonsive">
-               </div> 
-              {% endif %}
-          {% if card_product.tags contains 'Hamper-of-the day' %}
-               <div class="hamper-day">
+            {% if card_product.tags contains 'Non-Veg' %}
+              <div class="label_img">
+                <img loading="lazy"
+                  src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/non-veg-icon.svg?v=1691504652"
+                  class="non_veg_label img-repsonsive"
+                >
+              </div>
+            {% endif %}
+            {% if card_product.tags contains 'Hamper-of-the day' %}
+              <div class="hamper-day">
                 <h3>Hamper Of The Day</h3>
-               </div> 
-              {% endif %}
+              </div>
+            {% endif %}
             <div class="media media--transparent media--hover-effect">
-              
-              {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+              {% comment %}theme-check-disable ImgLazyLoading; re-enable lazy if parameter is passed{% endcomment %}
+              {% if is_first_fold %}
+                <!-- Preload critical images for first fold with optimized sizes -->
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533, scale: 2 }}" media="(min-width: 768px) and (-webkit-min-device-pixel-ratio: 2)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533 }}" media="(min-width: 768px)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 360, scale: 2 }}" media="(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 360 }}" media="(max-width: 767px)">
+                <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 720 }}" media="(min-width: 1200px)">
+              {% endif %}
               <img
                 srcset="
                   {%- if card_product.featured_media.width >= 165 -%}{{ card_product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
@@ -82,11 +102,12 @@
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
                 alt="{{ card_product.featured_media.alt | escape }}"
                 class="motion-reduce"
-                {% unless lazy_load == false %}
-                  loading="lazy"
-                {% endunless %}
+                loading="{% if is_first_fold %}eager{% else %}lazy{% endif %}"
                 width="{{ card_product.featured_media.width }}"
                 height="{{ card_product.featured_media.height }}"
+                fetchpriority="{% if is_first_fold %}high{% else %}auto{% endif %}"
+                decoding="{% if is_first_fold %}sync{% else %}async{% endif %}"
+                onload="this.style.opacity='1'"
               >
               {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
@@ -103,14 +124,15 @@
                   "
                   src="{{ card_product.media[1] | image_url: width: 533 }}"
                   sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
-                  alt=""
+                  alt="{{ card_product.media[1].alt | escape }}"
                   class="motion-reduce"
                   loading="lazy"
                   width="{{ card_product.media[1].width }}"
                   height="{{ card_product.media[1].height }}"
+                  decoding="async"
                 >
               {%- endif -%}
-            </div>       
+            </div>
           </div>
         {%- endif -%}
         <div class="card__content">
@@ -144,7 +166,8 @@
                 id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
                 class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
               >
-                {{- 'products.product.on_sale' | t -}}  <span> {{ savings }}</span>
+                {{- 'products.product.on_sale' | t -}}
+                <span> {{ savings }}</span>
               </span>
             {%- endif -%}
           </div>
@@ -168,9 +191,11 @@
             </a>
           </h3>
           {% comment %}
-          <div class="wc_product_review_badge" data-handle="{{ card_product.handle }}" data-product_id="{{ card_product.id }}"></div>
+            <div class="wc_product_review_badge" data-handle="{{ card_product.handle }}" data-product_id="{{ card_product.id }}"></div>
           {% endcomment %}
-          <div class="card-information">
+          <div class="card-information" style="
+    text-align: center;
+">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light vendor_name center">{{ card_product.vendor }}</div>
@@ -178,7 +203,13 @@
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
-            {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
+            <!-- Start of Judge.me code -->
+              {% comment %}
+              To hide the default badge, please comment out the line below. 
+              <div class='jdgm-widget jdgm-preview-badge'>
+                {{ card_product.metafields.judgeme.badge }}
+              </div> {% endcomment %}
+            <!-- End of Judge.me code -->
               {% liquid
                 assign rating_decimal = 0
                 assign decimal = card_product.metafields.reviews.rating.value.rating | modulo: 1
@@ -188,6 +219,7 @@
                   assign rating_decimal = 1
                 endif
               %}
+               {%- if  card_product.metafields.reviews.rating.value != blank -%}
               <div
                 class="rating"
                 role="img"
@@ -212,38 +244,51 @@
                   {{ 'accessibility.total_reviews' | t -}}
                 </span>
               </p>
-            {%- endif -%}
-
+            {%  else %}
+              {% comment %} Hide empty ratings and show a blank space {% endcomment %}
+              <div
+                class="rating"
+                role="img"
+              >
+              </div>
+            {% endif %}
             {% render 'price', product: card_product, price_class: '' %}
-           
-          <!-- <div class="same_delivery_sec"> -->
-   {% if card_product.tags contains 'same-day' %}
-     <div>
-     <div class="same_delivery_sec"  style="display:none;">
-          <p class="same_day_text">
-          </p>
-       </div>
-       </div>
-    {% endif %}
-  {% if card_product.tags contains '4PM-Order' %}
-    <div class="same_delivery_sec"  style="display:none;">
+
+            
+           <div>
+  <div class="same_delivery_sec" style="display:none;">
+    <p id="strip_{{ card_product.id }}"></p>
+  </div>
+</div>
+            {% comment %}
+            {% if card_product.tags contains 'same-day' %}
+              <div>
+                <div class="same_delivery_sec" style="display:none;">
+                  <p class="same_day_text"></p>
+                </div>
+              </div>
+            {% endif %}
+  
+            
+            {% if card_product.tags contains '4PM-Order' %}
+              <div class="same_delivery_sec" style="display:none;">
                 <p class="four_hour_text"></p>
               </div>
             {% endif %}
-     {% if card_product.tags contains '7PM-Order' %}
-     <div class="same_delivery_sec" style="display:none;">
-     <p class="seven_hour_text"></p>
-      </div>
-    {% endif %}
+            {% if card_product.tags contains '7PM-Order' %}
+              <div class="same_delivery_sec" style="display:none;">
+                <p class="seven_hour_text"></p>
+              </div>
+            {% endif %}
 
-    {% if card_product.tags contains '2PM-Order' %}
-      <div class="same_delivery_sec"  style="display:none;">
-        <p class="two_hour_text">
-        </p>
-      </div>
-    {% endif %}
-            
-          <!-- </div> -->
+            {% if card_product.tags contains '2PM-Order' %}
+              <div class="same_delivery_sec" style="display:none;">
+                <p class="two_hour_text"></p>
+              </div>
+            {% endif %}
+  {% endcomment %}
+
+          
           </div>
         </div>
 
@@ -374,7 +419,8 @@
               id="Badge-{{ section_id }}-{{ card_product.id }}"
               class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
             >
-              {{- 'products.product.on_sale' | t -}}  {{ savings }}
+              {{- 'products.product.on_sale' | t -}}
+              {{ savings }}
             </span>
           {%- endif -%}
         </div>
