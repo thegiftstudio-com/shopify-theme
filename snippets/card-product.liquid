@@ -13,6 +13,7 @@
   - section_id: {String} The ID of the section that contains this card.
   - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
+  - enable_image_slider: {Boolean} Auto-cycle through all product images on hover (collection pages). Default: false (optional)
 
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
@@ -64,7 +65,22 @@
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
         {%- if card_product.featured_media -%}
-          <div class="card__media">
+          {%- if enable_image_slider -%}
+            {%- liquid
+              assign slider_img_urls = ''
+              for media in card_product.media
+                if media.media_type == 'image'
+                  assign img_url = media | image_url: width: 533
+                  if slider_img_urls == ''
+                    assign slider_img_urls = img_url
+                  else
+                    assign slider_img_urls = slider_img_urls | append: '|' | append: img_url
+                  endif
+                endif
+              endfor
+            -%}
+          {%- endif -%}
+          <div class="card__media"{% if slider_img_urls contains '|' %} data-slider-images="{{ slider_img_urls }}"{% endif %}>
             {% if card_product.tags contains 'Non-Veg' %}
               <div class="label_img">
                 <img loading="lazy"
