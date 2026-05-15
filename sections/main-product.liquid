@@ -461,7 +461,7 @@
               <p class="bulkOrderPtag" style='font-size: 1.3rem;'>
                 <span class="bulk-buy">
                   Want to buy this in bulk?
-                  <a href="https://wa.me/917506210892?text=I want to buy {{ product.title }} - {{ product.selected_or_first_available_variant.sku }} in bulk. Can you please help me for the same?">
+                  <a href="https://wa.me/{{section.settings.whatsapp_number}}?text=I want to buy {{ product.title }} - {{ product.selected_or_first_available_variant.sku }} in bulk. Can you please help me for the same?">
                     Click here
                   </a>
                 </span>
@@ -2495,6 +2495,13 @@
     "id": "bulk",
     "label": "Enable Bulk Order Button",
     "default": true
+    },
+    {
+     "type": "text",
+     "id": "whatsapp_number",
+     "label": "WhatsApp Number",
+     "default": "917506210892",
+     "info": "Enter WhatsApp number with country code without + symbol"
     }
   ]
 }
