@@ -3101,14 +3101,14 @@
     "1778755381fc2c06d9": {
       "type": "apps",
       "blocks": {
-        "instafeed_app_block_AQxBnC": {
+        "instafeed_app_block_BgtJhE": {
           "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
           "settings": {
             "title": "Instagram",
             "title_color": "",
-            "title_size_v2": 32,
+            "title_size_v2": 48,
             "alignment": "center",
-            "instafeed_margin_top": 15,
+            "instafeed_margin_top": 0,
             "instafeed_margin_bottom": 15,
             "instafeed_margin_sides": 0,
             "show_instagram_link": false,
@@ -3121,9 +3121,8 @@
         }
       },
       "block_order": [
-        "instafeed_app_block_AQxBnC"
+        "instafeed_app_block_BgtJhE"
       ],
-      "disabled": true,
       "settings": {
         "include_margins": true
       }
@@ -3174,6 +3173,7 @@
         "media_card_KHkMFB",
         "media_card_dDQPHd"
       ],
+      "disabled": true,
       "name": "Media Gallery Carousel",
       "settings": {
         "title": "In the Spotlight",
