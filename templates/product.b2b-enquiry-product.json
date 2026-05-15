@@ -100,7 +100,7 @@
         "custom_liquid_PYhRin": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<a href=\"https://wa.me/918108190591?text=Hi, I'm interested in International Shipping for {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
+            "custom_liquid": "<a href=\"https://wa.me/918818940003?text=Hi, I'm interested in purchasing {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
           }
         },
         "description": {
@@ -213,7 +213,9 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 36,
-        "padding_bottom": 52
+        "padding_bottom": 52,
+        "bulk": true,
+        "whatsapp_number": "917506210892"
       }
     },
     "16810765211f10f699": {
