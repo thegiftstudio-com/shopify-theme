@@ -1,19 +1,21 @@
-{{ 'template-collection.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-loading-overlay.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.aio.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.aio.min.css' | asset_url | stylesheet_tag }}
+
+
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 
 <link
   rel="preload"
-  href="{{ 'component-rte.aio.min.css' | asset_url }}"
+  href="{{ 'component-rte.css' | asset_url }}"
   as="style"
   onload="this.onload=null;this.rel='stylesheet'"
 >
 
 {%- if section.settings.enable_quick_add -%}
-  <link rel="stylesheet" href="{{ 'quick-add.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
-  <script src="{{ 'quick-add.aio.min.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-form.aio.min.js' | asset_url }}" defer="defer"></script>
+  <link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'">
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 <noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
 
@@ -31,38 +33,39 @@
   }
 {%- endstyle -%}
 <style>
-   #product-grid .card__heading, #product-grid .price {
-      text-align:center;
-    }
-    #product-grid .card__heading{
-    height:35px;
-    }
-    .product-grid-container .grid__item{
-      margin-bottom:30px;
-    }
-    .product-grid-container .card__information{
-      padding-bottom:0;
-    }
-    .product-grid-container .card-wrapper{
-      border: 1px solid rgba(0,0,0,0.1);
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-      border-bottom-left-radius: 22px;
-      border-bottom-right-radius: 22px;
-    }
-    .filter_section.page-width {
-      margin-top: 12px;
+ #product-grid .card__heading, #product-grid .price {
+    text-align:center;  
   }
+  #product-grid .card__heading{
+  height:35px; 
+  }
+  .product-grid-container .grid__item{
+    margin-bottom:30px;
+  }
+  .product-grid-container .card__information{
+    padding-bottom:0;
+  }
+  .product-grid-container .card-wrapper{
+    border: 1px solid rgba(0,0,0,0.1);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+  }
+  .filter_section.page-width {
+    margin-top: 12px;
+}
+
 </style>
 
-<!-- Velocity: 17-07-2024 Added the code to push the PLP view event to GTM -->
+<!--Velocity: 17-07-2024 Added the code to push the PLP view event to GTM-->
 <script>
-    var collection_title = '{{ collection.title }}';
-    var collection_id = '{{ collection.id }}';
-    var collection_product_count = '{{ collection.all_products_count }}';
-  $(document).ready(function() {
-    pushPLPEvent();
-  });
+      var collection_title = '{{ collection.title }}';
+      var collection_id = '{{ collection.id }}';
+      var collection_product_count = '{{ collection.all_products_count }}';
+    $(document).ready(function() {
+      pushPLPEvent();
+    });
 </script>
 
 <div class="section-{{ section.id }}-padding">
@@ -139,8 +142,8 @@
   {%- endif -%}
 
   <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
-    {{ 'component-facets.aio.min.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'facets.aio.min.js' | asset_url }}" defer="defer"></script>
+    {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
     {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
       <aside
         aria-labelledby="verticalTitle"
@@ -157,62 +160,63 @@
       </aside>
     {%- endif -%}
 
-    {% if collection.metafields.custom.cake_filters.value == true %}
-      <div class="cake_filters filter_section page-width">
-        <div class="btn-container">
-          <button class="active btn_tabs" id="all">Show All</button>
-          <button class="btn_tabs" id="Egg">Egg</button>
-          <button class="btn_tabs" id="Eggless">Eggless</button>
-        </div>
+{% if collection.metafields.custom.cake_filters.value == true %} 
+    <div class="cake_filters filter_section page-width">
+      <div class="btn-container">
+        <button class="active btn_tabs" id="all">Show All</button>
+<button class="btn_tabs" id="Egg">Egg</button>
+<button class="btn_tabs" id="Eggless">Eggless</button>
       </div>
-    {% endif %}
+    </div>
+  {% endif %}
 
-    {% if collection.metafields.custom.flowers_filters.value == true %}
-      <div class="flowers_filters filter_section page-width">
-        <div class="btn-container">
-          <button class="active btn_tabs" id="all">Show All</button>
-          <button class="btn_tabs" id="Roses">Roses</button>
-          <button class="btn_tabs" id="Lilies">Lilies</button>
-          <button class="btn_tabs" id="Carnations">Carnations</button>
-          <button class="btn_tabs" id="Orchids">Orchids</button>
-          <button class="btn_tabs" id="Chrysanthemum">Chrysanthemum</button>
-          <button class="btn_tabs" id="Mixed">Mixed</button>
-        </div>
+    {% if collection.metafields.custom.flowers_filters.value == true %} 
+    <div class="flowers_filters filter_section page-width">
+      <div class="btn-container">
+        <button class="active btn_tabs" id="all">Show All</button>
+<button class="btn_tabs" id="Roses">Roses</button>
+<button class="btn_tabs" id="Lilies">Lilies</button>
+<button class="btn_tabs" id="Carnations">Carnations</button>
+<button class="btn_tabs" id="Orchids">Orchids</button>
+<button class="btn_tabs" id="Chrysanthemum">Chrysanthemum</button>
+<button class="btn_tabs" id="Mixed">Mixed</button>
       </div>
-    {% endif %}
-
-    {% if collection.metafields.custom.hampers_filters.value == true %}
-      <div class="hampers_filters filter_section page-width">
-        <div class="btn-container">
-          <button class="active btn_tabs" id="all">Show All</button>
-          <button class="btn_tabs" id="CH-Food-Hamper">Food Hamper</button>
-          <button class="btn_tabs" id="CH-Kids">Baby & Kids</button>
-          <button class="btn_tabs" id="CH-Chocolate-Candy">Chocolate</button>
-          <button class="btn_tabs" id="CH-Dry-Fruit">Dry Fruit</button>
-          <button class="btn_tabs" id="CH-Healthy-Alternative">Healthy Alternatives</button>
-          <button class="btn_tabs" id="CH-Personal-Care">Personal Care</button>
-          <button class="btn_tabs" id="CH-Snack-Munchies">Snack Munchies</button>
-          <button class="btn_tabs" id="CH-Fresh-Fruit">Fresh Fruit</button>
-          <button class="btn_tabs" id="CH-Tea-Coffee">Tea & Coffee</button>
-        </div>
-      </div>
-    {% endif %}
-    {% comment %}
-        Change added by velocity support on 11-02-2025 to filter out the products based on the price
-
-         {% if collection.metafields.custom.price_filter.value == true %}
-       <div class="price_filter filter_section page-width">
-         <div class="btn-container">
-           <button class="active btn_tabs" id="all_in_stock">Show All</button>
-           <button class="btn_tabs" id="less_than_1500">Below ₹1500</button>
-           <button class="btn_tabs" id="between_1500_to_3000">₹1500 - ₹3000</button>
-           <button class="btn_tabs" id="between_3000_to_5000">₹3000 - ₹5000</button>
-           <button class="btn_tabs" id="above_5000">Above ₹5000</button>
-         </div>
-       </div>
+    </div>
       {% endif %}
-    {% endcomment %}
 
+      {% if collection.metafields.custom.hampers_filters.value == true %} 
+    <div class="hampers_filters filter_section page-width">
+      <div class="btn-container">
+        <button class="active btn_tabs" id="all">Show All</button>
+<button class="btn_tabs" id="CH-Food-Hamper">Food Hamper</button>
+<button class="btn_tabs" id="CH-Kids">Baby & Kids</button>
+<button class="btn_tabs" id="CH-Chocolate-Candy">Chocolate</button>
+<button class="btn_tabs" id="CH-Dry-Fruit">Dry Fruit</button>
+<button class="btn_tabs" id="CH-Healthy-Alternative">Healthy Alternatives</button>
+<button class="btn_tabs" id="CH-Personal-Care">Personal Care</button>
+<button class="btn_tabs" id="CH-Snack-Munchies">Snack Munchies</button>
+<button class="btn_tabs" id="CH-Fresh-Fruit">Fresh Fruit</button>
+<button class="btn_tabs" id="CH-Tea-Coffee">Tea & Coffee</button>
+
+      </div>
+    </div>
+        {% endif %}
+     {% comment %}
+     Change added by velocity support on 11-02-2025 to filter out the products based on the price
+     {% endcomment %}
+      {% if collection.metafields.custom.price_filter.value == true %} 
+    <div class="price_filter filter_section page-width">
+      <div class="btn-container">
+        <button class="active btn_tabs" id="all_in_stock">Show All</button>
+        <button class="btn_tabs" id="less_than_1500">Below ₹1500</button>
+        <button class="btn_tabs" id="between_1500_to_3000">₹1500 - ₹3000</button>
+        <button class="btn_tabs" id="between_3000_to_5000">₹3000 - ₹5000</button>
+        <button class="btn_tabs" id="above_5000">Above ₹5000</button>
+      </div>
+    </div>
+   {% endif %}
+
+    
     <div class="product-grid-container" id="ProductGridContainer">
       {%- paginate collection.products by 1000 -%}
         {%- if collection.products.size == 0 -%}
@@ -238,93 +242,39 @@
               data-id="{{ section.id }}"
               class="
                 grid  product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
-                grid--{{ section.settings.columns_desktop }}-col-desktop
+                grid--{{ section.settings.columns_desktop }}-col-desktop 
               "
             >
-              {% assign available_products = '' %}
-              {% assign sold_out_products = '' %}
+             {% assign available_products = '' %}
+{% assign sold_out_products = '' %}
               {%- for product in collection.products -%}
                 {% comment %}
-                 Calculate Total TAT of each product that will help to display the strip on PLP. 26-06-2025
+             Change added by velocity support on 11-02-2025 to filter out the products based on the price
                 {% endcomment %}
- {% assign number = 0 %}
-
-  {% if product.tags contains 'same-day' and product.tags contains 'location-roi' %}
-    {% assign number = 5 %}
-  {% elsif product.tags contains 'same-day' %}
-    {% assign number = 0 %}
-  {% elsif product.tags contains '1-day' %}
-    {% assign number = 1 %}
-  {% elsif product.tags contains '2-days' %}
-    {% assign number = 2 %}
-  {% elsif product.tags contains '3-days' %}
-    {% assign number = 3 %}
-  {% elsif product.tags contains '4-days' %}
-    {% assign number = 4 %}
-  {% elsif product.tags contains '5-days' %}
-    {% assign number = 5 %}
-  {% elsif product.tags contains '6-days' %}
-    {% assign number = 6 %}
-  {% elsif product.tags contains '7-days' %}
-    {% assign number = 7 %}
-  {% elsif product.tags contains '8-days' %}
-    {% assign number = 8 %}
-  {% comment %} Added By Velocity : 12-01-2026, TGS team requested to add 9-days Tag as well {% endcomment %}
-  {% elsif product.tags contains '9-days' %}
-    {% assign number = 9 %}
-  {% comment %} EOC {% endcomment %}
-  {% elsif product.tags contains '10-days' %}
-    {% assign number = 10 %}
-  {% comment %} Added By Velocity : 12-01-2026, Add 11-days Tag as well {% endcomment %}
-  {% elsif product.tags contains '11-days' %}
-    {% assign number = 11 %}
-  {% comment %} EOC {% endcomment %}
-  {% elsif product.tags contains '12-days' %}
-    {% assign number = 12 %}
-  {% elsif product.tags contains '13-days' %}
-    {% assign number = 13 %}
-  {% elsif product.tags contains '7PM-Order' %}
-    {% assign number = -7 %}
-  {% elsif product.tags contains '4PM-Order' %}
-    {% assign number = -4 %}
-  {% elsif product.tags contains '3PM-Order' %}
-    {% assign number = -3 %}
-  {% elsif product.tags contains '2PM-Order' %}
-    {% assign number = -2 %}
-  {% endif %}
-             
-                {% comment %}
-                  Change added by velocity support on 11-02-2025 to filter out the products based on the price
-                {% endcomment %}
-                {% if collection.metafields.custom.filter.value == true %}
-                  {% assign product_price = product.price | divided_by: 100.0 %}
+                      {% if collection.metafields.custom.price_filter.value == true %} 
+                        
+                {% assign product_price = product.price | divided_by: 100.0 %}
                   {% assign filter_tag = '' %}
                   {% assign in_stock_tag = 'all_in_stock' %}
-                  {% comment %}
-                    {% if product_price < 500 %}
-                      {% assign filter_tag = 'less_than_500' %}
-                      {% elsif product_price >= 500 and product_price <= 1000 %}
-                      {% assign filter_tag = 'between_500_to_1000' %}
-                      {% elsif product_price >= 1000 and product_price <= 1500 %}
-                      {% assign filter_tag = 'between_1000_to_1500' %}
-                      {% elsif product_price >= 1500 and product_price <= 2000 %}
-                      {% assign filter_tag = 'between_1500_to_2000' %}
-                      {% elsif product_price > 2000 %}
-                      {% assign filter_tag = 'above_2000' %}
-                      {% endif %}
-                  {% endcomment %}
-                {% endif %}
-
+                {% if product_price < 1500 %}
+                  {% assign filter_tag = 'less_than_1500' %}
+                  {% elsif product_price >= 1500 and product_price <= 3000 %}
+                  {% assign filter_tag = 'between_1500_to_3000' %}
+                  {% elsif product_price >= 3000 and product_price <= 5000 %}
+                  {% assign filter_tag = 'between_3000_to_5000' %}
+                  {% elsif product_price > 5000 %}
+                  {% assign filter_tag = 'above_5000' %}
+                  {% endif %}
+                  {% endif %}
+                        
                 {% if product.available %}
-
                   {% capture available_products %}
                   {{ available_products }}
                 {% assign lazy_load = false %}
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
-                <li  data-product-id="{{ product.id }}"
-  data-tag="{{ number }}" price="{{ product_price }}" data_bangalore="{{ product.metafields.custom.bangalore_inventory }}" data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" class="grid__item filtered-div {% unless product.tags contains 'Warehouse' %}content_hidden {{ in_stock_tag }} {{ filter_tag }}  {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}>
+                <li data_bangalore="{{ product.metafields.custom.bangalore_inventory }}" data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" class="grid__item filtered-div {% unless product.tags contains 'Warehouse' %}content_hidden {{ in_stock_tag }} {{ filter_tag }}  {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}">
                   {% render 'card-product',
                     card_product: product,
                     media_aspect_ratio: section.settings.image_ratio,
@@ -333,20 +283,18 @@
                     show_rating: section.settings.show_rating,
                     lazy_load: lazy_load,
                     show_quick_add: section.settings.enable_quick_add,
-                    section_id: section.id,
-                    enable_image_slider: true
+                    section_id: section.id
                   %}
                 </li>
                       {% endcapture %}
-                {% else %}
+                  {% else %}
                   {% capture sold_out_products %}
                   {{ sold_out_products }}
                      {% assign lazy_load = false %}
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
-                <li data-product-id="{{ product.id }}"
-  data-tag="{{ number }}" price="{{ product_price }}" data_bangalore="{{ product.metafields.custom.bangalore_inventory }}" data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" class="grid__item filtered-div {% unless product.tags contains 'Warehouse' %}content_hidden {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}>
+                <li data_bangalore="{{ product.metafields.custom.bangalore_inventory }}" data_mumbai="{{ product.metafields.custom.mumbai_inventory }}" data_kolkata="{{ product.metafields.custom.kolkata_inventory }}" data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}" data_delhi="{{ product.metafields.custom.delhi_inventory }}" class="grid__item filtered-div {% unless product.tags contains 'Warehouse' %}content_hidden {{ product.tags | join: ' ' }}{% endunless %}" {% if product.tags contains 'express_delivery' %}data-express="express"{% endif %}{% if product.tags contains 'standard_delivery' %}data-standard="standard"{% endif %}">
                   {% render 'card-product',
                     card_product: product,
                     media_aspect_ratio: section.settings.image_ratio,
@@ -355,21 +303,23 @@
                     show_rating: section.settings.show_rating,
                     lazy_load: lazy_load,
                     show_quick_add: section.settings.enable_quick_add,
-                    section_id: section.id,
-                    enable_image_slider: true
+                    section_id: section.id
                   %}
                 </li>
                     {% endcapture %}
-                {% endif %}
+                  {% endif %}
               {%- endfor -%}
 
               {{ available_products | strip }}
-              {{ sold_out_products | strip }}
+{{ sold_out_products | strip }}
             </ul>
 
+          
             {%- if paginate.pages > 1 -%}
               {% render 'pagination', paginate: paginate, anchor: '' %}
             {%- endif -%}
+          
+
           </div>
         {%- endif -%}
       {%- endpaginate -%}
@@ -377,244 +327,86 @@
   </div>
 </div>
 {% if template contains 'collection' %}
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": {{ collection.title | json }},
-      "description": {% if collection.description != blank %}{{ collection.description | strip_html | json }}{% else %}""{% endif %},
-      "url": {{ request.origin | append: collection.url | json }},
-      {% if collection.image %}
-      "image": {{ collection.image | img_url: 'grande' | prepend: "https:" | json }},
-      {% endif %}
-      "mainEntity": {
-        "@type": "ItemList",
-        "itemListElement": [
-          {% for product in collection.products limit: 10 %}
-            {
-              "@type": "ListItem",
-              "position": {{ forloop.index }},
-              "url": {{ request.origin | append: product.url | json }},
-              "name": {{ product.title | json }}
-            }{% unless forloop.last %},{% endunless %}
-          {% endfor %}
-        ]
-      }
-    }
-  </script>
-{% endif %}
 <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ collection.title | json }},
+  "description": {% if collection.description != blank %}{{ collection.description | strip_html | json }}{% else %}""{% endif %},
+  "url": {{ request.origin | append: collection.url | json }},
+  {% if collection.image %}
+  "image": {{ collection.image | img_url: 'grande' | prepend: "https:" | json }},
+  {% endif %}
+  "mainEntity": {
+    "@type": "ItemList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "{{ shop.url }}"
-      }
-      {% if template contains 'product' %}
-      ,{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "{{ collection.title | default: 'Products' }}",
-        "item": "{{ shop.url }}{% if collection.url %}/collections/{{ collection.handle }}{% else %}/collections/all{% endif %}"
-      },{
-        "@type": "ListItem",
-        "position": 3,
-        "name": "{{ product.title }}",
-        "item": "{{ shop.url }}{{ product.url }}"
-      }
-      {% elsif template contains 'collection' %}
-      ,{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "{{ collection.title }}",
-        "item": "{{ shop.url }}{{ collection.url }}"
-      }
-      {% elsif template contains 'article' %}
-      ,{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "{{ blog.title }}",
-        "item": "{{ shop.url }}{{ blog.url }}"
-      },{
-        "@type": "ListItem",
-        "position": 3,
-        "name": "{{ article.title }}",
-        "item": "{{ shop.url }}{{ article.url }}"
-      }
-      {% endif %}
+      {% for product in collection.products limit: 10 %}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "url": {{ request.origin | append: product.url | json }},
+          "name": {{ product.title | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
     ]
   }
+}
 </script>
-{%comment %} Added By Velocity 26-11-2025, Add FAQ schema for collection pages{% endcomment %}
-
-{% if collection.metafields.custom.faq %}
-  
-  {% assign faq_items = collection.metafields.custom.faq.value %}
-    <script type="application/ld+json">
+{% endif %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
     {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {% for item in faq_items %}
-          {
-            "@type": "Question",
-            "name": "{{ item.question | escape }}",
-            "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "{{ item.answer | escape }}"
-          }
-          }{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ shop.url }}"
     }
-    </script>
-{% endif %}
-{% comment %} Code END Added By Velocity 26-11-2025 {% endcomment %}
-{% if collection.metafields.custom.filter.value == true %}
-  <script>
-     $(document).ready(function() {
-    var $el = $('.all_in_stock').fadeIn(450);
-       $('#product-grid > li').not($el).hide();
-     });
-  </script>
-{% endif %}
-<style>
-  /* Overlay image for collection page hover slider */
-  .card__slider-overlay {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-    object-position: center;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* Dots container — !important beats .media > * (specificity 0,3,0 in base.css) */
-  .card__slider-dots {
-    position: absolute !important;
-    bottom: 10px !important;
-    top: auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    display: flex !important;
-    justify-content: center !important;
-    gap: 5px !important;
-    height: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    pointer-events: none;
-  }
-
-  .card-wrapper:hover .card__slider-dots {
-    opacity: 1;
-  }
-
-  .card__slider-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-    transition: background 0.25s ease;
-    flex-shrink: 0;
-  }
-
-  .card__slider-dot.is-active {
-    background: #ffffff;
-  }
-</style>
-
-<script>
-  (function () {
-    var INTERVAL_MS = 1500;
-
-    function setupSlider(cardMedia) {
-      var raw = cardMedia.dataset.sliderImages;
-      if (!raw) return;
-      var urls = raw.split('|').filter(Boolean);
-      if (urls.length < 2) return;
-
-      var mediaDiv = cardMedia.querySelector('.media');
-      if (!mediaDiv) return;
-
-      /* overlay image — positioned by CSS class */
-      var overlay = document.createElement('img');
-      overlay.className = 'card__slider-overlay';
-      overlay.alt = '';
-      mediaDiv.appendChild(overlay);
-
-      /* dots row */
-      var dotsWrap = document.createElement('div');
-      dotsWrap.className = 'card__slider-dots';
-      urls.forEach(function (_, i) {
-        var d = document.createElement('span');
-        d.className = 'card__slider-dot' + (i === 0 ? ' is-active' : '');
-        dotsWrap.appendChild(d);
-      });
-      mediaDiv.appendChild(dotsWrap);
-
-      var dots = dotsWrap.querySelectorAll('.card__slider-dot');
-      var currentIdx = 0;
-      var timer = null;
-      var preloaded = false;
-
-      function goTo(idx) {
-        if (dots[currentIdx]) dots[currentIdx].classList.remove('is-active');
-        currentIdx = ((idx % urls.length) + urls.length) % urls.length;
-        overlay.src = urls[currentIdx];
-        overlay.style.opacity = '1';
-        if (dots[currentIdx]) dots[currentIdx].classList.add('is-active');
-      }
-
-      /* attach to card-wrapper — the heading a::after is positioned relative to
-         card-wrapper, so mouseenter on card-wrapper reliably fires */
-      var cardWrapper = cardMedia.closest('.card-wrapper');
-
-      cardWrapper.addEventListener('mouseenter', function () {
-        if (!preloaded) {
-          urls.forEach(function (u) { (new Image()).src = u; });
-          preloaded = true;
-        }
-        currentIdx = 0;
-        goTo(1);  /* show first alternate image immediately, no 900ms wait */
-        timer = setInterval(function () { goTo(currentIdx + 1); }, INTERVAL_MS);
-      });
-
-      cardWrapper.addEventListener('mouseleave', function () {
-        clearInterval(timer);
-        timer = null;
-        overlay.style.opacity = '0';
-        Array.from(dots).forEach(function (d, i) {
-          d.classList.toggle('is-active', i === 0);
-        });
-        currentIdx = 0;
-      });
+    {% if template contains 'product' %}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ collection.title | default: 'Products' }}",
+      "item": "{{ shop.url }}{% if collection.url %}/collections/{{ collection.handle }}{% else %}/collections/all{% endif %}"
+    },{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ product.title }}",
+      "item": "{{ shop.url }}{{ product.url }}"
     }
-
-    function initCardSliders() {
-      document.querySelectorAll('#product-grid .card__media[data-slider-images]').forEach(setupSlider);
+    {% elsif template contains 'collection' %}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ collection.title }}",
+      "item": "{{ shop.url }}{{ collection.url }}"
     }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCardSliders);
-    } else {
-      initCardSliders();
+    {% elsif template contains 'article' %}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ blog.title }}",
+      "item": "{{ shop.url }}{{ blog.url }}"
+    },{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ article.title }}",
+      "item": "{{ shop.url }}{{ article.url }}"
     }
-  })();
+    {% endif %}
+  ]
+}
 </script>
-
+   {% if collection.metafields.custom.price_filter.value == true %} 
+<script>
+  $(document).ready(function() {
+ var $el = $('.all_in_stock').fadeIn(450);
+    $('#product-grid > li').not($el).hide();
+  });
+</script>
+ {% endif %}
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
