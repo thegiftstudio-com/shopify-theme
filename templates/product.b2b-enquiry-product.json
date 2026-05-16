@@ -127,15 +127,9 @@
         },
         "4ff5d10f-2e52-47ce-b34f-a7aad6596d06": {
           "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "{% if product.tags contains 'Warehouse' %}<div class=\"product__description\">\n<h2>Delivery Information</h2>\n<ul>\n<li>Since this product is shipped using the services of our courier partners, the date of delivery is an estimate.\n</li>\n<li>\nYour gift may be delivered prior or after the chosen date of delivery.\n</li>\n<li>\nCourier product is delivered separately from other hand delivered products.\n</li>\n<li>\nOur courier partners do not call prior to delivering an order, so we recommend that you provide an address at which someone will be present to receive the package.\n</li>\n<li>\nThe delivery cannot be redirected to any other address.\n</li>\n<li>\nAll courier orders are carefully packed and shipped from our warehouse.\n</li>\n<li>\nSoon after the order has been dispatched, you will receive a tracking number that will help you trace your gift.\n</li>\n</ul>\n</div>\n{% endif %}"
-          }
-        },
-        "e978295d-15d5-4550-aab6-07a7f252dedd": {
-          "type": "custom_liquid",
           "disabled": true,
           "settings": {
-            "custom_liquid": "{% render 'offers_section' %}"
+            "custom_liquid": "{% if product.tags contains 'Warehouse' %}<div class=\"product__description\">\n<h2>Delivery Information</h2>\n<ul>\n<li>Since this product is shipped using the services of our courier partners, the date of delivery is an estimate.\n</li>\n<li>\nYour gift may be delivered prior or after the chosen date of delivery.\n</li>\n<li>\nCourier product is delivered separately from other hand delivered products.\n</li>\n<li>\nOur courier partners do not call prior to delivering an order, so we recommend that you provide an address at which someone will be present to receive the package.\n</li>\n<li>\nThe delivery cannot be redirected to any other address.\n</li>\n<li>\nAll courier orders are carefully packed and shipped from our warehouse.\n</li>\n<li>\nSoon after the order has been dispatched, you will receive a tracking number that will help you trace your gift.\n</li>\n</ul>\n</div>\n{% endif %}"
           }
         },
         "collapsible_tab_mGNTcR": {
@@ -150,7 +144,7 @@
         "collapsible_tab_RjVTqW": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Care Instructions",
+            "heading": "Ideal for-",
             "icon": "none",
             "content": "{{ product.metafields.custom.product_care_instructions | metafield_tag }}",
             "page": ""
@@ -174,6 +168,12 @@
           "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "disabled": true,
           "settings": {}
+        },
+        "e978295d-15d5-4550-aab6-07a7f252dedd": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'company-trusted.liquid' %}"
+          }
         }
       },
       "block_order": [
@@ -194,12 +194,12 @@
         "description",
         "share",
         "4ff5d10f-2e52-47ce-b34f-a7aad6596d06",
-        "e978295d-15d5-4550-aab6-07a7f252dedd",
         "collapsible_tab_mGNTcR",
         "collapsible_tab_RjVTqW",
         "rating_KqnFa4",
         "collapsible_tab_kYGNE3",
-        "judge_me_reviews_preview_badge_ky3LBC"
+        "judge_me_reviews_preview_badge_ky3LBC",
+        "e978295d-15d5-4550-aab6-07a7f252dedd"
       ],
       "custom_css": [],
       "settings": {
@@ -263,6 +263,7 @@
       "blocks": {
         "judge_me_reviews_review_widget_Y3XpM6": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
           "settings": {
             "review_data": "sample_data",
             "max_width": 1200,
