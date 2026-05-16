@@ -171,6 +171,7 @@
         },
         "e978295d-15d5-4550-aab6-07a7f252dedd": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "{% render 'company-trusted.liquid' %}"
           }
@@ -278,6 +279,16 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "custom_liquid_kPfXa6": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "{% render 'company-trusted.liquid' %}",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
@@ -286,6 +297,7 @@
     "related-products",
     "0d50ffb3-5985-4056-bf58-288e07994640",
     "16921934035dda6431",
-    "17448981608c2c1bb0"
+    "17448981608c2c1bb0",
+    "custom_liquid_kPfXa6"
   ]
 }
