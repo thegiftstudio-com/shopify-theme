@@ -35,17 +35,17 @@
           "type": "price",
           "settings": {}
         },
-        "text_NDHUcm": {
-          "type": "text",
-          "settings": {
-            "text": "Delivery Charges & Gst on actuals",
-            "text_style": "body"
-          }
-        },
         "text_cnKMJk": {
           "type": "text",
           "settings": {
-            "text": "Customization : No",
+            "text": "Customization : Yes",
+            "text_style": "body"
+          }
+        },
+        "text_NDHUcm": {
+          "type": "text",
+          "settings": {
+            "text": "Delivery charges & GST on actuals",
             "text_style": "body"
           }
         },
@@ -57,26 +57,22 @@
         },
         "judge_me_reviews_preview_badge_rzEHCL": {
           "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
           "settings": {}
+        },
+        "collapsible_tab_bCYzKV": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Product Info",
+            "icon": "none",
+            "content": "{{ product.metafields.custom.product_info | metafield_tag }}",
+            "page": ""
+          }
         },
         "quantity_selector": {
           "type": "quantity_selector",
           "disabled": true,
           "settings": {}
-        },
-        "custom_badges_QCNVye": {
-          "type": "custom_badges",
-          "settings": {
-            "heading1": "Hassle Free Refund",
-            "url1": "",
-            "image1": "shopify://shop_images/Hassle_free_Refund-02.svg",
-            "heading2": "Happy Customers",
-            "url2": "",
-            "image2": "shopify://shop_images/40k-02_1_70405e1d-6a83-402b-8294-6562ea3068c2.svg",
-            "heading3": "Reliable Global Delivery",
-            "url3": "",
-            "image3": "shopify://shop_images/global-shipping_18945797.png"
-          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -95,6 +91,21 @@
             "margin_mobile": "5px 0px 0px 0px",
             "padding_desktop": "10px 10px 10px 10px",
             "padding_mobile": "10px 5px 10px 5px"
+          }
+        },
+        "custom_badges_QCNVye": {
+          "type": "custom_badges",
+          "disabled": true,
+          "settings": {
+            "heading1": "Hassle Free Refund",
+            "url1": "",
+            "image1": "shopify://shop_images/Hassle_free_Refund-02.svg",
+            "heading2": "Happy Customers",
+            "url2": "",
+            "image2": "shopify://shop_images/40k-02_1_70405e1d-6a83-402b-8294-6562ea3068c2.svg",
+            "heading3": "Reliable Global Delivery",
+            "url3": "",
+            "image3": "shopify://shop_images/global-shipping_18945797.png"
           }
         },
         "custom_liquid_PYhRin": {
@@ -136,15 +147,6 @@
             "page": ""
           }
         },
-        "collapsible_tab_bCYzKV": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Product Info",
-            "icon": "none",
-            "content": "{{ product.metafields.custom.product_info | metafield_tag }}",
-            "page": ""
-          }
-        },
         "collapsible_tab_RjVTqW": {
           "type": "collapsible_tab",
           "settings": {
@@ -179,21 +181,21 @@
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4",
         "title",
         "price",
-        "text_NDHUcm",
         "text_cnKMJk",
+        "text_NDHUcm",
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
         "judge_me_reviews_preview_badge_rzEHCL",
+        "collapsible_tab_bCYzKV",
         "quantity_selector",
-        "custom_badges_QCNVye",
         "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
+        "custom_badges_QCNVye",
         "custom_liquid_PYhRin",
         "description",
         "share",
         "4ff5d10f-2e52-47ce-b34f-a7aad6596d06",
         "e978295d-15d5-4550-aab6-07a7f252dedd",
         "collapsible_tab_mGNTcR",
-        "collapsible_tab_bCYzKV",
         "collapsible_tab_RjVTqW",
         "rating_KqnFa4",
         "collapsible_tab_kYGNE3",
