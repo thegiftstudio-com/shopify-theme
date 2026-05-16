@@ -93,7 +93,6 @@
         "announcement_trkiKA",
         "announcement_FQLWQY"
       ],
-      "disabled": true,
       "custom_css": [
         "h5 {color: rgb(var(--color-foreground)); text-transform: uppercase; padding: 8px 0%; white-space: nowrap; box-sizing: border-box; text-align: center; margin: 0px; overflow: auto; scrollbar-width: none;}",
         "@media (max-width: 600px) {h5 {font-size: 8px; }}"
