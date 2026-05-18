@@ -3004,8 +3004,8 @@
         "template--19604652917043__1a2d7d67-33da-4b9e-89eb-9891e98752d6-16875275220bc5b8a0-2": {
           "type": "button",
           "settings": {
-            "button_label": "Enquire Now",
-            "button_link": "shopify://collections/wedding-page"
+            "button_label": "Wedding Gifts",
+            "button_link": "shopify://collections/curated-hamper-wedding"
           }
         }
       },
