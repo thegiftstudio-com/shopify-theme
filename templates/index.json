@@ -3016,8 +3016,8 @@
       ],
       "settings": {
         "custom_class": "wedding_gift_section",
-        "image": "shopify://shop_images/wedding_gift.jpg",
-        "mob_img": "shopify://shop_images/wedding_gift_mobile.jpg",
+        "image": "shopify://shop_images/Wedding_Collection.jpg",
+        "mob_img": "shopify://shop_images/Wedding_Collection.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
@@ -3063,8 +3063,8 @@
       ],
       "settings": {
         "custom_class": "wedding_gift_section",
-        "image": "shopify://shop_images/Untitled-1_6.jpg",
-        "mob_img": "shopify://shop_images/Untitled-1_6.jpg",
+        "image": "shopify://shop_images/Corporate_Bulk_Gifiting_Collection.jpg",
+        "mob_img": "shopify://shop_images/Corporate_Bulk_Gifiting_Collection.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
