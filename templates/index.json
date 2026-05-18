@@ -3086,7 +3086,7 @@
         "mob_banner": "shopify://shop_images/936x600_social_cause_new_copy_banner.jpg",
         "banner_link": "",
         "image_overlay_opacity": 0,
-        "image_height": "adapt",
+        "image_height": "small",
         "desktop_content_position": "middle-center",
         "show_text_box": false,
         "desktop_content_alignment": "center",
@@ -3096,7 +3096,7 @@
         "show_text_below": false,
         "page_width": false,
         "margin_top": 36,
-        "margin_bottom": 36
+        "margin_bottom": 0
       }
     },
     "1778755381fc2c06d9": {
