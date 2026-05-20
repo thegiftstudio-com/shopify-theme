@@ -12,8 +12,6 @@
   {{ 'component-loading-overlay.aio.min.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.aio.min.css' | asset_url | stylesheet_tag }}
 
-  {%- render 'bulk-inquiry-drawer' -%}
-
   <script>
     // velocity 05-07-2024 defined the variabled to be used via GTM data layer push
     var v_shopCurrency = "{{ shop.currency }}"
@@ -458,36 +456,16 @@
                   {%- endif -%}
                 </div>
               </div>
-	      {% comment %} Added by Velocity 15-05-2026 Bulk feature added on the PDP page with form drawer {% endcomment %}
+	      {% comment %} Added by Velocity 15-05-2026 Bulk feature added on the PDP page with WA click {% endcomment %}
               {% if section.settings.bulk %}
               <p class="bulkOrderPtag" style='font-size: 1.3rem;'>
                 <span class="bulk-buy">
                   Want to buy this in bulk?
-                  <button type="button" class="bulk-inquiry-btn" onclick="openBulkInquiryDrawer()">
+                  <a href="https://wa.me/{{section.settings.whatsapp_number}}?text=I want to buy {{ product.title }} - {{ product.selected_or_first_available_variant.sku }} in bulk. Can you please help me for the same?">
                     Click here
-                  </button>
+                  </a>
                 </span>
               </p>
-              <style>
-                .bulk-inquiry-btn {
-                  background: none;
-                  border: none;
-                  color: inherit;
-                  cursor: pointer;
-                  text-decoration: underline;
-                  padding: 0;
-                  font: inherit;
-                  transition: opacity 0.2s;
-                }
-                
-                .bulk-inquiry-btn:hover {
-                  opacity: 0.7;
-                }
-                
-                .bulk-inquiry-btn:active {
-                  opacity: 0.5;
-                }
-              </style>
               {% endif %}
             {%- when 'popup' -%}
               <modal-opener
