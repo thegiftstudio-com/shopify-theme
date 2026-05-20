@@ -1,0 +1,186 @@
+{% comment %}
+  Renders a side drawer for bulk inquiry form
+
+  Usage:
+  {% render 'bulk-inquiry-drawer' %}
+{% endcomment %}
+
+<div id="BulkInquiryDrawer" class="bulk-inquiry-drawer" hidden>
+  <div class="bulk-inquiry-drawer__overlay" onclick="closeBulkInquiryDrawer()"></div>
+  
+  <div class="bulk-inquiry-drawer__content">
+    <div class="bulk-inquiry-drawer__header">
+      <h2 class="bulk-inquiry-drawer__title">Bulk Inquiry</h2>
+      <button 
+        type="button" 
+        class="bulk-inquiry-drawer__close" 
+        onclick="closeBulkInquiryDrawer()"
+        aria-label="Close bulk inquiry drawer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="bulk-inquiry-drawer__form-wrapper">
+      {% render 'corporate_native_form' %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .bulk-inquiry-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .bulk-inquiry-drawer[hidden] {
+    display: none !important;
+  }
+
+  .bulk-inquiry-drawer__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .bulk-inquiry-drawer__content {
+    position: relative;
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: -2px 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease-in-out;
+    margin-left: auto;
+  }
+
+  .bulk-inquiry-drawer__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .bulk-inquiry-drawer__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0a1128;
+  }
+
+  .bulk-inquiry-drawer__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.2s;
+  }
+
+  .bulk-inquiry-drawer__close:hover {
+    color: #0a1128;
+  }
+
+  .bulk-inquiry-drawer__form-wrapper {
+    padding: 1.5rem;
+  }
+
+  .bulk-inquiry-drawer__form-wrapper .corporate-gifting-form {
+    background: transparent;
+    padding: 0;
+    max-width: none;
+    height: auto;
+    margin: 0;
+  }
+
+  .bulk-inquiry-drawer__form-wrapper .form-title {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .bulk-inquiry-drawer__form-wrapper .form-subtitle {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 750px) {
+    .bulk-inquiry-drawer__content {
+      max-width: 100%;
+      max-height: 100vh;
+    }
+
+    .bulk-inquiry-drawer__header {
+      padding: 1rem;
+    }
+
+    .bulk-inquiry-drawer__form-wrapper {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<script>
+  function openBulkInquiryDrawer() {
+    const drawer = document.getElementById('BulkInquiryDrawer');
+    if (drawer) {
+      drawer.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeBulkInquiryDrawer() {
+    const drawer = document.getElementById('BulkInquiryDrawer');
+    if (drawer) {
+      drawer.setAttribute('hidden', '');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Close drawer on Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeBulkInquiryDrawer();
+    }
+  });
+</script>
