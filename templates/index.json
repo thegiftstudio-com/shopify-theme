@@ -2532,14 +2532,14 @@
           "type": "collection",
           "settings": {
             "tab_name": "Jewellery",
-            "collection": "jewellery"
+            "collection": "more-gifts-jewellery"
           }
         },
         "collection_FFG4EN": {
           "type": "collection",
           "settings": {
             "tab_name": "Home Decor",
-            "collection": "homeware"
+            "collection": "tgs-home"
           }
         }
       },
