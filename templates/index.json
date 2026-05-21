@@ -2538,6 +2538,7 @@
         },
         "collection_aHpbq6": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "tab_name": "Baby & Kids",
             "collection": "baby-kids"
@@ -2545,6 +2546,7 @@
         },
         "collection_xEVTb9": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "tab_name": "Home Decor",
             "collection": "homeware"
