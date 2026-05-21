@@ -2402,6 +2402,13 @@
             "collection": "personalised-games"
           }
         },
+        "collection_jTFD6n": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Couple favourites",
+            "collection": "curated-date-night-hamper"
+          }
+        },
         "collection_A8rW8G": {
           "type": "collection",
           "disabled": true,
@@ -2420,6 +2427,7 @@
         },
         "collection_aHpbq6": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "tab_name": "Baby & Kids",
             "collection": "baby-kids"
@@ -2488,6 +2496,7 @@
         "collection_pT4PXM",
         "collection_Mj8xkH",
         "collection_RmYnrt",
+        "collection_jTFD6n",
         "collection_A8rW8G",
         "collection_qLwJry",
         "collection_aHpbq6",
@@ -2518,15 +2527,31 @@
             "tab_name": "New Launches",
             "collection": "signature-collection"
           }
+        },
+        "collection_6LhyVd": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Home decor",
+            "collection": "homeware"
+          }
+        },
+        "collection_LC3iKk": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Jewellery",
+            "collection": "jewellery"
+          }
         }
       },
       "block_order": [
-        "collection_pc9TLz"
+        "collection_pc9TLz",
+        "collection_6LhyVd",
+        "collection_LC3iKk"
       ],
       "name": "Best Sellers",
       "settings": {
         "title": "Signature Picks",
-        "subtitle": "Trending Now: New Launches",
+        "subtitle": "Luxury hampers designed to celebrate every special connection",
         "columns_desktop": 4,
         "columns_mobile": "2",
         "padding_top": 0,
