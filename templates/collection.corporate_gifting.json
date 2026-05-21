@@ -20,6 +20,7 @@
     },
     "enquiry_hulk_form_rMXbL9": {
       "type": "enquiry_hulk_form",
+      "disabled": true,
       "name": "Hulk Enquiry Form Section",
       "settings": {
         "bg_image_desktop": "shopify://shop_images/BANNER_desktop.png",
@@ -341,6 +342,48 @@
       "settings": {
         "collection_description_ref": "{{ collection.metafields.custom.collection_information | metafield_tag }}"
       }
+    },
+    "collection_list_EQMa4M": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_9HFEqp": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "featured_collection_3xk48B": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "featured_collection_KGGDHJ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_9HFEqp",
+        "featured_collection_3xk48B",
+        "featured_collection_KGGDHJ"
+      ],
+      "disabled": true,
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Collections",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "background-1",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -355,6 +398,7 @@
     "featured_collection_FXBVeL",
     "product-grid",
     "8a78d8e3-e587-4c1a-b757-84aa50a661ea",
-    "collection_description_dmfELQ"
+    "collection_description_dmfELQ",
+    "collection_list_EQMa4M"
   ]
 }
