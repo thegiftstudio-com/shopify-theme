@@ -457,15 +457,24 @@ if (sameDayTextElementMobile) {
   }
   
   // onclick tabs on best seller section //
- $(document).on('click', '.tabs ul li', function () {
-                $('li').removeClass('active');
-                // $('ul').toggleClass('expanded');
-                $(this).addClass('active');
-                var tab_id = $(this).attr('data-tab');
-                $('.tab-content').removeClass('current');
-                $(this).addClass('current');
-                $('#' + tab_id).addClass('current');
-            });
+//  $(document).on('click', '.tabs ul li', function () {
+//                 $('li').removeClass('active');
+//                 // $('ul').toggleClass('expanded');
+//                 $(this).addClass('active');
+//                 var tab_id = $(this).attr('data-tab');
+//                 $('.tab-content').removeClass('current');
+//                 $(this).addClass('current');
+//                 $('#' + tab_id).addClass('current');
+//             });
+             $(document).on('click', '.tabs ul li', function () {
+    var $container = $(this).closest('.tab_new_popular');
+    if (!$container.length) return;
+    $container.find('li').removeClass('active');
+    $(this).addClass('active');
+    var tab_id = $(this).attr('data-tab');
+    $container.find('.tab-content').removeClass('current');
+    $container.find('#' + CSS.escape(tab_id)).addClass('current');
+  });
 
    // onclick tabs on best seller section //
  

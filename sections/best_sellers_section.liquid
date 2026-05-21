@@ -191,7 +191,7 @@
       <nav class="tabs">
         <ul>
           {%- for block in section.blocks -%}
-            <li class="font_md {% if forloop.first %} active{% endif %}" data-tab="tab-{{ forloop.index }}">
+            <li class="font_md {% if forloop.first %} active{% endif %}" data-tab="tab--{{ section.id }}-{{ forloop.index }}">
               {{ block.settings.tab_name }}
             </li>
           {%- endfor -%}
@@ -200,7 +200,7 @@
 
       {%- for block in section.blocks -%}
         <div
-          id="tab-{{ forloop.index }}"
+          id="tab--{{ section.id }}-{{ forloop.index }}"
           class="
             tab-content {% if forloop.first %}current{% endif %} grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
             grid--{{ section.settings.columns_desktop }}-col-desktop
