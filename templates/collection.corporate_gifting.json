@@ -207,6 +207,7 @@
     },
     "image_banner_k8yHTe": {
       "type": "image-banner",
+      "disabled": true,
       "custom_css": [
         ".mobile_banner {height: 1150px;}",
         ".media > *:not(.zoom):not(.deferred-media__poster-button),.media model-viewer {object-fit: fill;}"
