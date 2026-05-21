@@ -2518,26 +2518,10 @@
             "tab_name": "New Launches",
             "collection": "signature-collection"
           }
-        },
-        "collection_6qKcHW": {
-          "type": "collection",
-          "settings": {
-            "tab_name": "Home Decor",
-            "collection": "homeware"
-          }
-        },
-        "collection_6pC6TA": {
-          "type": "collection",
-          "settings": {
-            "tab_name": "jewellery",
-            "collection": "more-gifts-jewellery"
-          }
         }
       },
       "block_order": [
-        "collection_pc9TLz",
-        "collection_6qKcHW",
-        "collection_6pC6TA"
+        "collection_pc9TLz"
       ],
       "name": "Best Sellers",
       "settings": {
