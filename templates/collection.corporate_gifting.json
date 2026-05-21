@@ -11,7 +11,6 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
-      "disabled": true,
       "settings": {
         "show_collection_description": false,
         "show_collection_image": true,
@@ -30,7 +29,6 @@
     },
     "enquiry_hulk_form_rMXbL9": {
       "type": "enquiry_hulk_form",
-      "disabled": true,
       "name": "Hulk Enquiry Form Section",
       "settings": {
         "bg_image_desktop": "shopify://shop_images/BANNER_desktop.png",
@@ -88,7 +86,6 @@
         "text_6Ac8f7",
         "text_LB6JFd"
       ],
-      "disabled": true,
       "custom_css": [
         ".category_section .category_inner_sec .category_sec img {width: 100%; border-radius: 10px;}",
         ".category_section .category_inner_sec .category_sec {cursor: default;}",
@@ -108,7 +105,6 @@
     },
     "c5fba097-1ecc-4566-83d5-9c5db1b741c8": {
       "type": "custom-liquid",
-      "disabled": true,
       "settings": {
         "custom_liquid": "{% render 'company-trusted.liquid' %}",
         "color_scheme": "background-1",
@@ -170,7 +166,6 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
-      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Gifts at The Gift Studio",
@@ -180,7 +175,6 @@
     },
     "image_banner_KLhtRY": {
       "type": "image-banner",
-      "disabled": true,
       "custom_css": [
         ".mobile_banner {height: 700px;}",
         ".media > *:not(.zoom):not(.deferred-media__poster-button),.media model-viewer {object-fit: fill;}"
@@ -207,7 +201,6 @@
     },
     "image_banner_k8yHTe": {
       "type": "image-banner",
-      "disabled": true,
       "custom_css": [
         ".mobile_banner {height: 1150px;}",
         ".media > *:not(.zoom):not(.deferred-media__poster-button),.media model-viewer {object-fit: fill;}"
