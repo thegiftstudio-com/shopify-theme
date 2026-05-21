@@ -2361,124 +2361,6 @@
         "padding_bottom": 0
       }
     },
-    "23ab7808-7e1e-4528-ad91-6b6c873b4243": {
-      "type": "categories_list_section",
-      "blocks": {
-        "881264ec-0467-4bcd-af06-5c3513930c8f": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_roi",
-            "category_img": "shopify://shop_images/Group_142784.png",
-            "category_title": "Cakes",
-            "img_url": "shopify://collections/cake"
-          }
-        },
-        "0cb9efb2-e641-4328-910f-9e4114242392": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_roi",
-            "category_img": "shopify://shop_images/Flowers.png",
-            "category_title": "Flowers",
-            "img_url": "shopify://collections/flowers"
-          }
-        },
-        "e53eae94-490a-4965-9fe1-52d64ebafd9c": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_roi",
-            "category_img": "shopify://shop_images/Balloons.png",
-            "category_title": "Balloons",
-            "img_url": "shopify://collections/balloons"
-          }
-        },
-        "7ff91ab5-a0e6-4898-9755-f7c12352df91": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Gift_sets.png",
-            "category_title": "Gift Sets",
-            "img_url": "shopify://collections/gift-sets"
-          }
-        },
-        "655df138-8903-48d8-9d73-656903094ff7": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_kolkata",
-            "category_img": "shopify://shop_images/Personal_care.png",
-            "category_title": "Personal Care & Grooming",
-            "img_url": "shopify://collections/personal-care-1"
-          }
-        },
-        "2a346b90-1404-4684-9cf6-beeed3d0c82e": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_kolkata",
-            "category_img": "shopify://shop_images/Baby_Kids.png",
-            "category_title": "Baby & Kids",
-            "img_url": "shopify://collections/baby-kids"
-          }
-        },
-        "0903e64d-539d-4c24-962a-664f1cfee298": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Electronics.png",
-            "category_title": "Electronics",
-            "img_url": "shopify://collections/electronics"
-          }
-        },
-        "d0a2a3cb-530a-491d-8c88-6686426d7508": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "hide_mumbai hide_pune hide_bangalore hide_delhi hide_gurgaon hide_roi",
-            "category_img": "shopify://shop_images/chefling_icon_59f3904c-6e36-49af-a86f-5fb160630fc0.png",
-            "category_title": "DIY Kits",
-            "img_url": "shopify://collections/diy-kits"
-          }
-        },
-        "856a32d6-2808-4489-a918-44851446681d": {
-          "type": "Text",
-          "disabled": true,
-          "settings": {
-            "city_hide": "hide_mumbai hide_pune hide_bangalore hide_delhi hide_gurgaon hide_roi",
-            "category_img": "shopify://shop_images/spirits.png",
-            "category_title": "Spirits",
-            "img_url": "shopify://collections/spirits"
-          }
-        },
-        "a41986b1-ff9b-4a4a-83d6-4c008f793ead": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/pg-2.png",
-            "category_title": "Personalised Games",
-            "img_url": "shopify://collections/personalised-games"
-          }
-        }
-      },
-      "block_order": [
-        "881264ec-0467-4bcd-af06-5c3513930c8f",
-        "0cb9efb2-e641-4328-910f-9e4114242392",
-        "e53eae94-490a-4965-9fe1-52d64ebafd9c",
-        "7ff91ab5-a0e6-4898-9755-f7c12352df91",
-        "655df138-8903-48d8-9d73-656903094ff7",
-        "2a346b90-1404-4684-9cf6-beeed3d0c82e",
-        "0903e64d-539d-4c24-962a-664f1cfee298",
-        "d0a2a3cb-530a-491d-8c88-6686426d7508",
-        "856a32d6-2808-4489-a918-44851446681d",
-        "a41986b1-ff9b-4a4a-83d6-4c008f793ead"
-      ],
-      "disabled": true,
-      "settings": {
-        "custom_class": "popular_categories_section hide_roi",
-        "title": "Popular Categories",
-        "subtitle": "",
-        "columns_desktop": 5,
-        "columns_mobile": "3",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
     "43489cf9-cc66-4660-ac72-60536b0acc48": {
       "type": "best_sellers_section",
       "blocks": {
@@ -2628,110 +2510,36 @@
         "padding_bottom": 0
       }
     },
-    "116758a2-1b1d-4de4-9df3-f6cd9df997b9": {
-      "type": "categories_list_section",
+    "best_sellers_section_Y94gAp": {
+      "type": "best_sellers_section",
       "blocks": {
-        "eb2cdfa0-0f29-4c58-b491-8ee2c7e455e5": {
-          "type": "Text",
+        "collection_pc9TLz": {
+          "type": "collection",
           "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Birthday.svg",
-            "category_title": "Birthday",
-            "img_url": "shopify://collections/birthday-gifts-hampers"
+            "tab_name": "Signature Hampers",
+            "collection": "signature-collection"
           }
         },
-        "8684087e-2769-4cc3-a293-f892aee6fcfc": {
-          "type": "Text",
+        "collection_6qKcHW": {
+          "type": "collection",
           "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Anniversary.svg",
-            "category_title": "Anniversary",
-            "img_url": "shopify://collections/anniversary-gifts-for-couples"
-          }
-        },
-        "2037c8ff-23f1-4d42-8db8-451b1d139671": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Housewarming.svg",
-            "category_title": "Housewarming",
-            "img_url": "shopify://collections/housewarming"
-          }
-        },
-        "00058cd0-d50b-4988-bbb3-5be666c5179b": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Weddings.svg",
-            "category_title": "Weddings",
-            "img_url": "shopify://collections/wedding-gifts-for-couples"
-          }
-        },
-        "7e9fa8a4-f801-49fe-81a4-d238927e0570": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Baby_Shower.svg",
-            "category_title": "Baby Shower",
-            "img_url": "https://thegiftstudio.com/collections/curated-hamper-baby-shower"
-          }
-        },
-        "15e52eea-70ad-49e9-a340-d8fdd3dc91a2": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Congratulations.svg",
-            "category_title": "Congratulations",
-            "img_url": "shopify://collections/congratulations"
-          }
-        },
-        "b00a4d40-7b99-45c8-a969-10687c133ccd": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Farewell.svg",
-            "category_title": "Farewell",
-            "img_url": "shopify://collections/farewell"
-          }
-        },
-        "28eb5afc-65d4-40f4-9903-6529e0ab872f": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Get_Well_Soon.svg",
-            "category_title": "Get Well Soon",
-            "img_url": "shopify://collections/get-well-soon"
-          }
-        },
-        "f320298a-0b60-4070-8a0c-2505b23fc880": {
-          "type": "Text",
-          "settings": {
-            "city_hide": "",
-            "category_img": "shopify://shop_images/Proposal.svg",
-            "category_title": "Proposal",
-            "img_url": "shopify://collections/proposal"
+            "tab_name": "Home Decor",
+            "collection": "homeware"
           }
         }
       },
       "block_order": [
-        "eb2cdfa0-0f29-4c58-b491-8ee2c7e455e5",
-        "8684087e-2769-4cc3-a293-f892aee6fcfc",
-        "2037c8ff-23f1-4d42-8db8-451b1d139671",
-        "00058cd0-d50b-4988-bbb3-5be666c5179b",
-        "7e9fa8a4-f801-49fe-81a4-d238927e0570",
-        "15e52eea-70ad-49e9-a340-d8fdd3dc91a2",
-        "b00a4d40-7b99-45c8-a969-10687c133ccd",
-        "28eb5afc-65d4-40f4-9903-6529e0ab872f",
-        "f320298a-0b60-4070-8a0c-2505b23fc880"
+        "collection_pc9TLz",
+        "collection_6qKcHW"
       ],
+      "name": "Best Sellers",
       "settings": {
-        "custom_class": "occasion_section",
-        "title": "What’s The Occasion?",
-        "subtitle": "elevate every moment with thoughtful gifting solutions",
-        "columns_desktop": 5,
+        "title": "New Launches",
+        "subtitle": "Trending Now: New Launches",
+        "columns_desktop": 4,
         "columns_mobile": "2",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "4be75465-cfbc-46b6-b61b-15a20b63f2d7": {
@@ -3347,9 +3155,8 @@
     "popular_categories_WBURqk",
     "popular_categories_fWTBcV",
     "multicolumn_3VG8GE",
-    "23ab7808-7e1e-4528-ad91-6b6c873b4243",
     "43489cf9-cc66-4660-ac72-60536b0acc48",
-    "116758a2-1b1d-4de4-9df3-f6cd9df997b9",
+    "best_sellers_section_Y94gAp",
     "4be75465-cfbc-46b6-b61b-15a20b63f2d7",
     "70084562-acce-489e-9a47-dc0461d14617",
     "1a2d7d67-33da-4b9e-89eb-9891e98752d6",
