@@ -2521,18 +2521,18 @@
     "best_sellers_section_Y94gAp": {
       "type": "best_sellers_section",
       "blocks": {
-        "collection_PHqX4G": {
-          "type": "collection",
-          "settings": {
-            "tab_name": "Home Decor",
-            "collection": "tgs-home"
-          }
-        },
         "collection_pc9TLz": {
           "type": "collection",
           "settings": {
             "tab_name": "New Launches",
             "collection": "signature-collection"
+          }
+        },
+        "collection_6LhyVd": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Home decor",
+            "collection": "homeware"
           }
         },
         "collection_LC3iKk": {
@@ -2544,8 +2544,8 @@
         }
       },
       "block_order": [
-        "collection_PHqX4G",
         "collection_pc9TLz",
+        "collection_6LhyVd",
         "collection_LC3iKk"
       ],
       "name": "Best Sellers",
