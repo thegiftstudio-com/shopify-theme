@@ -2420,7 +2420,6 @@
         },
         "collection_aHpbq6": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "tab_name": "Baby & Kids",
             "collection": "baby-kids"
@@ -2516,7 +2515,7 @@
         "collection_pc9TLz": {
           "type": "collection",
           "settings": {
-            "tab_name": "Signature Hampers",
+            "tab_name": "New Launches",
             "collection": "signature-collection"
           }
         },
@@ -2526,15 +2525,23 @@
             "tab_name": "Home Decor",
             "collection": "homeware"
           }
+        },
+        "collection_6pC6TA": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "jewellery",
+            "collection": "more-gifts-jewellery"
+          }
         }
       },
       "block_order": [
         "collection_pc9TLz",
-        "collection_6qKcHW"
+        "collection_6qKcHW",
+        "collection_6pC6TA"
       ],
       "name": "Best Sellers",
       "settings": {
-        "title": "New Launches",
+        "title": "Signature Picks",
         "subtitle": "Trending Now: New Launches",
         "columns_desktop": 4,
         "columns_mobile": "2",
