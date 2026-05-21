@@ -2528,25 +2528,25 @@
             "collection": "signature-collection"
           }
         },
-        "collection_6LhyVd": {
-          "type": "collection",
-          "settings": {
-            "tab_name": "Home decor",
-            "collection": "homeware"
-          }
-        },
-        "collection_LC3iKk": {
+        "collection_zCdHqk": {
           "type": "collection",
           "settings": {
             "tab_name": "Jewellery",
             "collection": "jewellery"
           }
+        },
+        "collection_FFG4EN": {
+          "type": "collection",
+          "settings": {
+            "tab_name": "Home Decor",
+            "collection": "homeware"
+          }
         }
       },
       "block_order": [
         "collection_pc9TLz",
-        "collection_6LhyVd",
-        "collection_LC3iKk"
+        "collection_zCdHqk",
+        "collection_FFG4EN"
       ],
       "name": "Best Sellers",
       "settings": {
