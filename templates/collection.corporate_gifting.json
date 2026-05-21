@@ -18,6 +18,16 @@
         "color_scheme": "background-1"
       }
     },
+    "custom_liquid_gHj9dp": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
     "enquiry_hulk_form_rMXbL9": {
       "type": "enquiry_hulk_form",
       "disabled": true,
@@ -26,7 +36,7 @@
         "bg_image_desktop": "shopify://shop_images/BANNER_desktop.png",
         "bg_image_mobile": "shopify://shop_images/BANNER_f4031f4e-032f-4987-a297-27b6d99b437e.png",
         "button_1_text": "Download Catalogue",
-        "button_1_link": "https://cdn.shopify.com/s/files/1/0689/3014/2515/files/TGS_New_Intro_Deck_FY26.pdf?v=1747816368",
+        "button_1_link": "shopify://collections",
         "button_2_text": "Talk to Our Concierge",
         "button_2_link": "https://wa.me/917506210892?text=Hi The Gift Studio, I'd like to discuss Gift hampers",
         "hulk_form_embed": "<iframe src=\"https://formbuilder.hulkapps.com/corepage/customform?id=krHBDwnIV7JZpkshZGEuKQ&referrer_url=https://thegiftstudio.com/collections/corporate-gifting\" id=\"frame_krHBDwnIV7JZpkshZGEuKQ\" frameborder=\"0\" width=\"100%\" style=\"height: 662px;\"></iframe>"
@@ -78,6 +88,7 @@
         "text_6Ac8f7",
         "text_LB6JFd"
       ],
+      "disabled": true,
       "custom_css": [
         ".category_section .category_inner_sec .category_sec img {width: 100%; border-radius: 10px;}",
         ".category_section .category_inner_sec .category_sec {cursor: default;}",
@@ -97,6 +108,7 @@
     },
     "c5fba097-1ecc-4566-83d5-9c5db1b741c8": {
       "type": "custom-liquid",
+      "disabled": true,
       "settings": {
         "custom_liquid": "{% render 'company-trusted.liquid' %}",
         "color_scheme": "background-1",
@@ -158,6 +170,7 @@
         "gift_image_8Xy63f",
         "gift_image_MagmiA"
       ],
+      "disabled": true,
       "name": "Trending Gifts (Configurable)",
       "settings": {
         "section_heading": "Trending Gifts at The Gift Studio",
@@ -167,6 +180,7 @@
     },
     "image_banner_KLhtRY": {
       "type": "image-banner",
+      "disabled": true,
       "custom_css": [
         ".mobile_banner {height: 700px;}",
         ".media > *:not(.zoom):not(.deferred-media__poster-button),.media model-viewer {object-fit: fill;}"
@@ -346,26 +360,37 @@
     "collection_list_EQMa4M": {
       "type": "collection-list",
       "blocks": {
+        "featured_collection_gXcPpA": {
+          "type": "featured_collection",
+          "disabled": true,
+          "settings": {
+            "collection": "executive-office-gift-sets"
+          }
+        },
         "featured_collection_9HFEqp": {
           "type": "featured_collection",
+          "disabled": true,
           "settings": {
             "collection": ""
           }
         },
         "featured_collection_3xk48B": {
           "type": "featured_collection",
+          "disabled": true,
           "settings": {
             "collection": ""
           }
         },
         "featured_collection_KGGDHJ": {
           "type": "featured_collection",
+          "disabled": true,
           "settings": {
             "collection": ""
           }
         }
       },
       "block_order": [
+        "featured_collection_gXcPpA",
         "featured_collection_9HFEqp",
         "featured_collection_3xk48B",
         "featured_collection_KGGDHJ"
@@ -388,6 +413,7 @@
   },
   "order": [
     "banner",
+    "custom_liquid_gHj9dp",
     "enquiry_hulk_form_rMXbL9",
     "categories_list_section_RJyRXR",
     "c5fba097-1ecc-4566-83d5-9c5db1b741c8",
