@@ -2514,7 +2514,7 @@
         "subtitle": "Discover timeless treasures that captivate hearts and delight senses",
         "columns_desktop": 4,
         "columns_mobile": "2",
-        "padding_top": 0,
+        "padding_top": 20,
         "padding_bottom": 28
       }
     },
