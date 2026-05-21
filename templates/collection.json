@@ -19,7 +19,6 @@
     },
     "98710fad-8f77-450c-87af-701ba8977815": {
       "type": "banner-mothersday",
-      "disabled": true,
       "settings": {
         "custom_class": "hide_roi",
         "image": "shopify://shop_images/1920_x_533_mothers_day_banner_1.jpg",
@@ -92,6 +91,7 @@
     },
     "product-grid": {
       "type": "main-collection-product-grid",
+      "disabled": true,
       "settings": {
         "products_per_page": 100,
         "columns_desktop": 4,
