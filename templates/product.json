@@ -60,7 +60,6 @@
         },
         "custom_liquid_4fGHRF": {
           "type": "custom_liquid",
-          "disabled": true,
           "settings": {
             "custom_liquid": "{% render 'discount-on-pdp' %}"
           }
