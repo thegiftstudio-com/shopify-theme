@@ -69,15 +69,6 @@
             "page": ""
           }
         },
-        "collapsible_tab_UFYC4U": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Description",
-            "icon": "none",
-            "content": "{{ product.description }}",
-            "page": ""
-          }
-        },
         "quantity_selector": {
           "type": "quantity_selector",
           "disabled": true,
@@ -178,6 +169,15 @@
           "disabled": true,
           "settings": {}
         },
+        "collapsible_tab_UFYC4U": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Description",
+            "icon": "none",
+            "content": "{{ product.description }}",
+            "page": ""
+          }
+        },
         "e978295d-15d5-4550-aab6-07a7f252dedd": {
           "type": "custom_liquid",
           "disabled": true,
@@ -196,7 +196,6 @@
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
         "judge_me_reviews_preview_badge_rzEHCL",
         "collapsible_tab_bCYzKV",
-        "collapsible_tab_UFYC4U",
         "quantity_selector",
         "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
@@ -210,6 +209,7 @@
         "rating_KqnFa4",
         "collapsible_tab_kYGNE3",
         "judge_me_reviews_preview_badge_ky3LBC",
+        "collapsible_tab_UFYC4U",
         "e978295d-15d5-4550-aab6-07a7f252dedd"
       ],
       "custom_css": [],
