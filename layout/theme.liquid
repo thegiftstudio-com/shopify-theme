@@ -181,6 +181,11 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
     {% render 'schema_tags' %}
+
+    {%- if request.page_type == 'index' -%}
+      {% render 'organization-schema' %}
+    {%- endif -%}
+
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}

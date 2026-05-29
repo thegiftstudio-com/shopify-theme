@@ -1,0 +1,44 @@
+{% comment %}
+  Organization structured data (schema.org JSON-LD)
+  Rendered once, on the homepage, from layout/theme.liquid <head>.
+  Helps Google build the Knowledge Panel (logo, name, address, social profiles).
+{% endcomment %}
+
+{%- liquid
+  assign org_logo = settings.logo | default: settings.favicon
+
+  assign social_urls = ''
+  assign social_settings = 'social_facebook_link,social_instagram_link,social_youtube_link,social_twitter_link,social_linkedin_link,social_pinterest_link,social_tiktok_link' | split: ','
+  for key in social_settings
+    assign link = settings[key]
+    if link != blank
+      assign social_urls = social_urls | append: link | append: '|||'
+    endif
+  endfor
+  assign social_urls = social_urls | split: '|||'
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | append: '/' | json }},
+  {% if org_logo != blank %}"logo": {{ org_logo | image_url: width: 600 | prepend: 'https:' | json }},{% endif %}
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "5th Floor, Nature’s Basket Office, AKRUTI STAR, MIDC Central Rd, Kondivita, Andheri East",
+    "addressLocality": "Mumbai",
+    "addressRegion": "Maharashtra",
+    "postalCode": "400093",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "19.1233127",
+    "longitude": "72.8714211"
+  },
+  "hasMap": "https://www.google.com/maps/place/Natures+Basket/@19.1233127,72.8714211,17z"{% if social_urls.size > 0 %},
+  "sameAs": [{% for url in social_urls %}{{ url | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]{% endif %}
+}
+</script>
