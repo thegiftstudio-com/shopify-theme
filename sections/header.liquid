@@ -905,7 +905,7 @@
     const perishable = localStorage.getItem('isPerishable');
     const cityTAT = localStorage.getItem('city-tat');
 
-    if (perishable != '1' && cityTAT!=0) {
+    if (perishable != '1' && cityTAT!='0') {
         $('#Details-HeaderMenu-7').remove();
         document.querySelectorAll('.child_links a').forEach(function(link) {
 
