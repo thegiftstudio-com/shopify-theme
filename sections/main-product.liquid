@@ -268,6 +268,13 @@
                   {{ form | payment_terms }}
                 {%- endform -%}
               </div>
+            {% comment %} Added by Velocity 01-06-2026 Show social proof widget on PDP page {% endcomment %}
+            {% if product.metafields.custom.widget_text != blank %}
+            <div id="watch-widget" class="watching-widget"">
+              <span id="watching-count"></span>
+              {{ product.metafields.custom.widget_text }}
+            </div>
+            {% endif %}
             {%- when 'inventory' -%}
               <p
                 class="product__inventory no-js-hidden{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
