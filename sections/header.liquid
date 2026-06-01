@@ -906,6 +906,7 @@
     // Added by Velocity: 01-06-2026 Hide flower and plant collection menu when city is not perisable or not SDD.
     if (perishable != '1' && cityTAT!='0') {
         $('#Details-HeaderMenu-7').remove();
+        $('#Details-menu-drawer-menu-item-7').remove();
         document.querySelectorAll('.child_links a').forEach(function(link) {
 
             const href = link.getAttribute('href').toLowerCase();
