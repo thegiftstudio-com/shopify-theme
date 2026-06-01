@@ -915,6 +915,14 @@
                 link.closest('.child_links').remove();
             }
         });
+        // Mobile menu
+    document.querySelectorAll('.menu-drawer__menu a').forEach(function(link) {
+        const href = (link.getAttribute('href') || '').toLowerCase();
+
+        if (href.includes('flower') || href.includes('plant')) {
+            link.closest('li')?.remove();
+        }
+    });
     }
 
   })();
