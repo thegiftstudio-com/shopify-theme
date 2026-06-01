@@ -1093,6 +1093,25 @@
 {% endschema %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <script>
+  // Added by Velocity: 01-06-2026 Hide flower and plant collection from the BYOH collection menu when city is not perisable or not SDD.
+  (function () {
+
+    const perishable = localStorage.getItem('isPerishable');
+    const cityTAT = localStorage.getItem('city-tat');
+
+    if (perishable != '1' && cityTAT!=0) {
+
+        document.querySelectorAll('[data-collection-handle]').forEach(function(item) {
+
+            const handle = item.dataset.collectionHandle.toLowerCase();
+
+            if (handle.includes('flower') || handle.includes('plant')) {
+                item.remove();
+            }
+        });
+    }
+
+  })();
   var selected_date = '';
 
    $(document).on('click', '#quantity_filter_submit', function() {
