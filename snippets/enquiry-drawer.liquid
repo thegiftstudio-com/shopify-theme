@@ -1,0 +1,325 @@
+{%- comment -%}
+  Enquiry drawer + button.
+  Renders the "Enquire on WhatsApp" button which, instead of redirecting to
+  WhatsApp, opens a slide-in drawer containing an enquiry form.
+  On submit it POSTs the product + form details to the enquiry API.
+
+  Used by templates:
+    - product.b2b-enquiry-product.json
+    - product.enquiry-only-product.json
+
+{%- endcomment -%}
+
+<button
+  type="button"
+  class="enquire-now-btn"
+  data-enquiry-open
+  style="display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; border:none; cursor:pointer; text-decoration:none; border-radius:6px; font-weight:600;">
+  Enquire on WhatsApp
+</button>
+
+<div id="EnquiryDrawer" class="enquiry-drawer" aria-hidden="true">
+  <div class="enquiry-drawer__overlay" data-enquiry-close></div>
+  <div class="enquiry-drawer__panel" role="dialog" aria-modal="true" aria-label="Product enquiry">
+    <div class="enquiry-drawer__header">
+      <h2 class="enquiry-drawer__title">Enquire about this product</h2>
+      <button type="button" class="enquiry-drawer__close" aria-label="Close" data-enquiry-close>&times;</button>
+    </div>
+
+    <div class="enquiry-drawer__body">
+      <p class="enquiry-drawer__product">{{ product.title }}</p>
+
+      <form class="enquiry-form" novalidate>
+        <input type="hidden" name="product_name" value="{{ product.title | escape }}">
+        <input type="hidden" name="product_url" value="{{ shop.secure_url }}{{ product.url }}">
+
+        <label class="enquiry-form__label">
+          Name <span class="enquiry-form__hint">(optional)</span>
+          <input type="text" name="name" class="enquiry-form__input" autocomplete="name">
+        </label>
+
+        <label class="enquiry-form__label">
+          Mobile Number <span class="enquiry-form__req">*</span>
+          <input type="tel" name="mobile" class="enquiry-form__input" inputmode="numeric" maxlength="10" required autocomplete="tel">
+          <span class="enquiry-form__error" data-error-for="mobile"></span>
+        </label>
+
+        <label class="enquiry-form__label">
+          Location <span class="enquiry-form__req">*</span>
+          <input type="text" name="location" class="enquiry-form__input" required>
+          <span class="enquiry-form__error" data-error-for="location"></span>
+        </label>
+
+        <label class="enquiry-form__label">
+          Remark <span class="enquiry-form__hint">(optional)</span>
+          <textarea name="remark" class="enquiry-form__input" rows="3"></textarea>
+        </label>
+
+        <button type="submit" class="enquiry-form__submit">Submit Enquiry</button>
+        <p class="enquiry-form__status" aria-live="polite"></p>
+      </form>
+
+      <div class="enquiry-drawer__success" hidden>
+        <h3>Thank you!</h3>
+        <p>We've received your enquiry and will get in touch with you shortly.</p>
+        <button type="button" class="enquiry-form__submit" data-enquiry-close>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .enquiry-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .enquiry-drawer.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .enquiry-drawer__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .enquiry-drawer.is-open .enquiry-drawer__overlay {
+    opacity: 1;
+  }
+  .enquiry-drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 400px;
+    max-width: 90vw;
+    background: #fff;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .enquiry-drawer.is-open .enquiry-drawer__panel {
+    transform: translateX(0);
+  }
+  .enquiry-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .enquiry-drawer__title {
+    margin: 0;
+    font-size: 18px;
+  }
+  .enquiry-drawer__close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .enquiry-drawer__body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .enquiry-drawer__product {
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .enquiry-form__label {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .enquiry-form__hint {
+    font-weight: 400;
+    color: #888;
+  }
+  .enquiry-form__req {
+    color: #c00;
+  }
+  .enquiry-form__input {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    box-sizing: border-box;
+  }
+  .enquiry-form__error {
+    display: block;
+    color: #c00;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 4px;
+    min-height: 14px;
+  }
+  .enquiry-form__submit {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .enquiry-form__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .enquiry-form__status {
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 16px;
+  }
+  .enquiry-form__status.is-error {
+    color: #c00;
+  }
+  .enquiry-drawer__success h3 {
+    margin-top: 0;
+  }
+
+  @media (max-width: 749px) {
+    .enquiry-drawer__panel {
+      width: 100%;
+      max-width: 100%;
+    }
+    .enquiry-drawer__title {
+      font-size: 17px;
+    }
+    /* 16px prevents iOS Safari from auto-zooming on input focus */
+    .enquiry-form__input {
+      font-size: 16px;
+    }
+    .enquiry-form__submit {
+      font-size: 16px;
+      padding: 14px 24px;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var ENQUIRY_API_URL = 'https://byoh.velsof.com/api/enquiry';
+
+    var drawer = document.getElementById('EnquiryDrawer');
+    if (!drawer) return;
+
+    var form = drawer.querySelector('.enquiry-form');
+    var successBox = drawer.querySelector('.enquiry-drawer__success');
+    var statusEl = drawer.querySelector('.enquiry-form__status');
+    var lastFocused = null;
+
+    function openDrawer() {
+      lastFocused = document.activeElement;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      var firstInput = form.querySelector('input[name="mobile"]');
+      if (firstInput) firstInput.focus();
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    document.querySelectorAll('[data-enquiry-open]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openDrawer();
+      });
+    });
+
+    drawer.querySelectorAll('[data-enquiry-close]').forEach(function (el) {
+      el.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+    });
+
+    function setError(field, message) {
+      var span = form.querySelector('[data-error-for="' + field + '"]');
+      if (span) span.textContent = message || '';
+    }
+
+    function validate(data) {
+      var ok = true;
+      setError('mobile', '');
+      setError('location', '');
+
+      if (!/^[6-9]\d{9}$/.test(data.mobile)) {
+        setError('mobile', 'Enter a valid 10-digit mobile number.');
+        ok = false;
+      }
+      if (!data.location) {
+        setError('location', 'Location is required.');
+        ok = false;
+      }
+      return ok;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error');
+
+      var data = {
+        name: form.name.value.trim(),
+        mobile: form.mobile.value.trim(),
+        location: form.location.value.trim(),
+        remark: form.remark.value.trim(),
+        product_name: form.product_name.value,
+        product_url: form.product_url.value
+      };
+
+      if (!validate(data)) return;
+
+      var submitBtn = form.querySelector('.enquiry-form__submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      fetch(ENQUIRY_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Request failed: ' + res.status);
+          return res.json().catch(function () { return {}; });
+        })
+        .then(function () {
+          form.hidden = true;
+          successBox.hidden = false;
+        })
+        .catch(function (err) {
+          statusEl.textContent = 'Sorry, something went wrong. Please try again.';
+          statusEl.classList.add('is-error');
+          console.error('Enquiry submit error:', err);
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Enquiry';
+        });
+    });
+  })();
+</script>
