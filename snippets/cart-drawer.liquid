@@ -1546,6 +1546,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     transform: translateX(100%);
     transition: transform var(--duration-default) ease;
   }
+  .cart-enquiry-panel, .cart-enquiry-panel * { box-sizing: border-box; }
   cart-drawer.is-enquiry .drawer__inner { display: none !important; }
   cart-drawer.is-enquiry .cart-enquiry-panel { display: flex; }
   cart-drawer.drawer.active.is-enquiry .cart-enquiry-panel { transform: translateX(0); }
@@ -1567,18 +1568,22 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
   }
   .enquiry-form__hint { font-weight: 400; opacity: 0.6; }
   .enquiry-form__req { color: #c00; }
-  .enquiry-form__input {
+  .cart-enquiry-panel .enquiry-form__input {
     display: block;
     width: 100%;
-    margin-top: 0.6rem;
+    max-width: 100%;
+    margin: 0.6rem 0 0;
     padding: 1rem 1.2rem;
     border: 0.1rem solid rgba(var(--color-foreground), 0.3);
     border-radius: 0.6rem;
     font-size: 1.6rem; /* 16px avoids iOS focus zoom */
     font-weight: 400;
-    box-sizing: border-box;
+    box-sizing: border-box; /* include padding/border in the 100% width */
     background-color: rgb(var(--color-background));
     color: rgb(var(--color-foreground));
+  }
+  .cart-enquiry-panel .enquiry-form__input:focus {
+    outline-offset: -0.1rem; /* keep focus ring inside the panel */
   }
   .enquiry-form__error {
     display: block;
