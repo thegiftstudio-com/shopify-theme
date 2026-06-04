@@ -1661,11 +1661,16 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     });
 
     // Whenever the drawer closes (overlay / Esc / X / programmatic), leave enquiry mode.
+    // Only react to a real active -> inactive transition, otherwise adding the
+    // is-enquiry class (before the drawer's open() sets `active`) would clear it.
+    var wasActive = cartDrawer.classList.contains('active');
     var observer = new MutationObserver(function () {
-      if (cartDrawer.classList.contains('is-enquiry') && !cartDrawer.classList.contains('active')) {
+      var isActive = cartDrawer.classList.contains('active');
+      if (wasActive && !isActive && cartDrawer.classList.contains('is-enquiry')) {
         cartDrawer.classList.remove('is-enquiry');
         resetForm();
       }
+      wasActive = isActive;
     });
     observer.observe(cartDrawer, { attributes: true, attributeFilter: ['class'] });
 
