@@ -392,6 +392,59 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
       <div id="CartDrawer" class="cart-drawer">
         <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
+
+        {%- comment -%} Enquiry panel — shown only when cart-drawer has the .is-enquiry class. Sibling of .drawer__inner so the cart re-render never touches it. {%- endcomment -%}
+        <div class="cart-enquiry-panel" role="dialog" aria-modal="true" aria-label="Product enquiry">
+          <div class="drawer__header">
+            <h2 class="drawer__heading">Enquire about this product</h2>
+            <button
+              class="drawer__close"
+              type="button"
+              onclick="this.closest('cart-drawer').close()"
+              aria-label="{{ 'accessibility.close' | t }}"
+            >
+              {% render 'icon-close' %}
+            </button>
+          </div>
+          <div class="cart-enquiry-panel__body">
+            <p class="cart-enquiry-panel__product" data-enquiry-product-title></p>
+            <form class="enquiry-form" novalidate>
+              <input type="hidden" name="product_name" value="">
+              <input type="hidden" name="product_url" value="">
+
+              <label class="enquiry-form__label">
+                Name <span class="enquiry-form__hint">(optional)</span>
+                <input type="text" name="name" class="enquiry-form__input" autocomplete="name">
+              </label>
+
+              <label class="enquiry-form__label">
+                Mobile Number <span class="enquiry-form__req">*</span>
+                <input type="tel" name="mobile" class="enquiry-form__input" inputmode="numeric" maxlength="10" required autocomplete="tel">
+                <span class="enquiry-form__error" data-error-for="mobile"></span>
+              </label>
+
+              <label class="enquiry-form__label">
+                Location <span class="enquiry-form__req">*</span>
+                <input type="text" name="location" class="enquiry-form__input" required>
+                <span class="enquiry-form__error" data-error-for="location"></span>
+              </label>
+
+              <label class="enquiry-form__label">
+                Remark <span class="enquiry-form__hint">(optional)</span>
+                <textarea name="remark" class="enquiry-form__input" rows="3"></textarea>
+              </label>
+
+              <button type="submit" class="enquiry-form__submit">Submit Enquiry</button>
+              <p class="enquiry-form__status" aria-live="polite"></p>
+            </form>
+            <div class="cart-enquiry-panel__success" hidden>
+              <h3>Thank you!</h3>
+              <p>We've received your enquiry and will get in touch with you shortly.</p>
+              <button type="button" class="enquiry-form__submit" onclick="this.closest('cart-drawer').close()">Close</button>
+            </div>
+          </div>
+        </div>
+
         <div
           class="drawer__inner"
           role="dialog"
@@ -1474,4 +1527,205 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     //   notRequiredBoxes.forEach(notRequiredBox => {
     //       notRequiredBox.remove()
     //                            });
+</script>
+
+{%- comment -%} Enquiry panel styles + behaviour (reuses the cart drawer). {%- endcomment -%}
+<style>
+  /* Enquiry panel mirrors .drawer__inner so it slides in with the cart drawer */
+  .cart-enquiry-panel {
+    display: none;
+    height: 100%;
+    width: 40rem;
+    max-width: calc(100vw - 3rem);
+    padding: 0 1.5rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+    border-right: 0;
+    background-color: rgb(var(--color-background));
+    overflow: hidden;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform var(--duration-default) ease;
+  }
+  cart-drawer.is-enquiry .drawer__inner { display: none !important; }
+  cart-drawer.is-enquiry .cart-enquiry-panel { display: flex; }
+  cart-drawer.drawer.active.is-enquiry .cart-enquiry-panel { transform: translateX(0); }
+
+  .cart-enquiry-panel__body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+  }
+  .cart-enquiry-panel__product {
+    font-weight: 600;
+    margin: 0 0 1.6rem;
+  }
+  .enquiry-form__label {
+    display: block;
+    margin-bottom: 1.4rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .enquiry-form__hint { font-weight: 400; opacity: 0.6; }
+  .enquiry-form__req { color: #c00; }
+  .enquiry-form__input {
+    display: block;
+    width: 100%;
+    margin-top: 0.6rem;
+    padding: 1rem 1.2rem;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.3);
+    border-radius: 0.6rem;
+    font-size: 1.6rem; /* 16px avoids iOS focus zoom */
+    font-weight: 400;
+    box-sizing: border-box;
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+  }
+  .enquiry-form__error {
+    display: block;
+    color: #c00;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 0.4rem;
+    min-height: 1.4rem;
+  }
+  .enquiry-form__submit {
+    display: block;
+    width: 100%;
+    padding: 1.3rem 2.4rem;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: 0.6rem;
+  }
+  .enquiry-form__submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .enquiry-form__status { font-size: 1.3rem; margin-top: 1rem; min-height: 1.6rem; }
+  .enquiry-form__status.is-error { color: #c00; }
+  .cart-enquiry-panel__success h3 { margin-top: 0; }
+</style>
+
+<script>
+  (function () {
+    // TEMPORARY placeholder endpoint — replace with the real enquiry API.
+    var ENQUIRY_API_URL = 'https://byoh.velsof.com/api/enquiry';
+
+    var cartDrawer = document.querySelector('cart-drawer');
+    var panel = cartDrawer && cartDrawer.querySelector('.cart-enquiry-panel');
+    if (!cartDrawer || !panel) return;
+
+    var form = panel.querySelector('.enquiry-form');
+    var successBox = panel.querySelector('.cart-enquiry-panel__success');
+    var statusEl = panel.querySelector('.enquiry-form__status');
+    var titleEl = panel.querySelector('[data-enquiry-product-title]');
+
+    function resetForm() {
+      form.reset();
+      form.hidden = false;
+      successBox.hidden = true;
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error');
+      setError('mobile', '');
+      setError('location', '');
+    }
+
+    function setError(field, message) {
+      var span = form.querySelector('[data-error-for="' + field + '"]');
+      if (span) span.textContent = message || '';
+    }
+
+    // Open the cart drawer in enquiry mode from any [data-enquiry-open] button.
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('[data-enquiry-open]');
+      if (!btn) return;
+      e.preventDefault();
+
+      resetForm();
+      var name = btn.getAttribute('data-product-name') || '';
+      var url = btn.getAttribute('data-product-url') || '';
+      form.elements['product_name'].value = name;
+      form.elements['product_url'].value = url;
+      if (titleEl) titleEl.textContent = name;
+
+      cartDrawer.classList.add('is-enquiry');
+      if (typeof cartDrawer.open === 'function') {
+        cartDrawer.open(btn);
+      } else {
+        cartDrawer.classList.add('animate', 'active');
+        document.body.classList.add('overflow-hidden');
+      }
+      var mobileInput = form.querySelector('input[name="mobile"]');
+      if (mobileInput) setTimeout(function () { mobileInput.focus(); }, 350);
+    });
+
+    // Whenever the drawer closes (overlay / Esc / X / programmatic), leave enquiry mode.
+    var observer = new MutationObserver(function () {
+      if (cartDrawer.classList.contains('is-enquiry') && !cartDrawer.classList.contains('active')) {
+        cartDrawer.classList.remove('is-enquiry');
+        resetForm();
+      }
+    });
+    observer.observe(cartDrawer, { attributes: true, attributeFilter: ['class'] });
+
+    function validate(data) {
+      var ok = true;
+      setError('mobile', '');
+      setError('location', '');
+      if (!/^[6-9]\d{9}$/.test(data.mobile)) {
+        setError('mobile', 'Enter a valid 10-digit mobile number.');
+        ok = false;
+      }
+      if (!data.location) {
+        setError('location', 'Location is required.');
+        ok = false;
+      }
+      return ok;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error');
+
+      var data = {
+        name: form.elements['name'].value.trim(),
+        mobile: form.elements['mobile'].value.trim(),
+        location: form.elements['location'].value.trim(),
+        remark: form.elements['remark'].value.trim(),
+        product_name: form.elements['product_name'].value,
+        product_url: form.elements['product_url'].value
+      };
+
+      if (!validate(data)) return;
+
+      var submitBtn = form.querySelector('.enquiry-form__submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      fetch(ENQUIRY_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Request failed: ' + res.status);
+          return res.json().catch(function () { return {}; });
+        })
+        .then(function () {
+          form.hidden = true;
+          successBox.hidden = false;
+        })
+        .catch(function (err) {
+          statusEl.textContent = 'Sorry, something went wrong. Please try again.';
+          statusEl.classList.add('is-error');
+          console.error('Enquiry submit error:', err);
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Enquiry';
+        });
+    });
+  })();
 </script>
