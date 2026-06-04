@@ -1531,7 +1531,6 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
 {%- comment -%} Enquiry panel styles + behaviour (reuses the cart drawer). {%- endcomment -%}
 <style>
-  /* Enquiry panel mirrors .drawer__inner so it slides in with the cart drawer */
   .cart-enquiry-panel {
     display: none;
     height: 100%;
@@ -1576,7 +1575,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     padding: 1rem 1.2rem;
     border: 0.1rem solid rgba(var(--color-foreground), 0.3);
     border-radius: 0.6rem;
-    font-size: 1.6rem; /* 16px avoids iOS focus zoom */
+    font-size: 1.6rem; 
     font-weight: 400;
     box-sizing: border-box; /* include padding/border in the 100% width */
     background-color: rgb(var(--color-background));
@@ -1614,8 +1613,8 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
 <script>
   (function () {
-    // TEMPORARY placeholder endpoint — replace with the real enquiry API.
-    var ENQUIRY_API_URL = 'https://byoh.velsof.com/api/enquiry';
+
+    var ENQUIRY_API_URL = 'https://byoh.velsof.com/submit_product_enquiry';
 
     var cartDrawer = document.querySelector('cart-drawer');
     var panel = cartDrawer && cartDrawer.querySelector('.cart-enquiry-panel');
@@ -1665,9 +1664,6 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
       if (mobileInput) setTimeout(function () { mobileInput.focus(); }, 350);
     });
 
-    // Whenever the drawer closes (overlay / Esc / X / programmatic), leave enquiry mode.
-    // Only react to a real active -> inactive transition, otherwise adding the
-    // is-enquiry class (before the drawer's open() sets `active`) would clear it.
     var wasActive = cartDrawer.classList.contains('active');
     var observer = new MutationObserver(function () {
       var isActive = cartDrawer.classList.contains('active');
