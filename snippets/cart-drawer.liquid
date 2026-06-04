@@ -1613,8 +1613,12 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
 <script>
   (function () {
-
     var ENQUIRY_API_URL = 'https://byohapp.velsof.com/submit_product_enquiry';
+    var ENQUIRY_API_KEY = '339308f5c7eac7cdaffd9646d61109a7';
+    // HMAC + time handshake (validated server-side by @validate_hmac_request).
+
+    var ENQUIRY_HMAC = '{{ "now" | date: "%Y-%m-%d" | append: "|" | append: "tgs-revamp" | hmac_sha256: "u1sjirx9cC" }}';
+    var ENQUIRY_TIME = '{{ "now" | date: "%Y-%m-%d" }}';
 
     var cartDrawer = document.querySelector('cart-drawer');
     var panel = cartDrawer && cartDrawer.querySelector('.cart-enquiry-panel');
@@ -1701,7 +1705,9 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
         location: form.elements['location'].value.trim(),
         remark: form.elements['remark'].value.trim(),
         product_name: form.elements['product_name'].value,
-        product_url: form.elements['product_url'].value
+        product_url: form.elements['product_url'].value,
+        hmac: ENQUIRY_HMAC,
+        time: ENQUIRY_TIME
       };
 
       if (!validate(data)) return;
@@ -1712,16 +1718,26 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
       fetch(ENQUIRY_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ENQUIRY_API_KEY
+        },
         body: JSON.stringify(data)
       })
         .then(function (res) {
-          if (!res.ok) throw new Error('Request failed: ' + res.status);
-          return res.json().catch(function () { return {}; });
+          return res.json().then(function (body) {
+            return { ok: res.ok, body: body };
+          });
         })
-        .then(function () {
-          form.hidden = true;
-          successBox.hidden = false;
+        .then(function (result) {
+          if (result.ok && result.body && result.body.status === true) {
+            form.hidden = true;
+            successBox.hidden = false;
+          } else {
+            var message = (result.body && result.body.message) || 'Sorry, something went wrong. Please try again.';
+            statusEl.textContent = message;
+            statusEl.classList.add('is-error');
+          }
         })
         .catch(function (err) {
           statusEl.textContent = 'Sorry, something went wrong. Please try again.';
