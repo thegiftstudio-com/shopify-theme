@@ -672,4 +672,42 @@
     });
 }
 
+    {% comment %} Added by Velocity on 05-06-2026 to push the B2B product enquiry events to GTM (Enquire Now button click + enquiry form submitted). {% endcomment %}
+    // Fired when the "Enquire Now" button is clicked and the enquiry drawer opens.
+    function pushEnquireNowButtonClicked(data) {
+        data = data || {};
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "enquire_now_button_clicked",
+            ecommerce: {
+                user_id: getCustomerId(),
+                device_type: getDeviveType(),
+                productName: data.product_name || '',
+                productUrl: data.product_url || '',
+                timestamp: getTimestamp()
+            }
+        });
+    }
+
+    // Fired when the enquiry form is submitted successfully.
+    function pushEnquireNowFormSubmitted(data) {
+        data = data || {};
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "enquire_now_form_submitted",
+            ecommerce: {
+                user_id: getCustomerId(),
+                device_type: getDeviveType(),
+                productName: data.product_name || '',
+                productUrl: data.product_url || '',
+                name: data.name || '',
+                mobile: data.mobile || '',
+                location: data.location || '',
+                remark: data.remark || '',
+                submission_id: data.submission_id || '',
+                timestamp: getTimestamp()
+            }
+        });
+    }
+
 </script>
