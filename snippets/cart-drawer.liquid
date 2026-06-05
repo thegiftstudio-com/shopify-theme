@@ -407,6 +407,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
             </button>
           </div>
           <div class="cart-enquiry-panel__body">
+            <p class="cart-enquiry-panel__product" data-enquiry-product-title></p>
             <form class="enquiry-form" novalidate>
               <input type="hidden" name="product_name" value="">
               <input type="hidden" name="product_url" value="">
@@ -1530,6 +1531,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
 {%- comment -%} Enquiry panel styles + behaviour (reuses the cart drawer). {%- endcomment -%}
 <style>
+  /* Enquiry panel mirrors .drawer__inner so it slides in with the cart drawer */
   .cart-enquiry-panel {
     display: none;
     height: 100%;
@@ -1548,6 +1550,10 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
   cart-drawer.is-enquiry .drawer__inner { display: none !important; }
   cart-drawer.is-enquiry .cart-enquiry-panel { display: flex; }
   cart-drawer.drawer.active.is-enquiry .cart-enquiry-panel { transform: translateX(0); }
+  /* The cart can be empty when opening the enquiry; the global
+     `cart-drawer.is-empty .drawer__header { display:none }` rule would otherwise hide the
+     enquiry panel's own header too. Re-show it (scoped to the enquiry panel only). */
+  cart-drawer.is-empty .cart-enquiry-panel .drawer__header { display: flex; }
 
   .cart-enquiry-panel__body {
     flex: 1;
@@ -1574,7 +1580,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     padding: 1rem 1.2rem;
     border: 0.1rem solid rgba(var(--color-foreground), 0.3);
     border-radius: 0.6rem;
-    font-size: 1.6rem; 
+    font-size: 1.6rem; /* 16px avoids iOS focus zoom */
     font-weight: 400;
     box-sizing: border-box; /* include padding/border in the 100% width */
     background-color: rgb(var(--color-background));
@@ -1612,10 +1618,10 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
 <script>
   (function () {
-    var ENQUIRY_API_URL = 'https://byohapp.velsof.com/submit_product_enquiry';
+    var ENQUIRY_API_URL = 'https://tgs.velsof.com/submit_product_enquiry';
     var ENQUIRY_API_KEY = '339308f5c7eac7cdaffd9646d61109a7';
     // HMAC + time handshake (validated server-side by @validate_hmac_request).
-
+    // Generated at render time via Liquid, same as snippets/corporate_native_form.liquid.
     var ENQUIRY_HMAC = '{{ "now" | date: "%Y-%m-%d" | append: "|" | append: "tgs-revamp" | hmac_sha256: "u1sjirx9cC" }}';
     var ENQUIRY_TIME = '{{ "now" | date: "%Y-%m-%d" }}';
 
@@ -1626,6 +1632,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
     var form = panel.querySelector('.enquiry-form');
     var successBox = panel.querySelector('.cart-enquiry-panel__success');
     var statusEl = panel.querySelector('.enquiry-form__status');
+    var titleEl = panel.querySelector('[data-enquiry-product-title]');
 
     function resetForm() {
       form.reset();
@@ -1653,6 +1660,12 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
       var url = btn.getAttribute('data-product-url') || '';
       form.elements['product_name'].value = name;
       form.elements['product_url'].value = url;
+      if (titleEl) titleEl.textContent = name;
+
+      // GTM: Enquire Now button clicked
+      if (typeof pushEnquireNowButtonClicked === 'function') {
+        pushEnquireNowButtonClicked({ product_name: name, product_url: url });
+      }
 
       cartDrawer.classList.add('is-enquiry');
       if (typeof cartDrawer.open === 'function') {
@@ -1665,6 +1678,9 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
       if (mobileInput) setTimeout(function () { mobileInput.focus(); }, 350);
     });
 
+    // Whenever the drawer closes (overlay / Esc / X / programmatic), leave enquiry mode.
+    // Only react to a real active -> inactive transition, otherwise adding the
+    // is-enquiry class (before the drawer's open() sets `active`) would clear it.
     var wasActive = cartDrawer.classList.contains('active');
     var observer = new MutationObserver(function () {
       var isActive = cartDrawer.classList.contains('active');
@@ -1730,6 +1746,18 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
           if (result.ok && result.body && result.body.status === true) {
             form.hidden = true;
             successBox.hidden = false;
+            // GTM: Enquiry form submitted successfully
+            if (typeof pushEnquireNowFormSubmitted === 'function') {
+              pushEnquireNowFormSubmitted({
+                product_name: data.product_name,
+                product_url: data.product_url,
+                name: data.name,
+                mobile: data.mobile,
+                location: data.location,
+                remark: data.remark,
+                submission_id: result.body.submission_id
+              });
+            }
           } else {
             var message = (result.body && result.body.message) || 'Sorry, something went wrong. Please try again.';
             statusEl.textContent = message;
