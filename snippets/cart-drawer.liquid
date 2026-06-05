@@ -395,10 +395,10 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
 
         {%- comment -%} Enquiry panel — shown only when cart-drawer has the .is-enquiry class. Sibling of .drawer__inner so the cart re-render never touches it. {%- endcomment -%}
         <div class="cart-enquiry-panel" role="dialog" aria-modal="true" aria-label="Product enquiry">
-          <div class="drawer__header">
-            <h2 class="drawer__heading">Enquire about this product</h2>
+          <div class="cart-enquiry-panel__header">
+            <h2 class="cart-enquiry-panel__heading">Enquire about this product</h2>
             <button
-              class="drawer__close"
+              class="cart-enquiry-panel__close"
               type="button"
               onclick="this.closest('cart-drawer').close()"
               aria-label="{{ 'accessibility.close' | t }}"
@@ -1548,6 +1548,38 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
   cart-drawer.is-enquiry .drawer__inner { display: none !important; }
   cart-drawer.is-enquiry .cart-enquiry-panel { display: flex; }
   cart-drawer.drawer.active.is-enquiry .cart-enquiry-panel { transform: translateX(0); }
+
+  /* Dedicated header styles so the cart's state rules (e.g. `cart-drawer.is-empty
+     .drawer__header { display:none }`) can never hide the enquiry panel's header.
+     Mirrors the look of .drawer__header / .drawer__heading / .drawer__close. */
+  .cart-enquiry-panel__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    background-color: rgb(var(--color-background));
+  }
+  .cart-enquiry-panel__heading {
+    margin: 0 0 1rem;
+  }
+  .cart-enquiry-panel__close {
+    display: inline-block;
+    padding-right: 30px;
+    min-width: 4.4rem;
+    min-height: 4.4rem;
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    color: rgb(var(--color-foreground));
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .cart-enquiry-panel__close svg {
+    height: 1.4rem;
+    width: 1.4rem;
+  }
 
   .cart-enquiry-panel__body {
     flex: 1;
