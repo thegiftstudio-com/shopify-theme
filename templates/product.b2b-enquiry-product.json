@@ -16,7 +16,7 @@
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
-            "text_style": "body"
+            "text_style": "uppercase"
           }
         },
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4": {
