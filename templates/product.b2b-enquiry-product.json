@@ -35,6 +35,10 @@
           "type": "price",
           "settings": {}
         },
+        "judge_me_reviews_preview_badge_7fVMNV": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "text_cnKMJk": {
           "type": "text",
           "settings": {
@@ -190,6 +194,7 @@
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4",
         "title",
         "price",
+        "judge_me_reviews_preview_badge_7fVMNV",
         "text_cnKMJk",
         "text_NDHUcm",
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
