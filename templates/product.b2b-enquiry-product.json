@@ -49,7 +49,7 @@
         "text_NDHUcm": {
           "type": "text",
           "settings": {
-            "text": "Delivery charges & GST on actuals",
+            "text": "Delivery charges & GST on actuals ( GST credit available)",
             "text_style": "body"
           }
         },
