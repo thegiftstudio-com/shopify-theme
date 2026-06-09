@@ -16,7 +16,7 @@
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "text_style": "subtitle"
           }
         },
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4": {
@@ -166,7 +166,6 @@
         },
         "judge_me_reviews_preview_badge_ky3LBC": {
           "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "disabled": true,
           "settings": {}
         },
         "collapsible_tab_UFYC4U": {
@@ -239,7 +238,6 @@
     },
     "related-products": {
       "type": "related-products",
-      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
