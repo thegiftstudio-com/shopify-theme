@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_neBpXL": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/image_28.png",
+            "gift_title": "Father's Day",
+            "img_url": "https://thegiftstudio.com/collections/fathers-day-1"
+          }
+        },
         "text_3QqmFQ": {
           "type": "Text",
           "disabled": true,
@@ -316,6 +325,7 @@
         }
       },
       "block_order": [
+        "text_neBpXL",
         "text_3QqmFQ",
         "text_3q3ddF",
         "text_yRtcYC",
