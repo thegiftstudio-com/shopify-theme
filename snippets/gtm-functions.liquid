@@ -311,6 +311,9 @@
       $('.enquire-now-btn').on('click', function() {
           pushEnquiryOnWhatsAppEvent();
       });
+      $('.corporate-enquiry-btn').on('click', function() {
+          pushCorporateEnquiryOnWhatsAppEvent();
+      });
   });
 
     function handleCartDrawer() {
@@ -602,6 +605,23 @@
     window.dataLayer = window.dataLayer || [];
     const eventData = {
         event: "enquiry_for_international_products_on_pdp",
+        ecommerce: {
+            user_id: getCustomerId(),
+            productId: v_productId,
+            productVariantId: v_productVariantId,
+            category_id: v_productCollectionId,
+            productName: v_productName,
+            productVariantTitle: v_productVariantTitle,
+            category_name: v_productCollection,
+            productPrice: v_productPrice
+        }
+    };
+    window.dataLayer.push(eventData);
+    }
+    function pushCorporateEnquiryOnWhatsAppEvent() {
+    window.dataLayer = window.dataLayer || [];
+    const eventData = {
+        event: "enquiry_for_corporate_products_on_pdp",
         ecommerce: {
             user_id: getCustomerId(),
             productId: v_productId,
