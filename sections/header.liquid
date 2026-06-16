@@ -907,7 +907,7 @@
     if (perishable != '1' && cityTAT!='0') {
         $('#Details-HeaderMenu-7').remove();
         $('summary .header__menu-item span').each(function() {
-    if ($(this).text().trim() === 'Plants & Flowers') {
+    if ($(this).text().trim() == 'Plants & Flowers') {
         $(this).closest('details').remove();
     }
 });
