@@ -912,11 +912,11 @@
         $(this).remove();
     }
 });
-$('details.menu-drawer__menu-item').each(function() {
-    const text = $(this).find('span').text().trim().toLowerCase();
+$('summary.menu-drawer__menu-item').each(function() {
+    const text = $(this).find('span').first().text().trim().toLowerCase();
 
     if (text.includes('plant') || text.includes('flower')) {
-        $(this).remove();
+        $(this).closest('details').remove();
     }
 });
         document.querySelectorAll('.child_links a').forEach(function(link) {
