@@ -913,7 +913,7 @@
     }
 });
 $('details.menu-drawer__menu-item').each(function() {
-    const text = $(this).find('summary span').text().trim().toLowerCase();
+    const text = $(this).find('span').text().trim().toLowerCase();
 
     if (text.includes('plant') || text.includes('flower')) {
         $(this).remove();
