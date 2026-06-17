@@ -427,8 +427,6 @@
     });
     // Cache DOM elements for better performance
     const hiddenItemsCount = document.getElementById('hiddenItemsCount');
-    const totalPriceElements = document.querySelectorAll('.total-price, .total-price1, #SubTotalPrice');
-    
     // Update hidden items count
     if (window.totalUserItemsCount > 15) {
       hiddenItemsCount.textContent = `and ${window.totalUserItemsCount - 15} more items`;
@@ -448,23 +446,17 @@
     const packagingConfig = findPackagingForCurrentBox();
     syncPackagingToCart(packagingConfig);
 
+    {% comment %}
+    * Added by Velocity - styling charge is displayed ONLY on the Hamper Summary (final step):
+    *   - NOT in the "View Bundle Contents" popup (#selectproduct)
+    *   - NOT in the running bottom-bar total (.total-price)
+    * The charge is still applied to the cart via syncPackagingToCart() above, so the amount charged is unchanged.
+    * packagingRupees is added only to the Hamper Summary totals below.
+    {% endcomment %}
+    let packagingRupees = 0;
     if (packagingConfig) {
       const packagingDisplayPrice = (packagingConfig.price_paise * 0.01).toFixed(2);
-      totalprice += packagingConfig.price_paise;
-
-      const packagingListItem = document.createElement("li");
-      packagingListItem.id = "bottom_cart_item_packaging_charges";
-      packagingListItem.innerHTML = `<div class="item-details">
-        <div class="item-img"></div>
-        <div class="item-title">
-          <p>${packagingConfig.name}</p>
-          <p>&#x20b9;${packagingDisplayPrice}</p>
-        </div>
-        <div class="item-remove_btn">
-          <span style="font-size:11px;color:#888;font-weight:600;">Mandatory</span>
-        </div>
-      </div>`;
-      list.appendChild(packagingListItem);
+      packagingRupees = packagingConfig.price_paise * 0.01;
 
       $('#add_row').append(`<tr id="main_bundle_checkout_packaging_charges" class="packaging-charges-row">
         <td>
@@ -491,8 +483,11 @@
       </div>`);
     }
 
-    // Calculate total price
+    // Calculate total price (products only - excludes the styling charge)
     totalprice = totalprice * 0.01;
+    {% comment %} Added by Velocity - styling charge is added only to the Hamper Summary total, not the running bottom-bar total. {% endcomment %}
+    window.byohPackagingCharge = packagingRupees;
+    const summaryTotal = totalprice + packagingRupees;
     {% comment %} Display the remove and add buttons, keeping them centered. Added by Velocity 19-09-2025 {% endcomment %}
     if (isRemoved) $(`.add_${varient_id}`).show();
     else $(`.remove_${varient_id}`).show();
@@ -501,9 +496,14 @@
     const loader = document.querySelector(`.loader_${loder_id}`);
     if (loader) loader.style.display = 'none';
     
-    // Update all price elements at once
-    totalPriceElements.forEach(element => {
+    // Update price elements:
+    //  - .total-price (running bottom-bar total) excludes the styling charge
+    //  - .total-price1 / #SubTotalPrice / #SubTotalPricemb (Hamper Summary) include the styling charge
+    document.querySelectorAll('.total-price').forEach(element => {
       element.innerHTML = `&#8377;${totalprice}`;
+    });
+    document.querySelectorAll('.total-price1, #SubTotalPrice, #SubTotalPricemb').forEach(element => {
+      element.innerHTML = `&#8377;${summaryTotal}`;
     });
   }
   
@@ -3083,13 +3083,16 @@ $(selector).css('display', 'block');
       var discountAmount = originalPrice * (Math.abs(parseInt(discountPercentage)) / 100);
     else
       var discountAmount = Math.abs(parseInt(discountPercentage));
-    var discountedPrice = parseInt(originalPrice) - parseInt(discountAmount);
+    {% comment %} Added by Velocity - discount applies to products only; the mandatory styling charge is added on top of the Hamper Summary total. {% endcomment %}
+    var packaging = window.byohPackagingCharge || 0;
+    var discountedProducts = parseInt(originalPrice) - parseInt(discountAmount);
+    var discountedPrice = discountedProducts + packaging;
     localStorage.setItem("discountedPrice", discountedPrice);
     $('#SubTotalPrice').text(discountedPrice);
     $("#SubTotalPrice").prepend("&#8377;");
     $("#SubTotalPricemb").text(discountedPrice);
     $("#SubTotalPricemb").prepend("&#8377;");
-    $(".total-price").text(discountedPrice);
+    $(".total-price").text(discountedProducts);
     $(".total-price").prepend("&#8377;");
     $('.Discount_price').text(parseInt(discountAmount))
     $(".Discount_price").prepend("- &#8377;");
