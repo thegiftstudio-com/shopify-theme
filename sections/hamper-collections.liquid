@@ -505,6 +505,17 @@
     document.querySelectorAll('.total-price1, #SubTotalPrice, #SubTotalPricemb').forEach(element => {
       element.innerHTML = `&#8377;${summaryTotal}`;
     });
+
+    {% comment %} Added by Velocity - show the tag-based styling charge as a note on the running bottom bar; recalculated on every product change. {% endcomment %}
+    document.querySelectorAll('.styling-charge-note').forEach(noteEl => {
+      if (packagingRupees > 0) {
+        noteEl.innerHTML = `+ &#8377;${packagingRupees} (Styling charge)`;
+        noteEl.style.display = 'inline-block';
+      } else {
+        noteEl.innerHTML = '';
+        noteEl.style.display = 'none';
+      }
+    });
   }
   
    var hamperCollectionData;
@@ -1139,6 +1150,8 @@
           <div class="total">
             <span>Total</span>
             <h3 class="total-price"></h3>
+            {% comment %} Added by Velocity - tag-based styling charge note, updated on every product change in renderProduct(). {% endcomment %}
+            <span class="styling-charge-note" style="font-size:12px;color:#ddd;display:none;"></span>
           </div>
 	  {% comment %} Added by Velocity - 29-07-2025 Remove one step from the BYOH follow we need to made the changes in previous and next button. {% endcomment %}
           <div class="next_btn_new">
