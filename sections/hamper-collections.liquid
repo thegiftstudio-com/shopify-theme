@@ -64,12 +64,24 @@
   {% comment %}
   * Added by Velocity - Packaging & Styling Charges configuration
   * Map: box product tag -> packaging product to auto-add to cart.
-  * Replace product_id / variant_id with real Shopify IDs after creating the products.
+  * product_id / variant_id are the ONLY hardcoded identifiers. `name` and `price_paise` are
+  *   FALLBACK values only - they are overwritten at runtime with the live product title + price
+  *   fetched from the Shopify Storefront API (GraphQL), keyed by variant_id. See
+  *   hydratePackagingPricesFromStorefront() below. If the fetch fails/times out the fallbacks are used.
   * Matching is by tag, first match wins (array order = priority).
   * Only the BOX product's tags are checked (1 box per bundle).
   * If a box is selected but has no matching tag, the cheapest tier (by price_paise) is applied as the standard packaging charge.
   * If no box is selected at all, no packaging charge is added.
   {% endcomment %}
+
+  {% comment %}
+  * Added by Velocity - Shopify Storefront API credentials. Reuses the SAME public, read-only token and
+  *   endpoint already used by getProductsFromCollection() further down this file (the hamper product fetch).
+  {% endcomment %}
+  const STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
+  const STOREFRONT_API_VERSION = '2024-01';
+  const STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
+
   const PACKAGING_CHARGES_CONFIG = [
     { tag: 'packaging_tier_1', name: 'Standard Packaging & Styling',  price_paise: 29900, product_id: '10175410962739', variant_id: '53344929939763' },
     { tag: 'packaging_tier_2', name: 'Premium Packaging & Styling',   price_paise: 39900, product_id: '10175412371763', variant_id: '53344931414323' },
@@ -77,6 +89,71 @@
     { tag: 'packaging_tier_4', name: 'Luxury Packaging & Styling',    price_paise: 59900, product_id: '10175414436147', variant_id: '53344933478707' },
     { tag: 'packaging_tier_5', name: 'Signature Packaging & Styling', price_paise: 69900, product_id: '10175415419187', variant_id: '53344934461747' }
   ];
+
+  {% comment %}
+  * Added by Velocity - Fetch live product title + price for each packaging tier from the Shopify
+  * Storefront API (GraphQL) using ONLY the hardcoded variant ids (as gid://shopify/ProductVariant/<id>).
+  * Runs in the background on page load so it never blocks rendering; the Hamper Summary (the only place
+  * the charge is shown) is reached well after this resolves. On failure/timeout the hardcoded fallbacks stay.
+  {% endcomment %}
+  function gidToVariantId(gid) {
+    return String(gid || '').split('/').pop();
+  }
+
+  async function hydratePackagingPricesFromStorefront() {
+    if (!STOREFRONT_API_TOKEN || STOREFRONT_API_TOKEN.indexOf('REPLACE_') === 0) {
+      console.warn('[Packaging] Storefront API token not set - using fallback name/price.');
+      return;
+    }
+    const ids = PACKAGING_CHARGES_CONFIG
+      .filter(cfg => cfg.variant_id && String(cfg.variant_id).indexOf('REPLACE_') !== 0)
+      .map(cfg => 'gid://shopify/ProductVariant/' + cfg.variant_id);
+    if (!ids.length) return;
+
+    const query = `
+      query StylingCharges($ids: [ID!]!) {
+        nodes(ids: $ids) {
+          ... on ProductVariant {
+            id
+            price { amount }
+            product { title }
+          }
+        }
+      }`;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    try {
+      const res = await fetch('https://' + STOREFRONT_API_DOMAIN + '/api/' + STOREFRONT_API_VERSION + '/graphql.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN
+        },
+        body: JSON.stringify({ query: query, variables: { ids: ids } }),
+        signal: controller.signal
+      });
+      const json = await res.json();
+      const nodes = (json && json.data && json.data.nodes) || [];
+      nodes.forEach(node => {
+        if (!node || !node.id) return;
+        const vid = gidToVariantId(node.id);
+        const cfg = PACKAGING_CHARGES_CONFIG.find(c => String(c.variant_id) === vid);
+        if (!cfg) return;
+        if (node.product && node.product.title) cfg.name = node.product.title;
+        if (node.price && node.price.amount != null) {
+          cfg.price_paise = Math.round(parseFloat(node.price.amount) * 100);
+        }
+      });
+    } catch (err) {
+      console.warn('[Packaging] Storefront price fetch failed - using fallback name/price.', err);
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  {% comment %} Added by Velocity - kick off the live price fetch immediately; non-blocking background request. {% endcomment %}
+  const packagingPricesReady = hydratePackagingPricesFromStorefront();
 
   function findPackagingForCurrentBox() {
     const items = window.selectedItem || [];
