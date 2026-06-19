@@ -64,24 +64,35 @@
   {% comment %}
   * Added by Velocity - Packaging & Styling Charges configuration
   * Map: box product tag -> packaging product to auto-add to cart.
+  * product_id / variant_id are the ONLY hardcoded identifiers. `name` and `price_paise` are
+  *   FALLBACK values only - they are overwritten at runtime with the live product title + price
+  *   fetched from the Shopify Storefront API (GraphQL), keyed by variant_id. See
+  *   hydratePackagingPricesFromStorefront() below. If the fetch fails/times out the fallbacks are used.
+  * Matching is by tag, first match wins (array order = priority).
   * Only the BOX product's tags are checked (1 box per bundle).
   * If a box is selected but has no matching tag, the cheapest tier (by price_paise) is applied as the standard packaging charge.
   * If no box is selected at all, no packaging charge is added.
   {% endcomment %}
 
   {% comment %}
-  * Added by Velocity - Shopify Storefront API credentials. Reuses the SAME public, read-only token
+  * Added by Velocity - Shopify Storefront API credentials. Reuses the SAME public, read-only token and
+  *   endpoint already used by getProductsFromCollection() further down this file (the hamper product fetch).
   {% endcomment %}
   const STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
   const STOREFRONT_API_VERSION = '2024-01';
   const STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
 
+  {% comment %}
+  * price_paise fallbacks below mirror the LIVE Shopify variant prices (verified 2026-06-19) so the
+  * Hamper Summary matches the FlexyPe checkout even if hydratePackagingPricesFromStorefront() fails.
+  * The live fetch still overrides these at runtime; keep them in sync if the Shopify prices change.
+  {% endcomment %}
   const PACKAGING_CHARGES_CONFIG = [
-    { tag: 'packaging_tier_1', name: 'Styling and Delivery Charges',  price_paise: 12900, product_id: '10175410962739', variant_id: '53344929939763' },
-    { tag: 'packaging_tier_2', name: 'Styling and Delivery Charges',   price_paise: 19900, product_id: '10175412371763', variant_id: '53344931414323' },
-    { tag: 'packaging_tier_3', name: 'Styling and Delivery Charges',    price_paise: 42900, product_id: '10175413289267', variant_id: '53344932331827' },
-    { tag: 'packaging_tier_4', name: 'Styling and Delivery Charges',    price_paise: 89900, product_id: '10175414436147', variant_id: '53344933478707' },
-    { tag: 'packaging_tier_5', name: 'Styling and Delivery Charges', price_paise: 99900, product_id: '10175415419187', variant_id: '53344934461747' }
+    { tag: 'packaging_tier_129', name: 'Standard Packaging & Styling',  price_paise: 12900, product_id: '10175410962739', variant_id: '53344929939763' },
+    { tag: 'packaging_tier_199', name: 'Premium Packaging & Styling',   price_paise: 19900, product_id: '10175412371763', variant_id: '53344931414323' },
+    { tag: 'packaging_tier_429', name: 'Deluxe Packaging & Styling',    price_paise: 42900, product_id: '10175413289267', variant_id: '53344932331827' },
+    { tag: 'packaging_tier_899', name: 'Luxury Packaging & Styling',    price_paise: 89900, product_id: '10175414436147', variant_id: '53344933478707' },
+    { tag: 'packaging_tier_999', name: 'Signature Packaging & Styling', price_paise: 99900, product_id: '10175415419187', variant_id: '53344934461747' }
   ];
 
   {% comment %}
@@ -148,6 +159,17 @@
 
   {% comment %} Added by Velocity - kick off the live price fetch immediately; non-blocking background request. {% endcomment %}
   const packagingPricesReady = hydratePackagingPricesFromStorefront();
+
+  {% comment %}
+  * Added by Velocity - once the live styling/delivery prices arrive, re-render so the Hamper Summary
+  * shows the real Shopify price (what FlexyPe charges) instead of the static fallback. Without this the
+  * summary keeps whatever price was present at first render, which is why it could disagree with checkout.
+  {% endcomment %}
+  packagingPricesReady.then(function () {
+    if (typeof renderProduct === 'function' && window.selectedItem && window.selectedItem.length) {
+      renderProduct();
+    }
+  });
 
   function findPackagingForCurrentBox() {
     const items = window.selectedItem || [];
