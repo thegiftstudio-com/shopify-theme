@@ -77,11 +77,11 @@
   const STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
 
   const PACKAGING_CHARGES_CONFIG = [
-    { tag: 'packaging_tier_129', name: 'Standard Packaging & Styling',  price_paise: 12900, product_id: '10175410962739', variant_id: '53344929939763', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_937bcbf0-525a-432c-8cd6-2ea85285f933.png?v=1781847239' },
-    { tag: 'packaging_tier_199', name: 'Premium Packaging & Styling',   price_paise: 19900, product_id: '10175412371763', variant_id: '53344931414323', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_af7bf9ef-3a36-4b78-a444-f2dd0cb51b06.png?v=1781847239' },
-    { tag: 'packaging_tier_429', name: 'Deluxe Packaging & Styling',    price_paise: 42900, product_id: '10175413289267', variant_id: '53344932331827', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_e4bfe637-1def-469d-a2ec-caff111a35e2.png?v=1781847238' },
-    { tag: 'packaging_tier_899', name: 'Luxury Packaging & Styling',    price_paise: 89900, product_id: '10175414436147', variant_id: '53344933478707', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_699e915c-e5c8-4829-9dc0-d395e88e4299.png?v=1781847226' },
-    { tag: 'packaging_tier_999', name: 'Signature Packaging & Styling', price_paise: 99900, product_id: '10175415419187', variant_id: '53344934461747', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_2843d4ab-650a-4908-8648-04005aa506d7.png?v=1781847229' }
+    { tag: 'packaging_tier_129', name: 'Standard Packaging & Styling',  price_paise: 12900, product_id: '10175410962739', variant_id: '53344929939763' },
+    { tag: 'packaging_tier_199', name: 'Premium Packaging & Styling',   price_paise: 19900, product_id: '10175412371763', variant_id: '53344931414323' },
+    { tag: 'packaging_tier_429', name: 'Deluxe Packaging & Styling',    price_paise: 42900, product_id: '10175413289267', variant_id: '53344932331827' },
+    { tag: 'packaging_tier_899', name: 'Luxury Packaging & Styling',    price_paise: 89900, product_id: '10175414436147', variant_id: '53344933478707' },
+    { tag: 'packaging_tier_999', name: 'Signature Packaging & Styling', price_paise: 99900, product_id: '10175415419187', variant_id: '53344934461747' }
   ];
 
   {% comment %}
@@ -110,8 +110,7 @@
           ... on ProductVariant {
             id
             price { amount }
-            image { url }
-            product { title featuredImage { url } }
+            product { title }
           }
         }
       }`;
@@ -139,8 +138,6 @@
         if (node.price && node.price.amount != null) {
           cfg.price_paise = Math.round(parseFloat(node.price.amount) * 100);
         }
-        const liveImg = (node.image && node.image.url) || (node.product && node.product.featuredImage && node.product.featuredImage.url);
-        if (liveImg) cfg.image = liveImg;
       });
     } catch (err) {
       console.warn('[Packaging] Storefront price fetch failed - using fallback name/price.', err);
@@ -543,13 +540,10 @@
       packagingRupees = packagingConfig.price_paise / 100;
       {% comment %} Added by Velocity - show whole rupees with no trailing .00 (e.g. 999, not 999.00); keep decimals only if the price is fractional. {% endcomment %}
       const packagingDisplayPrice = Number.isInteger(packagingRupees) ? packagingRupees : packagingRupees.toFixed(2);
-      {% comment %} Added by Velocity - product thumbnail for the Styling & Delivery Charges row (config image, refreshed live from the Storefront API). {% endcomment %}
-      const packagingImg = packagingConfig.image || '';
 
       $('#add_row').append(`<tr id="main_bundle_checkout_packaging_charges" class="packaging-charges-row">
         <td>
           <div class="priduct-card">
-            ${packagingImg ? `<div class="pd-img"><img src="${packagingImg}" class="cart-item__image" alt="${packagingConfig.name}" loading="eager" width="150" height="150"></div>` : ''}
             <div class="pd-details">
               <div class="pd-title">
                 <a href="#" class="cart-item__name h4 break">${packagingConfig.name}</a>
@@ -564,7 +558,6 @@
       </tr>`);
 
       $('#mobile_cart_data').append(`<div class="product-cart packaging-charges-item">
-        ${packagingImg ? `<div class="img"><img src="${packagingImg}" class="cart-item__image" alt="${packagingConfig.name}" loading="eager" width="150" height="150"></div>` : ''}
         <div class="text" style="flex:1;">
           <h3 class="title">${packagingConfig.name}</h3>
           <h3 class="price">&#x20b9;${packagingDisplayPrice}</h3>
