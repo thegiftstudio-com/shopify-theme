@@ -368,6 +368,7 @@
       "blocks": {
         "slide_JheEeK": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/fatehrs-day-web-banner-PM.jpg",
