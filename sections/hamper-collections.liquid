@@ -61,6 +61,145 @@
   
 </style>
 <script>
+  {% comment %}
+  * Added by Velocity - Packaging & Styling Charges configuration
+  * Map: box product tag -> packaging product to auto-add to cart.
+  * Only the BOX product's tags are checked (1 box per bundle).
+  * If a box is selected but has no matching tag, the cheapest tier (by price_paise) is applied as the standard packaging charge.
+  * If no box is selected at all, no packaging charge is added.
+  {% endcomment %}
+
+  {% comment %}
+  * Added by Velocity - Shopify Storefront API credentials. Reuses the SAME public, read-only token
+  {% endcomment %}
+  const STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
+  const STOREFRONT_API_VERSION = '2024-01';
+  const STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
+
+  const PACKAGING_CHARGES_CONFIG = [
+    { tag: 'packaging_tier_129', name: 'Standard Packaging & Styling',  price_paise: 12900, product_id: '10175410962739', variant_id: '53344929939763', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_937bcbf0-525a-432c-8cd6-2ea85285f933.png?v=1781847239' },
+    { tag: 'packaging_tier_199', name: 'Premium Packaging & Styling',   price_paise: 19900, product_id: '10175412371763', variant_id: '53344931414323', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_af7bf9ef-3a36-4b78-a444-f2dd0cb51b06.png?v=1781847239' },
+    { tag: 'packaging_tier_429', name: 'Deluxe Packaging & Styling',    price_paise: 42900, product_id: '10175413289267', variant_id: '53344932331827', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_e4bfe637-1def-469d-a2ec-caff111a35e2.png?v=1781847238' },
+    { tag: 'packaging_tier_899', name: 'Luxury Packaging & Styling',    price_paise: 89900, product_id: '10175414436147', variant_id: '53344933478707', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_699e915c-e5c8-4829-9dc0-d395e88e4299.png?v=1781847226' },
+    { tag: 'packaging_tier_999', name: 'Signature Packaging & Styling', price_paise: 99900, product_id: '10175415419187', variant_id: '53344934461747', image: 'https://cdn.shopify.com/s/files/1/0689/3014/2515/files/StylingChrage-Thumbnail_2843d4ab-650a-4908-8648-04005aa506d7.png?v=1781847229' }
+  ];
+
+  {% comment %}
+  * Added by Velocity - Fetch live product title + price for each packaging tier from the Shopify
+  * Storefront API (GraphQL) using ONLY the hardcoded variant ids (as gid://shopify/ProductVariant/<id>).
+  * Runs in the background on page load so it never blocks rendering; the Hamper Summary (the only place
+  * the charge is shown) is reached well after this resolves. On failure/timeout the hardcoded fallbacks stay.
+  {% endcomment %}
+  function gidToVariantId(gid) {
+    return String(gid || '').split('/').pop();
+  }
+
+  async function hydratePackagingPricesFromStorefront() {
+    if (!STOREFRONT_API_TOKEN || STOREFRONT_API_TOKEN.indexOf('REPLACE_') === 0) {
+      console.warn('[Packaging] Storefront API token not set - using fallback name/price.');
+      return;
+    }
+    const ids = PACKAGING_CHARGES_CONFIG
+      .filter(cfg => cfg.variant_id && String(cfg.variant_id).indexOf('REPLACE_') !== 0)
+      .map(cfg => 'gid://shopify/ProductVariant/' + cfg.variant_id);
+    if (!ids.length) return;
+
+    const query = `
+      query StylingCharges($ids: [ID!]!) {
+        nodes(ids: $ids) {
+          ... on ProductVariant {
+            id
+            price { amount }
+            image { url }
+            product { title featuredImage { url } }
+          }
+        }
+      }`;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    try {
+      const res = await fetch('https://' + STOREFRONT_API_DOMAIN + '/api/' + STOREFRONT_API_VERSION + '/graphql.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN
+        },
+        body: JSON.stringify({ query: query, variables: { ids: ids } }),
+        signal: controller.signal
+      });
+      const json = await res.json();
+      const nodes = (json && json.data && json.data.nodes) || [];
+      nodes.forEach(node => {
+        if (!node || !node.id) return;
+        const vid = gidToVariantId(node.id);
+        const cfg = PACKAGING_CHARGES_CONFIG.find(c => String(c.variant_id) === vid);
+        if (!cfg) return;
+        if (node.product && node.product.title) cfg.name = node.product.title;
+        if (node.price && node.price.amount != null) {
+          cfg.price_paise = Math.round(parseFloat(node.price.amount) * 100);
+        }
+        const liveImg = (node.image && node.image.url) || (node.product && node.product.featuredImage && node.product.featuredImage.url);
+        if (liveImg) cfg.image = liveImg;
+      });
+    } catch (err) {
+      console.warn('[Packaging] Storefront price fetch failed - using fallback name/price.', err);
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  {% comment %} Added by Velocity - kick off the live price fetch immediately; non-blocking background request. {% endcomment %}
+  const packagingPricesReady = hydratePackagingPricesFromStorefront();
+
+  {% comment %}
+  * Added by Velocity - once the live styling/delivery prices arrive, re-render so the Hamper Summary
+  * shows the real Shopify price (what FlexyPe charges) instead of the static fallback. Without this the
+  * summary keeps whatever price was present at first render, which is why it could disagree with checkout.
+  {% endcomment %}
+  packagingPricesReady.then(function () {
+    if (typeof renderProduct === 'function' && window.selectedItem && window.selectedItem.length) {
+      renderProduct();
+    }
+  });
+
+  function findPackagingForCurrentBox() {
+    const items = window.selectedItem || [];
+    const boxItem = items.find(it => it && (it.isABox == 1 || it.isABox === true));
+    if (!boxItem) return null;
+    const rawTags = (boxItem.tags || '').toString().toLowerCase();
+    const tagList = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : [];
+    for (const cfg of PACKAGING_CHARGES_CONFIG) {
+      if (tagList.includes(cfg.tag.toLowerCase())) return cfg;
+    }
+    {% comment %} Fallback: a box is selected but no tag matched - apply the cheapest tier as the standard packaging charge. {% endcomment %}
+    if (!PACKAGING_CHARGES_CONFIG.length) return null;
+    return PACKAGING_CHARGES_CONFIG.reduce((cheapest, cfg) => (cfg.price_paise < cheapest.price_paise ? cfg : cheapest));
+  }
+
+  function syncPackagingToCart(packagingConfig) {
+    PACKAGING_CHARGES_CONFIG.forEach(cfg => {
+      if (cfg.variant_id && window.addToCartData && window.addToCartData[cfg.variant_id]) {
+        delete window.addToCartData[cfg.variant_id];
+      }
+    });
+    if (!packagingConfig) return;
+    const vid = packagingConfig.variant_id;
+    if (!vid || String(vid).indexOf('REPLACE_') === 0) return;
+    window.addToCartData = window.addToCartData || {};
+    window.addToCartData[vid] = {
+      quantity: 1,
+      id: vid,
+      properties: {
+        'bundle_id': (window.currentBundleData && window.currentBundleData.bundle_id) || '',
+        'bundle_name': (window.currentBundleData && window.currentBundleData.bundle_name) || '',
+        'product_type': 'packaging',
+        'base_quantity': 1,
+        'packaging_tag': packagingConfig.tag
+      }
+    };
+  }
+
   function renderProduct(varient_id, loder_id, isRemoved = 0, tag='') {
     // Cache DOM elements
     const list = document.getElementById("selectproduct");
@@ -373,8 +512,6 @@
     });
     // Cache DOM elements for better performance
     const hiddenItemsCount = document.getElementById('hiddenItemsCount');
-    const totalPriceElements = document.querySelectorAll('.total-price, .total-price1, #SubTotalPrice');
-    
     // Update hidden items count
     if (window.totalUserItemsCount > 15) {
       hiddenItemsCount.textContent = `and ${window.totalUserItemsCount - 15} more items`;
@@ -384,8 +521,63 @@
       hiddenItemsCount.style.display = 'none';
     }
 
-    // Calculate total price
+    {% comment %}
+    * Added by Velocity - Tag-driven Packaging & Styling Charges
+    * Reads the BOX product's tags from selectedItem, matches against PACKAGING_CHARGES_CONFIG (first match wins),
+    * adds the mapped packaging variant to addToCartData (so it's actually charged at checkout),
+    * and renders a non-removable row in the bottom cart strip, summary table, and mobile cart.
+    * No box or no tag match -> no packaging shown and any prior packaging is removed from addToCartData.
+    {% endcomment %}
+    const packagingConfig = findPackagingForCurrentBox();
+    syncPackagingToCart(packagingConfig);
+
+    {% comment %}
+    * Added by Velocity - styling charge is displayed ONLY on the Hamper Summary (final step):
+    *   - NOT in the "View Bundle Contents" popup (#selectproduct)
+    *   - NOT in the running bottom-bar total (.total-price)
+    * The charge is still applied to the cart via syncPackagingToCart() above, so the amount charged is unchanged.
+    * packagingRupees is added only to the Hamper Summary totals below.
+    {% endcomment %}
+    let packagingRupees = 0;
+    if (packagingConfig) {
+      packagingRupees = packagingConfig.price_paise / 100;
+      {% comment %} Added by Velocity - show whole rupees with no trailing .00 (e.g. 999, not 999.00); keep decimals only if the price is fractional. {% endcomment %}
+      const packagingDisplayPrice = Number.isInteger(packagingRupees) ? packagingRupees : packagingRupees.toFixed(2);
+      {% comment %} Added by Velocity - product thumbnail for the Styling & Delivery Charges row (config image, refreshed live from the Storefront API). {% endcomment %}
+      const packagingImg = packagingConfig.image || '';
+
+      $('#add_row').append(`<tr id="main_bundle_checkout_packaging_charges" class="packaging-charges-row">
+        <td>
+          <div class="priduct-card">
+            ${packagingImg ? `<div class="pd-img"><img src="${packagingImg}" class="cart-item__image" alt="${packagingConfig.name}" loading="eager" width="150" height="150"></div>` : ''}
+            <div class="pd-details">
+              <div class="pd-title">
+                <a href="#" class="cart-item__name h4 break">${packagingConfig.name}</a>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td><span class="price">&#x20b9;${packagingDisplayPrice}</span></td>
+        <td></td>
+        <td><span class="subtotle">&#x20b9;${packagingDisplayPrice}</span></td>
+        <td><span style="font-size:11px;color:#888;font-weight:600;">Mandatory</span></td>
+      </tr>`);
+
+      $('#mobile_cart_data').append(`<div class="product-cart packaging-charges-item">
+        ${packagingImg ? `<div class="img"><img src="${packagingImg}" class="cart-item__image" alt="${packagingConfig.name}" loading="eager" width="150" height="150"></div>` : ''}
+        <div class="text" style="flex:1;">
+          <h3 class="title">${packagingConfig.name}</h3>
+          <h3 class="price">&#x20b9;${packagingDisplayPrice}</h3>
+        </div>
+        <span style="font-size:11px;color:#888;font-weight:600;align-self:center;">Mandatory</span>
+      </div>`);
+    }
+
+    // Calculate total price (products only - excludes the styling charge)
     totalprice = totalprice * 0.01;
+    {% comment %} Added by Velocity - styling charge is added only to the Hamper Summary total, not the running bottom-bar total. {% endcomment %}
+    window.byohPackagingCharge = packagingRupees;
+    const summaryTotal = totalprice + packagingRupees;
     {% comment %} Display the remove and add buttons, keeping them centered. Added by Velocity 19-09-2025 {% endcomment %}
     if (isRemoved) $(`.add_${varient_id}`).show();
     else $(`.remove_${varient_id}`).show();
@@ -394,9 +586,25 @@
     const loader = document.querySelector(`.loader_${loder_id}`);
     if (loader) loader.style.display = 'none';
     
-    // Update all price elements at once
-    totalPriceElements.forEach(element => {
+    // Update price elements:
+    //  - .total-price (running bottom-bar total) excludes the styling charge
+    //  - .total-price1 / #SubTotalPrice / #SubTotalPricemb (Hamper Summary) include the styling charge
+    document.querySelectorAll('.total-price').forEach(element => {
       element.innerHTML = `&#8377;${totalprice}`;
+    });
+    document.querySelectorAll('.total-price1, #SubTotalPrice, #SubTotalPricemb').forEach(element => {
+      element.innerHTML = `&#8377;${summaryTotal}`;
+    });
+
+    {% comment %} Added by Velocity - show the tag-based styling charge as a note on the running bottom bar; recalculated on every product change. {% endcomment %}
+    document.querySelectorAll('.styling-charge-note').forEach(noteEl => {
+      if (packagingRupees > 0) {
+        noteEl.innerHTML = `+ &#8377;${packagingRupees} (Styling charge)`;
+        noteEl.style.display = 'inline-block';
+      } else {
+        noteEl.innerHTML = '';
+        noteEl.style.display = 'none';
+      }
     });
   }
   
@@ -453,6 +661,7 @@
         });
 
         // Prepare new item
+        {% comment %} Added by Velocity - include product tags so packaging tier can be matched on page reload (addtocart already stores tags in item.properties.tags). {% endcomment %}
         var newItem = {
             img: "{{ item.image | default: '' }}",
             isAAddon: productType === 'addon' ? 1 : 0,
@@ -464,7 +673,8 @@
             price: {{ item.price }},
             title: "{{ item.title }}",
             available_quantity: {{ item.properties.base_quantity | default: 0 }},
-            base_quantity: {{ item.properties.base_quantity }}
+            base_quantity: {{ item.properties.base_quantity }},
+            tags: "{{ item.properties.tags | default: '' | replace: '"', '' | escape }}"
         };
 
         // Update or push item to selectedItem
@@ -1030,6 +1240,8 @@
           <div class="total">
             <span>Total</span>
             <h3 class="total-price"></h3>
+            {% comment %} Added by Velocity - tag-based styling charge note, updated on every product change in renderProduct(). {% endcomment %}
+            <span class="styling-charge-note" style="font-size:12px;color:#ddd;display:none;"></span>
           </div>
 	  {% comment %} Added by Velocity - 29-07-2025 Remove one step from the BYOH follow we need to made the changes in previous and next button. {% endcomment %}
           <div class="next_btn_new">
@@ -2993,13 +3205,16 @@ $(selector).css('display', 'block');
       var discountAmount = originalPrice * (Math.abs(parseInt(discountPercentage)) / 100);
     else
       var discountAmount = Math.abs(parseInt(discountPercentage));
-    var discountedPrice = parseInt(originalPrice) - parseInt(discountAmount);
+    {% comment %} Added by Velocity - discount applies to products only; the mandatory styling charge is added on top of the Hamper Summary total. {% endcomment %}
+    var packaging = window.byohPackagingCharge || 0;
+    var discountedProducts = parseInt(originalPrice) - parseInt(discountAmount);
+    var discountedPrice = discountedProducts + packaging;
     localStorage.setItem("discountedPrice", discountedPrice);
     $('#SubTotalPrice').text(discountedPrice);
     $("#SubTotalPrice").prepend("&#8377;");
     $("#SubTotalPricemb").text(discountedPrice);
     $("#SubTotalPricemb").prepend("&#8377;");
-    $(".total-price").text(discountedPrice);
+    $(".total-price").text(discountedProducts);
     $(".total-price").prepend("&#8377;");
     $('.Discount_price').text(parseInt(discountAmount))
     $(".Discount_price").prepend("- &#8377;");
