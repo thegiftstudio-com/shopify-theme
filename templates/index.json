@@ -366,6 +366,26 @@
     "782f453f-a109-43d1-8e49-de1598cb442d": {
       "type": "slideshow",
       "blocks": {
+        "slide_BQypfe": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/Heads-Up-Game--WeB1.jpg",
+            "mob_banner": "shopify://shop_images/Heads-Up-Game--WeB.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/personalised-games",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_JheEeK": {
           "type": "slide",
           "disabled": true,
@@ -430,6 +450,7 @@
         },
         "slide_ymY3NY": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/GR-IRrana-web-bannr_2.jpg",
@@ -523,26 +544,6 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/new-year",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_BQypfe": {
-          "type": "slide",
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/monopoly-games-baner-web2.jpg",
-            "mob_banner": "shopify://shop_images/monopoly-games-baner-MOB2.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/personalised-games",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1519,6 +1520,7 @@
         }
       },
       "block_order": [
+        "slide_BQypfe",
         "slide_JheEeK",
         "slide_dnrBrT",
         "slide_QELFGM",
@@ -1527,7 +1529,6 @@
         "slide_GnzJWp",
         "slide_hAVmbz",
         "slide_EyN76V",
-        "slide_BQypfe",
         "slide_q4JE4U",
         "slide_Di6tzy",
         "slide_tkc3pf",
