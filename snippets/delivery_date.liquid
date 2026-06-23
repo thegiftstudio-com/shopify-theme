@@ -456,6 +456,28 @@ $(document).ready(function() {
                        // var currentDateTime = new Date();
   // Added by Velocity 01-08-2025 Pass selected warehouse name(selected_warehouse) into the function setMinDeliveryDate
   var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'',selected_warehouse);
+
+  // ===== Velocity 23-06-2026: additive rule — default-select "Earliest Delivery Date + 1 day"
+  // when the earliest delivery date falls on T, T+1 or T+2. This does NOT change the existing
+  // delivery-date calculation or minDate, so the customer can still manually pick the real earliest delivery date
+  // the +1 date is only the pre-selected default that carries to the order. =====
+  if (total_tat >= 0 && total_tat <= 2) {
+    var earliestDate = $datePicker.datepicker("getDate"); // date the existing logic just set
+    if (earliestDate) {
+      var defaultDate = new Date(earliestDate);
+      defaultDate.setDate(defaultDate.getDate() + 1);
+
+      // Mirror existing Sunday handling: when Sundays are disabled (tat > 0 and Sunday
+      // delivery off), don't land the default on a disabled Sunday — skip to next valid day.
+      if (total_tat > 0 && typeof enableSundayDelivery !== 'undefined' && !enableSundayDelivery && defaultDate.getDay() === 0) {
+        defaultDate.setDate(defaultDate.getDate() + 1);
+      }
+
+      // Override only the SELECTED value; minDate is left untouched.
+      $datePicker.datepicker("setDate", defaultDate);
+    }
+  }
+
         // Utility function to check if the selected date is today
 function isSelectedDateToday(selectedDateStr) {
   const currentDate = new Date().getDate();
