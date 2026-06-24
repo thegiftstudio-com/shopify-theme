@@ -462,7 +462,7 @@ $(document).ready(function() {
   // delivery-date calculation or minDate, so the customer can still manually pick the real earliest delivery date
   // the +1 date is only the pre-selected default that carries to the order. =====
   if (total_tat >= 0 && total_tat <= 2) {
-    var earliestDate = $datePicker.datepicker("getDate"); // date the existing logic just set
+    var earliestDate = $datePicker.datepicker("getDate"); 
     if (earliestDate) {
       var defaultDate = new Date(earliestDate);
       defaultDate.setDate(defaultDate.getDate() + 1);
