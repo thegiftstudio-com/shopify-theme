@@ -54,24 +54,36 @@
   existing setMinDeliveryDate() already computed (the earliest date in #delivery-date-5
   and its returned total-days) and NEVER alters that calculation.
 {% endcomment %}
-<div class="express-standard-selector" style="display:none;">
-  <p class="font_bold delivery-mode-title">Choose Delivery Speed</p>
+<div class="express-standard-selector tgs-delivery-select" style="display:none;">
+  <div class="tgs-delivery-head">
+    <span class="tgs-delivery-title">Choose Your Delivery</span>
+    <span class="tgs-delivery-sub">Select how soon you'd like it to arrive</span>
+  </div>
 
-  <label class="delivery-mode-option express-option">
-    <input type="radio" name="delivery_mode" value="express" class="delivery-mode-radio express-radio">
-    <span class="delivery-mode-copy">
-      <span class="font_bold delivery-mode-name">Express Delivery</span>
-      <span class="font_text delivery-mode-date express-date-text"></span>
-      <span class="font_text delivery-mode-fee express-charge-text"></span>
+  <label class="tgs-delivery-card express-option" for="tgs-mode-express">
+    <input type="radio" name="delivery_mode" value="express" id="tgs-mode-express" class="delivery-mode-radio express-radio">
+    <span class="tgs-radio" aria-hidden="true"></span>
+    <span class="tgs-delivery-icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span>
+    <span class="tgs-delivery-body">
+      <span class="tgs-delivery-row">
+        <span class="tgs-delivery-name">Express Delivery</span>
+        <span class="tgs-badge tgs-badge--fee express-charge-text" style="display:none;"></span>
+      </span>
+      <span class="tgs-delivery-meta express-date-text"></span>
+      <span class="tgs-delivery-note express-unavailable-note" style="display:none;">Not available for this pincode</span>
     </span>
   </label>
 
-  <label class="delivery-mode-option standard-option">
-    <input type="radio" name="delivery_mode" value="standard" class="delivery-mode-radio standard-radio">
-    <span class="delivery-mode-copy">
-      <span class="font_bold delivery-mode-name">Standard Delivery</span>
-      <span class="font_text delivery-mode-date standard-date-text"></span>
-      <span class="font_text delivery-mode-fee">Free</span>
+  <label class="tgs-delivery-card standard-option" for="tgs-mode-standard">
+    <input type="radio" name="delivery_mode" value="standard" id="tgs-mode-standard" class="delivery-mode-radio standard-radio">
+    <span class="tgs-radio" aria-hidden="true"></span>
+    <span class="tgs-delivery-icon" aria-hidden="true"><i class="fa-solid fa-truck"></i></span>
+    <span class="tgs-delivery-body">
+      <span class="tgs-delivery-row">
+        <span class="tgs-delivery-name">Standard Delivery</span>
+        <span class="tgs-badge tgs-badge--free">FREE</span>
+      </span>
+      <span class="tgs-delivery-meta standard-date-text"></span>
     </span>
   </label>
 
@@ -83,18 +95,41 @@
 </div>
 
 <style>
-  .express-standard-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
-  .express-standard-selector .delivery-mode-title { font-size: 16px; margin: 0 0 4px; }
-  .express-standard-selector .delivery-mode-option {
-    display: flex; align-items: flex-start; gap: 10px;
-    border: 1px solid #ccc; border-radius: 4px; padding: 12px; cursor: pointer; box-sizing: border-box;
+  .tgs-delivery-select { width: 100%; margin: 8px 0 22px; display: flex; flex-direction: column; gap: 12px; }
+  .tgs-delivery-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 2px; }
+  .tgs-delivery-title { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: #121212; }
+  .tgs-delivery-sub { font-size: 12.5px; color: #8a8a8a; }
+
+  .tgs-delivery-card {
+    position: relative; display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px; border: 1px solid #e6e3dd; border-radius: 14px; background: #fff;
+    cursor: pointer; box-sizing: border-box; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
   }
-  .express-standard-selector .delivery-mode-radio { margin-top: 3px; }
-  .express-standard-selector .delivery-mode-copy { display: flex; flex-direction: column; gap: 2px; }
-  .express-standard-selector .delivery-mode-name { font-size: 14px; }
-  .express-standard-selector .delivery-mode-date { font-size: 13px; color: #333; }
-  .express-standard-selector .delivery-mode-fee { font-size: 13px; color: #555; }
-  .express-standard-selector .delivery-mode-option.disabled { opacity: 0.5; cursor: not-allowed; }
+  .tgs-delivery-card:hover { border-color: #c9c3b8; }
+  .tgs-delivery-card.is-selected { border-color: #121212; background: #fbfaf8; box-shadow: 0 6px 18px rgba(18,18,18,.06); }
+  .tgs-delivery-card .delivery-mode-radio { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; pointer-events: none; }
+
+  .tgs-radio { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #c5c5c5; position: relative; transition: border-color .2s ease; }
+  .tgs-delivery-card.is-selected .tgs-radio { border-color: #121212; }
+  .tgs-radio::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: #121212; transform: scale(0); transition: transform .18s ease; }
+  .tgs-delivery-card.is-selected .tgs-radio::after { transform: scale(1); }
+
+  .tgs-delivery-icon { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #f3f0ea; color: #121212; transition: background .2s ease, color .2s ease; }
+  .tgs-delivery-card.is-selected .tgs-delivery-icon { background: #121212; color: #fff; }
+  .tgs-delivery-icon i { font-size: 16px; line-height: 1; }
+
+  .tgs-delivery-body { flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .tgs-delivery-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .tgs-delivery-name { font-size: 15px; font-weight: 600; color: #121212; letter-spacing: .01em; }
+  .tgs-delivery-meta { font-size: 13px; color: #6b6b6b; }
+  .tgs-delivery-note { font-size: 12px; color: #b00020; }
+
+  .tgs-badge { font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .tgs-badge--free { background: #eef4ee; color: #2e7d32; }
+  .tgs-badge--fee { background: #121212; color: #fff; }
+
+  .tgs-delivery-card.disabled { opacity: .55; cursor: not-allowed; background: #faf9f7; }
+  .tgs-delivery-card.disabled:hover { border-color: #e6e3dd; }
 </style>
 
 <script>
@@ -142,7 +177,13 @@
   function updateExpressChargeText() {
     var paise = (window.EXPRESS_CHARGE && window.EXPRESS_CHARGE.price_paise) || 0;
     var rupees = paise / 100;
-    $('.express-charge-text').text(paise > 0 ? ('+ ₹' + (Number.isInteger(rupees) ? rupees : rupees.toFixed(2))) : '');
+    var $fee = $('.express-charge-text');
+    // Hide the fee pill when express is unavailable or there is no fee yet.
+    if (paise > 0 && $('#express_eligible_flag').val() === '1') {
+      $fee.text('+ ₹' + (Number.isInteger(rupees) ? rupees : rupees.toFixed(2))).css('display', '');
+    } else {
+      $fee.text('').css('display', 'none');
+    }
   }
 
   function applyMode(mode) {
@@ -152,6 +193,9 @@
     var d = parseDMYLocal(dateStr);
     if (d) { $picker.datepicker('setDate', d); }
     $picker.trigger('change');
+    // Premium card highlight
+    $('.tgs-delivery-card').removeClass('is-selected');
+    $((mode === 'express') ? '.express-option' : '.standard-option').addClass('is-selected');
   }
 
   // Called from the pincode-AJAX success handler, right after setMinDeliveryDate().
@@ -178,14 +222,19 @@
     if (isEligible) {
       $express.prop('disabled', false);
       $('.express-option').removeClass('disabled');
+      $('.express-date-text').show();
+      $('.express-unavailable-note').hide();
       $express.prop('checked', true);
       applyMode('express');
     } else {
       $express.prop('disabled', true).prop('checked', false);
       $('.express-option').addClass('disabled');
+      $('.express-date-text').hide();
+      $('.express-unavailable-note').show();
       $('.standard-radio').prop('checked', true);
       applyMode('standard');
     }
+    updateExpressChargeText(); // re-evaluate fee pill visibility now that eligibility is set
     $('.express-standard-selector').show();
   };
 
