@@ -760,6 +760,8 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
                         >
 
                         {%- for item in cart.items -%}
+                          {%- comment -%} Added by Velocity: never show the Express Delivery charge as a cart row {%- endcomment -%}
+                          {%- if item.properties._is_express_charge -%}{%- continue -%}{%- endif -%}
                           <tr
                             id="CartDrawer-Item-{{ item.index | plus: 1 }}"
                             class="cart-item tgs-product-item {{ item.product.tags | join: " " }} {% for p in item.properties %}{% if p.first == 'bundle_id' %}hide_bundle_id_product{% endif %}{% endfor %}"
@@ -1299,6 +1301,19 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
             <!-- Subtotals -->
 
             <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
+              {%- comment -%} Added by Velocity: Express Delivery fee row (hidden charge line) + cart-level delivery note {%- endcomment -%}
+              {%- assign express_charge_line = null -%}
+              {%- for item in cart.items -%}
+                {%- if item.properties._is_express_charge -%}{%- assign express_charge_line = item -%}{%- endif -%}
+              {%- endfor -%}
+              {%- if express_charge_line -%}
+                <div class="totals express_dilevery_price">
+                  <h2 class="totals__subtotal">Express Delivery</h2>
+                  <p class="totals__subtotal-value">{{ express_charge_line.final_line_price | money }}</p>
+                </div>
+              {%- endif -%}
+              <p class="express-delivery-summary font_bold" style="display:none; margin:6px 0;"></p>
+
               <div class="totals" role="status">
                 <h2 class="totals__subtotal">{{ 'sections.cart.subtotal' | t }}</h2>
                 <p class="totals__subtotal-value">{{ cart.original_total_price | money_with_currency }}</p>

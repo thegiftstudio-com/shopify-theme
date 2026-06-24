@@ -47,6 +47,159 @@
 </div>
 
 {% render 'delivery_date_picker' %}
+
+{% comment %}
+  Added by Velocity: Express vs Standard delivery speed selector (text, no calendar).
+  This plugs in AROUND the existing delivery-date logic. It reads the value the
+  existing setMinDeliveryDate() already computed (the earliest date in #delivery-date-5
+  and its returned total-days) and NEVER alters that calculation.
+{% endcomment %}
+<div class="express-standard-selector" style="display:none;">
+  <p class="font_bold delivery-mode-title">Choose Delivery Speed</p>
+
+  <label class="delivery-mode-option express-option">
+    <input type="radio" name="delivery_mode" value="express" class="delivery-mode-radio express-radio">
+    <span class="delivery-mode-copy">
+      <span class="font_bold delivery-mode-name">Express Delivery</span>
+      <span class="font_text delivery-mode-date express-date-text"></span>
+      <span class="font_text delivery-mode-fee express-charge-text"></span>
+    </span>
+  </label>
+
+  <label class="delivery-mode-option standard-option">
+    <input type="radio" name="delivery_mode" value="standard" class="delivery-mode-radio standard-radio">
+    <span class="delivery-mode-copy">
+      <span class="font_bold delivery-mode-name">Standard Delivery</span>
+      <span class="font_text delivery-mode-date standard-date-text"></span>
+      <span class="font_text delivery-mode-fee">Free</span>
+    </span>
+  </label>
+
+  {% comment %} Hidden mirrors read by cart_drawer_func.js at Add to Cart. {% endcomment %}
+  <input type="hidden" id="delivery_mode_selected" value="standard">
+  <input type="hidden" id="express_eligible_flag" value="0">
+  <input type="hidden" id="express_selected_date" value="">
+  <input type="hidden" id="standard_selected_date" value="">
+</div>
+
+<style>
+  .express-standard-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
+  .express-standard-selector .delivery-mode-title { font-size: 16px; margin: 0 0 4px; }
+  .express-standard-selector .delivery-mode-option {
+    display: flex; align-items: flex-start; gap: 10px;
+    border: 1px solid #ccc; border-radius: 4px; padding: 12px; cursor: pointer; box-sizing: border-box;
+  }
+  .express-standard-selector .delivery-mode-radio { margin-top: 3px; }
+  .express-standard-selector .delivery-mode-copy { display: flex; flex-direction: column; gap: 2px; }
+  .express-standard-selector .delivery-mode-name { font-size: 14px; }
+  .express-standard-selector .delivery-mode-date { font-size: 13px; color: #333; }
+  .express-standard-selector .delivery-mode-fee { font-size: 13px; color: #555; }
+  .express-standard-selector .delivery-mode-option.disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+
+<script>
+(function () {
+  if (window.__expressSelectorBound) return;
+  window.__expressSelectorBound = true;
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function parseDMYLocal(str) {
+    if (!str) return null;
+    var p = String(str).split('-');
+    if (p.length < 3) return null;
+    var d = parseInt(p[0], 10), m = parseInt(p[1], 10), y = parseInt(p[2], 10);
+    if (y < 100) y += 2000;
+    if (!d || !m || !y) return null;
+    return new Date(y, m - 1, d);
+  }
+  function fmtDMYLocal(d) { return pad2(d.getDate()) + '-' + pad2(d.getMonth() + 1) + '-' + d.getFullYear(); }
+  function fmtPromiseLocal(d) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var x = new Date(d); x.setHours(0, 0, 0, 0);
+    var diff = Math.round((x - today) / 86400000);
+    if (diff <= 0) return 'today';
+    if (diff === 1) return 'tomorrow';
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return x.getDate() + ' ' + months[x.getMonth()];
+  }
+
+  // Standard = earliest + 2 days, then respect the existing Sunday-skip rule.
+  function computeStandardDate(earliest) {
+    var d = new Date(earliest.getFullYear(), earliest.getMonth(), earliest.getDate());
+    d.setDate(d.getDate() + 2);
+    var noSunday = (typeof enableSundayDelivery !== 'undefined') && !enableSundayDelivery;
+    if (noSunday) {
+      var temp = new Date(earliest.getFullYear(), earliest.getMonth(), earliest.getDate());
+      var sundays = 0;
+      temp.setDate(temp.getDate() + 1);
+      while (temp <= d) { if (temp.getDay() === 0) sundays++; temp.setDate(temp.getDate() + 1); }
+      d.setDate(d.getDate() + sundays);
+      while (d.getDay() === 0) d.setDate(d.getDate() + 1);
+    }
+    return d;
+  }
+
+  function updateExpressChargeText() {
+    var paise = (window.EXPRESS_CHARGE && window.EXPRESS_CHARGE.price_paise) || 0;
+    var rupees = paise / 100;
+    $('.express-charge-text').text(paise > 0 ? ('+ ₹' + (Number.isInteger(rupees) ? rupees : rupees.toFixed(2))) : '');
+  }
+
+  function applyMode(mode) {
+    var $picker = $('#delivery-date-5');
+    $('#delivery_mode_selected').val(mode);
+    var dateStr = (mode === 'express') ? $('#express_selected_date').val() : $('#standard_selected_date').val();
+    var d = parseDMYLocal(dateStr);
+    if (d) { $picker.datepicker('setDate', d); }
+    $picker.trigger('change');
+  }
+
+  // Called from the pincode-AJAX success handler, right after setMinDeliveryDate().
+  window.setupExpressStandardSelector = function (totalTat) {
+    var earliest = parseDMYLocal($('#delivery-date-5').val());
+    if (!earliest) return;
+
+    var isEligible = parseInt(totalTat, 10) <= 2; // T, T+1, T+2 only
+    var standard = computeStandardDate(earliest);
+
+    $('.express-date-text').text('by ' + fmtPromiseLocal(earliest));
+    $('.standard-date-text').text('by ' + fmtPromiseLocal(standard));
+    updateExpressChargeText();
+    // The live price may still be hydrating from GraphQL; refresh the fee text once it resolves.
+    if (window.expressChargeReady && window.expressChargeReady.then) {
+      window.expressChargeReady.then(updateExpressChargeText);
+    }
+
+    $('#express_selected_date').val(fmtDMYLocal(earliest));
+    $('#standard_selected_date').val(fmtDMYLocal(standard));
+    $('#express_eligible_flag').val(isEligible ? '1' : '0');
+
+    var $express = $('.express-radio');
+    if (isEligible) {
+      $express.prop('disabled', false);
+      $('.express-option').removeClass('disabled');
+      $express.prop('checked', true);
+      applyMode('express');
+    } else {
+      $express.prop('disabled', true).prop('checked', false);
+      $('.express-option').addClass('disabled');
+      $('.standard-radio').prop('checked', true);
+      applyMode('standard');
+    }
+    $('.express-standard-selector').show();
+  };
+
+  $(document).on('change', 'input[name="delivery_mode"]', function () {
+    if ($(this).is(':disabled')) return;
+    applyMode($(this).val());
+  });
+
+  if (window.expressChargeReady && window.expressChargeReady.then) {
+    window.expressChargeReady.then(updateExpressChargeText);
+  }
+})();
+</script>
+
 {% assign show_time_slot = false %}
 
 {% for time_slot_entry in shop.metaobjects.time_slot_on_pdp.values %}
@@ -456,6 +609,9 @@ $(document).ready(function() {
                        // var currentDateTime = new Date();
   // Added by Velocity 01-08-2025 Pass selected warehouse name(selected_warehouse) into the function setMinDeliveryDate
   var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'',selected_warehouse);
+  // Added by Velocity: configure the Express/Standard text selector from the value
+  // setMinDeliveryDate just computed. Does NOT alter the calculation above.
+  if (typeof window.setupExpressStandardSelector === 'function') { window.setupExpressStandardSelector(total_tat); }
         // Utility function to check if the selected date is today
 function isSelectedDateToday(selectedDateStr) {
   const currentDate = new Date().getDate();
