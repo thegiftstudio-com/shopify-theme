@@ -1,0 +1,262 @@
+{% comment %}
+  ============================================================================
+  Express Delivery charge — shared config + cart enforcement + display.
+  Added by Velocity.
+
+  Loaded ONCE globally from layout/theme.liquid so it is available on the PDP
+  (to add the charge), in the cart drawer, and on the cart page (to enforce the
+  cart-level rules and render the cart-level delivery note).
+
+  IMPORTANT: This logic plugs in AROUND the existing delivery-date calculation.
+  It NEVER modifies setMinDeliveryDate() or the existing delivery_date flow.
+
+  Pattern mirrors the hamper "styling charge" (sections/hamper-collections.liquid):
+  the Express charge is a real, separate Shopify product/variant; its name, price
+  and image are read live via the Storefront GraphQL API. The fee is therefore
+  backend-configurable simply by editing that product's price in Shopify.
+
+  >>> REQUIRED: paste the Express Delivery product's variant_id + product_id below.
+  Until a real variant id is set, the charge is never added (guards on REPLACE_).
+  ============================================================================
+{% endcomment %}
+
+<script>
+(function () {
+  if (window.__expressChargeInit) return;
+  window.__expressChargeInit = true;
+
+  // --- Storefront API (same public read-only token as the hamper styling charge) ---
+  var STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
+  var STOREFRONT_API_VERSION = '2024-01';
+  var STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
+
+  // --- Express charge product (price/name/image hydrated live from Shopify) ---
+  window.EXPRESS_CHARGE = {
+    product_id: 'REPLACE_WITH_EXPRESS_PRODUCT_ID',
+    variant_id: 'REPLACE_WITH_EXPRESS_VARIANT_ID',
+    name: 'Express Delivery',
+    price_paise: 0,
+    image: ''
+  };
+  var EC = window.EXPRESS_CHARGE;
+
+  function hasRealVariant() {
+    return EC.variant_id && String(EC.variant_id).indexOf('REPLACE_') !== 0;
+  }
+  window.EXPRESS_CHARGE_VARIANT_ID = EC.variant_id;
+
+  // --- Live hydrate of name/price/image via GraphQL (non-blocking, like hamper) ---
+  function hydrateExpressChargeFromStorefront() {
+    if (!STOREFRONT_API_TOKEN || STOREFRONT_API_TOKEN.indexOf('REPLACE_') === 0) return Promise.resolve();
+    if (!hasRealVariant()) return Promise.resolve();
+    var gid = 'gid://shopify/ProductVariant/' + EC.variant_id;
+    var query = '' +
+      'query ExpressCharge($ids: [ID!]!) {' +
+      '  nodes(ids: $ids) {' +
+      '    ... on ProductVariant {' +
+      '      id price { amount } image { url } product { title featuredImage { url } }' +
+      '    }' +
+      '  }' +
+      '}';
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 6000);
+    return fetch('https://' + STOREFRONT_API_DOMAIN + '/api/' + STOREFRONT_API_VERSION + '/graphql.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN },
+      body: JSON.stringify({ query: query, variables: { ids: [gid] } }),
+      signal: controller.signal
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        var nodes = (json && json.data && json.data.nodes) || [];
+        var node = nodes[0];
+        if (!node) return;
+        if (node.product && node.product.title) EC.name = node.product.title;
+        if (node.price && node.price.amount != null) EC.price_paise = Math.round(parseFloat(node.price.amount) * 100);
+        var liveImg = (node.image && node.image.url) || (node.product && node.product.featuredImage && node.product.featuredImage.url);
+        if (liveImg) EC.image = liveImg;
+      })
+      .catch(function (err) { console.warn('[Express] price fetch failed - using fallback.', err); })
+      .finally(function () { clearTimeout(timeout); });
+  }
+  window.expressChargeReady = hydrateExpressChargeFromStorefront();
+
+  // ---------------------------------------------------------------------------
+  // Cart helpers
+  // ---------------------------------------------------------------------------
+  function isChargeLine(item) {
+    if (!item) return false;
+    if (item.properties && (item.properties._is_express_charge === '1' || item.properties._is_express_charge === true)) return true;
+    return hasRealVariant() && String(item.variant_id) === String(EC.variant_id);
+  }
+
+  // A product line is express only if it was added in express mode AND was eligible.
+  function lineIsExpress(item) {
+    return item.properties &&
+           item.properties._delivery_mode === 'express' &&
+           item.properties._express_eligible === '1';
+  }
+
+  function getCart() {
+    return fetch('/cart.js', { headers: { 'Accept': 'application/json' } }).then(function (r) { return r.json(); });
+  }
+
+  function postJSON(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Enforcement — single source of truth. Returns true ONLY when it changed the
+  // cart (so callers re-render exactly once; idempotency terminates any loop).
+  //   * all product lines express + eligible  -> exactly ONE charge (qty 1)
+  //   * any other case                         -> no charge
+  // ---------------------------------------------------------------------------
+  function enforceExpressCharge() {
+    return getCart().then(function (cart) {
+      var items = cart.items || [];
+      var productLines = items.filter(function (it) { return !isChargeLine(it); });
+      var chargeLine = items.filter(isChargeLine)[0];
+      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
+
+      if (allExpress) {
+        if (!chargeLine) {
+          if (!hasRealVariant()) return false; // cannot add until a real variant id is configured
+          return postJSON('/cart/add.js', {
+            id: EC.variant_id,
+            quantity: 1,
+            properties: { _is_express_charge: '1' }
+          }).then(function () { return true; });
+        }
+        if (chargeLine.quantity !== 1) {
+          return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 1 }).then(function () { return true; });
+        }
+        return false;
+      }
+
+      // Not all express -> remove the charge if present.
+      if (chargeLine) {
+        return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 0 }).then(function () { return true; });
+      }
+      return false;
+    }).catch(function (err) {
+      console.warn('[Express] enforce failed', err);
+      return false;
+    });
+  }
+
+  window.__expressEnforcing = false;
+  function runExpressEnforcement() {
+    if (window.__expressEnforcing) return Promise.resolve(false);
+    window.__expressEnforcing = true;
+    return enforceExpressCharge().finally(function () { window.__expressEnforcing = false; });
+  }
+  window.runExpressEnforcement = runExpressEnforcement;
+
+  // ---------------------------------------------------------------------------
+  // Cart-level delivery note ("latest date wins") + charge note toggle.
+  // ---------------------------------------------------------------------------
+  function parseDMY(str) {
+    if (!str) return null;
+    var p = String(str).split('-');
+    if (p.length < 3) return null;
+    var d = parseInt(p[0], 10), m = parseInt(p[1], 10), y = parseInt(p[2], 10);
+    if (y < 100) y += 2000;
+    if (!d || !m || !y) return null;
+    return new Date(y, m - 1, d);
+  }
+  function maxDate(dates) {
+    var valid = dates.filter(Boolean);
+    if (!valid.length) return null;
+    return valid.reduce(function (a, b) { return b > a ? b : a; });
+  }
+  function fmtPromise(date) {
+    if (!date) return '';
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var d = new Date(date); d.setHours(0, 0, 0, 0);
+    var diff = Math.round((d - today) / 86400000);
+    if (diff <= 0) return 'today';
+    if (diff === 1) return 'tomorrow';
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return d.getDate() + ' ' + months[d.getMonth()];
+  }
+
+  function refreshExpressDisplay() {
+    return getCart().then(function (cart) {
+      var items = cart.items || [];
+      var productLines = items.filter(function (it) { return !isChargeLine(it); });
+      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
+
+      var text = '';
+      if (productLines.length) {
+        if (allExpress) {
+          var exp = maxDate(productLines.map(function (it) { return parseDMY(it.properties && it.properties._express_date); }));
+          if (exp) text = 'Express delivery by ' + fmtPromise(exp);
+        } else {
+          var std = maxDate(productLines.map(function (it) {
+            return parseDMY((it.properties && it.properties._standard_date) || (it.properties && it.properties['Delivery date']));
+          }));
+          if (std) text = 'Standard delivery by ' + fmtPromise(std);
+        }
+      }
+
+      document.querySelectorAll('.express-delivery-summary').forEach(function (el) {
+        if (text) { el.textContent = text; el.style.display = ''; }
+        else { el.textContent = ''; el.style.display = 'none'; }
+      });
+    }).catch(function () {});
+  }
+  window.refreshExpressDisplay = refreshExpressDisplay;
+
+  // Re-render the cart-page footer section (the charge row + subtotal live here).
+  // CartItems.onCartUpdate only refreshes the items element, never the footer, so
+  // after we add/remove the charge we must refresh the footer ourselves.
+  function refreshFooterSection() {
+    var footer = document.getElementById('main-cart-footer');
+    if (!footer || !footer.dataset || !footer.dataset.id) return Promise.resolve();
+    return fetch('/cart?section_id=' + footer.dataset.id)
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var src = doc.querySelector('.js-contents');
+        var dest = footer.querySelector('.js-contents');
+        if (src && dest) dest.innerHTML = src.innerHTML;
+      })
+      .catch(function () {});
+  }
+
+  function reflectChange() {
+    // cart-items re-renders via CartItems on this event; footer we refresh directly.
+    if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      publish(PUB_SUB_EVENTS.cartUpdate, { source: 'express-charge' });
+    }
+    return refreshFooterSection().then(refreshExpressDisplay);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Wire-up: react to every cart update. Ignore our OWN re-render publish to
+  // avoid re-running enforcement (display still refreshes). Idempotency means
+  // even if it did run again it would converge with no change.
+  // ---------------------------------------------------------------------------
+  function onCartUpdated(event) {
+    if (event && event.source === 'express-charge') { refreshExpressDisplay(); return; }
+    runExpressEnforcement().then(function (changed) {
+      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+    });
+  }
+
+  if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdated);
+  }
+
+  // On every page load, converge the cart to a valid state, then paint the note.
+  document.addEventListener('DOMContentLoaded', function () {
+    runExpressEnforcement().then(function (changed) {
+      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+    });
+  });
+})();
+</script>
