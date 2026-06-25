@@ -114,14 +114,34 @@
       var chargeLine = items.filter(isChargeLine)[0];
       var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
 
+      console.log('[Express] enforce ->', {
+        productLines: productLines.length,
+        allExpress: allExpress,
+        hasCharge: !!chargeLine,
+        variantId: EC.variant_id,
+        modes: productLines.map(function (p) {
+          var pr = p.properties || {};
+          return (pr._delivery_mode || '?') + '/elig:' + (pr._express_eligible || '?');
+        })
+      });
+
       if (allExpress) {
         if (!chargeLine) {
-          if (!hasRealVariant()) return false; // cannot add until a real variant id is configured
+          if (!hasRealVariant()) { console.warn('[Express] no real variant id configured - charge not added'); return false; }
           return postJSON('/cart/add.js', {
             id: EC.variant_id,
             quantity: 1,
             properties: { _is_express_charge: '1' }
-          }).then(function () { return true; });
+          }).then(function (res) {
+            if (!res.ok) {
+              return res.json().then(function (e) {
+                console.warn('[Express] /cart/add.js FAILED for variant ' + EC.variant_id + ':', e);
+                return false;
+              }).catch(function () { console.warn('[Express] /cart/add.js failed, status ' + res.status); return false; });
+            }
+            console.log('[Express] charge line added');
+            return true;
+          });
         }
         if (chargeLine.quantity !== 1) {
           return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 1 }).then(function () { return true; });
