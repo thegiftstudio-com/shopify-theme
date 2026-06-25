@@ -161,10 +161,25 @@
   }
 
   window.__expressEnforcing = false;
+  window.__expressPending = false;
+  // If a cart change arrives while we're mid-enforcement, don't drop it — queue exactly
+  // one re-run so the FINAL cart state is always enforced (prevents "charge not re-added"
+  // races on rapid add/remove). The aggregated `changed` bubbles to the first caller.
   function runExpressEnforcement() {
-    if (window.__expressEnforcing) return Promise.resolve(false);
+    if (window.__expressEnforcing) { window.__expressPending = true; return Promise.resolve(false); }
     window.__expressEnforcing = true;
-    return enforceExpressCharge().finally(function () { window.__expressEnforcing = false; });
+    return enforceExpressCharge().then(function (changed) {
+      window.__expressEnforcing = false;
+      if (window.__expressPending) {
+        window.__expressPending = false;
+        return runExpressEnforcement().then(function (c) { return changed || c; });
+      }
+      return changed;
+    }, function (err) {
+      window.__expressEnforcing = false;
+      console.warn('[Express] enforce failed', err);
+      return false;
+    });
   }
   window.runExpressEnforcement = runExpressEnforcement;
 
@@ -279,6 +294,25 @@
       }
     });
   }
+
+  // Explicit safety-net on product removal: when any cart-remove control is clicked, the
+  // removal is async, so we re-check the cart shortly after it commits. If any eligible
+  // Express product still remains, the fee is (re-)added on that remaining product set;
+  // if none remain, the orphan fee is removed. Idempotent, so it layers safely on top of
+  // the cartUpdate subscriber above.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest &&
+      e.target.closest('cart-remove-button, .cart-remove-button, [data-cart-remove], a[href*="/cart/change"]');
+    if (!btn) return;
+    // Removal is async; re-check a couple of times after it commits (idempotent).
+    [400, 900].forEach(function (delay) {
+      setTimeout(function () {
+        runExpressEnforcement().then(function (changed) {
+          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+        });
+      }, delay);
+    });
+  }, true);
 
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
