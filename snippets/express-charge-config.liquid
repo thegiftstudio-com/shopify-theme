@@ -9,14 +9,6 @@
 
   IMPORTANT: This logic plugs in AROUND the existing delivery-date calculation.
   It NEVER modifies setMinDeliveryDate() or the existing delivery_date flow.
-
-  Pattern mirrors the hamper "styling charge" (sections/hamper-collections.liquid):
-  the Express charge is a real, separate Shopify product/variant; its name, price
-  and image are read live via the Storefront GraphQL API. The fee is therefore
-  backend-configurable simply by editing that product's price in Shopify.
-
-  >>> REQUIRED: paste the Express Delivery product's variant_id + product_id below.
-  Until a real variant id is set, the charge is never added (guards on REPLACE_).
   ============================================================================
 {% endcomment %}
 
@@ -32,8 +24,8 @@
 
   // --- Express charge product (price/name/image hydrated live from Shopify) ---
   window.EXPRESS_CHARGE = {
-    product_id: 'REPLACE_WITH_EXPRESS_PRODUCT_ID',
-    variant_id: 'REPLACE_WITH_EXPRESS_VARIANT_ID',
+    product_id: '10262044082483',
+    variant_id: '53547247698227',
     name: 'Express Delivery',
     price_paise: 0,
     image: ''
