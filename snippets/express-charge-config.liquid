@@ -264,6 +264,22 @@
     subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdated);
   }
 
+  // The PDP Add-to-Cart (cart_drawer_func.js) uses jQuery.ajax to /cart/add.js and does
+  // NOT publish cartUpdate, so the subscriber above never fires for it. ajaxComplete fires
+  // after EVERY jQuery request; we filter to cart mutations. Our own writes use fetch(),
+  // so they never re-trigger this -> no loop. This makes enforcement work even if the
+  // cart_drawer_func.js hook is not deployed.
+  if (window.jQuery) {
+    window.jQuery(document).ajaxComplete(function (event, xhr, settings) {
+      var url = (settings && settings.url) || '';
+      if (/\/cart\/(add|change|update)(\.js)?/.test(url)) {
+        runExpressEnforcement().then(function (changed) {
+          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+        });
+      }
+    });
+  }
+
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
     runExpressEnforcement().then(function (changed) {

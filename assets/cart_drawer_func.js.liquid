@@ -311,6 +311,11 @@ $(".custom_photo_error_txt").remove();
         pd_json_property_val["Delivery Time Slot"] = time_slot;
         pd_json_property_val["_product_warehouse"] = product_warehouse;
         pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
+        // Added by Velocity: Express Delivery mode + dates (drive cart-level enforcement & the cart delivery note)
+        pd_json_property_val["_delivery_mode"] = $("#delivery_mode_selected").val() || 'standard';
+        pd_json_property_val["_express_eligible"] = $("#express_eligible_flag").val() || '0';
+        pd_json_property_val["_express_date"] = $("#express_selected_date").val() || '';
+        pd_json_property_val["_standard_date"] = $("#standard_selected_date").val() || '';
       
       
         if (delivery_date_val == "") {
@@ -909,6 +914,8 @@ data.items.push({
 
 
                         $(".add-to-cart-button").removeAttr("disabled");
+                        // Added by Velocity: add/remove the Express charge BEFORE the drawer re-renders.
+                        (window.runExpressEnforcement ? window.runExpressEnforcement() : Promise.resolve()).then(function () {
                         $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
                             $(".add-to-cart-button .custom_spinner").css("display", "none");
                             //velocity: 17-07-2024 Function to send the event to send the side drawer open event to GTM
@@ -937,11 +944,13 @@ $zsiqFloat.css('display', 'none');
 // velocity: 01-06-2025 Updated delivery date and time slot when delivery date and time slot expired.        
                           
       validateDeliveryDates();
-                          
+                          // Added by Velocity: refresh the cart-level Express/Standard delivery note
+                          if (window.refreshExpressDisplay) { window.refreshExpressDisplay(); }
                         }, 500);
                         // Code end by NR
 
                         });
+                        }); // Added by Velocity: close runExpressEnforcement().then wrapper
 
                     }
                 },
