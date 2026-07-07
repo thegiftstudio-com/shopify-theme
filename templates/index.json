@@ -12,6 +12,24 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_FqtiYw": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/Rakhi-Teaser-MOB_2.jpg",
+            "gift_title": "Raksha Bandhan",
+            "img_url": "https://thegiftstudio.com/collections/rakhi-view-all"
+          }
+        },
+        "text_AHVRiB": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/International-Shipping---MOB.jpg",
+            "gift_title": "Send Rakhi Worldwide",
+            "img_url": "https://thegiftstudio.com/collections/rakhis-for-international-shipping"
+          }
+        },
         "text_neBpXL": {
           "type": "Text",
           "disabled": true,
@@ -327,6 +345,8 @@
         }
       },
       "block_order": [
+        "text_FqtiYw",
+        "text_AHVRiB",
         "text_neBpXL",
         "text_3QqmFQ",
         "text_3q3ddF",
