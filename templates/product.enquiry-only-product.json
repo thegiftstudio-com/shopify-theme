@@ -37,6 +37,7 @@
         },
         "text_NDHUcm": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Delivery Charges & Gst on actuals",
             "text_style": "body"
@@ -44,6 +45,7 @@
         },
         "text_cnKMJk": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Customization : No",
             "text_style": "body"
