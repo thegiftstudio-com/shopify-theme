@@ -213,7 +213,9 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 36,
-        "padding_bottom": 52
+        "padding_bottom": 52,
+        "bulk": true,
+        "whatsapp_number": "917506210892"
       }
     },
     "16810765211f10f699": {
