@@ -2072,46 +2072,43 @@
       "blocks": {
         "collection_n7mEkf": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "city_hide": "",
-            "coll_img": "shopify://shop_images/WEB-SECTION-tiles.jpg",
-            "coll_title": "Celebrity Hamper",
-            "card_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
+            "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132136.222_eab144f8-9536-4740-9c79-f2f7d0b6f0b4.png",
+            "coll_title": "Designer Rakhis",
+            "card_url": "https://thegiftstudio.com/collections/rakhis#"
           }
         },
         "collection_i36tDk": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "city_hide": "",
-            "coll_img": "shopify://shop_images/Wedding.jpg",
-            "coll_title": "Diwali",
-            "card_url": "https://thegiftstudio.com/collections/diwali-gift-hampers"
+            "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132236.748.png",
+            "coll_title": "Gift FOR BROTHER",
+            "card_url": "https://thegiftstudio.com/products/sweet-symphony-rakhi-hamper-for-brother"
           }
         },
         "collection_RhiDfR": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "city_hide": "",
-            "coll_img": "shopify://shop_images/Birthday_5963d1eb-2d99-46c2-883c-8df2a903e7b5.jpg",
-            "coll_title": "Birthday Selection",
-            "card_url": "https://thegiftstudio.com/collections/birthday-curated-hampers"
+            "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132345.552.png",
+            "coll_title": "GIFT FOR SISTER",
+            "card_url": "https://thegiftstudio.com/products/tea-licious-hamper-for-sister"
           }
         },
         "collection_6m7pFN": {
           "type": "collection",
-          "disabled": true,
           "settings": {
             "city_hide": "",
-            "coll_img": "shopify://shop_images/Annivarsary.jpg",
-            "coll_title": "Anniversary Range",
+            "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132447.090.png",
+            "coll_title": "Gifts for Bhaiya & Bhabhi",
             "card_url": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples"
           }
         },
         "collection_RTQKFi": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/Cuddle_Me_Teddy_Hamper_1.jpg",
@@ -2121,6 +2118,7 @@
         },
         "collection_7xATy7": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/image_10.png",
@@ -2130,6 +2128,7 @@
         },
         "collection_mHVJrj": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/Forever_Mine_Valentine_s_Hamper.jpg",
@@ -2139,6 +2138,7 @@
         },
         "collection_gTQxkx": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/You_Me_Romantic_Keepsake_Hamper_1.jpg",
@@ -2190,10 +2190,9 @@
         "collection_tMBPET",
         "collection_nGAkGY"
       ],
-      "disabled": true,
       "settings": {
         "custom_class": "curated_category_sec",
-        "category_title": "Valentine's Collection",
+        "category_title": "Raksha Bandhan Collection",
         "columns_desktop": 3,
         "enable_desktop_slider": true,
         "columns_mobile": "2",
