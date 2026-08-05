@@ -1112,7 +1112,13 @@ class ProductRecommendations extends HTMLElement {
             this.innerHTML = recommendations.innerHTML;
           }
 
-          if (!this.querySelector('slideshow-component') && this.classList.contains('complementary-products')) {
+          // Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section that are out of stock in the customer's selected city, same as the PLP inventory logic.
+          this.removeOutOfStockRecommendations();
+
+          if (
+            (!this.querySelector('slideshow-component') || !this.querySelector('.complementary-slider li')) &&
+            this.classList.contains('complementary-products')
+          ) {
             this.remove();
           }
 
@@ -1126,6 +1132,24 @@ class ProductRecommendations extends HTMLElement {
     }
 
     new IntersectionObserver(handleIntersection.bind(this), {rootMargin: '0px 0px 400px 0px'}).observe(this);
+  }
+
+  // Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section based on city-wise inventory metafields (data_mumbai/data_kolkata/data_gurgaon/data_delhi/data_bangalore), same as the PLP inventory logic. Products tagged 'Warehouse' (data-always-show) are skipped.
+  removeOutOfStockRecommendations() {
+    const setLocation = localStorage.getItem('location');
+    if (!setLocation) return;
+
+    const cityAttr = `data_${setLocation.split('-')[1]}`;
+
+    this.querySelectorAll('.complementary-slider li[data-complementary-product-id]').forEach(item => {
+      if (item.hasAttribute('data-always-show')) return;
+      if (!item.hasAttribute(cityAttr)) return;
+
+      const inventory = item.getAttribute(cityAttr);
+      if (inventory === '' || parseInt(inventory, 10) <= 0) {
+        item.remove();
+      }
+    });
   }
 }
 

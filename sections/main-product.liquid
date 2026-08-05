@@ -605,7 +605,16 @@
                                   limit: block.settings.products_per_page
                                   offset: continue
                                 -%}
-                                  <li>
+                                  {% comment %} Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section based on city-wise inventory metafields, same as the PLP inventory logic. These data attributes are read by removeOutOfStockRecommendations() in global.js once the recommendations are fetched. {% endcomment %}
+                                  <li
+                                    data-complementary-product-id="{{ product.id }}"
+                                    data_mumbai="{{ product.metafields.custom.mumbai_inventory }}"
+                                    data_kolkata="{{ product.metafields.custom.kolkata_inventory }}"
+                                    data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}"
+                                    data_delhi="{{ product.metafields.custom.delhi_inventory }}"
+                                    data_bangalore="{{ product.metafields.custom.bangalore_inventory }}"
+                                    {% if product.tags contains 'Warehouse' %}data-always-show="true"{% endif %}
+                                  >
                                     {% render 'card-product',
                                       card_product: product,
                                       media_aspect_ratio: block.settings.image_ratio,
@@ -617,6 +626,7 @@
                                       horizontal_quick_add: true
                                     %}
                                   </li>
+                                  {% comment %} EOC {% endcomment %}
                                 {%- endfor -%}
                               </ul>
                             </div>
