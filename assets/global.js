@@ -1145,8 +1145,8 @@ class ProductRecommendations extends HTMLElement {
       if (item.hasAttribute('data-always-show')) return;
       if (!item.hasAttribute(cityAttr)) return;
 
-      const inventory = item.getAttribute(cityAttr);
-      if (inventory === '' || parseInt(inventory, 10) <= 0) {
+      const inventory = parseInt(item.getAttribute(cityAttr), 10);
+      if (isNaN(inventory) || inventory <= 0) {
         item.remove();
       }
     });
