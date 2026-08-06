@@ -605,7 +605,7 @@
                                   limit: block.settings.products_per_page
                                   offset: continue
                                 -%}
-                                  {% comment %} Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section based on city-wise inventory metafields, same as the PLP inventory logic. These data attributes are read by removeOutOfStockRecommendations() in global.js once the recommendations are fetched. {% endcomment %}
+                                  {% comment %} Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section based on city-wise inventory metafields. These data attributes are read by filterComplementaryProductsByWarehouse() in global.js, which shows only products in stock at the warehouse this hamper will actually be dispatched from (#product_warehouse, resolved in delivery_date.liquid). {% endcomment %}
                                   <li
                                     data-complementary-product-id="{{ product.id }}"
                                     data_mumbai="{{ product.metafields.custom.mumbai_inventory }}"

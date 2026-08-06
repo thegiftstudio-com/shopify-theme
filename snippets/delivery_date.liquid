@@ -532,6 +532,10 @@ $('#delivery-date-5').on('change', function () {
                             filterGiftCardsByWarehouse(selected_warehouse);
                            $('#no_card').click();
                         }
+                        // Added by Velocity on 05-08-2026-- Re-filter PDP addon/complementary products for the warehouse this hamper will actually be dispatched from.
+                        if (typeof filterComplementaryProductsByWarehouse === 'function') {
+                            filterComplementaryProductsByWarehouse(selected_warehouse);
+                        }
                     } else {
                         $('.pincode_txt')
                             .html("<span class='red_txt'>Product is not available</span>")

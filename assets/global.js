@@ -1112,19 +1112,16 @@ class ProductRecommendations extends HTMLElement {
             this.innerHTML = recommendations.innerHTML;
           }
 
-          // Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section that are out of stock in the customer's selected city, same as the PLP inventory logic.
-          this.removeOutOfStockRecommendations();
-
-          if (
-            (!this.querySelector('slideshow-component') || !this.querySelector('.complementary-slider li')) &&
-            this.classList.contains('complementary-products')
-          ) {
+          if (!this.querySelector('slideshow-component') && this.classList.contains('complementary-products')) {
             this.remove();
           }
 
           if (html.querySelector('.grid__item')) {
             this.classList.add('product-recommendations--loaded');
           }
+
+          // Added by Velocity on 05-08-2026-- Filter the newly-loaded addon/complementary products by the warehouse that will actually dispatch the main product (falls back to the customer's selected city until the pincode check resolves #product_warehouse).
+          filterComplementaryProductsByWarehouse();
         })
         .catch(e => {
           console.error(e);
@@ -1133,24 +1130,33 @@ class ProductRecommendations extends HTMLElement {
 
     new IntersectionObserver(handleIntersection.bind(this), {rootMargin: '0px 0px 400px 0px'}).observe(this);
   }
-
-  // Added by Velocity on 05-08-2026-- For filtering out the products from the PDP addon/complementary products section based on city-wise inventory metafields (data_mumbai/data_kolkata/data_gurgaon/data_delhi/data_bangalore), same as the PLP inventory logic. Products tagged 'Warehouse' (data-always-show) are skipped.
-  removeOutOfStockRecommendations() {
-    const setLocation = localStorage.getItem('location');
-    if (!setLocation) return;
-
-    const cityAttr = `data_${setLocation.split('-')[1]}`;
-
-    this.querySelectorAll('.complementary-slider li[data-complementary-product-id]').forEach(item => {
-      if (item.hasAttribute('data-always-show')) return;
-      if (!item.hasAttribute(cityAttr)) return;
-
-      const inventory = parseInt(item.getAttribute(cityAttr), 10);
-      if (isNaN(inventory) || inventory <= 0) {
-        item.remove();
-      }
-    });
-  }
 }
 
 customElements.define('product-recommendations', ProductRecommendations);
+
+// Added by Velocity on 05-08-2026-- Show only the PDP addon/complementary products that have stock in the warehouse the main product will be dispatched from (same warehouse used by filterGiftCardsByWarehouse in giftstudio.js). Called here with no argument right after recommendations load, and from delivery_date.liquid with the resolved warehouse once the pincode check completes. Uses show/hide (not removal) so it can be re-run whenever the resolved warehouse changes.
+function filterComplementaryProductsByWarehouse(selectedWarehouse) {
+  if (!selectedWarehouse) {
+    const warehouseInput = document.getElementById('product_warehouse');
+    selectedWarehouse = (warehouseInput && warehouseInput.value) || localStorage.getItem('location')?.split('-')[1];
+  }
+  if (!selectedWarehouse) return;
+
+  document.querySelectorAll('product-recommendations.complementary-products').forEach(block => {
+    const items = block.querySelectorAll('.complementary-slider li[data-complementary-product-id]');
+    if (!items.length) return;
+
+    const cityAttr = `data_${selectedWarehouse}`;
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const alwaysShow = item.hasAttribute('data-always-show');
+      const inventory = parseInt(item.getAttribute(cityAttr), 10);
+      const inStock = alwaysShow || !item.hasAttribute(cityAttr) || (!isNaN(inventory) && inventory > 0);
+      item.style.display = inStock ? '' : 'none';
+      if (inStock) visibleCount++;
+    });
+
+    block.style.display = visibleCount > 0 ? '' : 'none';
+  });
+}
