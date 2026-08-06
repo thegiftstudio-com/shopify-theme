@@ -1160,3 +1160,10 @@ function filterComplementaryProductsByWarehouse(selectedWarehouse) {
     block.style.display = visibleCount > 0 ? '' : 'none';
   });
 }
+
+// Added by Velocity on 05-08-2026-- Hide all PDP addon/complementary products when the main product itself cannot be dispatched to the entered pincode (no warehouse can serve it). Without this, the addon list keeps showing whatever it last rendered (e.g. the default-city pass on page load) instead of reflecting that nothing is deliverable. Called from delivery_date.liquid on every "not available"/"not serviceable" branch.
+function hideComplementaryProducts() {
+  document.querySelectorAll('product-recommendations.complementary-products').forEach(block => {
+    block.style.display = 'none';
+  });
+}

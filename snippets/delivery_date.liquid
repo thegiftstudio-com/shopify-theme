@@ -386,11 +386,15 @@ $(document).ready(function() {
                     $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
                     $('.pincode_btn button').attr('disabled', true);
 
-                     $('.pincode_txt').html("<span class='red_txt'>Product is not serviceable in your location</span>").removeClass('valid').addClass('invalid'); 
+                     $('.pincode_txt').html("<span class='red_txt'>Product is not serviceable in your location</span>").removeClass('valid').addClass('invalid');
                        if (isAutoPincodeFilled === 0) {
                         pushPincodeEnteredEvent(0, "Product is not serviceable in your location");
                     }
                     isAutoPincodeFilled = 0;
+                    // Added by Velocity on 05-08-2026-- Hide PDP addon/complementary products, no warehouse can serve this pincode.
+                    if (typeof hideComplementaryProducts === 'function') {
+                        hideComplementaryProducts();
+                    }
                     return;
                   }
                     let availabel_in_cart = 0;
@@ -427,11 +431,15 @@ $(document).ready(function() {
                           $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
                           $('.pincode_btn button').attr('disabled', true);
       
-                           $('.pincode_txt').html("<span class='red_txt'>Product is not available</span>").removeClass('valid').addClass('invalid'); 
+                           $('.pincode_txt').html("<span class='red_txt'>Product is not available</span>").removeClass('valid').addClass('invalid');
                              if (isAutoPincodeFilled === 0) {
                               pushPincodeEnteredEvent(0, "Product is not available");
                           }
                           isAutoPincodeFilled = 0;
+                          // Added by Velocity on 05-08-2026-- Hide PDP addon/complementary products, no warehouse can serve this pincode.
+                          if (typeof hideComplementaryProducts === 'function') {
+                              hideComplementaryProducts();
+                          }
                           return;
                         }
                         // Fallback warehouses based on primary warehouse mapping:
@@ -542,12 +550,20 @@ $('#delivery-date-5').on('change', function () {
                             .removeClass('valid')
                             .addClass('invalid');
                         $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                        // Added by Velocity on 05-08-2026-- Hide PDP addon/complementary products, no warehouse (primary or fallback) can serve this pincode.
+                        if (typeof hideComplementaryProducts === 'function') {
+                            hideComplementaryProducts();
+                        }
                     }
                 } else {
                     $('.time_slot_picker').css('display','none');
                     $('#pincode_input').prop('disabled', false);
                     $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
                     $('.pincode_btn button').attr('disabled', true);
+                    // Added by Velocity on 05-08-2026-- Hide PDP addon/complementary products, pincode is not deliverable/product unavailable.
+                    if (typeof hideComplementaryProducts === 'function') {
+                        hideComplementaryProducts();
+                    }
                     if(data.message_code == '1') {
                        $('.pincode_txt').html("<span class='red_txt'>We don't deliver to the entered pincode</span>").removeClass('valid').addClass('invalid');
                        if (isAutoPincodeFilled === 0) {
