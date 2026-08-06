@@ -1158,6 +1158,21 @@ function filterComplementaryProductsByWarehouse(selectedWarehouse) {
     });
 
     block.style.display = visibleCount > 0 ? '' : 'none';
+
+    // Added by Velocity on 05-08-2026-- Hide slider pages (and their pagination dot) left with zero in-stock items after filtering, so the slideshow never lands on a blank page. Hiding the slide div (not just its <li>s) drops its clientWidth to 0, which SliderComponent.initPages() already uses to exclude pages from the count -- calling it again here just forces that recompute now instead of waiting on a resize.
+    const slides = Array.from(block.querySelectorAll('.complementary-slide'));
+    const dots = Array.from(block.querySelectorAll('.slider-counter__link'));
+    slides.forEach((slide, index) => {
+      const hasVisibleItem = Array.from(slide.querySelectorAll('li[data-complementary-product-id]')).some(li => li.style.display !== 'none');
+      slide.style.display = hasVisibleItem ? '' : 'none';
+      if (dots[index]) dots[index].style.display = hasVisibleItem ? '' : 'none';
+    });
+
+    const slideshow = block.querySelector('slideshow-component');
+    if (slideshow && slideshow.slider && slideshow.nextButton && typeof slideshow.initPages === 'function') {
+      slideshow.slider.scrollTo({ left: 0 });
+      slideshow.initPages();
+    }
   });
 }
 
