@@ -3,6 +3,15 @@
   class="page-width section-{{ section.id }}-padding"
   data-section="{{ section.id }}"
 >
+  {%- assign show_international_rakhi_cart = false -%}
+  {%- if localization.country.iso_code != 'IN' and product.template_suffix == 'enquiry-only-product' -%}
+    {%- for product_collection in product.collections -%}
+      {%- if product_collection.handle == 'rakhi-to-usa' -%}
+        {%- assign show_international_rakhi_cart = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
   {{ 'section-main-product.aio.min.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.aio.min.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.aio.min.css' | asset_url | stylesheet_tag }}
@@ -502,13 +511,16 @@
             {% when 'custom_badges' %}
               {% render 'callout-section-badges', block: block %}
             {%- when 'buy_buttons' -%}
-              {%- render 'buy-buttons',
-                block: block,
-                product: product,
-                product_form_id: product_form_id,
-                section_id: section.id,
-                show_pickup_availability: true
-              -%}
+              {%- if show_international_rakhi_cart -%}
+                {%- render 'buy-buttons',
+                  block: block,
+                  product: product,
+                  product_form_id: product_form_id,
+                  section_id: section.id,
+                  show_pickup_availability: false,
+                  international_rakhi_cart: true
+                -%}
+              {%- endif -%}
             {%- when 'rating' -%}
               {%- if product.metafields.reviews.rating.value != blank -%}
                 {% liquid
