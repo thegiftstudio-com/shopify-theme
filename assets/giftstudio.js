@@ -126,11 +126,15 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
+            if (typeof window.getPdpDeliveryDateAvailability === "function") {
+                return window.getPdpDeliveryDateAvailability(date, false);
+            }
             return [true, ""];
         }
     });
     }
   var sunday = 0;
+  var disableSundayForDatePicker = false;
    if (selected_warehouse_tat+product_Tat > 0 && !enableSundayDelivery) {
     // To handle the scenerio when the product for the same day delivery post 7 PM was getting skipped
     // Added by Velocity 18-08-2025 Handle all NDD orders except SDD.
@@ -150,9 +154,13 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     // Add number of Sundays to minDate
     minDate.setDate(minDate.getDate() + sunday);
   if($datePicker!=''){
+     disableSundayForDatePicker = true;
      $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
+            if (typeof window.getPdpDeliveryDateAvailability === "function") {
+                return window.getPdpDeliveryDateAvailability(date, true);
+            }
             return [date.getDay() !== 0, ""]; // Disable Sundays
         }
     });
@@ -160,6 +168,11 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
    }
    }
   if($datePicker!=''){
+    if (typeof window.getPdpDeliveryDateAvailability === "function") {
+      while (!window.getPdpDeliveryDateAvailability(minDate, disableSundayForDatePicker)[0]) {
+        minDate.setDate(minDate.getDate() + 1);
+      }
+    }
     // $datePicker.addClass("ui-state-highlight");
     // $datePicker.prop("disabled", false);
     // $datePicker.datepicker("option", "minDate", minDate);
