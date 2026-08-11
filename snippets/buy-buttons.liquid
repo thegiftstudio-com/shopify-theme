@@ -114,57 +114,6 @@
          <div class="lt_error_text"></div>
         </div>
 
-        {%- if international_rakhi_cart -%}
-          <script>
-            (function () {
-              var internationalButton = document.getElementById('ProductSubmitButton-{{ section_id }}');
-              if (!internationalButton || internationalButton.dataset.internationalHandlerAttached === 'true') return;
-
-              internationalButton.dataset.internationalHandlerAttached = 'true';
-              internationalButton.addEventListener('click', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                var button = event.currentTarget;
-                var form = button.closest('form');
-                var cart = document.querySelector('cart-drawer');
-                var formData = new FormData(form);
-
-                button.disabled = true;
-                button.setAttribute('aria-disabled', 'true');
-                button.querySelector('.custom_spinner').style.display = 'flex';
-
-                if (cart && cart.getSectionsToRender) {
-                  formData.append('sections', cart.getSectionsToRender().map(function (section) { return section.id; }));
-                  formData.append('sections_url', window.location.pathname);
-                }
-
-                fetch('/cart/add.js', {
-                  method: 'POST',
-                  headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                  body: formData
-                })
-                  .then(function (response) { return response.json(); })
-                  .then(function (response) {
-                    if (response.status) throw new Error(response.description || 'Unable to add this product to cart.');
-                    if (cart && cart.renderContents) {
-                      cart.renderContents(response);
-                    } else {
-                      window.location.href = '/cart';
-                    }
-                  })
-                  .catch(function (error) {
-                    button.closest('product-form').querySelector('.lt_error_text').textContent = error.message;
-                  })
-                  .finally(function () {
-                    button.disabled = false;
-                    button.removeAttribute('aria-disabled');
-                    button.querySelector('.custom_spinner').style.display = 'none';
-                  });
-              });
-            })();
-          </script>
-        {%- endif -%}
         </div>
           {%- if block.settings.show_dynamic_checkout -%}
           <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/flash_1.png?v=1674488992" alt="buy_now" class="buy_now">
@@ -241,6 +190,10 @@
 
             
 </div>
+
+{%- if international_rakhi_cart -%}
+  {{ 'international-rakhi-cart.js' | asset_url | script_tag }}
+{%- endif -%}
 
 <style>
   .shopify-payment-button__button{display: none}
