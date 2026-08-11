@@ -21,6 +21,15 @@
             "img_url": "https://thegiftstudio.com/collections/rakhi-view-all"
           }
         },
+        "text_kNDQJj": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "Rakhi To USA",
+            "gift_img": "shopify://shop_images/USA_TILE.png",
+            "gift_title": "Rakhi To USA",
+            "img_url": "https://thegiftstudio.com/collections/rakhi-to-usa"
+          }
+        },
         "text_AHVRiB": {
           "type": "Text",
           "settings": {
@@ -346,6 +355,7 @@
       },
       "block_order": [
         "text_FqtiYw",
+        "text_kNDQJj",
         "text_AHVRiB",
         "text_neBpXL",
         "text_3QqmFQ",
