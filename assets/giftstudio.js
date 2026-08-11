@@ -1,5 +1,17 @@
 
 var clickTargetUrl = '';
+
+// Rakhi 2026 delivery blackout shared by PDP and BYOH calendars.
+window.getDeliveryDateAvailability = function (date, disableSunday) {
+  const rakhiBlackoutStart = new Date(2026, 7, 25);
+  const rakhiBlackoutEnd = new Date(2026, 7, 28);
+  const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const isRakhiBlackoutDate = calendarDate >= rakhiBlackoutStart && calendarDate <= rakhiBlackoutEnd;
+  const isSunday = disableSunday && calendarDate.getDay() === 0;
+
+  return [!isRakhiBlackoutDate && !isSunday, isRakhiBlackoutDate ? "rakhi-delivery-blackout" : ""];
+};
+
 // velocity: This function handles showing a popup and then redirecting to the passed URL after a delay
 function handleRedirectWithPopup(url, image_src='', isBannerClick = 0) {
 
@@ -126,8 +138,8 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
-            if (typeof window.getPdpDeliveryDateAvailability === "function") {
-                return window.getPdpDeliveryDateAvailability(date, false);
+            if (typeof window.getDeliveryDateAvailability === "function") {
+                return window.getDeliveryDateAvailability(date, false);
             }
             return [true, ""];
         }
@@ -158,8 +170,8 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
      $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
-            if (typeof window.getPdpDeliveryDateAvailability === "function") {
-                return window.getPdpDeliveryDateAvailability(date, true);
+            if (typeof window.getDeliveryDateAvailability === "function") {
+                return window.getDeliveryDateAvailability(date, true);
             }
             return [date.getDay() !== 0, ""]; // Disable Sundays
         }
@@ -168,8 +180,8 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
    }
    }
   if($datePicker!=''){
-    if (typeof window.getPdpDeliveryDateAvailability === "function") {
-      while (!window.getPdpDeliveryDateAvailability(minDate, disableSundayForDatePicker)[0]) {
+    if (typeof window.getDeliveryDateAvailability === "function") {
+      while (!window.getDeliveryDateAvailability(minDate, disableSundayForDatePicker)[0]) {
         minDate.setDate(minDate.getDate() + 1);
       }
     }

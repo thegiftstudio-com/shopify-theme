@@ -94,21 +94,11 @@
             </p>
         </div>
         <p class="rakhi-delivery-notice" role="note">
-            Delivery is unavailable from 24th August to 28th August due to Rakhi.
+            Delivery is unavailable from 25th August to 28th August due to Rakhi.
         </p>
   </div>
 
 <script>
-    window.getPdpDeliveryDateAvailability = function (date, disableSunday) {
-        const rakhiBlackoutStart = new Date(2026, 7, 24);
-        const rakhiBlackoutEnd = new Date(2026, 7, 28);
-        const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        const isRakhiBlackoutDate = calendarDate >= rakhiBlackoutStart && calendarDate <= rakhiBlackoutEnd;
-        const isSunday = disableSunday && calendarDate.getDay() === 0;
-
-        return [!isRakhiBlackoutDate && !isSunday, isRakhiBlackoutDate ? "rakhi-delivery-blackout" : ""];
-    };
-
     $(document).ready(function () {
         const $datePicker = $("#delivery-date-5");
         $datePicker.datepicker({
@@ -118,7 +108,7 @@
             showAnim: "slideDown",
             minDate: 1, // Ensures only future dates are enabled
             beforeShowDay: function (date) {
-                return window.getPdpDeliveryDateAvailability(date, false);
+                return window.getDeliveryDateAvailability(date, false);
             }
         });
     });
