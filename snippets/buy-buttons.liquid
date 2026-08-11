@@ -83,7 +83,7 @@
         <div class="add_to_cart_btn_sec">
      <button
             id = "ProductSubmitButton-{{ section_id }}"
-            type="button"
+            type="{% if international_rakhi_cart %}submit{% else %}button{% endif %}"
             name="add"
             class="cmn_btn add-to-cart-button product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}{% if international_rakhi_cart %} international-rakhi-cart{% endif %}"
             {% if international_rakhi_cart %}data-international-rakhi="true"{% endif %}
@@ -189,10 +189,6 @@
 
             
 </div>
-
-{%- if international_rakhi_cart -%}
-  {{ 'cart_drawer_func.js' | asset_url | script_tag }}
-{%- endif -%}
 
 <style>
   .shopify-payment-button__button{display: none}

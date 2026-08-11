@@ -134,35 +134,6 @@ function hasBlankFields() {
   
 
     $(".add-to-cart-button").on("click", function(event) {
-      // International Rakhi products bypass India-only pincode, delivery-date,
-      // inventory and customization checks and use the standard Shopify cart.
-      if ($(this).data("international-rakhi") === true || $(this).data("international-rakhi") === "true") {
-        var internationalButton = $(this);
-        var internationalForm = internationalButton.closest("form");
-        internationalButton.prop("disabled", true);
-        internationalButton.find(".custom_spinner").css("display", "flex");
-
-        $.ajax({
-          type: "POST",
-          url: "/cart/add.js",
-          data: internationalForm.serialize(),
-          dataType: "json",
-          success: function() {
-            $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
-              internationalButton.prop("disabled", false);
-              internationalButton.find(".custom_spinner").css("display", "none");
-              $("cart-drawer.drawer").addClass("active");
-            });
-          },
-          error: function() {
-            internationalButton.prop("disabled", false);
-            internationalButton.find(".custom_spinner").css("display", "none");
-            internationalButton.siblings(".lt_error_text").text("Something went wrong. Please try again.");
-          }
-        });
-        return;
-      }
-
       // debugger;
      // code star by dev NR
         var newProdTags = $(".hidden_tag").val();
