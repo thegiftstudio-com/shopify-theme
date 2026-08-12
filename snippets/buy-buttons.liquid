@@ -43,8 +43,8 @@
                     > -->
         
                     <div class="custom_field_sec">
-                    {% render 'custom_field',
-                     addons_product_block: addons_product_block
+                    {% render 'custom_field' 
+                     render_addons_product: render_addons_product
                     %}
                     </div>
         <div class="product-form__buttons {{ product.tags | join: " " }}">
