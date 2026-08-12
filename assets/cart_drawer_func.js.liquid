@@ -43,6 +43,7 @@ $(document).ready(function() {
     var sleeve_product_id = "";
     // Added by Velocity on 12-08-2026 to store the selected Rakhi add-on product.
     var rakhi_product_id = "";
+    var rakhi_product_name = "";
     var color_product_id = ""; 
     var selectedProducts = [];
 // Multiselect Addon Product on PDP page Added By Velocity 11-07-2025
@@ -107,6 +108,7 @@ $('.product_checkbox').on('change', function () {
         $('input[name="rakhi_product_id"]:checked').each(function() {
             rakhi_product_id = this.value;
             var rakhi_pd_name = $(this).parent().find('.rakhi_pd_name').val();
+            rakhi_product_name = rakhi_pd_name;
             var rakhi_pd_price = $(this).parent().find('.rakhi_pd_price').val() / 100;
             $('.show_rakhi_prod_name').text(rakhi_pd_name);
             if (rakhi_pd_price) {
@@ -825,7 +827,7 @@ if (rakhi_product_id && rakhi_product_id !== "") {
         "id": rakhi_product_id,
         "quantity": pd_quantity,
         "properties": {
-            "Product title": product_name
+            "Product title": rakhi_product_name
         }
     });
 }
