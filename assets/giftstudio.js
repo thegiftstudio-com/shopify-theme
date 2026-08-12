@@ -1534,8 +1534,8 @@ function filterGiftCardsByWarehouse(selectedWarehouse=null) {
     if (!selectedWarehouse) {
         selectedWarehouse = localStorage.getItem("location")?.split("-")[1];
     }
-    // Filter gift cards based on selected warehouse availability
-    $('.gift_product.gift_card_product').each(function() {
+    // Filter gift cards and Rakhi add-ons based on selected warehouse availability. Rakhi support added by Velocity on 12-08-2026
+    $('.gift_product.gift_card_product, .gift_product.rakhi_addon_product').each(function() {
         var cardElement = $(this);
         var cardInventory = parseInt(cardElement.data(selectedWarehouse + '-inventory')) || 0;
         
