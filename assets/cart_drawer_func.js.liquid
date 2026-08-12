@@ -43,7 +43,6 @@ $(document).ready(function() {
     var sleeve_product_id = "";
     // Added by Velocity on 12-08-2026 to store the selected Rakhi add-on product.
     var rakhi_product_id = "";
-    var rakhi_product_name = "";
     var color_product_id = ""; 
     var selectedProducts = [];
 // Multiselect Addon Product on PDP page Added By Velocity 11-07-2025
@@ -108,7 +107,6 @@ $('.product_checkbox').on('change', function () {
         $('input[name="rakhi_product_id"]:checked').each(function() {
             rakhi_product_id = this.value;
             var rakhi_pd_name = $(this).parent().find('.rakhi_pd_name').val();
-            rakhi_product_name = rakhi_pd_name;
             var rakhi_pd_price = $(this).parent().find('.rakhi_pd_price').val() / 100;
             $('.show_rakhi_prod_name').text(rakhi_pd_name);
             if (rakhi_pd_price) {
@@ -249,7 +247,8 @@ function hasBlankFields() {
         var error_message = $('.error_msg').val();
 
 
-        var product_name = $('.product__title h1').html();
+        // Read the main product title as text so HTML entities such as &nbsp; are not added to cart properties.
+        var product_name = $('.product__title h1').text().trim();
         var pd_quantity = $('.product_quantity_input_pdp').val() || 1;
         var custom_game_text = $('.custom_game_input').val();
       var fileInput = $("#custom_photo")[0]; // Get the DOM element from jQuery
@@ -827,7 +826,7 @@ if (rakhi_product_id && rakhi_product_id !== "") {
         "id": rakhi_product_id,
         "quantity": pd_quantity,
         "properties": {
-            "Product title": rakhi_product_name
+            "Product title": product_name
         }
     });
 }
