@@ -550,7 +550,7 @@
                 </p>
               {%- endif -%}
             {%- when 'complementary' -%}
-                {% assign render_addons_product = true %}
+                {% assign render_addons_product = block %}
             {%- when 'icon-with-text' -%}
               {% render 'icon-with-text', block: block %}
           {%- endcase -%}

@@ -28,6 +28,12 @@
         <span class="product-form__error-message"></span>
       </div>
 
+      <div class="custom_field_sec">
+        {% render 'custom_field',
+          render_addons_product: render_addons_product
+        %}
+      </div>
+
       {%- form 'product',
         product,
         id: product_form_id,
@@ -42,11 +48,6 @@
                       disabled
                     > -->
         
-                    <div class="custom_field_sec">
-                    {% render 'custom_field' 
-                     render_addons_product: render_addons_product
-                    %}
-                    </div>
         <div class="product-form__buttons {{ product.tags | join: " " }}">
 
       
