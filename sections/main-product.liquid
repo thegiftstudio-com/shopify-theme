@@ -159,8 +159,14 @@
   <p class="product_tags" style="display:none;">
     {{ product.tags | join: ', ' }}
   </p>
-{% comment %} Added by velocity on 12-08-2026 for rendering addons product at a different location  {% endcomment %}
-  {% assign render_addons_product = false %}
+  {% comment %} Added by Velocity on 12-08-2026 for rendering the Add Ons product at a different location. {% endcomment %}
+  {% assign addons_product_block = nil %}
+  {% for section_block in section.blocks %}
+    {% if section_block.type == 'complementary' %}
+      {% assign addons_product_block = section_block %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
 
   {% for location in locations %}
     {% if location == 'gurgaon' %}
@@ -510,7 +516,7 @@
                 product_form_id: product_form_id,
                 section_id: section.id,
                 show_pickup_availability: true,
-                render_addons_product:render_addons_product
+                addons_product_block: addons_product_block
 
               -%}
             {%- when 'rating' -%}
@@ -549,8 +555,6 @@
                   </span>
                 </p>
               {%- endif -%}
-            {%- when 'complementary' -%}
-                {% assign render_addons_product = true %}
             {%- when 'icon-with-text' -%}
               {% render 'icon-with-text', block: block %}
           {%- endcase -%}
