@@ -727,6 +727,8 @@
               <!-- [custom code] -->
 
               {%- for item in cart.items -%}
+                {%- comment -%} Added by Velocity: never show the Express Delivery charge as a cart row {%- endcomment -%}
+                {%- if item.properties._is_express_charge -%}{%- continue -%}{%- endif -%}
                 {% if item.product.tags contains 'same-day' and item.product.tags contains 'location-roi' %}
                   {% assign number = 5 %}
                 {% else %}

@@ -30,11 +30,18 @@
               {% render block %}
             {%- when 'subtotal' -%}
               <div class="js-contents" {{ block.shopify_attributes }}>
-<!--             <div class="totals express_dilevery_price">
-                  <h2 class="totals__subtotal">Express Delivery</h2>
-                  <p class="totals__subtotal-value">₹150</p>
-                </div>
-                <br> -->
+                {%- comment -%} Added by Velocity: Express Delivery fee row, shown only when the (hidden) charge line is in the cart {%- endcomment -%}
+                {%- assign express_charge_line = null -%}
+                {%- for item in cart.items -%}
+                  {%- if item.properties._is_express_charge -%}{%- assign express_charge_line = item -%}{%- endif -%}
+                {%- endfor -%}
+                {%- if express_charge_line -%}
+                  <div class="totals express_dilevery_price">
+                    <h2 class="totals__subtotal">Express Delivery</h2>
+                    <p class="totals__subtotal-value">{{ express_charge_line.final_line_price | money }}</p>
+                  </div>
+                  <br>
+                {%- endif -%}
                 <div class="totals">
                   <h2 class="totals__subtotal font_bold">{{ 'sections.cart.subtotal' | t }}</h2>
                   <p class="totals__subtotal-value totals__subtotal-value1 font_bold">{{ cart.original_total_price | money_with_currency }}</p>
@@ -99,6 +106,9 @@
               {%- endif -%}
           {%- endcase -%}
         {% endfor %}
+
+        {%- comment -%} Added by Velocity: cart-level delivery promise (latest date wins). Outside .js-contents so it survives section re-render; populated by refreshExpressDisplay(). {%- endcomment -%}
+        <p class="express-delivery-summary font_bold" style="display:none; margin-top:10px;"></p>
 
         <div id="cart-errors"></div>
       </div>

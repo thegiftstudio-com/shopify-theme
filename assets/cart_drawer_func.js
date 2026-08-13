@@ -260,6 +260,14 @@ $(".custom_photo_error_txt").remove();
         pd_json_property_val["Delivery Time Slot"] = time_slot;
         pd_json_property_val["_product_warehouse"] = product_warehouse;
         pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
+        // Added by Velocity 13-08-2026: Express mode, private Standard date and API-hydrated charge metadata.
+        var deliveryMode = $("#delivery_mode_selected").val() || 'standard';
+        pd_json_property_val["_delivery_mode"] = deliveryMode;
+        pd_json_property_val["_express_eligible"] = $("#express_eligible_flag").val() || '0';
+        pd_json_property_val["_express_date"] = $("#express_selected_date").val() || '';
+        pd_json_property_val["_standard_date"] = $("#standard_selected_date").val() || '';
+        pd_json_property_val["_express_charge_variant_id"] = $("#express_charge_variant_id").val() || '53547247698227';
+        pd_json_property_val["_express_charge_price_paise"] = $("#express_charge_price_paise").val() || '';
       
       
         if (delivery_date_val == "") {
@@ -270,7 +278,7 @@ $(".custom_photo_error_txt").remove();
             $(".add-to-cart-button .custom_spinner").css("display", "none");
             return false;
         }
-        pd_json_property_val["Delivery date"] = delivery_date_val;
+        Object.assign(pd_json_property_val, ExpressDeliveryUtils.deliveryDateProperties(deliveryMode, delivery_date_val));
 
         if ($("#balloon-customisation-txt").length == 1) {
             var ballon_customisation_val = $("#balloon-customisation-txt").val();
@@ -776,6 +784,8 @@ $(".custom_photo_error_txt").remove();
 
 
                         $(".add-to-cart-button").removeAttr("disabled");
+                        // Added by Velocity 13-08-2026: enforce the Express charge before refreshing the cart drawer.
+                        (window.runExpressEnforcement ? window.runExpressEnforcement() : Promise.resolve()).then(function () {
                         $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
                             $(".add-to-cart-button .custom_spinner").css("display", "none");
                             //velocity: 17-07-2024 Function to send the event to send the side drawer open event to GTM
@@ -803,10 +813,11 @@ $zsiqFloat.css('display', 'none');
 // velocity: 01-06-2025 Updated delivery date and time slot when delivery date and time slot expired.        
                           
       validateDeliveryDates();
-                          
+                          if (window.refreshExpressDisplay) { window.refreshExpressDisplay(); }
                         }, 500);
                         // Code end by NR
 
+                        });
                         });
 
                     }
