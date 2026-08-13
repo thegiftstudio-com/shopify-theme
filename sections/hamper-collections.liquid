@@ -1952,6 +1952,24 @@ $(selector).css('display', 'block');
     } else if ($("#delivery-date-byoh-web").is(":visible")) {
         deliveryDate = $("#delivery-date-byoh-web").val();
     }
+
+    const deliveryDateParts = (deliveryDate || '').split('-');
+    const selectedDeliveryDate = deliveryDateParts.length === 3
+      ? new Date(deliveryDateParts[2], deliveryDateParts[1] - 1, deliveryDateParts[0])
+      : null;
+    const isValidDeliveryDate = selectedDeliveryDate && !isNaN(selectedDeliveryDate.getTime());
+    const isAvailableDeliveryDate = isValidDeliveryDate
+      && window.getDeliveryDateAvailability(selectedDeliveryDate, false)[0];
+
+    if (!isAvailableDeliveryDate) {
+      document.getElementById('warning-msg').textContent = isValidDeliveryDate
+        ? "Delivery is unavailable from 25th August to 28th August due to Rakhi. Please select another date."
+        : "Please select a valid delivery date.";
+      document.getElementById("warning-popup").style.display = "block";
+      document.getElementById("warning-overlay").style.display = "block";
+      return false;
+    }
+
     Object.keys(addToCartData).forEach(key => {
         addToCartData[key].properties["Delivery date"] = deliveryDate;
     });
@@ -2619,6 +2637,7 @@ $(selector).css('display', 'block');
     const mobileDatePicker = $("#delivery-date-byoh-mobile");
     const webDatePicker = $("#delivery-date-byoh-web");
     const totalProductTat = $("#total-product-tat");
+    const disableSundayForDatePicker = maxTAT > 0 && !enableSundayDelivery;
     // const webDatePicker = $("#delivery-date-byoh-web");
     // var today = new Date();
 
@@ -2642,12 +2661,22 @@ $(selector).css('display', 'block');
     
     mobileDatePicker.addClass("ui-state-highlight");
     mobileDatePicker.prop("disabled", false);
-    mobileDatePicker.datepicker("option", "minDate", minDate);
+    mobileDatePicker.datepicker("option", {
+      minDate: minDate,
+      beforeShowDay: function (date) {
+        return window.getDeliveryDateAvailability(date, false);
+      }
+    });
     mobileDatePicker.datepicker("setDate", finalDate);
 
     webDatePicker.addClass("ui-state-highlight");
     webDatePicker.prop("disabled", false);
-    webDatePicker.datepicker("option", "minDate", minDate);
+    webDatePicker.datepicker("option", {
+      minDate: minDate,
+      beforeShowDay: function (date) {
+        return window.getDeliveryDateAvailability(date, false);
+      }
+    });
     webDatePicker.datepicker("setDate", finalDate);
     totalProductTat.val(maxTAT);
     var sundayCount = 0;
@@ -2674,13 +2703,13 @@ $(selector).css('display', 'block');
     mobileDatePicker.datepicker("option", {
         // minDate: minDate,
         beforeShowDay: function (date) {
-            return [date.getDay() !== 0, ""]; // Disable Sundays
+            return window.getDeliveryDateAvailability(date, true);
         }
     });
      webDatePicker.datepicker("option", {
         // minDate: minDate,
         beforeShowDay: function (date) {
-            return [date.getDay() !== 0, ""]; // Disable Sundays
+            return window.getDeliveryDateAvailability(date, true);
         }
     });
      mobileDatePicker.addClass("ui-state-highlight");
@@ -2693,6 +2722,13 @@ $(selector).css('display', 'block');
     webDatePicker.datepicker("option", "minDate", minDate);
     webDatePicker.datepicker("setDate", finalDate);
     }
+
+    while (!window.getDeliveryDateAvailability(finalDate, disableSundayForDatePicker)[0]) {
+      finalDate.setDate(finalDate.getDate() + 1);
+    }
+
+    mobileDatePicker.datepicker("setDate", finalDate);
+    webDatePicker.datepicker("setDate", finalDate);
     return maxTAT+sundayCount;
 }
     

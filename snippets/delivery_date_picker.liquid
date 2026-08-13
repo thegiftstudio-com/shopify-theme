@@ -67,6 +67,13 @@
     box-shadow: 0 0 11px rgb(0 0 0) !important;
 }
 
+.rakhi-delivery-notice {
+    margin: 8px 0 0;
+    color: #c62828;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
 </style>
 
  <div class="cart-delivery-date">
@@ -86,6 +93,9 @@
                 />
             </p>
         </div>
+        <p class="rakhi-delivery-notice" role="note">
+            Due to high Rakhi order volumes, deliveries are currently unavailable from 25–28 August. Please select an alternative delivery date.
+        </p>
   </div>
 
 <script>
@@ -96,7 +106,10 @@
             changeMonth: true,
             changeYear: true,
             showAnim: "slideDown",
-            minDate: 1 // Ensures only future dates are enabled
+            minDate: 1, // Ensures only future dates are enabled
+            beforeShowDay: function (date) {
+                return window.getDeliveryDateAvailability(date, false);
+            }
         });
     });
 </script>

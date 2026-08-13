@@ -286,6 +286,25 @@ $(".custom_photo_error_txt").remove();
             $(".add-to-cart-button .custom_spinner").css("display", "none");
             return false;
         }
+
+        var deliveryDateParts = delivery_date_val.split('-');
+        var selectedDeliveryDate = deliveryDateParts.length === 3
+          ? new Date(deliveryDateParts[2], deliveryDateParts[1] - 1, deliveryDateParts[0])
+          : null;
+        var isValidDeliveryDate = selectedDeliveryDate && !isNaN(selectedDeliveryDate.getTime());
+
+        if (!isValidDeliveryDate || !window.getDeliveryDateAvailability(selectedDeliveryDate, false)[0]) {
+            $(".lt_error_text").text(
+              isValidDeliveryDate
+                ? "Delivery is unavailable from 25th August to 28th August due to Rakhi. Please select another date."
+                : "Please choose a valid delivery date."
+            );
+            $("#delivery-date-5").focus();
+            $(".add-to-cart-button").removeAttr("disabled");
+            $(".add-to-cart-button .custom_spinner").css("display", "none");
+            return false;
+        }
+
         pd_json_property_val["Delivery date"] = delivery_date_val;
 
         if ($("#balloon-customisation-txt").length == 1) {

@@ -1,5 +1,17 @@
 
 var clickTargetUrl = '';
+
+// Rakhi 2026 delivery blackout shared by PDP and BYOH calendars.
+window.getDeliveryDateAvailability = function (date, disableSunday) {
+  const rakhiBlackoutStart = new Date(2026, 7, 25);
+  const rakhiBlackoutEnd = new Date(2026, 7, 28);
+  const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const isRakhiBlackoutDate = calendarDate >= rakhiBlackoutStart && calendarDate <= rakhiBlackoutEnd;
+  const isSunday = disableSunday && calendarDate.getDay() === 0;
+
+  return [!isRakhiBlackoutDate && !isSunday, isRakhiBlackoutDate ? "rakhi-delivery-blackout" : ""];
+};
+
 // velocity: This function handles showing a popup and then redirecting to the passed URL after a delay
 function handleRedirectWithPopup(url, image_src='', isBannerClick = 0) {
 
@@ -126,11 +138,15 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
+            if (typeof window.getDeliveryDateAvailability === "function") {
+                return window.getDeliveryDateAvailability(date, false);
+            }
             return [true, ""];
         }
     });
     }
   var sunday = 0;
+  var disableSundayForDatePicker = false;
    if (selected_warehouse_tat+product_Tat > 0 && !enableSundayDelivery) {
     // To handle the scenerio when the product for the same day delivery post 7 PM was getting skipped
     // Added by Velocity 18-08-2025 Handle all NDD orders except SDD.
@@ -150,9 +166,13 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
     // Add number of Sundays to minDate
     minDate.setDate(minDate.getDate() + sunday);
   if($datePicker!=''){
+     disableSundayForDatePicker = true;
      $datePicker.datepicker("option", {
         minDate: minDate,
         beforeShowDay: function (date) {
+            if (typeof window.getDeliveryDateAvailability === "function") {
+                return window.getDeliveryDateAvailability(date, true);
+            }
             return [date.getDay() !== 0, ""]; // Disable Sundays
         }
     });
@@ -160,6 +180,11 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
    }
    }
   if($datePicker!=''){
+    if (typeof window.getDeliveryDateAvailability === "function") {
+      while (!window.getDeliveryDateAvailability(minDate, disableSundayForDatePicker)[0]) {
+        minDate.setDate(minDate.getDate() + 1);
+      }
+    }
     // $datePicker.addClass("ui-state-highlight");
     // $datePicker.prop("disabled", false);
     // $datePicker.datepicker("option", "minDate", minDate);
