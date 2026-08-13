@@ -85,12 +85,6 @@
             "custom_liquid": "{% render 'offers-on-pdp' %}"
           }
         },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": false
-          }
-        },
         "complementary_JKMkkP": {
           "type": "complementary",
           "settings": {
@@ -102,6 +96,12 @@
             "pagination_style": "numbers",
             "image_ratio": "square",
             "enable_quick_add": true
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false
           }
         },
         "quinn_shoppable_reel_app_cards_block_rpQTeF": {
@@ -207,8 +207,8 @@
         "custom_liquid_4fGHRF",
         "custom_badges_QCNVye",
         "custom_liquid_MiiLXn",
-        "buy_buttons",
         "complementary_JKMkkP",
+        "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
         "description",
         "share",

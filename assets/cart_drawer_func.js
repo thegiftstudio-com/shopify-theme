@@ -41,6 +41,8 @@ $(document).ready(function() {
 
     var gift_product_id = "";
     var sleeve_product_id = "";
+    // Added by Velocity on 12-08-2026 to store the selected Rakhi add-on product.
+    var rakhi_product_id = "";
     var color_product_id = ""; 
     $('.gift_product_checkbox').click(function() {
         $('input[name="product_id"]:checked').each(function() {
@@ -57,6 +59,20 @@ $(document).ready(function() {
         });
     });
 
+    // Added by Velocity on 12-08-2026 to handle Rakhi add-on selection and display its title and price.
+    $('.rakhi_product_checkbox').click(function() {
+        $('input[name="rakhi_product_id"]:checked').each(function() {
+            rakhi_product_id = this.value;
+            var rakhi_pd_name = $(this).parent().find('.rakhi_pd_name').val();
+            var rakhi_pd_price = $(this).parent().find('.rakhi_pd_price').val() / 100;
+            $('.show_rakhi_prod_name').text(rakhi_pd_name);
+            if (rakhi_pd_price) {
+                $('.show_rakhi_prod_price').text('₹' + rakhi_pd_price);
+            } else {
+                $('.show_rakhi_prod_price').text('');
+            }
+        });
+    });
     $('.sleeve_product_checkbox').click(function() {
         $('input[name="sleeve_product_id"]:checked').each(function() {
             sleeve_product_id = this.value;
@@ -702,6 +718,16 @@ $(".custom_photo_error_txt").remove();
                 }
             }
 
+            // Added by Velocity on 12-08-2026 to add the selected Rakhi product as a separate cart line item.
+            if (rakhi_product_id != "" && rakhi_product_id != undefined) {
+                data.items.unshift({
+                    "id": rakhi_product_id,
+                    "quantity": pd_quantity,
+                    "properties": {
+                        "Product title": product_name
+                    }
+                });
+            }
             function getCart(callback) {
                 $.ajax({
                     type: 'GET',
@@ -773,6 +799,8 @@ $(".custom_photo_error_txt").remove();
                        $("#giftees-email").val("");
                        $("#giftees-number").val("");
                         $("#gift_card_msg").val("");
+                        // Added by Velocity on 12-08-2026 to reset the Rakhi add-on selection after adding products to the cart.
+                        $("#no_rakhi").click();
 
 
                         $(".add-to-cart-button").removeAttr("disabled");

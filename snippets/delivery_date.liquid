@@ -530,7 +530,8 @@ $('#delivery-date-5').on('change', function () {
                         // Filter gift cards based on selected warehouse Added By Velocity 13-08-2025
                         if (typeof filterGiftCardsByWarehouse === 'function') {
                             filterGiftCardsByWarehouse(selected_warehouse);
-                           $('#no_card').click();
+                           // Added by Velocity on 12-08-2026 to reset Rakhi add-on selection when the delivery warehouse changes.
+                           $('#no_card, #no_rakhi').click();
                         }
                     } else {
                         $('.pincode_txt')

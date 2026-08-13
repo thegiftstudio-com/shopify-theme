@@ -12,6 +12,235 @@
   {% assign isRoiProduct = false %}
 {% endif %}
 
+
+
+
+
+
+
+
+{% comment %}
+  Display Rakhi add-on products from the rakhis collection on PDPs tagged with rakhi-section. Added by Velocity on 12-08-2026
+{% endcomment %}
+{% if product.tags contains 'rakhi-section' %}
+  <div class="product__accordion accordion quick-add-hidden">
+    <details id="Details-rakhi-section-{{ section.id }}" open>
+      <summary>
+        <div class="summary__title">
+          <h2 class="h4 accordion__title">Add Rakhi</h2>
+        </div>
+        {% render 'icon-caret' %}
+      </summary>
+
+      <div class="accordion__content rte" id="ProductAccordion-rakhi-section-{{ section.id }}">
+        <div class="rakhi_addon_wrapper" data-roi="{{ isRoiProduct }}">
+          <h4>Selected Rakhi : <span class="show_rakhi_prod_name"></span><span class="show_rakhi_prod_price"></span></h4>
+          <div class="gift_products_wrap">
+            <div class="gift_product no_rakhi_product">
+              <input type="radio" id="no_rakhi" class="rakhi_product_checkbox" name="rakhi_product_id" value="" checked>
+              <span class="no_rakhi_label">No Rakhi</span>
+              <input type="hidden" value="" class="rakhi_pd_name">
+              <input type="hidden" value="" class="rakhi_pd_price">
+            </div>
+
+            {% for rakhi_product in collections.rakhis.products %}
+              {% assign rakhi_mumbai_inventory = rakhi_product.metafields.custom.mumbai_inventory | default: 0 %}
+              {% assign rakhi_gurgaon_inventory = rakhi_product.metafields.custom.gurgaon_inventory | default: 0 %}
+              {% assign rakhi_bangalore_inventory = rakhi_product.metafields.custom.bangalore_inventory | default: 0 %}
+
+              {% if isRoiProduct and rakhi_product.tags contains 'location-roi' %}
+                <div class="gift_product rakhi_addon_product"
+                     data-mumbai-inventory="{{ rakhi_mumbai_inventory }}"
+                     data-gurgaon-inventory="{{ rakhi_gurgaon_inventory }}"
+                     data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
+                  <input type="radio" class="rakhi_product_checkbox"
+                    name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
+                  <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                  <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
+                  <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
+                  <div class="tooltip_product_info">
+                    {% if rakhi_product.images.size > 1 %}
+                      <img src="{{ rakhi_product.images[1] | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                    {% else %}
+                      <img src="{{ rakhi_product.featured_media.preview_image | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                    {% endif %}
+                  </div>
+                </div>
+              {% elsif isRoiProduct == false %}
+                {% unless rakhi_product.tags contains 'location-roi' %}
+                  <div class="gift_product rakhi_addon_product"
+                       data-mumbai-inventory="{{ rakhi_mumbai_inventory }}"
+                       data-gurgaon-inventory="{{ rakhi_gurgaon_inventory }}"
+                       data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
+                    <input type="radio" class="rakhi_product_checkbox"
+                      name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
+                    <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                    <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
+                    <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
+                    <div class="tooltip_product_info">
+                      {% if rakhi_product.images.size > 1 %}
+                        <img src="{{ rakhi_product.images[1] | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                      {% else %}
+                        <img src="{{ rakhi_product.featured_media.preview_image | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+{% endif %}
+
+{% if render_addons_product  %}
+
+  <product-recommendations
+                class="complementary-products quick-add-hidden no-js-hidden{% if render_addons_product.settings.make_collapsible_row %} is-accordion{% endif %}{% if render_addons_product.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
+                data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ render_addons_product.settings.product_list_limit }}&intent=complementary"
+              >
+                {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                  <aside
+                    aria-label="{{ 'accessibility.complementary_products' | t }}"
+                    {{ render_addons_product.shopify_attributes -}}
+                    {% if render_addons_product.settings.make_collapsible_row %}
+                      class="product__accordion accordion"
+                    {% endif %}
+                  >
+                    <div class="complementary-products__container">
+                      {%- if render_addons_product.settings.make_collapsible_row -%}
+                        <details id="Details-{{ render_addons_product.id }}-{{ section.id }}" open>
+                          <summary>
+                      {%- endif %}
+                      <div class="summary__title">
+                        {%- if render_addons_product.settings.make_collapsible_row -%}
+                          {% render 'icon-accordion', icon: render_addons_product.settings.icon %}
+                          <h2 class="h4 accordion__title">{{ render_addons_product.settings.block_heading }}</h2>
+                        {%- else -%}
+                          <h2 class="h3 accordion__title">{{ render_addons_product.settings.block_heading }}</h2>
+                        {%- endif -%}
+                      </div>
+                      {%- if render_addons_product.settings.make_collapsible_row -%}
+                        {% render 'icon-caret' %}
+                        </summary>
+                      {%- endif -%}
+                      <slideshow-component class="slider-mobile-gutter">
+                        {%- assign number_of_slides = recommendations.products_count
+                          | plus: 0.0
+                          | divided_by: render_addons_product.settings.products_per_page
+                          | ceil
+                        -%}
+                        <div
+                          id="Slider-{{ render_addons_product.id }}"
+                          class="contains-card contains-card--product complementary-slider grid grid--1-col slider slider--everywhere"
+                          role="list"
+                          {% if number_of_slides > 1 %}
+                            aria-label="{{ 'general.slider.name' | t }}"
+                          {% endif %}
+                        >
+                          {%- for i in (1..number_of_slides) -%}
+                            <div
+                              id="Slide-{{ render_addons_product.id }}-{{ forloop.index }}"
+                              class="complementary-slide complementary-slide--{{ settings.card_style }} grid__item slider__slide slideshow__slide"
+                              tabindex="-1"
+                              role="group"
+                              {% if number_of_slides > 1 %}
+                                aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+                                aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                              {% endif %}
+                            >
+                              <ul class="list-unstyled" role="list">
+                                {%- for product in recommendations.products
+                                  limit: render_addons_product.settings.products_per_page
+                                  offset: continue
+                                -%}
+                                  <li>
+                                    {% render 'card-product',
+                                      card_product: product,
+                                      media_aspect_ratio: render_addons_product.settings.image_ratio,
+                                      show_secondary_image: false,
+                                      lazy_load: true,
+                                      show_quick_add: render_addons_product.settings.enable_quick_add,
+                                      section_id: section.id,
+                                      horizontal_class: true,
+                                      horizontal_quick_add: true
+                                    %}
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                        {%- if number_of_slides > 1 -%}
+                          <div class="slider-buttons no-js-hidden">
+                            <button
+                              type="button"
+                              class="slider-button slider-button--prev"
+                              name="previous"
+                              aria-label="{{ 'general.slider.previous_slide' | t }}"
+                            >
+                              {% render 'icon-caret' %}
+                            </button>
+                            <div class="slider-counter slider-counter--{{ render_addons_product.settings.pagination_style }}{% if render_addons_product.settings.pagination_style == 'counter' or render_addons_product.settings.pagination_style == 'numbers' %} caption{% endif %}">
+                              {%- if render_addons_product.settings.pagination_style == 'counter' -%}
+                                <span class="slider-counter--current">1</span>
+                                <span aria-hidden="true"> / </span>
+                                <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+                                <span class="slider-counter--total">{{ number_of_slides }}</span>
+                              {%- else -%}
+                                <div class="slideshow__control-wrapper">
+                                  {%- for i in (1..number_of_slides) -%}
+                                    <button
+                                      class="slider-counter__link slider-counter__link--{{ render_addons_product.settings.pagination_style }} link"
+                                      aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                                      aria-controls="Slider-{{ render_addons_product.id }}"
+                                    >
+                                      {%- if render_addons_product.settings.pagination_style == 'numbers' -%}
+                                        {{ forloop.index -}}
+                                      {%- else -%}
+                                        <span class="dot"></span>
+                                      {%- endif -%}
+                                    </button>
+                                  {%- endfor -%}
+                                </div>
+                              {%- endif -%}
+                            </div>
+                            <button
+                              type="button"
+                              class="slider-button slider-button--next"
+                              name="next"
+                              aria-label="{{ 'general.slider.next_slide' | t }}"
+                            >
+                              {% render 'icon-caret' %}
+                            </button>
+                          </div>
+                        {%- endif -%}
+                      </slideshow-component>
+                      {%- if render_addons_product.settings.make_collapsible_row -%}
+                        </details>
+                      {%- endif -%}
+                    </div>
+                  </aside>
+                {%- endif -%}
+                {{ 'component-card.aio.min.css' | asset_url | stylesheet_tag }}
+                {{ 'component-complementary-products.aio.min.css' | asset_url | stylesheet_tag }}
+                {%- if render_addons_product.settings.enable_quick_add -%}
+                  <link
+                    rel="stylesheet"
+                    href="{{ 'quick-add.aio.min.css' | asset_url }}"
+                    media="print"
+                    onload="this.media='all'"
+                  >
+                  <script src="{{ 'quick-add.aio.min.js' | asset_url }}" defer="defer"></script>
+                {%- endif -%}
+              </product-recommendations>
+
+
+  {% endif %}
+
+
 {% if product.tags contains 'sleeve-section' %}
   <div class="sleeve_wrapper">
     {% if product.tags contains 'Liquor' %}
@@ -179,11 +408,6 @@
   </div>
 {% endif %}
 
-
-
-
-
-
 {% comment %}
        {% if template == 'product' %}
   {% render 'sticky_cart' %}
@@ -200,5 +424,20 @@
   }
   .show_gift_prod_price{
     margin-left: 6px;
+  }
+  /* Added by Velocity on 12-08-2026 to style the Rakhi add-on selection. */
+  .show_rakhi_prod_price{
+    margin-left: 6px;
+  }
+  .no_rakhi_label{
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    padding: 6px;
+    text-align: center;
+  }
+  .no_rakhi_product input:checked + .no_rakhi_label{
+    box-shadow: 0 0 3px 2px #000;
   }
 </style>
