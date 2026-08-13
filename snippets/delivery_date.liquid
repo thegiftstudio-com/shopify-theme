@@ -225,10 +225,7 @@
     var standard = computeStandardDate(earliest);
 
     $('.express-date-text').text('by ' + fmtPromiseLocal(earliest));
-    var standardWindow = window.ExpressDeliveryUtils.standardWindow(standard, new Date());
-    $('.standard-date-text').text(
-      'It will be delivered within ' + standardWindow.start + '–' + standardWindow.end + ' days or earlier.'
-    );
+    $('.standard-date-text').text('It will be delivered within 4–5 days or earlier.');
     updateExpressChargeText();
     if (window.expressChargeReady && window.expressChargeReady.then) {
       window.expressChargeReady.then(updateExpressChargeText);
