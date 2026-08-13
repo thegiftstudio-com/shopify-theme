@@ -294,7 +294,10 @@
 
   function refreshExpressCartSections() {
     var sectionKeys = ['cart-drawer', 'cart-icon-bubble', 'main-cart-items', 'main-cart-footer'];
-    return fetch('/cart?sections=' + sectionKeys.join(','), { headers: { 'Accept': 'application/json' } })
+    return fetch('/cart?sections=' + sectionKeys.join(',') + '&express_refresh=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Accept': 'application/json' }
+    })
       .then(function (response) {
         if (!response.ok) throw new Error('Cart sections returned status ' + response.status);
         return response.json();
@@ -331,9 +334,9 @@
   // even if it did run again it would converge with no change.
   // ---------------------------------------------------------------------------
   function onCartUpdated(event) {
-    if (event && event.source === 'express-charge') { refreshExpressDisplay(); return; }
+    if (event && event.source === 'express-charge') { refreshExpressCartSections().then(refreshExpressDisplay); return; }
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+      if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
     });
   }
 
@@ -351,7 +354,7 @@
       var url = (settings && settings.url) || '';
       if (/\/cart\/(add|change|update)(\.js)?/.test(url)) {
         runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+          if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
         });
       }
     });
@@ -370,7 +373,7 @@
     [400, 900].forEach(function (delay) {
       setTimeout(function () {
         runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+          if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
         });
       }, delay);
     });
@@ -379,7 +382,7 @@
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+      if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
     });
   });
 })();
