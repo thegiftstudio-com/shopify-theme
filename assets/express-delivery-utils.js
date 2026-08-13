@@ -10,6 +10,7 @@
     '_delivery_mode',
     '_express_date',
     '_standard_date',
+    '_Delivery date',
     'Delivery date',
     'Pincode'
   ];
@@ -30,6 +31,12 @@
 
   function propertiesOf(item) {
     return (item && item.properties) || {};
+  }
+
+  function deliveryDateProperties(mode, date) {
+    var properties = {};
+    properties[mode === 'express' ? 'Delivery date' : '_Delivery date'] = date;
+    return properties;
   }
 
   function classifyLine(item) {
@@ -126,9 +133,11 @@
     plan.standardUpdates = mainLines.reduce(function (updates, item) {
       var current = propertiesOf(item);
       var next = Object.assign({}, current, { _delivery_mode: 'standard' });
-      if (validDeliveryDate(current._standard_date)) next['Delivery date'] = current._standard_date;
+      delete next['Delivery date'];
+      if (validDeliveryDate(current._standard_date)) next['_Delivery date'] = current._standard_date;
       var needsUpdate = current._delivery_mode !== 'standard' ||
-        next['Delivery date'] !== current['Delivery date'];
+        Object.prototype.hasOwnProperty.call(current, 'Delivery date') ||
+        next['_Delivery date'] !== current['_Delivery date'];
       if (needsUpdate) {
         updates.push({
           key: item.key,
@@ -143,6 +152,7 @@
 
   return {
     standardWindow: standardWindow,
+    deliveryDateProperties: deliveryDateProperties,
     classifyLine: classifyLine,
     normalizeCharge: normalizeCharge,
     chooseHighestCharge: chooseHighestCharge,

@@ -267,16 +267,9 @@
       var allExpress = ExpressUtils.cartQualifiesForExpress(productLines);
 
       var text = '';
-      if (productLines.length) {
-        if (allExpress) {
-          var exp = maxDate(productLines.map(function (it) { return parseDMY(it.properties && it.properties._express_date); }));
-          if (exp) text = 'Express delivery by ' + fmtPromise(exp);
-        } else {
-          var std = maxDate(productLines.map(function (it) {
-            return parseDMY((it.properties && it.properties._standard_date) || (it.properties && it.properties['Delivery date']));
-          }));
-          if (std) text = 'Standard delivery by ' + fmtPromise(std);
-        }
+      if (productLines.length && allExpress) {
+        var exp = maxDate(productLines.map(function (it) { return parseDMY(it.properties && it.properties._express_date); }));
+        if (exp) text = 'Express delivery by ' + fmtPromise(exp);
       }
 
       document.querySelectorAll('.express-delivery-summary').forEach(function (el) {

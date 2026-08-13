@@ -311,8 +311,9 @@ $(".custom_photo_error_txt").remove();
         pd_json_property_val["Delivery Time Slot"] = time_slot;
         pd_json_property_val["_product_warehouse"] = product_warehouse;
         pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
-        // Added by Velocity 13-08-2026: Express mode, dates and API-hydrated charge metadata.
-        pd_json_property_val["_delivery_mode"] = $("#delivery_mode_selected").val() || 'standard';
+        // Added by Velocity 13-08-2026: Express mode, private Standard date and API-hydrated charge metadata.
+        var deliveryMode = $("#delivery_mode_selected").val() || 'standard';
+        pd_json_property_val["_delivery_mode"] = deliveryMode;
         pd_json_property_val["_express_eligible"] = $("#express_eligible_flag").val() || '0';
         pd_json_property_val["_express_date"] = $("#express_selected_date").val() || '';
         pd_json_property_val["_standard_date"] = $("#standard_selected_date").val() || '';
@@ -328,7 +329,7 @@ $(".custom_photo_error_txt").remove();
             $(".add-to-cart-button .custom_spinner").css("display", "none");
             return false;
         }
-        pd_json_property_val["Delivery date"] = delivery_date_val;
+        Object.assign(pd_json_property_val, ExpressDeliveryUtils.deliveryDateProperties(deliveryMode, delivery_date_val));
 
         if ($("#balloon-customisation-txt").length == 1) {
             var ballon_customisation_val = $("#balloon-customisation-txt").val();
