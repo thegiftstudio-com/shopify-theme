@@ -1,89 +1,95 @@
 {% comment %}
   ============================================================================
   Express Delivery charge — shared config + cart enforcement + display.
-  Added by Velocity.
+  Added by Velocity 13-08-2026.
 
-  Loaded ONCE globally from layout/theme.liquid so it is available on the PDP
-  (to add the charge), in the cart drawer, and on the cart page (to enforce the
-  cart-level rules and render the cart-level delivery note).
+  The snippet loads its own shared utility and is rendered once globally for
+  PDP selection, cart enforcement and cart-level delivery messaging.
   ============================================================================
 {% endcomment %}
+
+{{ 'express-delivery-utils.js' | asset_url | script_tag }}
 
 <script>
 (function () {
   if (window.__expressChargeInit) return;
   window.__expressChargeInit = true;
 
-  // --- Storefront API (same public read-only token as the hamper styling charge) ---
-  var STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
+  var FALLBACK_CHARGE_VARIANT_ID = '53547247698227';
+  var ExpressUtils = window.ExpressDeliveryUtils;
+  window.EXPRESS_CHARGE_VARIANT_ID = FALLBACK_CHARGE_VARIANT_ID;
+
+  // Added by Velocity 13-08-2026: fetch live prices for configured and fallback charge variants.
+  var STOREFRONT_API_DOMAIN = 'tgs-revamp.myshopify.com';
   var STOREFRONT_API_VERSION = '2024-01';
-  var STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
+  var STOREFRONT_API_TOKEN = '22ad5e2c245acbd1b0f1a27dd3d369ac';
 
-  // --- Express charge product (price/name/image hydrated live from Shopify) ---
-  window.EXPRESS_CHARGE = {
-    product_id: '10262044082483',
-    variant_id: '53547247698227',
-    name: 'Express Delivery',
-    price_paise: 0,
-    image: ''
-  };
-  var EC = window.EXPRESS_CHARGE;
+  function fetchExpressChargeVariants(variantIds) {
+    var uniqueIds = Array.from(new Set((variantIds || []).map(String).filter(function (id) {
+      return /^\d+$/.test(id);
+    })));
+    if (!uniqueIds.length) return Promise.resolve({});
 
-  function hasRealVariant() {
-    return EC.variant_id && String(EC.variant_id).indexOf('REPLACE_') !== 0;
-  }
-  window.EXPRESS_CHARGE_VARIANT_ID = EC.variant_id;
-
-  // --- Live hydrate of name/price/image via GraphQL (non-blocking, like hamper) ---
-  function hydrateExpressChargeFromStorefront() {
-    if (!STOREFRONT_API_TOKEN || STOREFRONT_API_TOKEN.indexOf('REPLACE_') === 0) return Promise.resolve();
-    if (!hasRealVariant()) return Promise.resolve();
-    var gid = 'gid://shopify/ProductVariant/' + EC.variant_id;
     var query = '' +
-      'query ExpressCharge($ids: [ID!]!) {' +
+      'query ExpressChargeVariants($ids: [ID!]!) {' +
       '  nodes(ids: $ids) {' +
-      '    ... on ProductVariant {' +
-      '      id price { amount } image { url } product { title featuredImage { url } }' +
-      '    }' +
+      '    ... on ProductVariant { id availableForSale price { amount } }' +
       '  }' +
       '}';
-    var controller = new AbortController();
-    var timeout = setTimeout(function () { controller.abort(); }, 6000);
+
     return fetch('https://' + STOREFRONT_API_DOMAIN + '/api/' + STOREFRONT_API_VERSION + '/graphql.json', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN },
-      body: JSON.stringify({ query: query, variables: { ids: [gid] } }),
-      signal: controller.signal
-    })
-      .then(function (res) { return res.json(); })
-      .then(function (json) {
-        var nodes = (json && json.data && json.data.nodes) || [];
-        var node = nodes[0];
-        if (!node) return;
-        if (node.product && node.product.title) EC.name = node.product.title;
-        if (node.price && node.price.amount != null) EC.price_paise = Math.round(parseFloat(node.price.amount) * 100);
-        var liveImg = (node.image && node.image.url) || (node.product && node.product.featuredImage && node.product.featuredImage.url);
-        if (liveImg) EC.image = liveImg;
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: { ids: uniqueIds.map(function (id) { return 'gid://shopify/ProductVariant/' + id; }) }
       })
-      .catch(function (err) { console.warn('[Express] price fetch failed - using fallback.', err); })
-      .finally(function () { clearTimeout(timeout); });
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Storefront API returned status ' + response.status);
+      return response.json();
+    }).then(function (json) {
+      if (json.errors && json.errors.length) throw new Error(json.errors[0].message);
+      return ((json.data && json.data.nodes) || []).reduce(function (variants, node) {
+        if (!node || !node.availableForSale || !node.price || node.price.amount == null) return variants;
+        var variantId = String(node.id).split('/').pop();
+        variants[variantId] = {
+          variantId: variantId,
+          pricePaise: Math.round(parseFloat(node.price.amount) * 100)
+        };
+        return variants;
+      }, {});
+    });
   }
-  window.expressChargeReady = hydrateExpressChargeFromStorefront();
+  window.fetchExpressChargeVariants = fetchExpressChargeVariants;
+
+  function hydratePdpExpressCharge() {
+    var variantInput = document.getElementById('express_charge_variant_id');
+    var priceInput = document.getElementById('express_charge_price_paise');
+    if (!variantInput || !priceInput) return Promise.resolve({});
+
+    var configuredId = variantInput.value || FALLBACK_CHARGE_VARIANT_ID;
+    return fetchExpressChargeVariants([configuredId, FALLBACK_CHARGE_VARIANT_ID]).then(function (variants) {
+      var charge = variants[configuredId] || variants[FALLBACK_CHARGE_VARIANT_ID];
+      if (!charge) throw new Error('No available Express charge variant was returned');
+      variantInput.value = charge.variantId;
+      priceInput.value = charge.pricePaise;
+      if (window.updateExpressChargeText) window.updateExpressChargeText();
+      return charge;
+    }).catch(function (error) {
+      console.warn('[Express] PDP charge price fetch failed', error);
+      return {};
+    });
+  }
+  window.expressChargeReady = hydratePdpExpressCharge();
 
   // ---------------------------------------------------------------------------
   // Cart helpers
   // ---------------------------------------------------------------------------
   function isChargeLine(item) {
-    if (!item) return false;
-    if (item.properties && (item.properties._is_express_charge === '1' || item.properties._is_express_charge === true)) return true;
-    return hasRealVariant() && String(item.variant_id) === String(EC.variant_id);
-  }
-
-  // A product line is express only if it was added in express mode AND was eligible.
-  function lineIsExpress(item) {
-    return item.properties &&
-           item.properties._delivery_mode === 'express' &&
-           item.properties._express_eligible === '1';
+    return ExpressUtils.classifyLine(item) === 'charge';
   }
 
   function getCart() {
@@ -98,6 +104,60 @@
     });
   }
 
+  function postCart(url, body) {
+    return postJSON(url, body).then(function (response) {
+      if (response.ok) return response;
+      return response.text().then(function (message) {
+        throw new Error(message || ('Cart request failed with status ' + response.status));
+      });
+    });
+  }
+
+  function runSequentially(actions) {
+    return actions.reduce(function (promise, action) {
+      return promise.then(action);
+    }, Promise.resolve());
+  }
+
+  // Added by Velocity 13-08-2026: hydrate cart charge prices before selecting the highest fee.
+  function prepareEnforcementPlan(items) {
+    var cartItems = items || [];
+    var mainLines = cartItems.filter(function (item) {
+      return ExpressUtils.classifyLine(item) === 'main';
+    });
+
+    if (!ExpressUtils.cartQualifiesForExpress(mainLines)) {
+      return Promise.resolve(ExpressUtils.buildEnforcementPlan(cartItems, {
+        variantId: FALLBACK_CHARGE_VARIANT_ID,
+        pricePaise: null
+      }));
+    }
+
+    var requestedIds = [FALLBACK_CHARGE_VARIANT_ID].concat(mainLines.map(function (item) {
+      var configuredId = item.properties && item.properties._express_charge_variant_id;
+      return /^\d+$/.test(String(configuredId || '')) ? String(configuredId) : FALLBACK_CHARGE_VARIANT_ID;
+    }));
+
+    return fetchExpressChargeVariants(requestedIds).then(function (variants) {
+      var fallbackCharge = variants[FALLBACK_CHARGE_VARIANT_ID];
+      if (!fallbackCharge) throw new Error('Fallback Express charge variant is unavailable');
+
+      var pricedItems = cartItems.map(function (item) {
+        if (ExpressUtils.classifyLine(item) !== 'main') return item;
+        var properties = Object.assign({}, item.properties || {});
+        var configuredId = /^\d+$/.test(String(properties._express_charge_variant_id || ''))
+          ? String(properties._express_charge_variant_id)
+          : FALLBACK_CHARGE_VARIANT_ID;
+        var charge = variants[configuredId] || fallbackCharge;
+        properties._express_charge_variant_id = charge.variantId;
+        properties._express_charge_price_paise = String(charge.pricePaise);
+        return Object.assign({}, item, { properties: properties });
+      });
+
+      return ExpressUtils.buildEnforcementPlan(pricedItems, fallbackCharge);
+    });
+  }
+
   // ---------------------------------------------------------------------------
   // Enforcement — single source of truth. Returns true ONLY when it changed the
   // cart (so callers re-render exactly once; idempotency terminates any loop).
@@ -106,51 +166,43 @@
   // ---------------------------------------------------------------------------
   function enforceExpressCharge() {
     return getCart().then(function (cart) {
-      var items = cart.items || [];
-      var productLines = items.filter(function (it) { return !isChargeLine(it); });
-      var chargeLine = items.filter(isChargeLine)[0];
-      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
-
-      console.log('[Express] enforce ->', {
-        productLines: productLines.length,
-        allExpress: allExpress,
-        hasCharge: !!chargeLine,
-        variantId: EC.variant_id,
-        modes: productLines.map(function (p) {
-          var pr = p.properties || {};
-          return (pr._delivery_mode || '?') + '/elig:' + (pr._express_eligible || '?');
-        })
+      return prepareEnforcementPlan(cart.items || []).then(function (plan) {
+      var actions = plan.removeChargeKeys.map(function (key) {
+        return function () { return postCart('/cart/change.js', { id: key, quantity: 0 }); };
       });
 
-      if (allExpress) {
-        if (!chargeLine) {
-          if (!hasRealVariant()) { console.warn('[Express] no real variant id configured - charge not added'); return false; }
-          return postJSON('/cart/add.js', {
-            id: EC.variant_id,
-            quantity: 1,
-            properties: { _is_express_charge: '1' }
-          }).then(function (res) {
-            if (!res.ok) {
-              return res.json().then(function (e) {
-                console.warn('[Express] /cart/add.js FAILED for variant ' + EC.variant_id + ':', e);
-                return false;
-              }).catch(function () { console.warn('[Express] /cart/add.js failed, status ' + res.status); return false; });
-            }
-            console.log('[Express] charge line added');
-            return true;
+      plan.standardUpdates.forEach(function (update) {
+        actions.push(function () {
+          return postCart('/cart/change.js', {
+            id: update.key,
+            quantity: update.quantity,
+            properties: update.properties
           });
-        }
-        if (chargeLine.quantity !== 1) {
-          return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 1 }).then(function () { return true; });
-        }
-        return false;
+        });
+      });
+
+      if (plan.setChargeQuantity) {
+        actions.push(function () {
+          return postCart('/cart/change.js', {
+            id: plan.setChargeQuantity.key,
+            quantity: plan.setChargeQuantity.quantity
+          });
+        });
       }
 
-      // Not all express -> remove the charge if present.
-      if (chargeLine) {
-        return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 0 }).then(function () { return true; });
+      if (plan.addCharge) {
+        actions.push(function () {
+          return postCart('/cart/add.js', {
+            id: plan.addCharge.variantId,
+            quantity: 1,
+            properties: { _is_express_charge: '1' }
+          });
+        });
       }
-      return false;
+
+      if (!actions.length) return false;
+      return runSequentially(actions).then(function () { return true; });
+      });
     }).catch(function (err) {
       console.warn('[Express] enforce failed', err);
       return false;
@@ -211,8 +263,8 @@
   function refreshExpressDisplay() {
     return getCart().then(function (cart) {
       var items = cart.items || [];
-      var productLines = items.filter(function (it) { return !isChargeLine(it); });
-      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
+      var productLines = items.filter(function (it) { return ExpressUtils.classifyLine(it) === 'main'; });
+      var allExpress = ExpressUtils.cartQualifiesForExpress(productLines);
 
       var text = '';
       if (productLines.length) {

@@ -49,7 +49,22 @@
 {% render 'delivery_date_picker' %}
 
 {% comment %}
-  Added by Velocity: Express vs Standard delivery speed selector (text, no calendar).
+  Added by Velocity 13-08-2026
+  Resolve the configured Express charge product. Shopify API hydrates its live price.
+{% endcomment %}
+{% liquid
+  assign express_charge_product = product.metafields.custom.express_delivery_charge.value
+  assign express_charge_variant = express_charge_product.selected_or_first_available_variant
+  if express_charge_variant == blank or express_charge_variant.available == false
+    assign express_charge_variant_id = '53547247698227'
+  else
+    assign express_charge_variant_id = express_charge_variant.id
+  endif
+%}
+
+{% comment %}
+  Added by Velocity 13-08-2026
+  Express vs Standard delivery speed selector (text, no calendar).
   This plugs in AROUND the existing delivery-date logic. It reads the value the
   existing setMinDeliveryDate() already computed (the earliest date in #delivery-date-5
   and its returned total-days) and NEVER alters that calculation.
@@ -92,6 +107,8 @@
   <input type="hidden" id="express_eligible_flag" value="0">
   <input type="hidden" id="express_selected_date" value="">
   <input type="hidden" id="standard_selected_date" value="">
+  <input type="hidden" id="express_charge_variant_id" value="{{ express_charge_variant_id }}">
+  <input type="hidden" id="express_charge_price_paise" value="">
 </div>
 
 <style>
@@ -175,7 +192,7 @@
   }
 
   function updateExpressChargeText() {
-    var paise = (window.EXPRESS_CHARGE && window.EXPRESS_CHARGE.price_paise) || 0;
+    var paise = parseInt($('#express_charge_price_paise').val(), 10) || 0;
     var rupees = paise / 100;
     var $fee = $('.express-charge-text');
     // Hide the fee pill when express is unavailable or there is no fee yet.
@@ -185,6 +202,7 @@
       $fee.text('').css('display', 'none');
     }
   }
+  window.updateExpressChargeText = updateExpressChargeText;
 
   function applyMode(mode) {
     var $picker = $('#delivery-date-5');
@@ -207,9 +225,11 @@
     var standard = computeStandardDate(earliest);
 
     $('.express-date-text').text('by ' + fmtPromiseLocal(earliest));
-    $('.standard-date-text').text('by ' + fmtPromiseLocal(standard));
+    var standardWindow = window.ExpressDeliveryUtils.standardWindow(standard, new Date());
+    $('.standard-date-text').text(
+      'It will be delivered within ' + standardWindow.start + '–' + standardWindow.end + ' days or earlier.'
+    );
     updateExpressChargeText();
-    // The live price may still be hydrating from GraphQL; refresh the fee text once it resolves.
     if (window.expressChargeReady && window.expressChargeReady.then) {
       window.expressChargeReady.then(updateExpressChargeText);
     }
@@ -224,16 +244,14 @@
       $('.express-option').removeClass('disabled');
       $('.express-date-text').show();
       $('.express-unavailable-note').hide();
-      $express.prop('checked', true);
-      applyMode('express');
     } else {
       $express.prop('disabled', true).prop('checked', false);
       $('.express-option').addClass('disabled');
       $('.express-date-text').hide();
       $('.express-unavailable-note').show();
-      $('.standard-radio').prop('checked', true);
-      applyMode('standard');
     }
+    $('.standard-radio').prop('checked', true);
+    applyMode('standard');
     updateExpressChargeText(); // re-evaluate fee pill visibility now that eligibility is set
     $('.express-standard-selector').show();
   };
@@ -243,9 +261,6 @@
     applyMode($(this).val());
   });
 
-  if (window.expressChargeReady && window.expressChargeReady.then) {
-    window.expressChargeReady.then(updateExpressChargeText);
-  }
 })();
 </script>
 
@@ -658,8 +673,7 @@ $(document).ready(function() {
                        // var currentDateTime = new Date();
   // Added by Velocity 01-08-2025 Pass selected warehouse name(selected_warehouse) into the function setMinDeliveryDate
   var total_tat=setMinDeliveryDate(istTime,selected_warehouse_tat,$datePicker,'',0,'',selected_warehouse);
-  // Added by Velocity: configure the Express/Standard text selector from the value
-  // setMinDeliveryDate just computed. Does NOT alter the calculation above.
+  // Added by Velocity 13-08-2026: configure the Express/Standard selector from the calculated delivery date.
   if (typeof window.setupExpressStandardSelector === 'function') { window.setupExpressStandardSelector(total_tat); }
         // Utility function to check if the selected date is today
 function isSelectedDateToday(selectedDateStr) {

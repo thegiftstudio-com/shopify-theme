@@ -760,7 +760,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
                         >
 
                         {%- for item in cart.items -%}
-                          {%- comment -%} Added by Velocity: never show the Express Delivery charge as a cart row {%- endcomment -%}
+                          {%- comment -%} Added by Velocity 13-08-2026: hide the Express Delivery charge from standard cart rows. {%- endcomment -%}
                           {%- if item.properties._is_express_charge -%}{%- continue -%}{%- endif -%}
                           <tr
                             id="CartDrawer-Item-{{ item.index | plus: 1 }}"
@@ -1301,7 +1301,7 @@ $(document).on('click', '.byoh_quantity__button--decrease', function (event) {
             <!-- Subtotals -->
 
             <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
-              {%- comment -%} Added by Velocity: Express Delivery fee row (hidden charge line) + cart-level delivery note {%- endcomment -%}
+              {%- comment -%} Added by Velocity 13-08-2026: show the Express fee and cart-level delivery message. {%- endcomment -%}
               {%- assign express_charge_line = null -%}
               {%- for item in cart.items -%}
                 {%- if item.properties._is_express_charge -%}{%- assign express_charge_line = item -%}{%- endif -%}
