@@ -42,9 +42,13 @@
                       disabled
                     > -->
         
-                    <div class="custom_field_sec">
-                    {% render 'custom_field' %}
-                    </div>
+                    {%- unless international_rakhi_cart -%}
+                      <div class="custom_field_sec">
+                        {% render 'custom_field' %}
+                      </div>
+                    {%- else -%}
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    {%- endunless -%}
         <div class="product-form__buttons {{ product.tags | join: " " }}">
 
       
@@ -79,9 +83,10 @@
         <div class="add_to_cart_btn_sec">
      <button
             id = "ProductSubmitButton-{{ section_id }}"
-            type="button"
+            type="{% if international_rakhi_cart %}submit{% else %}button{% endif %}"
             name="add"
-            class="cmn_btn add-to-cart-button product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="cmn_btn add-to-cart-button product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}{% if international_rakhi_cart %} international-rakhi-cart{% endif %}"
+            {% if international_rakhi_cart %}data-international-rakhi="true"{% endif %}
             {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
               disabled
             {% endif %}
@@ -108,6 +113,7 @@
 
          <div class="lt_error_text"></div>
         </div>
+
         </div>
           {%- if block.settings.show_dynamic_checkout -%}
           <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0689/3014/2515/files/flash_1.png?v=1674488992" alt="buy_now" class="buy_now">
@@ -184,6 +190,10 @@
 
             
 </div>
+
+{%- if international_rakhi_cart -%}
+  {{ 'international-rakhi-cart.js' | asset_url | script_tag }}
+{%- endif -%}
 
 <style>
   .shopify-payment-button__button{display: none}
