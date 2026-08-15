@@ -36,7 +36,7 @@
                      data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
                   <input type="radio" class="rakhi_product_checkbox"
                     name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
-                  <img style='height:100%' src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                  <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
                   <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
                   <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
                   <div class="tooltip_product_info">
@@ -55,7 +55,7 @@
                        data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
                     <input type="radio" class="rakhi_product_checkbox"
                       name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
-                    <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                    <img style='height:100%' src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
                     <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
                     <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
                     <div class="tooltip_product_info">
