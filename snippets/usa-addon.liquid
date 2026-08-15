@@ -1,4 +1,5 @@
 {{ 'product.aio.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'giftstudio.js' | asset_url }}" defer></script>
 {% if product.tags contains 'location-roi' %}
   {% assign isRoiProduct = true %}
 {% else %}
