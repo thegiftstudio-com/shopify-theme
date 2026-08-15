@@ -35,6 +35,12 @@
           "type": "price",
           "settings": {}
         },
+        "custom_liquid_6wJYPq": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'usa-addon' %}"
+          }
+        },
         "text_NDHUcm": {
           "type": "text",
           "disabled": true,
@@ -181,6 +187,7 @@
         "dd9476f8-dcd8-4c84-a499-34d98d1549b4",
         "title",
         "price",
+        "custom_liquid_6wJYPq",
         "text_NDHUcm",
         "text_cnKMJk",
         "11ba6f22-cda1-4b38-8c3f-97dc4c7d9d76",
