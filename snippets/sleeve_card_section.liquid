@@ -27,10 +27,12 @@
   {% assign section_heading = 'Add a Little More' %}
   {% assign selected_product = 'Selected Product : ' %}
   {% assign no_product = 'No Product' %}
+  {% assign collection_product = collections.add-ons-india.products %}
 {% else %}
     {% assign section_heading = 'Add Rakhi' %}
   {% assign selected_product = 'Selected Rakhi : ' %}
   {% assign no_product = 'No Rakhi' %}
+  {% assign collection_product = collections.rakhis.products %}
 {% endif %}
   <div class="product__accordion accordion quick-add-hidden">
     <details id="Details-rakhi-section-{{ section.id }}" open>
@@ -51,11 +53,6 @@
               <input type="hidden" value="" class="rakhi_pd_name">
               <input type="hidden" value="" class="rakhi_pd_price">
             </div>
-           {% if product.tags contains 'addon-section' %}
-  {% assign collection_product = collections.add-ons-india.products %}
-{% else %}
-  {% assign collection_product = collections.rakhis.products %}
-{% endif %}
             {% for rakhi_product in collection_product %}
               {% assign rakhi_mumbai_inventory = rakhi_product.metafields.custom.mumbai_inventory | default: 0 %}
               {% assign rakhi_gurgaon_inventory = rakhi_product.metafields.custom.gurgaon_inventory | default: 0 %}
