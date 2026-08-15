@@ -23,22 +23,31 @@
   Display Rakhi add-on products from the rakhis collection on PDPs tagged with rakhi-section. Added by Velocity on 12-08-2026
 {% endcomment %}
 {% if product.tags contains 'rakhi-section' %}
+  {% if product.tags contains 'addon-section' %}
+  {% assign section_heading = 'Add a Little More' %}
+  {% assign selected_product = 'Selected Product : ' %}
+  {% assign no_product = 'No Product' %}
+{% else %}
+    {% assign section_heading = 'Add Rakhi' %}
+  {% assign selected_product = 'Selected Rakhi : ' %}
+  {% assign no_product = 'No Rakhi' %}
+{% endif %}
   <div class="product__accordion accordion quick-add-hidden">
     <details id="Details-rakhi-section-{{ section.id }}" open>
       <summary>
         <div class="summary__title">
-          <h2 class="h4 accordion__title">Add Rakhi</h2>
+          <h2 class="h4 accordion__title">section_heading</h2>
         </div>
         {% render 'icon-caret' %}
       </summary>
 
       <div class="accordion__content rte" id="ProductAccordion-rakhi-section-{{ section.id }}">
         <div class="rakhi_addon_wrapper" data-roi="{{ isRoiProduct }}">
-          <h4>Selected Rakhi : <span class="show_rakhi_prod_name"></span><span class="show_rakhi_prod_price"></span></h4>
+          <h4>selected_product<span class="show_rakhi_prod_name"></span><span class="show_rakhi_prod_price"></span></h4>
           <div class="gift_products_wrap">
             <div class="gift_product no_rakhi_product">
               <input type="radio" id="no_rakhi" class="rakhi_product_checkbox" name="rakhi_product_id" value="" checked>
-              <span class="no_rakhi_label">No Rakhi</span>
+              <span class="no_rakhi_label">no_product</span>
               <input type="hidden" value="" class="rakhi_pd_name">
               <input type="hidden" value="" class="rakhi_pd_price">
             </div>
