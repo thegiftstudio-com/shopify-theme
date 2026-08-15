@@ -22,7 +22,7 @@
 {% comment %}
   Display Rakhi add-on products from the rakhis collection on PDPs tagged with rakhi-section. Added by Velocity on 12-08-2026
 {% endcomment %}
-{% if product.tags contains 'rakhi-section' or roduct.tags contains 'addon-section' %}
+{% if product.tags contains 'rakhi-section' or product.tags contains 'addon-section' %}
   {% if product.tags contains 'addon-section' %}
   {% assign section_heading = 'Add a Little More' %}
   {% assign selected_product = 'Selected Product : ' %}
