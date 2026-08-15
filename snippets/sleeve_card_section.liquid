@@ -42,8 +42,12 @@
               <input type="hidden" value="" class="rakhi_pd_name">
               <input type="hidden" value="" class="rakhi_pd_price">
             </div>
-
-            {% for rakhi_product in collections.rakhis.products %}
+            {% if product.tags contains 'addon-section' %}
+              collection_product=collections.add-ons-india.products
+            {% else %}
+              collection_product=collections.rakhis.products
+            {% endif %}
+            {% for rakhi_product in collection_product %}
               {% assign rakhi_mumbai_inventory = rakhi_product.metafields.custom.mumbai_inventory | default: 0 %}
               {% assign rakhi_gurgaon_inventory = rakhi_product.metafields.custom.gurgaon_inventory | default: 0 %}
               {% assign rakhi_bangalore_inventory = rakhi_product.metafields.custom.bangalore_inventory | default: 0 %}
