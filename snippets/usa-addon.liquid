@@ -7,6 +7,7 @@
 {% else %}
   {% assign isRoiProduct = false %}
 {% endif %}
+{% if product.collections contains collections['rakhi-to-usa'] %}
 <div class="product__accordion accordion quick-add-hidden">
     <details id="Details-rakhi-section-{{ section.id }}" open>
       <summary>
@@ -100,3 +101,4 @@
     box-shadow: 0 0 3px 2px #000;
   }
 </style>
+{%  endif %}
