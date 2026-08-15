@@ -1,0 +1,76 @@
+
+{% if product.tags contains 'location-roi' %}
+  {% assign isRoiProduct = true %}
+{% else %}
+  {% assign isRoiProduct = false %}
+{% endif %}
+<div class="product__accordion accordion quick-add-hidden">
+    <details id="Details-rakhi-section-{{ section.id }}" open>
+      <summary>
+        <div class="summary__title">
+          <h2 class="h4 accordion__title">Add a Little More</h2>
+        </div>
+        {% render 'icon-caret' %}
+      </summary>
+
+      <div class="accordion__content rte" id="ProductAccordion-rakhi-section-{{ section.id }}">
+        <div class="rakhi_addon_wrapper" data-roi="{{ isRoiProduct }}">
+          <h4>Selcted Product<span class="show_rakhi_prod_name"></span><span class="show_rakhi_prod_price"></span></h4>
+          <div class="gift_products_wrap">
+            <div class="gift_product no_rakhi_product">
+              <input type="radio" id="no_rakhi" class="rakhi_product_checkbox" name="rakhi_product_id" value="" checked>
+              <span class="no_rakhi_label">{{no_product}}</span>
+              <input type="hidden" value="" class="rakhi_pd_name">
+              <input type="hidden" value="" class="rakhi_pd_price">
+            </div>
+          
+            {% for rakhi_product in collections.add-ons-usa.products %}
+              {% assign rakhi_mumbai_inventory = rakhi_product.metafields.custom.mumbai_inventory | default: 0 %}
+              {% assign rakhi_gurgaon_inventory = rakhi_product.metafields.custom.gurgaon_inventory | default: 0 %}
+              {% assign rakhi_bangalore_inventory = rakhi_product.metafields.custom.bangalore_inventory | default: 0 %}
+
+              {% if isRoiProduct and rakhi_product.tags contains 'location-roi' %}
+                <div class="gift_product rakhi_addon_product"
+                     data-mumbai-inventory="{{ rakhi_mumbai_inventory }}"
+                     data-gurgaon-inventory="{{ rakhi_gurgaon_inventory }}"
+                     data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
+                  <input type="radio" class="rakhi_product_checkbox"
+                    name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
+                  <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                  <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
+                  <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
+                  <div class="tooltip_product_info">
+                    {% if rakhi_product.images.size > 1 %}
+                      <img src="{{ rakhi_product.images[1] | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                    {% else %}
+                      <img src="{{ rakhi_product.featured_media.preview_image | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                    {% endif %}
+                  </div>
+                </div>
+              {% elsif isRoiProduct == false %}
+                {% unless rakhi_product.tags contains 'location-roi' %}
+                  <div class="gift_product rakhi_addon_product"
+                       data-mumbai-inventory="{{ rakhi_mumbai_inventory }}"
+                       data-gurgaon-inventory="{{ rakhi_gurgaon_inventory }}"
+                       data-bangalore-inventory="{{ rakhi_bangalore_inventory }}">
+                    <input type="radio" class="rakhi_product_checkbox"
+                      name="rakhi_product_id" value="{{ rakhi_product.selected_or_first_available_variant.id }}">
+                    <img src="{{ rakhi_product.featured_media.preview_image | img_url:'100x100' }}" alt="{{ rakhi_product.title | escape }}">
+                    <input type="hidden" value="{{ rakhi_product.title | escape }}" class="rakhi_pd_name">
+                    <input type="hidden" value="{{ rakhi_product.selected_or_first_available_variant.price }}" class="rakhi_pd_price">
+                    <div class="tooltip_product_info">
+                      {% if rakhi_product.images.size > 1 %}
+                        <img src="{{ rakhi_product.images[1] | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                      {% else %}
+                        <img src="{{ rakhi_product.featured_media.preview_image | img_url:'master' }}" alt="{{ rakhi_product.title | escape }}">
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
