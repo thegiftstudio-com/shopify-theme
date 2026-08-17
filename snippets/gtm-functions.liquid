@@ -56,6 +56,28 @@
 
       // Push enquiry-only international product details to GTM.
       function pushInternationalProductEnquiryEvent(enquiryData) {
+        var enquiryButton = document.getElementById('submit-product-enquiry');
+        var enquiryMessage = document.getElementById('enquiry-capture-message');
+
+        if (enquiryButton && enquiryButton.disabled) {
+          return Promise.resolve({ duplicate: true });
+        }
+
+        if (enquiryButton) {
+          enquiryButton.disabled = true;
+          enquiryButton.textContent = 'Submitting...';
+        }
+        if (enquiryMessage) {
+          enquiryMessage.textContent = 'Submitting your enquiry...';
+          enquiryMessage.style.color = '#333333';
+        }
+        window.setTimeout(function () {
+          if (enquiryButton && enquiryButton.disabled && enquiryMessage) {
+            enquiryMessage.textContent = 'Submitting your enquiry...';
+            enquiryMessage.style.color = '#333333';
+          }
+        }, 0);
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: 'pdp_enquiry_on_international_products',
@@ -64,12 +86,40 @@
 
         return fetch('https://mg798rzk-8000.inc1.devtunnels.ms/add_international_product_enquiry', {
           method: 'POST',
+          keepalive: true,
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': 'bd2b2214d3ef413428e45bf4eb642b2730a21f8a586138738e1b645d234a0011'
           },
           body: JSON.stringify(enquiryData)
-        });
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('Unable to submit enquiry');
+            }
+            return response.json();
+          })
+          .then(function (responseData) {
+            if (enquiryButton) {
+              enquiryButton.textContent = 'Enquiry Submitted';
+            }
+            if (enquiryMessage) {
+              enquiryMessage.textContent = 'Thank you. Your enquiry has been submitted.';
+              enquiryMessage.style.color = '#147a28';
+            }
+            return responseData;
+          })
+          .catch(function (error) {
+            if (enquiryButton) {
+              enquiryButton.disabled = false;
+              enquiryButton.textContent = 'Submit Enquiry';
+            }
+            if (enquiryMessage) {
+              enquiryMessage.textContent = 'We could not submit your enquiry. Please try again.';
+              enquiryMessage.style.color = '#b00020';
+            }
+            return { status: false, error: error };
+          });
       }
 
       // velocity 11-07-2024: Function to get the Previous page URL
