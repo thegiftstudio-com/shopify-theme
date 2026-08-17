@@ -61,6 +61,15 @@
           event: 'pdp_enquiry_on_international_products',
           ...enquiryData
         });
+
+        return fetch('https://mg798rzk-8000.inc1.devtunnels.ms/add_international_product_enquiry', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'bd2b2214d3ef413428e45bf4eb642b2730a21f8a586138738e1b645d234a0011'
+          },
+          body: JSON.stringify(enquiryData)
+        });
       }
 
       // velocity 11-07-2024: Function to get the Previous page URL
