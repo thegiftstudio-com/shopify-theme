@@ -68,12 +68,10 @@
           enquiryButton.textContent = 'Submitting...';
         }
         if (enquiryMessage) {
-          enquiryMessage.textContent = 'Submitting your enquiry...';
           enquiryMessage.style.color = '#333333';
         }
         window.setTimeout(function () {
           if (enquiryButton && enquiryButton.disabled && enquiryMessage) {
-            enquiryMessage.textContent = 'Submitting your enquiry...';
             enquiryMessage.style.color = '#333333';
           }
         }, 0);
