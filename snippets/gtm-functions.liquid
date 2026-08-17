@@ -53,6 +53,16 @@
         {% endif %}
          return '';
       }
+
+      // Push enquiry-only international product details to GTM.
+      function pushInternationalProductEnquiryEvent(enquiryData) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'pdp_enquiry_on_international_products',
+          ...enquiryData
+        });
+      }
+
       // velocity 11-07-2024: Function to get the Previous page URL
       function getPreviousPageUrl() {
         return document.referrer;
