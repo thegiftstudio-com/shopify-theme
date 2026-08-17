@@ -99,10 +99,16 @@
             "padding_mobile": "10px 5px 10px 5px"
           }
         },
+        "custom_liquid_6wJYPq": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'usa-addon' %}"
+          }
+        },
         "custom_liquid_PYhRin": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<a href=\"https://wa.me/917506210892?text=Hi, I'm interested in International Shipping for {{ product.title }}.\" \n   target=\"_blank\" \n   class=\"enquire-now-btn\" \n   style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\">\n  Enquire on WhatsApp\n</a>"
+            "custom_liquid": "<a\n  href=\"#\"\n  id=\"enquire-whatsapp\"\n  target=\"_blank\"\n  class=\"enquire-now-btn\"\n  style=\"display:inline-block; padding:12px 24px; background-color:#000000; color:#ffffff; text-decoration:none; border-radius:6px; font-weight:600;\"\n>\n  Enquire on WhatsApp\n</a>\n\n<script>\ndocument.getElementById('enquire-whatsapp').addEventListener('click', function (e) {\n  e.preventDefault();\n\n  // Main product\n  const productTitle = {{ product.title | json }};\n\n  let message = `Hi, I'm interested in International Shipping for ${productTitle}.`;\n\n  // Selected addon product\n  const addonNameElement = document.querySelector('.show_rakhi_prod_name');\n  const addonPriceElement = document.querySelector('.show_rakhi_prod_price');\n\n  if (addonNameElement) {\n    const addonName = addonNameElement.textContent.trim();\n    const addonPrice = addonPriceElement\n      ? addonPriceElement.textContent.trim()\n      : '';\n\tif(addonName){\n    message += `\\n\\nSelected Addon:\\n${addonName}`;\n\n    if (addonPrice) {\n      message += ` - ${addonPrice}`;\n    }\n\t}\n  }\n\n  const whatsappUrl =\n    `https://wa.me/917506210892?text=${encodeURIComponent(message)}`;\n\n  window.open(whatsappUrl, '_blank');\n});\n</script>"
           }
         },
         "description": {
@@ -189,6 +195,7 @@
         "custom_badges_QCNVye",
         "buy_buttons",
         "quinn_shoppable_reel_app_cards_block_rpQTeF",
+        "custom_liquid_6wJYPq",
         "custom_liquid_PYhRin",
         "description",
         "share",
