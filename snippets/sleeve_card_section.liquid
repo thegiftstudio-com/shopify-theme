@@ -166,7 +166,15 @@
                                   limit: render_addons_product.settings.products_per_page
                                   offset: continue
                                 -%}
-                                  <li>
+                                  <li
+                                    data-complementary-product-id="{{ product.id }}"
+                                    data_mumbai="{{ product.metafields.custom.mumbai_inventory }}"
+                                    data_kolkata="{{ product.metafields.custom.kolkata_inventory }}"
+                                    data_gurgaon="{{ product.metafields.custom.gurgaon_inventory }}"
+                                    data_delhi="{{ product.metafields.custom.delhi_inventory }}"
+                                    data_bangalore="{{ product.metafields.custom.bangalore_inventory }}"
+                                    {% if product.tags contains 'Warehouse' %}data-always-show="true"{% endif %}
+                                  >
                                     {% render 'card-product',
                                       card_product: product,
                                       media_aspect_ratio: render_addons_product.settings.image_ratio,

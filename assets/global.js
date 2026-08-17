@@ -1119,6 +1119,8 @@ class ProductRecommendations extends HTMLElement {
           if (html.querySelector('.grid__item')) {
             this.classList.add('product-recommendations--loaded');
           }
+
+          filterComplementaryProductsByWarehouse();
         })
         .catch(e => {
           console.error(e);
@@ -1130,3 +1132,57 @@ class ProductRecommendations extends HTMLElement {
 }
 
 customElements.define('product-recommendations', ProductRecommendations);
+
+function shouldShowComplementaryProduct(item, warehouseAttribute) {
+  if (item.hasAttribute('data-always-show')) return true;
+  if (!item.hasAttribute(warehouseAttribute)) return true;
+
+  const inventory = parseInt(item.getAttribute(warehouseAttribute), 10);
+  return !Number.isNaN(inventory) && inventory > 0;
+}
+
+function filterComplementaryProductsByWarehouse(selectedWarehouse) {
+  if (!selectedWarehouse) {
+    const warehouseInput = document.getElementById('product_warehouse');
+    selectedWarehouse = (warehouseInput && warehouseInput.value) || localStorage.getItem('location')?.split('-')[1];
+  }
+  if (!selectedWarehouse) return;
+
+  document.querySelectorAll('product-recommendations.complementary-products').forEach(block => {
+    const items = block.querySelectorAll('.complementary-slider li[data-complementary-product-id]');
+    if (!items.length) return;
+
+    const warehouseAttribute = `data_${selectedWarehouse}`;
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const visible = shouldShowComplementaryProduct(item, warehouseAttribute);
+      item.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
+    });
+
+    block.style.display = visibleCount > 0 ? '' : 'none';
+
+    const slides = Array.from(block.querySelectorAll('.complementary-slide'));
+    const dots = Array.from(block.querySelectorAll('.slider-counter__link'));
+    slides.forEach((slide, index) => {
+      const hasVisibleItem = Array.from(
+        slide.querySelectorAll('li[data-complementary-product-id]'),
+      ).some(item => item.style.display !== 'none');
+      slide.style.display = hasVisibleItem ? '' : 'none';
+      if (dots[index]) dots[index].style.display = hasVisibleItem ? '' : 'none';
+    });
+
+    const slideshow = block.querySelector('slideshow-component');
+    if (slideshow && slideshow.slider && slideshow.nextButton && typeof slideshow.initPages === 'function') {
+      slideshow.slider.scrollTo({left: 0});
+      slideshow.initPages();
+    }
+  });
+}
+
+function hideComplementaryProducts() {
+  document.querySelectorAll('product-recommendations.complementary-products').forEach(block => {
+    block.style.display = 'none';
+  });
+}

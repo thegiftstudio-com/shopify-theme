@@ -391,6 +391,9 @@ $(document).ready(function() {
                         pushPincodeEnteredEvent(0, "Product is not serviceable in your location");
                     }
                     isAutoPincodeFilled = 0;
+                    if (typeof hideComplementaryProducts === 'function') {
+                        hideComplementaryProducts();
+                    }
                     return;
                   }
                     let availabel_in_cart = 0;
@@ -432,6 +435,9 @@ $(document).ready(function() {
                               pushPincodeEnteredEvent(0, "Product is not available");
                           }
                           isAutoPincodeFilled = 0;
+                          if (typeof hideComplementaryProducts === 'function') {
+                              hideComplementaryProducts();
+                          }
                           return;
                         }
                         // Fallback warehouses based on primary warehouse mapping:
@@ -533,18 +539,27 @@ $('#delivery-date-5').on('change', function () {
                            // Added by Velocity on 12-08-2026 to reset Rakhi add-on selection when the delivery warehouse changes.
                            $('#no_card, #no_rakhi').click();
                         }
+                        if (typeof filterComplementaryProductsByWarehouse === 'function') {
+                            filterComplementaryProductsByWarehouse(selected_warehouse);
+                        }
                     } else {
                         $('.pincode_txt')
                             .html("<span class='red_txt'>Product is not available</span>")
                             .removeClass('valid')
                             .addClass('invalid');
                         $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
+                        if (typeof hideComplementaryProducts === 'function') {
+                            hideComplementaryProducts();
+                        }
                     }
                 } else {
                     $('.time_slot_picker').css('display','none');
                     $('#pincode_input').prop('disabled', false);
                     $(".add-to-cart-button, #add-to-cart-button_1, .shopify-payment-button__button").addClass('pincode_error').prop('disabled', true);
                     $('.pincode_btn button').attr('disabled', true);
+                    if (typeof hideComplementaryProducts === 'function') {
+                        hideComplementaryProducts();
+                    }
                     if(data.message_code == '1') {
                        $('.pincode_txt').html("<span class='red_txt'>We don't deliver to the entered pincode</span>").removeClass('valid').addClass('invalid');
                        if (isAutoPincodeFilled === 0) {
