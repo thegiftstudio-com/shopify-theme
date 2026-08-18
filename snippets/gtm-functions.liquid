@@ -78,8 +78,12 @@
 
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-          event: 'pdp_enquiry_on_international_products',
-          ...enquiryData
+        event: 'pdp_enquiry_on_international_products',
+        ecommerce: {
+            enquiryData: [
+                ...enquiryData
+            ]
+        }
         });
 
         return fetch('https://byohapp.velsof.com/add_international_product_enquiry', {
