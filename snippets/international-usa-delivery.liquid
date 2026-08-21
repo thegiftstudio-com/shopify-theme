@@ -1,0 +1,299 @@
+<div class="international-usa-delivery" data-international-usa-delivery>
+  <p class="font_text font_weight_400">Check USA delivery availability</p>
+
+  <div class="international-usa-zip-row">
+    <label class="font_bold" for="usa_zip_code">Enter USA ZIP code:</label>
+    <div class="international-usa-zip-controls">
+      <input
+        id="usa_zip_code"
+        name="properties[Pincode]"
+        type="text"
+        inputmode="numeric"
+        autocomplete="postal-code"
+        maxlength="5"
+        pattern="[0-9]{5}"
+        placeholder="Enter 5-digit ZIP"
+        required
+      >
+      <button type="button" id="verify_usa_zip_code">Verify</button>
+    </div>
+  </div>
+
+  <p class="international-usa-delivery-status" id="usa_delivery_status" role="status" aria-live="polite"></p>
+  <p class="international-usa-tat" id="usa_delivery_tat"></p>
+
+  <label class="font_bold" for="usa_delivery_date">Select delivery date:</label>
+  <input
+    id="usa_delivery_date"
+    name="properties[Delivery date]"
+    type="text"
+    autocomplete="off"
+    placeholder="Verify ZIP code first"
+    readonly
+    disabled
+    required
+  >
+  <input id="usa_delivery_tat_value" name="properties[_product_tat]" type="hidden" value="">
+</div>
+
+<style>
+  .international-usa-delivery {
+    margin: 16px 0;
+  }
+
+  .international-usa-zip-row,
+  .international-usa-delivery > label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .international-usa-zip-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  #usa_zip_code,
+  #usa_delivery_date {
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  #verify_usa_zip_code {
+    background: #000;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    min-width: 82px;
+    padding: 10px 12px;
+  }
+
+  #verify_usa_zip_code:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+  }
+
+  .international-usa-delivery-status,
+  .international-usa-tat {
+    margin: 6px 0 12px;
+  }
+
+  .international-usa-delivery-status.is-error {
+    color: #c62828;
+  }
+
+  .international-usa-delivery-status.is-success,
+  .international-usa-tat {
+    color: #237a39;
+  }
+</style>
+
+<script>
+  (function () {
+    // Replace this placeholder with the confirmed USA ZIP/TAT API endpoint.
+    var USA_ZIP_TAT_API_URL = 'https://dummy.example.com/usa_zipcode_tat_check';
+
+    function addBusinessDays(date, days) {
+      var result = new Date(date);
+      var remaining = days;
+
+      while (remaining > 0) {
+        result.setDate(result.getDate() + 1);
+        if (result.getDay() !== 0 && result.getDay() !== 6) remaining -= 1;
+      }
+
+      return result;
+    }
+
+    function formatDate(date) {
+      return String(date.getDate()).padStart(2, '0') + '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        date.getFullYear();
+    }
+
+    function normalizeTat(response) {
+      var payload = response.data || response.result || response;
+      var rawTat = payload.tat || payload.TAT || payload.delivery_tat;
+
+      if (typeof rawTat === 'number') {
+        return { minTat: rawTat, maxTat: rawTat };
+      }
+
+      if (typeof rawTat === 'string') {
+        var tatValues = rawTat.match(/\d+/g);
+        if (tatValues && tatValues.length) {
+          return {
+            minTat: parseInt(tatValues[0], 10),
+            maxTat: parseInt(tatValues[1] || tatValues[0], 10)
+          };
+        }
+      }
+
+      if (rawTat && typeof rawTat === 'object') {
+        var minTat = rawTat.minTat || rawTat.min_days || rawTat.min || rawTat.from;
+        var maxTat = rawTat.maxTat || rawTat.max_days || rawTat.max || rawTat.to;
+        if (minTat !== undefined && maxTat !== undefined) {
+          return { minTat: parseInt(minTat, 10), maxTat: parseInt(maxTat, 10) };
+        }
+      }
+
+      var directMinTat = payload.min_tat || payload.minTat || payload.tat_min;
+      var directMaxTat = payload.max_tat || payload.maxTat || payload.tat_max;
+      if (directMinTat !== undefined && directMaxTat !== undefined) {
+        return { minTat: parseInt(directMinTat, 10), maxTat: parseInt(directMaxTat, 10) };
+      }
+
+      return null;
+    }
+
+    function getApiError(response) {
+      return response.message || response.description || 'This USA ZIP code is not serviceable.';
+    }
+
+    function setStatus(message, type) {
+      var status = document.getElementById('usa_delivery_status');
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle('is-error', type === 'error');
+      status.classList.toggle('is-success', type === 'success');
+    }
+
+    function resetDeliveryState() {
+      var dateInput = document.getElementById('usa_delivery_date');
+      var tatInput = document.getElementById('usa_delivery_tat_value');
+      var tatText = document.getElementById('usa_delivery_tat');
+
+      window.usaDeliveryDateState = { verified: false, zip: '', tat: null, date: '' };
+      if (dateInput) {
+        dateInput.value = '';
+        dateInput.disabled = true;
+        dateInput.placeholder = 'Verify ZIP code first';
+        if ($(dateInput).hasClass('hasDatepicker')) $(dateInput).datepicker('destroy');
+      }
+      if (tatInput) tatInput.value = '';
+      if (tatText) tatText.textContent = '';
+      $('.add-to-cart-button[data-international-rakhi="true"]').prop('disabled', true);
+    }
+
+    function validateDeliveryState() {
+      var state = window.usaDeliveryDateState;
+      if (!state || !state.verified) {
+        setStatus('Please verify a serviceable USA ZIP code first.', 'error');
+        return false;
+      }
+      if (!state.date) {
+        setStatus('Please select a delivery date.', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    window.validateInternationalUsaDelivery = validateDeliveryState;
+
+    $(document).ready(function () {
+      var zipInput = document.getElementById('usa_zip_code');
+      var verifyButton = document.getElementById('verify_usa_zip_code');
+      var dateInput = document.getElementById('usa_delivery_date');
+      var tatInput = document.getElementById('usa_delivery_tat_value');
+      var tatText = document.getElementById('usa_delivery_tat');
+      var addToCartButton = $('.add-to-cart-button[data-international-rakhi="true"]');
+
+      if (!zipInput || !verifyButton || !dateInput) return;
+      resetDeliveryState();
+
+      zipInput.addEventListener('input', function () {
+        zipInput.value = zipInput.value.replace(/[^0-9]/g, '').slice(0, 5);
+        resetDeliveryState();
+        setStatus('', '');
+      });
+
+      verifyButton.addEventListener('click', function () {
+        var zip = zipInput.value.trim();
+
+        resetDeliveryState();
+        if (!/^\d{5}$/.test(zip)) {
+          setStatus('Enter a valid five-digit USA ZIP code.', 'error');
+          return;
+        }
+
+        verifyButton.disabled = true;
+        setStatus('Checking ZIP code availability...', '');
+
+        fetch(USA_ZIP_TAT_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            zip_code: zip
+          })
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              if (!response.ok) throw new Error(getApiError(data));
+              return data;
+            });
+          })
+          .then(function (response) {
+            var payload = response.data || response.result || response;
+            if (response.status === false || payload.status === false || payload.serviceable === false) {
+              throw new Error(getApiError(payload));
+            }
+
+            var rule = normalizeTat(response);
+            if (!rule || !Number.isFinite(rule.minTat) || !Number.isFinite(rule.maxTat) || rule.minTat < 0 || rule.maxTat < rule.minTat) {
+              throw new Error('The USA ZIP API returned an invalid TAT.');
+            }
+
+            var today = typeof istTime !== 'undefined' && istTime instanceof Date
+              ? new Date(istTime.getTime())
+              : new Date();
+            var minDate = addBusinessDays(today, rule.minTat);
+            var maxDate = addBusinessDays(today, rule.maxTat);
+            window.usaDeliveryDateState = {
+              verified: true,
+              zip: zip,
+              tat: rule,
+              date: ''
+            };
+
+            dateInput.disabled = false;
+            dateInput.placeholder = 'Select delivery date';
+            $(dateInput).datepicker({
+              dateFormat: 'dd-mm-yy',
+              minDate: minDate,
+              maxDate: maxDate,
+              changeMonth: true,
+              changeYear: true,
+              beforeShowDay: function (date) {
+                var day = date.getDay();
+                return [day !== 0 && day !== 6, ''];
+              },
+              onSelect: function (value) {
+                window.usaDeliveryDateState.date = value;
+                addToCartButton.prop('disabled', false);
+                setStatus('ZIP code verified. Delivery date selected.', 'success');
+              }
+            });
+
+            tatText.textContent = 'Estimated delivery: ' + rule.minTat + '-' + rule.maxTat + ' business days (' + formatDate(minDate) + ' to ' + formatDate(maxDate) + ').';
+            tatInput.value = rule.minTat + '-' + rule.maxTat + ' business days';
+            setStatus('ZIP code verified. Please select a delivery date.', 'success');
+          })
+          .catch(function (error) {
+            setStatus(error.message || 'Unable to verify this USA ZIP code.', 'error');
+          })
+          .finally(function () {
+            verifyButton.disabled = false;
+          });
+      });
+
+      dateInput.addEventListener('change', function () {
+        window.usaDeliveryDateState.date = dateInput.value;
+        addToCartButton.prop('disabled', !dateInput.value);
+      });
+    });
+  })();
+</script>
