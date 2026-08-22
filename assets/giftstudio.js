@@ -3,7 +3,7 @@ var clickTargetUrl = '';
 
 // Rakhi 2026 delivery blackout shared by PDP and BYOH calendars.
 window.getDeliveryDateAvailability = function (date, disableSunday) {
-  const rakhiBlackoutStart = new Date(2026, 7, 25);
+  const rakhiBlackoutStart = new Date(2026, 7, 27);
   const rakhiBlackoutEnd = new Date(2026, 7, 28);
   const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const isRakhiBlackoutDate = calendarDate >= rakhiBlackoutStart && calendarDate <= rakhiBlackoutEnd;
