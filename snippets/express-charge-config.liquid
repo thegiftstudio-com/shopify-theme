@@ -1,0 +1,321 @@
+{% comment %}
+  ============================================================================
+  Express Delivery charge — shared config + cart enforcement + display.
+  Added by Velocity.
+
+  Loaded ONCE globally from layout/theme.liquid so it is available on the PDP
+  (to add the charge), in the cart drawer, and on the cart page (to enforce the
+  cart-level rules and render the cart-level delivery note).
+  ============================================================================
+{% endcomment %}
+
+<script>
+(function () {
+  if (window.__expressChargeInit) return;
+  window.__expressChargeInit = true;
+
+  // --- Storefront API (same public read-only token as the hamper styling charge) ---
+  var STOREFRONT_API_DOMAIN  = 'tgs-revamp.myshopify.com';
+  var STOREFRONT_API_VERSION = '2024-01';
+  var STOREFRONT_API_TOKEN   = '22ad5e2c245acbd1b0f1a27dd3d369ac';
+
+  // --- Express charge product (price/name/image hydrated live from Shopify) ---
+  window.EXPRESS_CHARGE = {
+    product_id: '10262044082483',
+    variant_id: '53547247698227',
+    name: 'Express Delivery',
+    price_paise: 0,
+    image: ''
+  };
+  var EC = window.EXPRESS_CHARGE;
+
+  function hasRealVariant() {
+    return EC.variant_id && String(EC.variant_id).indexOf('REPLACE_') !== 0;
+  }
+  window.EXPRESS_CHARGE_VARIANT_ID = EC.variant_id;
+
+  // --- Live hydrate of name/price/image via GraphQL (non-blocking, like hamper) ---
+  function hydrateExpressChargeFromStorefront() {
+    if (!STOREFRONT_API_TOKEN || STOREFRONT_API_TOKEN.indexOf('REPLACE_') === 0) return Promise.resolve();
+    if (!hasRealVariant()) return Promise.resolve();
+    var gid = 'gid://shopify/ProductVariant/' + EC.variant_id;
+    var query = '' +
+      'query ExpressCharge($ids: [ID!]!) {' +
+      '  nodes(ids: $ids) {' +
+      '    ... on ProductVariant {' +
+      '      id price { amount } image { url } product { title featuredImage { url } }' +
+      '    }' +
+      '  }' +
+      '}';
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 6000);
+    return fetch('https://' + STOREFRONT_API_DOMAIN + '/api/' + STOREFRONT_API_VERSION + '/graphql.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_API_TOKEN },
+      body: JSON.stringify({ query: query, variables: { ids: [gid] } }),
+      signal: controller.signal
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        var nodes = (json && json.data && json.data.nodes) || [];
+        var node = nodes[0];
+        if (!node) return;
+        if (node.product && node.product.title) EC.name = node.product.title;
+        if (node.price && node.price.amount != null) EC.price_paise = Math.round(parseFloat(node.price.amount) * 100);
+        var liveImg = (node.image && node.image.url) || (node.product && node.product.featuredImage && node.product.featuredImage.url);
+        if (liveImg) EC.image = liveImg;
+      })
+      .catch(function (err) { console.warn('[Express] price fetch failed - using fallback.', err); })
+      .finally(function () { clearTimeout(timeout); });
+  }
+  window.expressChargeReady = hydrateExpressChargeFromStorefront();
+
+  // ---------------------------------------------------------------------------
+  // Cart helpers
+  // ---------------------------------------------------------------------------
+  function isChargeLine(item) {
+    if (!item) return false;
+    if (item.properties && (item.properties._is_express_charge === '1' || item.properties._is_express_charge === true)) return true;
+    return hasRealVariant() && String(item.variant_id) === String(EC.variant_id);
+  }
+
+  // A product line is express only if it was added in express mode AND was eligible.
+  function lineIsExpress(item) {
+    return item.properties &&
+           item.properties._delivery_mode === 'express' &&
+           item.properties._express_eligible === '1';
+  }
+
+  function getCart() {
+    return fetch('/cart.js', { headers: { 'Accept': 'application/json' } }).then(function (r) { return r.json(); });
+  }
+
+  function postJSON(url, body) {
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Enforcement — single source of truth. Returns true ONLY when it changed the
+  // cart (so callers re-render exactly once; idempotency terminates any loop).
+  //   * all product lines express + eligible  -> exactly ONE charge (qty 1)
+  //   * any other case                         -> no charge
+  // ---------------------------------------------------------------------------
+  function enforceExpressCharge() {
+    return getCart().then(function (cart) {
+      var items = cart.items || [];
+      var productLines = items.filter(function (it) { return !isChargeLine(it); });
+      var chargeLine = items.filter(isChargeLine)[0];
+      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
+
+      console.log('[Express] enforce ->', {
+        productLines: productLines.length,
+        allExpress: allExpress,
+        hasCharge: !!chargeLine,
+        variantId: EC.variant_id,
+        modes: productLines.map(function (p) {
+          var pr = p.properties || {};
+          return (pr._delivery_mode || '?') + '/elig:' + (pr._express_eligible || '?');
+        })
+      });
+
+      if (allExpress) {
+        if (!chargeLine) {
+          if (!hasRealVariant()) { console.warn('[Express] no real variant id configured - charge not added'); return false; }
+          return postJSON('/cart/add.js', {
+            id: EC.variant_id,
+            quantity: 1,
+            properties: { _is_express_charge: '1' }
+          }).then(function (res) {
+            if (!res.ok) {
+              return res.json().then(function (e) {
+                console.warn('[Express] /cart/add.js FAILED for variant ' + EC.variant_id + ':', e);
+                return false;
+              }).catch(function () { console.warn('[Express] /cart/add.js failed, status ' + res.status); return false; });
+            }
+            console.log('[Express] charge line added');
+            return true;
+          });
+        }
+        if (chargeLine.quantity !== 1) {
+          return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 1 }).then(function () { return true; });
+        }
+        return false;
+      }
+
+      // Not all express -> remove the charge if present.
+      if (chargeLine) {
+        return postJSON('/cart/change.js', { id: chargeLine.key, quantity: 0 }).then(function () { return true; });
+      }
+      return false;
+    }).catch(function (err) {
+      console.warn('[Express] enforce failed', err);
+      return false;
+    });
+  }
+
+  window.__expressEnforcing = false;
+  window.__expressPending = false;
+  // If a cart change arrives while we're mid-enforcement, don't drop it — queue exactly
+  // one re-run so the FINAL cart state is always enforced (prevents "charge not re-added"
+  // races on rapid add/remove). The aggregated `changed` bubbles to the first caller.
+  function runExpressEnforcement() {
+    if (window.__expressEnforcing) { window.__expressPending = true; return Promise.resolve(false); }
+    window.__expressEnforcing = true;
+    return enforceExpressCharge().then(function (changed) {
+      window.__expressEnforcing = false;
+      if (window.__expressPending) {
+        window.__expressPending = false;
+        return runExpressEnforcement().then(function (c) { return changed || c; });
+      }
+      return changed;
+    }, function (err) {
+      window.__expressEnforcing = false;
+      console.warn('[Express] enforce failed', err);
+      return false;
+    });
+  }
+  window.runExpressEnforcement = runExpressEnforcement;
+
+  // ---------------------------------------------------------------------------
+  // Cart-level delivery note ("latest date wins") + charge note toggle.
+  // ---------------------------------------------------------------------------
+  function parseDMY(str) {
+    if (!str) return null;
+    var p = String(str).split('-');
+    if (p.length < 3) return null;
+    var d = parseInt(p[0], 10), m = parseInt(p[1], 10), y = parseInt(p[2], 10);
+    if (y < 100) y += 2000;
+    if (!d || !m || !y) return null;
+    return new Date(y, m - 1, d);
+  }
+  function maxDate(dates) {
+    var valid = dates.filter(Boolean);
+    if (!valid.length) return null;
+    return valid.reduce(function (a, b) { return b > a ? b : a; });
+  }
+  function fmtPromise(date) {
+    if (!date) return '';
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var d = new Date(date); d.setHours(0, 0, 0, 0);
+    var diff = Math.round((d - today) / 86400000);
+    if (diff <= 0) return 'today';
+    if (diff === 1) return 'tomorrow';
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return d.getDate() + ' ' + months[d.getMonth()];
+  }
+
+  function refreshExpressDisplay() {
+    return getCart().then(function (cart) {
+      var items = cart.items || [];
+      var productLines = items.filter(function (it) { return !isChargeLine(it); });
+      var allExpress = productLines.length > 0 && productLines.every(lineIsExpress);
+
+      var text = '';
+      if (productLines.length) {
+        if (allExpress) {
+          var exp = maxDate(productLines.map(function (it) { return parseDMY(it.properties && it.properties._express_date); }));
+          if (exp) text = 'Express delivery by ' + fmtPromise(exp);
+        } else {
+          var std = maxDate(productLines.map(function (it) {
+            return parseDMY((it.properties && it.properties._standard_date) || (it.properties && it.properties['Delivery date']));
+          }));
+          if (std) text = 'Standard delivery by ' + fmtPromise(std);
+        }
+      }
+
+      document.querySelectorAll('.express-delivery-summary').forEach(function (el) {
+        if (text) { el.textContent = text; el.style.display = ''; }
+        else { el.textContent = ''; el.style.display = 'none'; }
+      });
+    }).catch(function () {});
+  }
+  window.refreshExpressDisplay = refreshExpressDisplay;
+
+  // Re-render the cart-page footer section (the charge row + subtotal live here).
+  // CartItems.onCartUpdate only refreshes the items element, never the footer, so
+  // after we add/remove the charge we must refresh the footer ourselves.
+  function refreshFooterSection() {
+    var footer = document.getElementById('main-cart-footer');
+    if (!footer || !footer.dataset || !footer.dataset.id) return Promise.resolve();
+    return fetch('/cart?section_id=' + footer.dataset.id)
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var src = doc.querySelector('.js-contents');
+        var dest = footer.querySelector('.js-contents');
+        if (src && dest) dest.innerHTML = src.innerHTML;
+      })
+      .catch(function () {});
+  }
+
+  function reflectChange() {
+    // cart-items re-renders via CartItems on this event; footer we refresh directly.
+    if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      publish(PUB_SUB_EVENTS.cartUpdate, { source: 'express-charge' });
+    }
+    return refreshFooterSection().then(refreshExpressDisplay);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Wire-up: react to every cart update. Ignore our OWN re-render publish to
+  // avoid re-running enforcement (display still refreshes). Idempotency means
+  // even if it did run again it would converge with no change.
+  // ---------------------------------------------------------------------------
+  function onCartUpdated(event) {
+    if (event && event.source === 'express-charge') { refreshExpressDisplay(); return; }
+    runExpressEnforcement().then(function (changed) {
+      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+    });
+  }
+
+  if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, onCartUpdated);
+  }
+
+  // The PDP Add-to-Cart (cart_drawer_func.js) uses jQuery.ajax to /cart/add.js and does
+  // NOT publish cartUpdate, so the subscriber above never fires for it. ajaxComplete fires
+  // after EVERY jQuery request; we filter to cart mutations. Our own writes use fetch(),
+  // so they never re-trigger this -> no loop. This makes enforcement work even if the
+  // cart_drawer_func.js hook is not deployed.
+  if (window.jQuery) {
+    window.jQuery(document).ajaxComplete(function (event, xhr, settings) {
+      var url = (settings && settings.url) || '';
+      if (/\/cart\/(add|change|update)(\.js)?/.test(url)) {
+        runExpressEnforcement().then(function (changed) {
+          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+        });
+      }
+    });
+  }
+
+  // Explicit safety-net on product removal: when any cart-remove control is clicked, the
+  // removal is async, so we re-check the cart shortly after it commits. If any eligible
+  // Express product still remains, the fee is (re-)added on that remaining product set;
+  // if none remain, the orphan fee is removed. Idempotent, so it layers safely on top of
+  // the cartUpdate subscriber above.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest &&
+      e.target.closest('cart-remove-button, .cart-remove-button, [data-cart-remove], a[href*="/cart/change"]');
+    if (!btn) return;
+    // Removal is async; re-check a couple of times after it commits (idempotent).
+    [400, 900].forEach(function (delay) {
+      setTimeout(function () {
+        runExpressEnforcement().then(function (changed) {
+          if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+        });
+      }, delay);
+    });
+  }, true);
+
+  // On every page load, converge the cart to a valid state, then paint the note.
+  document.addEventListener('DOMContentLoaded', function () {
+    runExpressEnforcement().then(function (changed) {
+      if (changed) { reflectChange(); } else { refreshExpressDisplay(); }
+    });
+  });
+})();
+</script>
