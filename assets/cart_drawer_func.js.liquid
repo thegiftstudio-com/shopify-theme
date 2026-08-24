@@ -205,7 +205,7 @@ function hasBlankFields() {
       event.preventDefault();
       // debugger;
      // code star by dev NR
-        var newProdTags = $(".hidden_tag").val();
+        var newProdTags = $(".hidden_tag").val() || "";
           if(newProdTags.toLowerCase().includes("custom_game_set") && hasBlankFields()==true){
             $(".custom_game_input").focus();
             return $(".lt_error_text").text("Please fill up the questionaire. ");
