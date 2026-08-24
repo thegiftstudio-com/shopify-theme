@@ -77,8 +77,16 @@
   .international-usa-zip-controls .line-item-property__field,
   .international-usa-delivery-date .field-wrapper {
     margin: 0;
-    max-width: 270px;
     width: 100%;
+  }
+
+  .international-usa-zip-controls .line-item-property__field {
+    max-width: 270px;
+  }
+
+  .international-usa-delivery-date .field-wrapper,
+  .international-usa-delivery-date .input-container {
+    max-width: 300px;
   }
 
   #usa_zip_code,
@@ -137,6 +145,10 @@
     width: 100%;
   }
 
+  #usa_delivery_date {
+    padding: 10px 10px 10px 40px;
+  }
+
   .pincode_btn {
     align-items: center;
     display: flex;
@@ -193,6 +205,11 @@
   .international-usa-delivery-status,
   .international-usa-tat {
     margin: 6px 0 8px;
+  }
+
+  .international-usa-delivery-status,
+  .international-usa-tat {
+    display: none;
   }
 
   .international-usa-delivery-status.is-error {
@@ -388,9 +405,12 @@
                 return [day !== 0 && day !== 6, ''];
               },
               onSelect: function (value) {
+                dateInput.value = value;
                 window.usaDeliveryDateState.date = value;
+                dateInput.dispatchEvent(new Event('input', { bubbles: true }));
+                dateInput.dispatchEvent(new Event('change', { bubbles: true }));
                 addToCartButton.prop('disabled', false);
-                setStatus('Product available', 'success');
+                setStatus('', 'success');
               }
             });
 
@@ -399,7 +419,7 @@
             addToCartButton.prop('disabled', false);
             tatText.textContent = 'Estimated delivery: ' + rule.minTat + '-' + rule.maxTat + ' business days (' + formatDate(minDate) + ' to ' + formatDate(maxDate) + ').';
             tatInput.value = rule.minTat + '-' + rule.maxTat + ' business days';
-            setStatus('Product available', 'success');
+            setStatus('', 'success');
           })
           .catch(function (error) {
             if (currentRequest !== requestSequence) return;
@@ -421,6 +441,7 @@
       dateInput.addEventListener('change', function () {
         window.usaDeliveryDateState.date = dateInput.value;
         addToCartButton.prop('disabled', !dateInput.value);
+        if (dateInput.value) setStatus('', 'success');
       });
     });
   })();
