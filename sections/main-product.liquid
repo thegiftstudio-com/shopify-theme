@@ -4,7 +4,7 @@
   data-section="{{ section.id }}"
 >
   {%- assign show_international_rakhi_cart = false -%}
-  {%- if localization.country.iso_code != 'IN' and product.template_suffix == 'enquiry-only-product' -%}
+  {%- if localization.country.iso_code == 'US' and product.template_suffix == 'enquiry-only-product' -%}
     {%- for product_collection in product.collections -%}
       {%- if product_collection.handle == 'rakhi-to-usa' -%}
         {%- assign show_international_rakhi_cart = true -%}

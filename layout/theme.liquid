@@ -440,7 +440,7 @@
         var totalCartItemsCnt = {{ cart.item_count }};
     </script>
 
-    {% if template == 'product' %}
+    {% if template.name == 'product' %}
       {{ 'product.aio.min.css' | asset_url | stylesheet_tag }}
     {% endif %}
 
@@ -455,7 +455,7 @@
     {{ 'slick-theme.min.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'slick.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {% if template == 'product' %}
+    {% if template.name == 'product' %}
       {{ 'jquery-ui.aio.min.css' | asset_url | stylesheet_tag }}
     {% endif %}
 
@@ -467,7 +467,7 @@
 
     {{ 'slick-min.js' | asset_url | script_tag }}
 
-    {% if template == 'product' %}
+    {% if template.name == 'product' %}
       {{ 'jquery-ui-min.aio.min.js' | asset_url | script_tag }}
     {% endif %}
 

@@ -15,7 +15,6 @@
         placeholder="Enter 5-digit ZIP"
         required
       >
-      <button type="button" id="verify_usa_zip_code">Verify</button>
     </div>
   </div>
 
@@ -60,21 +59,6 @@
     border-radius: 4px;
     padding: 10px;
     width: 100%;
-  }
-
-  #verify_usa_zip_code {
-    background: #000;
-    border: 0;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    min-width: 82px;
-    padding: 10px 12px;
-  }
-
-  #verify_usa_zip_code:disabled {
-    cursor: not-allowed;
-    opacity: .6;
   }
 
   .international-usa-delivery-status,
@@ -171,7 +155,9 @@
         dateInput.value = '';
         dateInput.disabled = true;
         dateInput.placeholder = 'Verify ZIP code first';
-        if ($(dateInput).hasClass('hasDatepicker')) $(dateInput).datepicker('destroy');
+        if (window.jQuery && jQuery.fn && typeof jQuery.fn.datepicker === 'function' && $(dateInput).hasClass('hasDatepicker')) {
+          $(dateInput).datepicker('destroy');
+        }
       }
       if (tatInput) tatInput.value = '';
       if (tatText) tatText.textContent = '';
@@ -195,23 +181,17 @@
 
     $(document).ready(function () {
       var zipInput = document.getElementById('usa_zip_code');
-      var verifyButton = document.getElementById('verify_usa_zip_code');
       var dateInput = document.getElementById('usa_delivery_date');
       var tatInput = document.getElementById('usa_delivery_tat_value');
       var tatText = document.getElementById('usa_delivery_tat');
       var addToCartButton = $('.add-to-cart-button[data-international-rakhi="true"]');
+      var requestSequence = 0;
 
-      if (!zipInput || !verifyButton || !dateInput) return;
+      if (!zipInput || !dateInput) return;
       resetDeliveryState();
 
-      zipInput.addEventListener('input', function () {
-        zipInput.value = zipInput.value.replace(/[^0-9]/g, '').slice(0, 5);
-        resetDeliveryState();
-        setStatus('', '');
-      });
-
-      verifyButton.addEventListener('click', function () {
-        var zip = zipInput.value.trim();
+      function checkZipCode(zip) {
+        var currentRequest = ++requestSequence;
 
         resetDeliveryState();
         if (!/^\d{5}$/.test(zip)) {
@@ -219,7 +199,6 @@
           return;
         }
 
-        verifyButton.disabled = true;
         setStatus('Checking ZIP code availability...', '');
 
         fetch(USA_ZIP_TAT_API_URL, {
@@ -236,6 +215,7 @@
             });
           })
           .then(function (response) {
+            if (currentRequest !== requestSequence) return;
             var payload = response.data || response.result || response;
             if (response.status === false || payload.status === false || payload.serviceable === false) {
               throw new Error(getApiError(payload));
@@ -244,6 +224,9 @@
             var rule = normalizeTat(response);
             if (!rule || !Number.isFinite(rule.minTat) || !Number.isFinite(rule.maxTat) || rule.minTat < 0 || rule.maxTat < rule.minTat) {
               throw new Error('The USA ZIP API returned an invalid TAT.');
+            }
+            if (!window.jQuery || !jQuery.fn || typeof jQuery.fn.datepicker !== 'function') {
+              throw new Error('The delivery calendar is unavailable. Please reload the page and try again.');
             }
 
             var today = typeof istTime !== 'undefined' && istTime instanceof Date
@@ -282,11 +265,20 @@
             setStatus('ZIP code verified. Please select a delivery date.', 'success');
           })
           .catch(function (error) {
+            if (currentRequest !== requestSequence) return;
             setStatus(error.message || 'Unable to verify this USA ZIP code.', 'error');
-          })
-          .finally(function () {
-            verifyButton.disabled = false;
           });
+      }
+
+      zipInput.addEventListener('input', function () {
+        zipInput.value = zipInput.value.replace(/[^0-9]/g, '').slice(0, 5);
+        requestSequence += 1;
+        resetDeliveryState();
+        setStatus('', '');
+
+        if (/^\d{5}$/.test(zipInput.value)) {
+          checkZipCode(zipInput.value);
+        }
       });
 
       dateInput.addEventListener('change', function () {
