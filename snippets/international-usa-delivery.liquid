@@ -1,11 +1,12 @@
 <div class="international-usa-delivery" data-international-usa-delivery>
   <p class="font_text font_weight_400">Check USA delivery availability</p>
 
-  <div class="international-usa-zip-row">
+  <div class="international-usa-zip-row label_input_sec">
     <label class="font_bold" for="usa_zip_code">Enter USA ZIP code:</label>
-    <div class="international-usa-zip-controls">
+    <div class="international-usa-zip-controls input_container">
       <input
         id="usa_zip_code"
+        class="delivery-input-pdp"
         name="properties[Pincode]"
         type="text"
         inputmode="numeric"
@@ -21,17 +22,27 @@
   <p class="international-usa-delivery-status" id="usa_delivery_status" role="status" aria-live="polite"></p>
   <p class="international-usa-tat" id="usa_delivery_tat"></p>
 
-  <label class="font_bold" for="usa_delivery_date">Select delivery date:</label>
-  <input
-    id="usa_delivery_date"
-    name="properties[Delivery date]"
-    type="text"
-    autocomplete="off"
-    placeholder="Verify ZIP code first"
-    readonly
-    disabled
-    required
-  >
+  <div class="cart-delivery-date international-usa-delivery-date">
+    <div class="delivery-label">
+      <label class="font_bold" for="usa_delivery_date">Enter Delivery Date:</label>
+    </div>
+    <div class="input-container date-section">
+      {% render 'calender_icon' %}
+      <p class="field-wrapper">
+        <input
+          id="usa_delivery_date"
+          class="delivery-input-pdp"
+          name="properties[Delivery date]"
+          type="text"
+          autocomplete="off"
+          placeholder="Verify ZIP code first"
+          readonly
+          disabled
+          required
+        >
+      </p>
+    </div>
+  </div>
   <input id="usa_delivery_tat_value" name="properties[_product_tat]" type="hidden" value="">
 </div>
 
@@ -41,24 +52,81 @@
   }
 
   .international-usa-zip-row,
-  .international-usa-delivery > label {
+  .international-usa-delivery-date {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 
   .international-usa-zip-controls {
-    display: flex;
-    gap: 8px;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
     margin-top: 6px;
   }
 
-  #usa_zip_code,
-  #usa_delivery_date {
+  #usa_zip_code {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 10px;
+    max-width: 320px;
     width: 100%;
+  }
+
+  .cart-delivery-date {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .delivery-label {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .input-container {
+    align-items: center;
+    display: flex;
+    position: relative;
+    width: 100%;
+  }
+
+  .field-wrapper {
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .input-container svg {
+    left: 10px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    z-index: 1;
+  }
+
+  .delivery-input-pdp {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+    padding: 10px 10px 10px 40px;
+    width: 100%;
+  }
+
+  .international-usa-delivery-date .delivery-input-pdp:disabled {
+    background: #fff;
+    cursor: not-allowed;
+  }
+
+  #ui-datepicker-div {
+    position: absolute !important;
+    z-index: 1001 !important;
   }
 
   .international-usa-delivery-status,
@@ -256,13 +324,16 @@
               onSelect: function (value) {
                 window.usaDeliveryDateState.date = value;
                 addToCartButton.prop('disabled', false);
-                setStatus('ZIP code verified. Delivery date selected.', 'success');
+                setStatus('Product available', 'success');
               }
             });
 
+            $(dateInput).datepicker('setDate', minDate);
+            window.usaDeliveryDateState.date = formatDate(minDate);
+            addToCartButton.prop('disabled', false);
             tatText.textContent = 'Estimated delivery: ' + rule.minTat + '-' + rule.maxTat + ' business days (' + formatDate(minDate) + ' to ' + formatDate(maxDate) + ').';
             tatInput.value = rule.minTat + '-' + rule.maxTat + ' business days';
-            setStatus('ZIP code verified. Please select a delivery date.', 'success');
+            setStatus('Product available', 'success');
           })
           .catch(function (error) {
             if (currentRequest !== requestSequence) return;
