@@ -472,7 +472,7 @@
             window.usaDeliveryDateState.date = formatDate(minDate);
             addToCartButton.prop('disabled', false);
             tatText.textContent = 'Estimated delivery: ' + rule.minTat + '-' + rule.maxTat + ' business days (' + formatDate(minDate) + ' to ' + formatDate(maxDate) + ').';
-            tatInput.value = rule.minTat + '-' + rule.maxTat + ' business days';
+            tatInput.value = String(rule.minTat);
             setStatus('', 'success');
           })
           .catch(function (error) {

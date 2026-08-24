@@ -202,6 +202,7 @@ function hasBlankFields() {
   
 
     $(".add-to-cart-button").on("click", function(event) {
+      event.preventDefault();
       // debugger;
      // code star by dev NR
         var newProdTags = $(".hidden_tag").val();
@@ -831,8 +832,14 @@ $(".custom_photo_error_txt").remove();
 
           // Added all the product into the cart. such as Gift Card, Add-On product, etc. Added by velocity 10-07-2025
           data = {
-    items: []
+    items: [],
+    sections: 'cart-drawer,cart-icon-bubble',
+    sections_url: window.location.pathname
 };
+
+// Read the selected add-on at submission time so the USA radio selection is
+// included even when the add-on control is rendered outside the product form.
+rakhi_product_id = $("input[name='rakhi_product_id']:checked").val() || rakhi_product_id;
 
 // Add gift product if it exists
 if (gift_product_id && gift_product_id !== "") {
@@ -908,7 +915,7 @@ data.items.push({
                 url: '/cart/add.js',
                 data: data,
                 dataType: 'json',
-                success: function() {
+                success: function(response) {
                     // window.location.href = '/cart';
                     var items = data.items;
                     if (items.length) {
@@ -966,7 +973,12 @@ data.items.push({
 
 
                         $(".add-to-cart-button").removeAttr("disabled");
-                        $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
+                        var cartDrawer = document.querySelector('cart-drawer');
+                        if (cartDrawer && typeof cartDrawer.renderContents === 'function' && response.sections) {
+                            cartDrawer.renderContents(response);
+                            $(".add-to-cart-button .custom_spinner").css("display", "none");
+                        } else {
+                          $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
                             $(".add-to-cart-button .custom_spinner").css("display", "none");
                             //velocity: 17-07-2024 Function to send the event to send the side drawer open event to GTM
                             handleCartDrawer();
@@ -998,7 +1010,8 @@ $zsiqFloat.css('display', 'none');
                         }, 500);
                         // Code end by NR
 
-                        });
+                          });
+                        }
 
                     }
                 },
