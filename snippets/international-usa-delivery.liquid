@@ -199,8 +199,62 @@
   }
 
   #ui-datepicker-div {
+    background: #f3f3f3 !important;
+    border: 1px solid #000 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: absolute !important;
     z-index: 1001 !important;
+  }
+
+  #ui-datepicker-div .ui-widget-header {
+    background: #000 !important;
+    border: 1px solid #000 !important;
+    color: #fff !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev,
+  #ui-datepicker-div .ui-datepicker-next {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    cursor: pointer;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev .ui-icon,
+  #ui-datepicker-div .ui-datepicker-next .ui-icon {
+    background-position: -10px -10px !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev .ui-icon {
+    background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.png?v=1679685654') !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-next .ui-icon {
+    background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.png?v=1679685654') !important;
+  }
+
+  #ui-datepicker-div .ui-state-default,
+  #ui-datepicker-div .ui-widget-content .ui-state-default {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  #ui-datepicker-div .ui-state-hover,
+  #ui-datepicker-div .ui-widget-content .ui-state-hover {
+    background: transparent !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  #ui-datepicker-div .ui-state-active,
+  #ui-datepicker-div .ui-widget-content .ui-state-active,
+  #ui-datepicker-div .ui-state-highlight,
+  #ui-datepicker-div .ui-widget-content .ui-state-highlight {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    font-weight: 600 !important;
   }
 
   .international-usa-delivery-status,
@@ -402,8 +456,7 @@
               changeMonth: true,
               changeYear: true,
               beforeShowDay: function (date) {
-                var day = date.getDay();
-                return [day !== 0 && day !== 6, ''];
+                return [true, ''];
               },
               onSelect: function (value) {
                 dateInput.value = value;
