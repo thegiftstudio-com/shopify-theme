@@ -40,6 +40,8 @@
       if (button.dataset.internationalHandlerAttached === 'true') return;
       button.dataset.internationalHandlerAttached = 'true';
 
+      // Capture the USA button click before the legacy India cart listener.
+      // This button builds its own main + USA add-on request below.
       button.addEventListener('click', function (event) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -128,7 +130,7 @@
             button.removeAttribute('aria-disabled');
             if (spinner) spinner.style.display = 'none';
           });
-      });
+      }, true);
     });
   }
 
