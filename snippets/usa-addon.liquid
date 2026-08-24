@@ -2,6 +2,18 @@
 <script src="{{ 'giftstudio.js' | asset_url }}" defer></script>
 <script src="{{ 'cart_drawer_func.js' | asset_url }}" defer></script>
 
+{% comment %}
+  Keep the selected variant field identical to the working India add-on flow.
+  The custom cart script uses this value when it builds the main + add-on request.
+{% endcomment %}
+<input
+  type="hidden"
+  id="ProductSelected-variant"
+  class="input_variant"
+  name="id"
+  value="{{ product.selected_or_first_available_variant.id }}"
+>
+
 {% if product.tags contains 'location-roi' %}
   {% assign isRoiProduct = true %}
 {% else %}

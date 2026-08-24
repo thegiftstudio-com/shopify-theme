@@ -222,11 +222,13 @@ function hasBlankFields() {
 
 
         var product_id = "";
+        var form_product_id = $(this).closest('form').find('input[name="id"]').val();
+        var selected_product_id = $("#ProductSelected-variant").val() || form_product_id;
         let urlString = window.location.href;
 
         let paramString = urlString.split('?')[1];
         if (paramString == undefined) {
-            product_id = $("#ProductSelected-variant").val();
+            product_id = selected_product_id;
         } else {
             let queryString = new URLSearchParams(paramString);
 
@@ -234,10 +236,12 @@ function hasBlankFields() {
                 if (pair[0] == 'variant') {
                     product_id = pair[1];
                 } else {
-                    product_id = $("#ProductSelected-variant").val();
+                    product_id = selected_product_id;
                 }
             }
         }
+
+        product_id = product_id || selected_product_id;
 
 
 
@@ -973,12 +977,8 @@ data.items.push({
 
 
                         $(".add-to-cart-button").removeAttr("disabled");
-                        var cartDrawer = document.querySelector('cart-drawer');
-                        if (cartDrawer && typeof cartDrawer.renderContents === 'function' && response.sections) {
-                            cartDrawer.renderContents(response);
-                            $(".add-to-cart-button .custom_spinner").css("display", "none");
-                        } else {
-                          $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
+                        // Use the same drawer refresh path as the working India flow.
+                        $("#CartDrawer_MainContent>div").load(location.href + " #CartDrawer_MainContent>div", function() {
                             $(".add-to-cart-button .custom_spinner").css("display", "none");
                             //velocity: 17-07-2024 Function to send the event to send the side drawer open event to GTM
                             handleCartDrawer();
@@ -986,9 +986,8 @@ data.items.push({
                           var $zsiqFloat = $('.zsiq-float');
 $zsiqFloat.css('display', 'none');
                             $("cart-drawer.drawer").addClass("active");
-                          // Added by Velocity 29-07-2025 Remove the page reload If BYOH products Added into the cart.
-                            // if($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
-                            //   setTimeout(function(){location.reload()},900);
+                            if($('cart-drawer-items').find('[data-cart-prod-bundle-id]').length)
+                              setTimeout(function(){location.reload()},900);
                         // Code start by NR
                         setTimeout(function() {
                             var classes = $('body').attr('class').split(' ');
@@ -1010,8 +1009,7 @@ $zsiqFloat.css('display', 'none');
                         }, 500);
                         // Code end by NR
 
-                          });
-                        }
+                        });
 
                     }
                 },

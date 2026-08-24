@@ -170,11 +170,13 @@ function hasBlankFields() {
 
 
         var product_id = "";
+        var form_product_id = $(this).closest('form').find('input[name="id"]').val();
+        var selected_product_id = $("#ProductSelected-variant").val() || form_product_id;
         let urlString = window.location.href;
 
         let paramString = urlString.split('?')[1];
         if (paramString == undefined) {
-            product_id = $("#ProductSelected-variant").val();
+            product_id = selected_product_id;
         } else {
             let queryString = new URLSearchParams(paramString);
 
@@ -182,10 +184,12 @@ function hasBlankFields() {
                 if (pair[0] == 'variant') {
                     product_id = pair[1];
                 } else {
-                    product_id = $("#ProductSelected-variant").val();
+                    product_id = selected_product_id;
                 }
             }
         }
+
+        product_id = product_id || selected_product_id;
 
 
 
