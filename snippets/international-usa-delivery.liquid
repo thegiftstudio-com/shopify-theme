@@ -149,16 +149,17 @@
     padding: 10px 10px 10px 40px;
   }
 
-  .pincode_btn {
+  div.international-usa-zip-controls .pincode_btn {
     align-items: center;
     display: flex;
     height: 30px;
-    position: absolute;
-    right: 0;
-    top: 0;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: 30px;
   }
 
-  .pincode_btn button {
+  div.international-usa-zip-controls .pincode_btn button {
     align-items: center;
     background: transparent;
     border: 0;
@@ -170,7 +171,7 @@
     width: 30px;
   }
 
-  .pincode_btn svg {
+  div.international-usa-zip-controls .pincode_btn svg {
     height: 14px;
     width: 14px;
   }
@@ -397,7 +398,7 @@
             $(dateInput).datepicker({
               dateFormat: 'dd-mm-yy',
               minDate: minDate,
-              maxDate: maxDate,
+              maxDate: null,
               changeMonth: true,
               changeYear: true,
               beforeShowDay: function (date) {
