@@ -150,9 +150,10 @@ function hasBlankFields() {
   
 
     $(".add-to-cart-button").on("click", function(event) {
+      event.preventDefault();
       // debugger;
      // code star by dev NR
-        var newProdTags = $(".hidden_tag").val();
+        var newProdTags = $(".hidden_tag").val() || "";
           if(newProdTags.toLowerCase().includes("custom_game_set") && hasBlankFields()==true){
             $(".custom_game_input").focus();
             return $(".lt_error_text").text("Please fill up the questionaire. ");
@@ -195,7 +196,7 @@ function hasBlankFields() {
         var error_message = $('.error_msg').val();
 
 
-        var product_name = $('.product__title h1').html();
+        var product_name = $('.product__title h1').text().trim();
         var pd_quantity = $('.product_quantity_input_pdp').val() || 1;
         var custom_game_text = $('.custom_game_input').val();
       var fileInput = $("#custom_photo")[0]; // Get the DOM element from jQuery
@@ -234,8 +235,9 @@ $(".custom_photo_error_txt").remove();
   return false;
 }
 
-        var pincode_val = $("#pincode_input").val();
-       var delivery_date_val = $("#delivery-date-5").val();
+        var isUsaInternationalProduct = $("#usa_zip_code").length > 0;
+        var pincode_val = isUsaInternationalProduct ? $("#usa_zip_code").val() : $("#pincode_input").val();
+       var delivery_date_val = isUsaInternationalProduct ? $("#usa_delivery_date").val() : $("#delivery-date-5").val();
         var product_warehouse = $("#product_warehouse").val();
         var product_warehouse_available_quantity = $("#product_warehouse_available_quantity").val();
         var product_warehouse_tat = $("#product_warehouse_tat").val();
@@ -246,6 +248,13 @@ $(".custom_photo_error_txt").remove();
         
      
         if (pincode_val == "") {
+           if (isUsaInternationalProduct) {
+             $(".lt_error_text").text("Please enter a USA ZIP code.");
+             $("#usa_zip_code").focus();
+             $(".add-to-cart-button").removeAttr("disabled");
+             $(".add-to-cart-button .custom_spinner").css("display", "none");
+             return false;
+           }
            pushPincodeEnteredEvent(0,'Please fill Pincode value! it is required');
            $('.pincode_txt').html("<span class='red_txt'>Please fill Pincode value! it is required. </span>").removeClass('valid').addClass('invalid');
             // $(".lt_error_text").text("Please fill Pincode value! it is required. ");
@@ -255,7 +264,14 @@ $(".custom_photo_error_txt").remove();
           // scroll to pincode input field if empty
           // document.getElementById('pincode_input').scrollIntoView(); 
             return false;
-        } else if (pincode_val.length != 6) {
+        } else if (isUsaInternationalProduct ? !/^\d{5}$/.test(pincode_val) : pincode_val.length != 6) {
+          if (isUsaInternationalProduct) {
+            $(".lt_error_text").text("Enter a valid five-digit USA ZIP code.");
+            $("#usa_zip_code").focus();
+            $(".add-to-cart-button").removeAttr("disabled");
+            $(".add-to-cart-button .custom_spinner").css("display", "none");
+            return false;
+          }
           //velocity: 06-0-2024 Added this condition to handle the case when user will enter pincode less then 6 digit.
            pushPincodeEnteredEvent(0,'Enter a Valid Pincode');
             $('.pincode_txt').html("<span class='red_txt'>Enter a Valid Pincode</span>").removeClass('valid').addClass('invalid');
@@ -271,14 +287,25 @@ $(".custom_photo_error_txt").remove();
             return false;
         }
         pd_json_property_val["Pincode"] = pincode_val;
-        pd_json_property_val["_product_warehouse_tat"] = product_warehouse_tat;
-        pd_json_property_val["_product_tat"] = total_product_tat;
-        pd_json_property_val["Delivery Time Slot"] = time_slot;
-        pd_json_property_val["_product_warehouse"] = product_warehouse;
-        pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
+        if (isUsaInternationalProduct) {
+          pd_json_property_val["_product_tat"] = $("#usa_delivery_tat_value").val() || "";
+        } else {
+          pd_json_property_val["_product_warehouse_tat"] = product_warehouse_tat;
+          pd_json_property_val["_product_tat"] = total_product_tat;
+          pd_json_property_val["Delivery Time Slot"] = time_slot;
+          pd_json_property_val["_product_warehouse"] = product_warehouse;
+          pd_json_property_val["_product_warehouse_available_quantity"] = product_warehouse_available_quantity;
+        }
       
       
         if (delivery_date_val == "") {
+            if (isUsaInternationalProduct) {
+              $(".lt_error_text").text("Please select a delivery date.");
+              $("#usa_delivery_date").focus();
+              $(".add-to-cart-button").removeAttr("disabled");
+              $(".add-to-cart-button .custom_spinner").css("display", "none");
+              return false;
+            }
             $(".lt_error_text").text("Please Choose Delivery date value! it is required. ");
           $("#delivery-date-5").focus();
           
@@ -287,22 +314,24 @@ $(".custom_photo_error_txt").remove();
             return false;
         }
 
-        var deliveryDateParts = delivery_date_val.split('-');
-        var selectedDeliveryDate = deliveryDateParts.length === 3
-          ? new Date(deliveryDateParts[2], deliveryDateParts[1] - 1, deliveryDateParts[0])
-          : null;
-        var isValidDeliveryDate = selectedDeliveryDate && !isNaN(selectedDeliveryDate.getTime());
+        if (!isUsaInternationalProduct) {
+          var deliveryDateParts = delivery_date_val.split('-');
+          var selectedDeliveryDate = deliveryDateParts.length === 3
+            ? new Date(deliveryDateParts[2], deliveryDateParts[1] - 1, deliveryDateParts[0])
+            : null;
+          var isValidDeliveryDate = selectedDeliveryDate && !isNaN(selectedDeliveryDate.getTime());
 
-        if (!isValidDeliveryDate || !window.getDeliveryDateAvailability(selectedDeliveryDate, false)[0]) {
-            $(".lt_error_text").text(
-              isValidDeliveryDate
-                ? "Delivery is unavailable from 25th August to 28th August due to Rakhi. Please select another date."
-                : "Please choose a valid delivery date."
-            );
-            $("#delivery-date-5").focus();
-            $(".add-to-cart-button").removeAttr("disabled");
-            $(".add-to-cart-button .custom_spinner").css("display", "none");
-            return false;
+          if (!isValidDeliveryDate || !window.getDeliveryDateAvailability(selectedDeliveryDate, false)[0]) {
+              $(".lt_error_text").text(
+                isValidDeliveryDate
+                  ? "Delivery is unavailable from 25th August to 28th August due to Rakhi. Please select another date."
+                  : "Please choose a valid delivery date."
+              );
+              $("#delivery-date-5").focus();
+              $(".add-to-cart-button").removeAttr("disabled");
+              $(".add-to-cart-button .custom_spinner").css("display", "none");
+              return false;
+          }
         }
 
         pd_json_property_val["Delivery date"] = delivery_date_val;
@@ -738,6 +767,7 @@ $(".custom_photo_error_txt").remove();
             }
 
             // Added by Velocity on 12-08-2026 to add the selected Rakhi product as a separate cart line item.
+            rakhi_product_id = $("input[name='rakhi_product_id']:checked").val() || rakhi_product_id;
             if (rakhi_product_id != "" && rakhi_product_id != undefined) {
                 data.items.unshift({
                     "id": rakhi_product_id,
