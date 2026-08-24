@@ -88,7 +88,7 @@
         <div class="add_to_cart_btn_sec">
      <button
             id = "ProductSubmitButton-{{ section_id }}"
-            type="{% if international_rakhi_cart %}submit{% else %}button{% endif %}"
+            type="button"
             name="add"
             class="cmn_btn add-to-cart-button product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}{% if international_rakhi_cart %} international-rakhi-cart{% endif %}"
             {% if international_rakhi_cart %}data-international-rakhi="true"{% endif %}
