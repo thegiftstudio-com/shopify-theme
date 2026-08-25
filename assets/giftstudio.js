@@ -3,10 +3,16 @@ var clickTargetUrl = '';
 
 // Rakhi 2026 delivery blackout shared by PDP and BYOH calendars.
 window.getDeliveryDateAvailability = function (date, disableSunday) {
-  if (localStorage.getItem("isPerishable") != '1') {
+   // No Rakhi blackout logic for non-perishable products
+    if (localStorage.getItem("isPerishable") != '1') {
+        const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const isSunday = disableSunday && calendarDate.getDay() === 0;
+
+        return [!isSunday, isSunday ? "sunday-disabled" : ""];
+    }
+
   const rakhiBlackoutStart = new Date(2026, 7, 28);
   const rakhiBlackoutEnd = new Date(2026, 7, 28);
-  }
   const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const isRakhiBlackoutDate = calendarDate >= rakhiBlackoutStart && calendarDate <= rakhiBlackoutEnd;
   const isSunday = disableSunday && calendarDate.getDay() === 0;
