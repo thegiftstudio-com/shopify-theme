@@ -365,19 +365,45 @@
     });
   }
 
-  // Added by Velocity on 25-08-2026: cover custom remove controls that do not
-  // publish PUB_SUB_EVENTS.cartUpdate. This is one delayed check only; the
-  // queued drawer refresh prevents it from racing the normal cart-update path.
+  // Added by Velocity on 25-08-2026: remove the Express charge before the
+  // selected main line so the drawer never renders an orphan charge state.
   document.addEventListener('click', function (event) {
     var removeControl = event.target && event.target.closest &&
       event.target.closest('cart-remove-button, .cart-remove-button, [data-cart-remove]');
     if (!removeControl) return;
-    setTimeout(function () {
-      runExpressEnforcement().then(function (changed) {
-        if (changed) reflectChange();
-        else queueCartDrawerRefresh().then(refreshExpressDisplay);
+
+    var lineIndex = parseInt(removeControl.getAttribute('data-index'), 10);
+    if (!lineIndex) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    getCart().then(function (cart) {
+      var target = (cart.items || [])[lineIndex - 1];
+      if (!target) return;
+
+      var chargeKeys = (cart.items || [])
+        .filter(function (item) {
+          return item.key !== target.key && ExpressUtils.classifyLine(item) === 'charge';
+        })
+        .map(function (item) { return item.key; });
+
+      var actions = chargeKeys.map(function (key) {
+        return function () { return postCart('/cart/change.js', { id: key, quantity: 0 }); };
       });
-    }, 750);
+      actions.push(function () {
+        return postCart('/cart/change.js', { id: target.key, quantity: 0 });
+      });
+
+      return runSequentially(actions).then(function () {
+        return runExpressEnforcement();
+      }).then(function () {
+        return reflectChange();
+      });
+    }).catch(function (error) {
+      console.warn('[Express] ordered cart removal failed', error);
+      return queueCartDrawerRefresh().then(refreshExpressDisplay);
+    });
   }, true);
 
   // On every page load, converge the cart to a valid state, then paint the note.
