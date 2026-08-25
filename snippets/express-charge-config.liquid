@@ -375,8 +375,14 @@
     var lineIndex = parseInt(removeControl.getAttribute('data-index'), 10);
     if (!lineIndex) return;
 
+    var cartItems = removeControl.closest('cart-items') || removeControl.closest('cart-drawer-items');
+
     event.preventDefault();
     event.stopImmediatePropagation();
+
+    if (cartItems && typeof cartItems.enableLoading === 'function') {
+      cartItems.enableLoading(lineIndex);
+    }
 
     getCart().then(function (cart) {
       var target = (cart.items || [])[lineIndex - 1];
@@ -403,6 +409,10 @@
     }).catch(function (error) {
       console.warn('[Express] ordered cart removal failed', error);
       return queueCartDrawerRefresh().then(refreshExpressDisplay);
+    }).finally(function () {
+      if (cartItems && cartItems.isConnected && typeof cartItems.disableLoading === 'function') {
+        cartItems.disableLoading(lineIndex);
+      }
     });
   }, true);
 
