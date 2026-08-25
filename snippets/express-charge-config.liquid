@@ -93,7 +93,10 @@
   }
 
   function getCart() {
-    return fetch('/cart.js', { headers: { 'Accept': 'application/json' } }).then(function (r) { return r.json(); });
+    return fetch('/cart.js?express_state=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Accept': 'application/json' }
+    }).then(function (r) { return r.json(); });
   }
 
   function postJSON(url, body) {
@@ -286,6 +289,8 @@
   function refreshCustomCartDrawer() {
     var currentRoot = document.getElementById('CartDrawer_MainContent');
     if (!currentRoot) return Promise.resolve();
+    var currentDrawer = document.querySelector('cart-drawer');
+    var wasOpen = !!(currentDrawer && currentDrawer.classList.contains('active'));
 
     var separator = window.location.href.indexOf('?') === -1 ? '?' : '&';
     return fetch(window.location.href.split('#')[0] + separator + 'express_refresh=' + Date.now(), {
@@ -304,7 +309,7 @@
       var empty = !!(drawer && drawer.querySelector('.drawer__inner-empty'));
       if (drawer) {
         drawer.classList.toggle('is-empty', empty);
-        drawer.classList.add('active');
+        drawer.classList.toggle('active', wasOpen);
       }
       if (typeof window.handleCartDrawer === 'function') window.handleCartDrawer();
     }).catch(function (error) {
