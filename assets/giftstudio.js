@@ -4,7 +4,7 @@ var clickTargetUrl = '';
 // Rakhi 2026 delivery blackout shared by PDP and BYOH calendars.
 window.getDeliveryDateAvailability = function (date, disableSunday) {
    // No Rakhi blackout logic for non-perishable products
-    if (localStorage.getItem("isPerishable") != 1) {
+    if (localStorage.getItem("isPerishable") == 1) {
         const calendarDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         const isSunday = disableSunday && calendarDate.getDay() === 0;
 
