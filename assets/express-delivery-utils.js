@@ -44,6 +44,12 @@
     if (properties._is_express_charge === '1' || properties._is_express_charge === true) {
       return 'charge';
     }
+    // Added by Velocity on 25-08-2026: classify legacy Express charge lines that
+    // were added before the private marker property was introduced.
+    var title = String((item && item.product_title) || '').trim().toLowerCase();
+    if (title === 'express delivery' || title.indexOf('express delivery -') === 0) {
+      return 'charge';
+    }
     var hasDeliveryProperty = DELIVERY_KEYS.some(function (key) {
       return Object.prototype.hasOwnProperty.call(properties, key);
     });

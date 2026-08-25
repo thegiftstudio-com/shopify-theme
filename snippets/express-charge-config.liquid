@@ -280,6 +280,39 @@
   }
   window.refreshExpressDisplay = refreshExpressDisplay;
 
+  // Added by Velocity on 25-08-2026: refresh the custom drawer wrapper itself.
+  // The theme drawer is not rendered by Dawn's section-only renderer, so a
+  // section response can leave the old footer or Express charge visible.
+  function refreshCustomCartDrawer() {
+    var currentRoot = document.getElementById('CartDrawer_MainContent');
+    if (!currentRoot) return Promise.resolve();
+
+    var separator = window.location.href.indexOf('?') === -1 ? '?' : '&';
+    return fetch(window.location.href.split('#')[0] + separator + 'express_refresh=' + Date.now(), {
+      cache: 'no-store',
+      headers: { 'Accept': 'text/html' }
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Cart drawer refresh returned status ' + response.status);
+      return response.text();
+    }).then(function (html) {
+      var parsed = new DOMParser().parseFromString(html, 'text/html');
+      var source = parsed.querySelector('#CartDrawer_MainContent > div');
+      var target = currentRoot.querySelector(':scope > div');
+      if (!source || !target) return;
+      target.replaceWith(source.cloneNode(true));
+      var drawer = document.querySelector('cart-drawer');
+      var empty = !!(drawer && drawer.querySelector('.drawer__inner-empty'));
+      if (drawer) {
+        drawer.classList.toggle('is-empty', empty);
+        drawer.classList.add('active');
+      }
+      if (typeof window.handleCartDrawer === 'function') window.handleCartDrawer();
+    }).catch(function (error) {
+      console.warn('[Express] custom drawer refresh failed', error);
+    });
+  }
+  window.refreshCustomCartDrawer = refreshCustomCartDrawer;
+
   // Added by Velocity 13-08-2026: rebuild every cart surface from the final
   // enforced state so removing the last Express product leaves no stale fee UI.
   function replaceSectionContent(sections, sectionKey, sourceSelector, currentRootId, currentSelector) {
@@ -325,7 +358,9 @@
   window.refreshExpressCartSections = refreshExpressCartSections;
 
   function reflectChange() {
-    return refreshExpressCartSections().then(refreshExpressDisplay);
+    return refreshCustomCartDrawer()
+      .then(refreshExpressCartSections)
+      .then(refreshExpressDisplay);
   }
 
   // ---------------------------------------------------------------------------
@@ -334,9 +369,9 @@
   // even if it did run again it would converge with no change.
   // ---------------------------------------------------------------------------
   function onCartUpdated(event) {
-    if (event && event.source === 'express-charge') { refreshExpressCartSections().then(refreshExpressDisplay); return; }
+    if (event && event.source === 'express-charge') { reflectChange(); return; }
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
+      if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
     });
   }
 
@@ -354,7 +389,7 @@
       var url = (settings && settings.url) || '';
       if (/\/cart\/(add|change|update)(\.js)?/.test(url)) {
         runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
+          if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
         });
       }
     });
@@ -373,7 +408,7 @@
     [400, 900].forEach(function (delay) {
       setTimeout(function () {
         runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
+          if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
         });
       }, delay);
     });
@@ -382,7 +417,7 @@
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshExpressCartSections().then(refreshExpressDisplay); }
+      if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
     });
   });
 })();
