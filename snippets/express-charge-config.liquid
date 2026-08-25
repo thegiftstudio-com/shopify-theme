@@ -365,6 +365,21 @@
     });
   }
 
+  // Added by Velocity on 25-08-2026: cover custom remove controls that do not
+  // publish PUB_SUB_EVENTS.cartUpdate. This is one delayed check only; the
+  // queued drawer refresh prevents it from racing the normal cart-update path.
+  document.addEventListener('click', function (event) {
+    var removeControl = event.target && event.target.closest &&
+      event.target.closest('cart-remove-button, .cart-remove-button, [data-cart-remove]');
+    if (!removeControl) return;
+    setTimeout(function () {
+      runExpressEnforcement().then(function (changed) {
+        if (changed) reflectChange();
+        else queueCartDrawerRefresh().then(refreshExpressDisplay);
+      });
+    }, 750);
+  }, true);
+
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
     runExpressEnforcement().then(function (changed) {
