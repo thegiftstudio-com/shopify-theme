@@ -313,54 +313,19 @@
   }
   window.refreshCustomCartDrawer = refreshCustomCartDrawer;
 
-  // Added by Velocity 13-08-2026: rebuild every cart surface from the final
-  // enforced state so removing the last Express product leaves no stale fee UI.
-  function replaceSectionContent(sections, sectionKey, sourceSelector, currentRootId, currentSelector) {
-    if (!sections || !sections[sectionKey]) return null;
-    var doc = new DOMParser().parseFromString(sections[sectionKey], 'text/html');
-    var source = doc.querySelector(sourceSelector);
-    var currentRoot = document.getElementById(currentRootId);
-    var current = currentRoot && (currentRoot.querySelector(currentSelector) || currentRoot);
-    if (source && current) current.innerHTML = source.innerHTML;
-    return source;
+  // Added by Velocity on 25-08-2026: serialize drawer refreshes. Multiple cart
+  // callbacks can fire for one removal; allowing them to render concurrently
+  // lets an older response overwrite the final empty-cart response.
+  var drawerRefreshQueue = Promise.resolve();
+  function queueCartDrawerRefresh() {
+    drawerRefreshQueue = drawerRefreshQueue
+      .catch(function () {})
+      .then(refreshCustomCartDrawer);
+    return drawerRefreshQueue;
   }
-
-  function refreshExpressCartSections() {
-    var sectionKeys = ['cart-drawer', 'cart-icon-bubble', 'main-cart-items', 'main-cart-footer'];
-    return fetch('/cart?sections=' + sectionKeys.join(',') + '&express_refresh=' + Date.now(), {
-      cache: 'no-store',
-      headers: { 'Accept': 'application/json' }
-    })
-      .then(function (response) {
-        if (!response.ok) throw new Error('Cart sections returned status ' + response.status);
-        return response.json();
-      })
-      .then(function (sections) {
-        var drawerSource = replaceSectionContent(sections, 'cart-drawer', '.drawer__inner', 'CartDrawer', '.drawer__inner');
-        replaceSectionContent(sections, 'cart-icon-bubble', '.shopify-section', 'cart-icon-bubble', '.shopify-section');
-        replaceSectionContent(sections, 'main-cart-items', '.js-contents', 'main-cart-items', '.js-contents');
-        replaceSectionContent(sections, 'main-cart-footer', '.js-contents', 'main-cart-footer', '.js-contents');
-
-        var isEmpty = !!(drawerSource && drawerSource.querySelector('.drawer__inner-empty'));
-        var drawer = document.querySelector('cart-drawer');
-        var drawerItems = drawer && drawer.querySelector('cart-drawer-items');
-        var cartItems = document.getElementById('main-cart-items');
-        var cartFooter = document.getElementById('main-cart-footer');
-        if (drawer) drawer.classList.toggle('is-empty', isEmpty);
-        if (drawerItems) drawerItems.classList.toggle('is-empty', isEmpty);
-        if (cartItems) cartItems.classList.toggle('is-empty', isEmpty);
-        if (cartFooter) cartFooter.classList.toggle('is-empty', isEmpty);
-      })
-      .catch(function (error) {
-        console.warn('[Express] cart section refresh failed', error);
-      });
-  }
-  window.refreshExpressCartSections = refreshExpressCartSections;
 
   function reflectChange() {
-    return refreshCustomCartDrawer()
-      .then(refreshExpressCartSections)
-      .then(refreshExpressDisplay);
+    return queueCartDrawerRefresh().then(refreshExpressDisplay);
   }
 
   // ---------------------------------------------------------------------------
@@ -371,7 +336,7 @@
   function onCartUpdated(event) {
     if (event && event.source === 'express-charge') { reflectChange(); return; }
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
+      if (changed) { reflectChange(); } else { queueCartDrawerRefresh().then(refreshExpressDisplay); }
     });
   }
 
@@ -389,35 +354,16 @@
       var url = (settings && settings.url) || '';
       if (/\/cart\/(add|change|update)(\.js)?/.test(url)) {
         runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
+          if (changed) { reflectChange(); } else { queueCartDrawerRefresh().then(refreshExpressDisplay); }
         });
       }
     });
   }
 
-  // Explicit safety-net on product removal: when any cart-remove control is clicked, the
-  // removal is async, so we re-check the cart shortly after it commits. If any eligible
-  // Express product still remains, the fee is (re-)added on that remaining product set;
-  // if none remain, the orphan fee is removed. Idempotent, so it layers safely on top of
-  // the cartUpdate subscriber above.
-  document.addEventListener('click', function (e) {
-    var btn = e.target && e.target.closest &&
-      e.target.closest('cart-remove-button, .cart-remove-button, [data-cart-remove], a[href*="/cart/change"]');
-    if (!btn) return;
-    // Removal is async; re-check a couple of times after it commits (idempotent).
-    [400, 900].forEach(function (delay) {
-      setTimeout(function () {
-        runExpressEnforcement().then(function (changed) {
-          if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
-        });
-      }, delay);
-    });
-  }, true);
-
   // On every page load, converge the cart to a valid state, then paint the note.
   document.addEventListener('DOMContentLoaded', function () {
     runExpressEnforcement().then(function (changed) {
-      if (changed) { reflectChange(); } else { refreshCustomCartDrawer().then(refreshExpressCartSections).then(refreshExpressDisplay); }
+      if (changed) { reflectChange(); } else { queueCartDrawerRefresh().then(refreshExpressDisplay); }
     });
   });
 })();
