@@ -1,0 +1,502 @@
+<div class="international-usa-delivery" data-international-usa-delivery>
+  <p class="font_text font_weight_400">Check availability at your ZIP code</p>
+
+  <div class="international-usa-zip-row label_input_sec">
+    <label class="font_bold" for="usa_zip_code">Enter Delivery ZIP Code:</label>
+    <div class="international-usa-zip-controls input_container">
+      <p class="line-item-property__field">
+        <input
+          id="usa_zip_code"
+          class="delivery-input-pdp"
+          name="properties[Pincode]"
+          type="text"
+          inputmode="numeric"
+          autocomplete="postal-code"
+          maxlength="5"
+          pattern="[0-9]{5}"
+          placeholder="Eg: 10001"
+          required
+        >
+      </p>
+      <div class="right-section" id="usa_delivery_available" aria-live="polite">
+        <span>Available</span>
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+      </div>
+      <div class="pincode_btn">
+        <button type="button" aria-label="Check ZIP code availability">{% render 'icon-arrow' %}</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="international-usa-delivery-status" id="usa_delivery_status" role="status" aria-live="polite"></p>
+  <p class="international-usa-tat" id="usa_delivery_tat"></p>
+
+  <div class="cart-delivery-date international-usa-delivery-date">
+    <div class="delivery-label">
+      <label class="font_bold" for="usa_delivery_date">Enter Delivery Date:</label>
+    </div>
+    <div class="input-container date-section">
+      {% render 'calender_icon' %}
+      <p class="field-wrapper">
+        <input
+          id="usa_delivery_date"
+          class="delivery-input-pdp"
+          name="properties[Delivery date]"
+          type="text"
+          autocomplete="off"
+          placeholder="Verify ZIP code first"
+          readonly
+          disabled
+          required
+        >
+      </p>
+    </div>
+  </div>
+  <input id="usa_delivery_tat_value" name="properties[_product_tat]" type="hidden" value="">
+</div>
+
+<style>
+  .international-usa-delivery {
+    margin: 16px 0;
+  }
+
+  .international-usa-zip-row,
+  .international-usa-delivery-date {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .international-usa-zip-controls {
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    margin-top: 4px;
+    max-width: 270px;
+  }
+
+  .international-usa-zip-controls .line-item-property__field,
+  .international-usa-delivery-date .field-wrapper {
+    margin: 0;
+    width: 100%;
+  }
+
+  .international-usa-zip-controls .line-item-property__field {
+    max-width: 270px;
+  }
+
+  .international-usa-delivery-date .field-wrapper,
+  .international-usa-delivery-date .input-container {
+    max-width: 300px;
+  }
+
+  #usa_zip_code,
+  #usa_delivery_date {
+    box-sizing: border-box;
+    background: #f4f4f4;
+    border: 0;
+    border-radius: 6px;
+    height: 30px;
+    padding: 6px 36px 6px 12px;
+    width: 100%;
+  }
+
+  .cart-delivery-date {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .delivery-label {
+    margin-bottom: 4px;
+  }
+
+  .input-container {
+    align-items: center;
+    display: flex;
+    position: relative;
+    max-width: 270px;
+    width: 100%;
+  }
+
+  .field-wrapper {
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .input-container svg {
+    left: 8px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    z-index: 1;
+  }
+
+  .delivery-input-pdp {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+    padding: 6px 36px 6px 12px;
+    width: 100%;
+  }
+
+  #usa_delivery_date {
+    padding: 10px 10px 10px 40px;
+  }
+
+  div.international-usa-zip-controls .pincode_btn {
+    align-items: center;
+    display: flex;
+    height: 30px;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: 30px;
+  }
+
+  div.international-usa-zip-controls .pincode_btn button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    padding: 0 8px;
+    width: 30px;
+  }
+
+  div.international-usa-zip-controls .pincode_btn svg {
+    height: 14px;
+    width: 14px;
+  }
+
+  .right-section {
+    align-items: center;
+    color: #168329;
+    display: none;
+    font-size: 12px;
+    font-weight: 700;
+    gap: 4px;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .right-section i {
+    font-size: 12px;
+  }
+
+  .international-usa-delivery-date .delivery-input-pdp:disabled {
+    background: #fff;
+    cursor: not-allowed;
+  }
+
+  #ui-datepicker-div {
+    background: #f3f3f3 !important;
+    border: 1px solid #000 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: absolute !important;
+    z-index: 1001 !important;
+  }
+
+  #ui-datepicker-div .ui-widget-header {
+    background: #000 !important;
+    border: 1px solid #000 !important;
+    color: #fff !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev,
+  #ui-datepicker-div .ui-datepicker-next {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    cursor: pointer;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev .ui-icon,
+  #ui-datepicker-div .ui-datepicker-next .ui-icon {
+    background-position: -10px -10px !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-prev .ui-icon {
+    background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/left-arrow.png?v=1679685654') !important;
+  }
+
+  #ui-datepicker-div .ui-datepicker-next .ui-icon {
+    background-image: url('https://cdn.shopify.com/s/files/1/0689/3014/2515/files/right-arrow.png?v=1679685654') !important;
+  }
+
+  #ui-datepicker-div .ui-state-default,
+  #ui-datepicker-div .ui-widget-content .ui-state-default {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  #ui-datepicker-div .ui-state-hover,
+  #ui-datepicker-div .ui-widget-content .ui-state-hover {
+    background: transparent !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+
+  #ui-datepicker-div .ui-state-active,
+  #ui-datepicker-div .ui-widget-content .ui-state-active,
+  #ui-datepicker-div .ui-state-highlight,
+  #ui-datepicker-div .ui-widget-content .ui-state-highlight {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+  }
+
+  .international-usa-delivery-status,
+  .international-usa-tat {
+    margin: 6px 0 8px;
+  }
+
+  .international-usa-delivery-status,
+  .international-usa-tat {
+    display: none;
+  }
+
+  .international-usa-delivery-status.is-error {
+    color: #c62828;
+  }
+
+  .international-usa-delivery-status.is-success,
+  .international-usa-tat {
+    color: #237a39;
+  }
+</style>
+
+<script>
+  (function () {
+    var USA_ZIP_TAT_API_URL = 'https://tgs.velsof.com/usa_zipcode_tat_check';
+
+    function addBusinessDays(date, days) {
+      var result = new Date(date);
+      var remaining = days;
+
+      while (remaining > 0) {
+        result.setDate(result.getDate() + 1);
+        if (result.getDay() !== 0 && result.getDay() !== 6) remaining -= 1;
+      }
+
+      return result;
+    }
+
+    function formatDate(date) {
+      return String(date.getDate()).padStart(2, '0') + '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        date.getFullYear();
+    }
+
+    function normalizeTat(response) {
+      var payload = response.data || response.result || response;
+      var rawTat = payload.tat || payload.TAT || payload.delivery_tat;
+
+      if (typeof rawTat === 'number') {
+        return { minTat: rawTat, maxTat: rawTat };
+      }
+
+      if (typeof rawTat === 'string') {
+        var tatValues = rawTat.match(/\d+/g);
+        if (tatValues && tatValues.length) {
+          return {
+            minTat: parseInt(tatValues[0], 10),
+            maxTat: parseInt(tatValues[1] || tatValues[0], 10)
+          };
+        }
+      }
+
+      if (rawTat && typeof rawTat === 'object') {
+        var minTat = rawTat.minTat || rawTat.min_days || rawTat.min || rawTat.from;
+        var maxTat = rawTat.maxTat || rawTat.max_days || rawTat.max || rawTat.to;
+        if (minTat !== undefined && maxTat !== undefined) {
+          return { minTat: parseInt(minTat, 10), maxTat: parseInt(maxTat, 10) };
+        }
+      }
+
+      var directMinTat = payload.min_tat || payload.minTat || payload.tat_min;
+      var directMaxTat = payload.max_tat || payload.maxTat || payload.tat_max;
+      if (directMinTat !== undefined && directMaxTat !== undefined) {
+        return { minTat: parseInt(directMinTat, 10), maxTat: parseInt(directMaxTat, 10) };
+      }
+
+      return null;
+    }
+
+    function getApiError(response) {
+      return response.message || response.description || 'This USA ZIP code is not serviceable.';
+    }
+
+    function setStatus(message, type) {
+      var status = document.getElementById('usa_delivery_status');
+      var available = document.getElementById('usa_delivery_available');
+      if (!status) return;
+      status.textContent = message;
+      status.style.display = message ? 'block' : 'none';
+      status.classList.toggle('is-error', type === 'error');
+      status.classList.toggle('is-success', type === 'success');
+      if (available) available.style.display = type === 'success' ? 'flex' : 'none';
+    }
+
+    function resetDeliveryState() {
+      var dateInput = document.getElementById('usa_delivery_date');
+      var tatInput = document.getElementById('usa_delivery_tat_value');
+      var tatText = document.getElementById('usa_delivery_tat');
+      var available = document.getElementById('usa_delivery_available');
+
+      window.usaDeliveryDateState = { verified: false, zip: '', tat: null, date: '' };
+      if (dateInput) {
+        dateInput.value = '';
+        dateInput.disabled = true;
+        dateInput.placeholder = 'Verify ZIP code first';
+        if (window.jQuery && jQuery.fn && typeof jQuery.fn.datepicker === 'function' && $(dateInput).hasClass('hasDatepicker')) {
+          $(dateInput).datepicker('destroy');
+        }
+      }
+      if (tatInput) tatInput.value = '';
+      if (tatText) tatText.textContent = '';
+      if (available) available.style.display = 'none';
+      $('.add-to-cart-button[data-international-rakhi="true"]').prop('disabled', true);
+    }
+
+    function validateDeliveryState() {
+      var state = window.usaDeliveryDateState;
+      if (!state || !state.verified) {
+        setStatus('Please verify a serviceable USA ZIP code first.', 'error');
+        return false;
+      }
+      if (!state.date) {
+        setStatus('Please select a delivery date.', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    window.validateInternationalUsaDelivery = validateDeliveryState;
+
+    $(document).ready(function () {
+      var zipInput = document.getElementById('usa_zip_code');
+      var dateInput = document.getElementById('usa_delivery_date');
+      var tatInput = document.getElementById('usa_delivery_tat_value');
+      var tatText = document.getElementById('usa_delivery_tat');
+      var addToCartButton = $('.add-to-cart-button[data-international-rakhi="true"]');
+      var requestSequence = 0;
+
+      if (!zipInput || !dateInput) return;
+      resetDeliveryState();
+
+      function checkZipCode(zip) {
+        var currentRequest = ++requestSequence;
+
+        resetDeliveryState();
+        if (!/^\d{5}$/.test(zip)) {
+          setStatus('Enter a valid five-digit USA ZIP code.', 'error');
+          return;
+        }
+
+        setStatus('Checking ZIP code availability...', '');
+
+        fetch(USA_ZIP_TAT_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            zip_code: zip
+          })
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              if (!response.ok) throw new Error(getApiError(data));
+              return data;
+            });
+          })
+          .then(function (response) {
+            if (currentRequest !== requestSequence) return;
+            var payload = response.data || response.result || response;
+            if (response.status === false || payload.status === false || payload.serviceable === false) {
+              throw new Error(getApiError(payload));
+            }
+
+            var rule = normalizeTat(response);
+            if (!rule || !Number.isFinite(rule.minTat) || !Number.isFinite(rule.maxTat) || rule.minTat < 0 || rule.maxTat < rule.minTat) {
+              throw new Error('The USA ZIP API returned an invalid TAT.');
+            }
+            if (!window.jQuery || !jQuery.fn || typeof jQuery.fn.datepicker !== 'function') {
+              throw new Error('The delivery calendar is unavailable. Please reload the page and try again.');
+            }
+
+            var today = typeof istTime !== 'undefined' && istTime instanceof Date
+              ? new Date(istTime.getTime())
+              : new Date();
+            var minDate = addBusinessDays(today, rule.minTat);
+            var maxDate = addBusinessDays(today, rule.maxTat);
+            window.usaDeliveryDateState = {
+              verified: true,
+              zip: zip,
+              tat: rule,
+              date: ''
+            };
+
+            dateInput.disabled = false;
+            dateInput.placeholder = 'Select delivery date';
+            $(dateInput).datepicker({
+              dateFormat: 'dd-mm-yy',
+              minDate: minDate,
+              maxDate: null,
+              changeMonth: true,
+              changeYear: true,
+              beforeShowDay: function (date) {
+                return [true, ''];
+              },
+              onSelect: function (value) {
+                dateInput.value = value;
+                window.usaDeliveryDateState.date = value;
+                dateInput.dispatchEvent(new Event('input', { bubbles: true }));
+                dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+                addToCartButton.prop('disabled', false);
+                setStatus('', 'success');
+              }
+            });
+
+            $(dateInput).datepicker('setDate', minDate);
+            window.usaDeliveryDateState.date = formatDate(minDate);
+            addToCartButton.prop('disabled', false);
+            tatText.textContent = 'Estimated delivery: ' + rule.minTat + '-' + rule.maxTat + ' business days (' + formatDate(minDate) + ' to ' + formatDate(maxDate) + ').';
+            tatInput.value = String(rule.minTat);
+            setStatus('', 'success');
+          })
+          .catch(function (error) {
+            if (currentRequest !== requestSequence) return;
+            setStatus(error.message || 'Unable to verify this USA ZIP code.', 'error');
+          });
+      }
+
+      zipInput.addEventListener('input', function () {
+        zipInput.value = zipInput.value.replace(/[^0-9]/g, '').slice(0, 5);
+        requestSequence += 1;
+        resetDeliveryState();
+        setStatus('', '');
+
+        if (/^\d{5}$/.test(zipInput.value)) {
+          checkZipCode(zipInput.value);
+        }
+      });
+
+      dateInput.addEventListener('change', function () {
+        window.usaDeliveryDateState.date = dateInput.value;
+        addToCartButton.prop('disabled', !dateInput.value);
+        if (dateInput.value) setStatus('', 'success');
+      });
+    });
+  })();
+</script>
