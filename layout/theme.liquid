@@ -37,7 +37,7 @@
       // Added by Velocity 01-08-2025 - Fetch metafield value for flexible cutoff based on warehouse.
       var warehouse_cutoff = [];
       {% assign today = 'now' | date: '%Y-%m-%d' %}
-      {% if today == '2026-08-27' %}
+      {% if today == '2026-08-28' %}
       {% for warehouse in shop.metaobjects.warehouse_cutoff.values %}
         warehouse_cutoff.push({
           name: {{ warehouse.warehouse_name.value | json }},
