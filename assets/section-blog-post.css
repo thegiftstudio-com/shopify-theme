@@ -175,3 +175,123 @@
 .article-template__back:last-child {
   margin-bottom: 3.2rem;
 }
+
+
+
+.table-of-contents-container {
+  width:500px;
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  background-color: rgb(var(--color-background));
+  padding: 2rem;
+  border-radius: 4px;
+}
+
+.table-of-contents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-of-contents-title {
+  font-size: 1.8rem;
+  margin: 0;
+  font-family: var(--font-heading-family);
+  color: rgb(var(--color-foreground));
+  font-weight:700 !important;
+}
+
+.table-of-contents-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--color-foreground));
+  transition: transform 0.3s ease;
+}
+
+.table-of-contents-toggle:hover {
+  opacity: 0.7;
+}
+
+.table-of-contents-toggle .icon {
+  width: 18px;
+  height: 16px;
+}
+
+.table-of-contents-nav {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.table-of-contents-nav--collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+.table-of-contents-list {
+  font-weight:100;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left:10px;
+}
+
+
+.table-of-contents-item:last-child {
+  margin-bottom: 0;
+}
+
+.table-of-contents-link {
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  display: block;
+  padding: 0.4rem 0;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.table-of-contents-link:hover {
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: underline;
+}
+
+.table-of-contents-item--level-2 .table-of-contents-link {
+  padding-left: 0;
+}
+
+.table-of-contents-item--level-3 .table-of-contents-link {
+  padding-left: 1.5rem;
+}
+
+.table-of-contents-item--level-4 .table-of-contents-link {
+  padding-left: 3rem;
+}
+
+.table-of-contents-item--level-5 .table-of-contents-link {
+  padding-left: 4.5rem;
+}
+
+.table-of-contents-item--level-6 .table-of-contents-link {
+  padding-left: 6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .table-of-contents-container {
+    padding: 2.5rem;
+  }
+
+  .table-of-contents-title {
+    font-size: 2rem;
+  }
+
+  .table-of-contents-link {
+    font-size: 1.5rem;
+  }
+}
