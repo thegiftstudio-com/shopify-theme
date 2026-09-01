@@ -447,8 +447,8 @@
           "type": "slide",
           "settings": {
             "custom_class": "",
-            "image": "shopify://shop_images/MOB-BNR-new-Arrivals-Blue-Box_1.gif",
-            "mob_banner": "shopify://shop_images/WEB-BNR-New-Arrivals-Blue-Box_fde1e243-5ce2-4690-a1a4-fae3db1f483c.jpg",
+            "image": "shopify://shop_images/WEB-BNR-New-Arrivals-Blue-Box_fde1e243-5ce2-4690-a1a4-fae3db1f483c.jpg",
+            "mob_banner": "shopify://shop_images/MOB-BNR-new-Arrivals-Blue-Box_1.gif",
             "heading": "",
             "heading_size": "h1",
             "subheading": "",
