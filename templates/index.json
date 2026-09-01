@@ -34,6 +34,7 @@
         },
         "text_AHVRiB": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/image_50_c8206810-a7ef-414a-bc36-c994632574ba.png",
@@ -485,7 +486,6 @@
         },
         "slide_ymY3NY": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/GR-IRrana-web-bannr_2.jpg",
@@ -2085,6 +2085,7 @@
       "blocks": {
         "collection_n7mEkf": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132136.222_eab144f8-9536-4740-9c79-f2f7d0b6f0b4.png",
@@ -2094,6 +2095,7 @@
         },
         "collection_i36tDk": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132236.748.png",
@@ -2103,6 +2105,7 @@
         },
         "collection_RhiDfR": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132345.552.png",
@@ -2112,6 +2115,7 @@
         },
         "collection_6m7pFN": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "coll_img": "shopify://shop_images/transparent-Photoroom_-_2026-07-28T132447.090.png",
@@ -2203,6 +2207,7 @@
         "collection_tMBPET",
         "collection_nGAkGY"
       ],
+      "disabled": true,
       "settings": {
         "custom_class": "curated_category_sec",
         "category_title": "Raksha Bandhan Collection",
