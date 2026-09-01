@@ -21,8 +21,9 @@
 
 {% comment %}
   Display Rakhi add-on products from the rakhis collection on PDPs tagged with rakhi-section. Added by Velocity on 12-08-2026
+  Removed Rakhi section on 01-09-2026 as per Aniket Requested,
 {% endcomment %}
-{% if product.tags contains 'rakhi-section' or product.collections contains collections['rakhis'] %}
+{% if product.tags contains 'rakhi-section-removed' or product.collections contains collections['rakhis-removed'] %}
   {% if product.tags contains 'addon-section' or product.collections contains collections['rakhis'] %} 
   {% assign section_heading = 'Add a Little More' %}
   {% assign selected_product = 'Selected Product : ' %}
