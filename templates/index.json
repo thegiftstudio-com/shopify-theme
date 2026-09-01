@@ -14,6 +14,7 @@
       "blocks": {
         "text_FqtiYw": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "",
             "gift_img": "shopify://shop_images/image_51_d0391f9f-c274-49b1-b5c4-d67970341891.png",
@@ -23,6 +24,7 @@
         },
         "text_kNDQJj": {
           "type": "Text",
+          "disabled": true,
           "settings": {
             "city_hide": "Rakhi To USA",
             "gift_img": "shopify://shop_images/USA_TILE.png",
@@ -400,6 +402,7 @@
       "blocks": {
         "slide_BQypfe": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/USA-WEB-BNR-rakhi.jpg",
