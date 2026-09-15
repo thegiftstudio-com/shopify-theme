@@ -3,7 +3,7 @@
 
  {% assign collection_handle = product.metafields.custom.collection_name.value %}
 
-{% if collections[collection_handle].products.size!=0 %}
+{% if collections[collection_handle].products.size['0'] %}
     <div class="product__accordion accordion quick-add-hidden">
     <details id="Details-card-section-{{ section.id }}" open>
       <summary>
@@ -51,4 +51,13 @@
     .addon_products_wrap{
     max-height:216px;
   }
-</style>
+</style>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% if collections[collection_handle].products.size!=0 %}"
+  to: "{% if collections[collection_handle].products.size['0'] %}"
+  position: 193..251
+{%- endcomment -%}
