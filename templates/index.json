@@ -422,6 +422,66 @@
             "text_alignment_mobile": "center"
           }
         },
+        "slide_tkc3pf": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/web-_BNR2.jpg",
+            "mob_banner": "shopify://shop_images/B_W-MOB-_-BNR_1.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "slide_ymY3NY": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/GR-IRrana-web-bannr_2.jpg",
+            "mob_banner": "shopify://shop_images/GR-IRrana-MOB-bannr_2.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/exclusive-collection",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "slide_6TL9Vr": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "BNR_3_Corporate",
+            "image": "shopify://shop_images/corporate-gifting-BNR_1.jpg",
+            "mob_banner": "shopify://shop_images/MOB-_-BNR_074e3658-ebc8-46e7-93f8-b2eea6518044.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/employee-welcome-kits-corporate-gift-hampers",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
         "slide_JheEeK": {
           "type": "slide",
           "disabled": true,
@@ -445,6 +505,7 @@
         },
         "slide_dnrBrT": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/New-Arrival--WEB_1.gif",
@@ -475,26 +536,6 @@
             "subheading": "",
             "button_label": "",
             "link": "shopify://collections/mothers-day",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_ymY3NY": {
-          "type": "slide",
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/GR-IRrana-web-bannr_2.jpg",
-            "mob_banner": "shopify://shop_images/GR-IRrana-MOB-bannr_2.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/exclusive-collection",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -630,27 +671,6 @@
             "text_alignment_mobile": "center"
           }
         },
-        "slide_tkc3pf": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/web-_BNR2.jpg",
-            "mob_banner": "shopify://shop_images/B_W-MOB-_-BNR_1.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/anniversary-gifts-for-couples",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
         "slide_JAEFEH": {
           "type": "slide",
           "disabled": true,
@@ -663,26 +683,6 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/wedding-gifts-for-couples",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
-        "slide_6TL9Vr": {
-          "type": "slide",
-          "settings": {
-            "custom_class": "BNR_3_Corporate",
-            "image": "shopify://shop_images/corporate-gifting-BNR_1.jpg",
-            "mob_banner": "shopify://shop_images/MOB-_-BNR_074e3658-ebc8-46e7-93f8-b2eea6518044.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/employee-welcome-kits-corporate-gift-hampers",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1556,19 +1556,19 @@
       },
       "block_order": [
         "slide_BQypfe",
+        "slide_tkc3pf",
+        "slide_ymY3NY",
+        "slide_6TL9Vr",
         "slide_JheEeK",
         "slide_dnrBrT",
         "slide_QELFGM",
-        "slide_ymY3NY",
         "slide_fbw9Pg",
         "slide_GnzJWp",
         "slide_hAVmbz",
         "slide_EyN76V",
         "slide_q4JE4U",
         "slide_Di6tzy",
-        "slide_tkc3pf",
         "slide_JAEFEH",
-        "slide_6TL9Vr",
         "slide_GYCEg7",
         "slide_d6CPkx",
         "slide_CzGPeh",
