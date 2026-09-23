@@ -452,7 +452,7 @@
             "heading_size": "h1",
             "subheading": "",
             "button_label": "",
-            "link": "https://thegiftstudio.com/collections/exclusive-collection",
+            "link": "https://thegiftstudio.com/collections/curated-hamper-bestseller",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1009,7 +1009,6 @@
         },
         "slide_4qqFcK": {
           "type": "slide",
-          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/NY_Desktop_1.png",
