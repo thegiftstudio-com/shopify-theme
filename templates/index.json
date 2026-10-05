@@ -12,6 +12,15 @@
     "f55d6668-ddec-4966-a108-914ad4c7a80f": {
       "type": "gift_section",
       "blocks": {
+        "text_cKqi47": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "gift_img": "shopify://shop_images/diwali.jpg",
+            "gift_title": "Diwali",
+            "img_url": "shopify://collections/diwali-gift-hampers"
+          }
+        },
         "text_FqtiYw": {
           "type": "Text",
           "disabled": true,
@@ -109,16 +118,6 @@
             "gift_img": "shopify://shop_images/Mob-TileArtists.jpg",
             "gift_title": "Celebrity Hampers",
             "img_url": "https://thegiftstudio.com/collections/limited-edition-hampers"
-          }
-        },
-        "text_cKqi47": {
-          "type": "Text",
-          "disabled": true,
-          "settings": {
-            "city_hide": "",
-            "gift_img": "shopify://shop_images/diwali.jpg",
-            "gift_title": "Diwali",
-            "img_url": "shopify://collections/diwali-gift-hampers"
           }
         },
         "text_A9DaUG": {
@@ -357,6 +356,7 @@
         }
       },
       "block_order": [
+        "text_cKqi47",
         "text_FqtiYw",
         "text_kNDQJj",
         "text_AHVRiB",
@@ -367,7 +367,6 @@
         "text_kMcpwt",
         "text_ipFwRU",
         "text_JKAPRb",
-        "text_cKqi47",
         "text_A9DaUG",
         "text_f7QVXi",
         "text_zKNP6D",
