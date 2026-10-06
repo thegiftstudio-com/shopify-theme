@@ -132,8 +132,8 @@
       "type": "image-banner",
       "settings": {
         "custom_class": "",
-        "image": "shopify://shop_images/TGS-Concierge-Landing-Page-v1-Generic---slicing_03.jpg",
-        "mob_banner": "shopify://shop_images/TGS-Concierge-Landing-Page-v1-Generic---slicing_03.jpg",
+        "image": "shopify://shop_images/contact_us_1920_x_593_px.png",
+        "mob_banner": "shopify://shop_images/contact_us_1920_x_593_px.png",
         "banner_link": "",
         "image_overlay_opacity": 0,
         "image_height": "medium",
