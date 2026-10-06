@@ -827,7 +827,6 @@
                    break;
                  case "CONCIERGE":
                      rawFormResponse = JSON.parse(event.data.formResponse);
-                     console.log(rawFormResponse);
                      // Normalize the raw response data
                       var normalizedFormResponse = {
                           name: rawFormResponse["Full Name"], 
@@ -835,10 +834,12 @@
                           phoneNumber: rawFormResponse["Phone Number"],
                           city: rawFormResponse["City"],
                           enquiryDetails: rawFormResponse["Enquiry Details"]
+                          priceRange: rawFormResponse["Price Range"]
+                          quantity: rawFormResponse["Quantity"]
                       };
                       // Sending data to GTM for the form response
                       push_concierge_form_query(normalizedFormResponse);
-                      console.log("formResponse -->", rawFormResponse);
+                      {% comment %} console.log("formResponse -->", rawFormResponse); {% endcomment %}
                       break;
                   // Added by Velocity 14-11-2025 Send the wedding form filled data to analytics.    
                   case "WEDDING":
