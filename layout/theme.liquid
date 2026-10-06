@@ -827,6 +827,7 @@
                    break;
                  case "CONCIERGE":
                      rawFormResponse = JSON.parse(event.data.formResponse);
+                     console.log(rawFormResponse);
                      // Normalize the raw response data
                       var normalizedFormResponse = {
                           name: rawFormResponse["Full Name"], 
