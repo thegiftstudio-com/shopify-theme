@@ -408,6 +408,7 @@
         height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round }}"
         alt="{{ block.settings.image.alt | escape }}"
         loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
+        fetchpriority=high
         decoding="async"
       >
     </picture>
