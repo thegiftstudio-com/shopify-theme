@@ -43,7 +43,7 @@
       assign ratio = 1
     endif
     assign is_first_fold = false
-    if forloop.index <= 8
+    if lazy_load == false
       assign is_first_fold = true
     endif
   -%}
@@ -96,7 +96,7 @@
             {% endif %}
             <div class="media media--transparent media--hover-effect">
               {% comment %}theme-check-disable ImgLazyLoading; re-enable lazy if parameter is passed{% endcomment %}
-              {% if is_first_fold %}
+              {% if false %}
                 <!-- Preload critical images for first fold with optimized sizes -->
                 <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533, scale: 2 }}" media="(min-width: 768px) and (-webkit-min-device-pixel-ratio: 2)">
                 <link rel="preload" as="image" href="{{ card_product.featured_media | image_url: width: 533 }}" media="(min-width: 768px)">
