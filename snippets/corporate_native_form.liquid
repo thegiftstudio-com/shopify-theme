@@ -233,7 +233,8 @@
     };
 
 // Send data to API
-fetch('https://tgs.velsof.com/add_form_data_to_spreadsheet', {
+{% comment %} fetch('https://tgs.velsof.com/add_form_data_to_spreadsheet', { {% endcomment %}
+fetch('https://byohapp.velsof.com/add_form_data_to_spreadsheet', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
