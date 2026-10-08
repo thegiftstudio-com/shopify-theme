@@ -87,20 +87,20 @@
   }
   .tgs-enq__topbar-inner {
     max-width: 1440px; margin: 0 auto;
-    display: flex; flex-wrap: wrap; gap: 10px 14px;
+    display: flex; flex-wrap: nowrap; gap: 8px;
     justify-content: {{ section.settings.buttons_align_mobile }};
   }
   .tgs-enq__pill {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 14px; border-radius: 999px; border: 0;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 11px; border-radius: 999px; border: 0;
     background: var(--enq-btn-bg); color: var(--enq-btn-text);
     font-family: var(--enq-body-font); font-weight: 700;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    font-size: clamp(8.5px, 2.3vw, 12px); letter-spacing: .08em; text-transform: uppercase;
     text-decoration: none; line-height: 1.2; cursor: pointer; white-space: nowrap;
     transition: transform .2s ease, opacity .2s ease;
   }
   .tgs-enq__pill:hover { opacity: .88; transform: translateY(-1px); color: var(--enq-btn-text); }
-  .tgs-enq__pill svg { width: 20px; height: 20px; flex: 0 0 auto; }
+  .tgs-enq__pill svg { width: 16px; height: 16px; flex: 0 0 auto; }
 
   /* ---------- Layout ---------- */
   .tgs-enq__inner {
@@ -198,9 +198,9 @@
   .tgs-enq__phones { display: flex; flex-direction: column; line-height: 1.35; }
 
   /* ---------- Small phones ---------- */
-  @media (max-width: 380px) {
-    .tgs-enq__pill { font-size: 10px; padding: 7px 11px; letter-spacing: .1em; }
-    .tgs-enq__pill svg { width: 16px; height: 16px; }
+  @media (max-width: 340px) {
+    .tgs-enq__topbar-inner { flex-wrap: wrap; }
+    .tgs-enq__topbar { padding: 12px 10px; }
   }
 
   /* ---------- Large phones / tablets (stacked layout, 2-col fields) ---------- */
@@ -209,7 +209,9 @@
     #tgs-enq-{{ sid }} .corporate-gifting-form .form-row { flex-direction: row; gap: 14px; }
     .tgs-enq__contact { justify-content: space-between; flex-wrap: nowrap; gap: 16px; }
     .tgs-enq__contact-label { width: auto; text-align: left; }
-    .tgs-enq__pill { font-size: 12px; padding: 9px 16px; }
+    .tgs-enq__topbar-inner { gap: 14px; }
+    .tgs-enq__pill { font-size: 12px; padding: 9px 16px; gap: 8px; letter-spacing: .14em; }
+    .tgs-enq__pill svg { width: 20px; height: 20px; }
   }
   @media (min-width: 750px) {
     .tgs-enq__l1 { font-size: calc(var(--enq-h1-m) * 1.35); }
