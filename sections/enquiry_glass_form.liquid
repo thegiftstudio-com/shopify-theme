@@ -43,6 +43,8 @@
     --enq-pt: {{ section.settings.padding_top }}px;
     --enq-pb: {{ section.settings.padding_bottom }}px;
     --enq-obj-pos: {{ section.settings.desktop_image_position }};
+    --enq-himg-d: {{ section.settings.heading_image_width_desktop }}px;
+    --enq-himg-m: {{ section.settings.heading_image_width_mobile }}vw;
   }
 {%- endstyle -%}
 
@@ -118,6 +120,9 @@
   .tgs-enq__l1 { font-size: var(--enq-h1-m); }
   .tgs-enq__l2 { font-size: calc(var(--enq-h1-m) * 1.55); }
   .tgs-enq__hero-inner { display: inline-block; text-align: left; }
+  .tgs-enq__title--img { line-height: 0; }
+  .tgs-enq__hero-img { display: block; margin: 0 auto; width: min(var(--enq-himg-m), 440px); max-width: 100%; }
+  .tgs-enq__hero-img img { display: block; width: 100%; height: auto; }
 
   .tgs-enq__card-wrap { margin-top: var(--enq-mobile-gap); display: flex; justify-content: center; }
 
@@ -238,6 +243,8 @@
     }
     .tgs-enq--form-left .tgs-enq__hero { order: 2; }
     .tgs-enq__hero { text-align: left; padding-top: 0; }
+    .tgs-enq__hero-img { margin: 0; width: var(--enq-himg-d); }
+    .tgs-enq--form-left .tgs-enq__hero-img { margin-left: auto; }
     .tgs-enq__eyebrow { font-size: clamp(13px, 1.25vw, 19px); }
     .tgs-enq__l1 { font-size: clamp(40px, var(--enq-h1-d-vw), var(--enq-h1-d)); }
     .tgs-enq__l2 { font-size: clamp(62px, calc(var(--enq-h1-d-vw) * 1.55), calc(var(--enq-h1-d) * 1.55)); }
@@ -305,7 +312,26 @@
   {%- endif -%}
 
   <div class="tgs-enq__inner">
-    {%- if section.settings.eyebrow != blank or section.settings.heading_line_1 != blank or section.settings.heading_line_2 != blank -%}
+    {%- liquid
+      assign h_img_d = section.settings.heading_image
+      assign h_img_m = section.settings.heading_image_mobile
+      if h_img_m == blank
+        assign h_img_m = h_img_d
+      endif
+      assign h_alt = section.settings.eyebrow | append: ' ' | append: section.settings.heading_line_1 | append: ' ' | append: section.settings.heading_line_2 | strip | escape
+    -%}
+    {%- if h_img_m != blank -%}
+      <div class="tgs-enq__hero">
+        <h2 class="tgs-enq__title tgs-enq__title--img">
+          <picture class="tgs-enq__hero-img">
+            {%- if h_img_d != blank -%}
+              <source media="(min-width: 1100px)" srcset="{{ h_img_d | image_url: width: 600 }} 600w, {{ h_img_d | image_url: width: 900 }} 900w, {{ h_img_d | image_url: width: 1400 }} 1400w" sizes="{{ section.settings.heading_image_width_desktop }}px">
+            {%- endif -%}
+            {{ h_img_m | image_url: width: 900 | image_tag: widths: '300, 450, 600, 900', sizes: '440px', loading: 'eager', alt: h_alt }}
+          </picture>
+        </h2>
+      </div>
+    {%- elsif section.settings.eyebrow != blank or section.settings.heading_line_1 != blank or section.settings.heading_line_2 != blank -%}
       <div class="tgs-enq__hero">
         <div class="tgs-enq__hero-inner">
           {%- if section.settings.eyebrow != blank -%}
@@ -458,6 +484,10 @@
     },
 
     { "type": "header", "content": "Heading" },
+    { "type": "image_picker", "id": "heading_image", "label": "Heading text image", "info": "Optional. If uploaded, this image replaces the heading text below. Use a transparent PNG/WebP." },
+    { "type": "image_picker", "id": "heading_image_mobile", "label": "Heading text image (mobile, optional)", "info": "Falls back to the image above." },
+    { "type": "range", "id": "heading_image_width_desktop", "label": "Heading image width (desktop)", "min": 200, "max": 700, "step": 10, "unit": "px", "default": 420 },
+    { "type": "range", "id": "heading_image_width_mobile", "label": "Heading image width (mobile / tablet)", "min": 30, "max": 100, "step": 5, "unit": "%", "default": 65, "info": "Percentage of screen width, capped at 440px on tablets." },
     { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Our Corporate Diwali Gifts That" },
     { "type": "text", "id": "heading_line_1", "label": "Heading line 1", "default": "Strengthens" },
     { "type": "text", "id": "heading_line_2", "label": "Heading line 2 (larger)", "default": "Bonds" },
