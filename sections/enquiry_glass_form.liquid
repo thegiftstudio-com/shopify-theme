@@ -88,7 +88,7 @@
     padding: 14px 16px;
   }
   .tgs-enq__topbar-inner {
-    max-width: 1440px; margin: 0 auto;
+    max-width: var(--page-width, 1300px); margin: 0 auto;
     display: flex; flex-wrap: nowrap; gap: 8px;
     justify-content: {{ section.settings.buttons_align_mobile }};
   }
@@ -106,9 +106,11 @@
 
   /* ---------- Layout ---------- */
   .tgs-enq__inner {
-    max-width: 1440px; margin: 0 auto;
+    max-width: var(--page-width, 1300px); margin: 0 auto;
     padding: calc(var(--enq-pt) * .6) 16px 0;
   }
+  .tgs-enq--full .tgs-enq__topbar-inner,
+  .tgs-enq--full .tgs-enq__inner { max-width: none; }
   .tgs-enq__hero { text-align: center; color: var(--enq-hero-text); }
   .tgs-enq__eyebrow {
     margin: 0 0 4px; color: var(--enq-eyebrow);
@@ -222,7 +224,9 @@
     .tgs-enq__l1 { font-size: calc(var(--enq-h1-m) * 1.35); }
     .tgs-enq__l2 { font-size: calc(var(--enq-h1-m) * 1.35 * 1.55); }
     .tgs-enq__eyebrow { font-size: 17px; }
-    .tgs-enq__topbar { padding: 18px 32px; }
+    .tgs-enq__topbar { padding: 18px 0; }
+    .tgs-enq__topbar-inner { padding: 0 32px; }
+    .tgs-enq__inner { padding-left: 32px; padding-right: 32px; }
     .tgs-enq__card { padding: 34px 26px 24px; }
   }
 
@@ -233,13 +237,14 @@
     .tgs-enq__media img,
     .tgs-enq__media--fallback img { width: 100%; height: 100%; object-fit: cover; object-position: var(--enq-obj-pos); }
     .tgs-enq__media::after { display: none; }
-    .tgs-enq__topbar { padding: 14px 48px; }
+    .tgs-enq__topbar { padding: 14px 0; }
+    .tgs-enq__topbar-inner { padding: 0 clamp(32px, 4vw, 50px); }
     .tgs-enq__topbar-inner { justify-content: {{ section.settings.buttons_align_desktop }}; gap: 14px clamp(24px, 8vw, 170px); }
     .tgs-enq__inner {
       display: grid; align-items: start;
       grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
       gap: clamp(24px, 4vw, 80px);
-      padding: var(--enq-pt) clamp(32px, 6vw, 110px) 0;
+      padding: var(--enq-pt) clamp(32px, 4vw, 50px) 0;
     }
     .tgs-enq--form-left .tgs-enq__hero { order: 2; }
     .tgs-enq__hero { text-align: left; padding-top: 0; }
@@ -259,7 +264,7 @@
 
 <section
   id="tgs-enq-{{ sid }}"
-  class="tgs-enq{% if section.settings.desktop_layout == 'form_left' %} tgs-enq--form-left{% endif %}"
+  class="tgs-enq{% if section.settings.desktop_layout == 'form_left' %} tgs-enq--form-left{% endif %}{% if section.settings.content_width == 'full' %} tgs-enq--full{% endif %}"
   data-section-id="{{ sid }}"
 >
   {%- if img_d != blank or img_m != blank -%}
@@ -518,6 +523,14 @@
     { "type": "color", "id": "link_color", "label": "Link colour", "default": "#2747c9" },
 
     { "type": "header", "content": "Layout & spacing" },
+    {
+      "type": "select", "id": "content_width", "label": "Content width (buttons, heading & form)", "default": "page",
+      "info": "Background image always spans the full screen.",
+      "options": [
+        { "value": "page", "label": "Page width (theme setting)" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
     {
       "type": "select", "id": "desktop_layout", "label": "Desktop layout", "default": "form_right",
       "options": [
