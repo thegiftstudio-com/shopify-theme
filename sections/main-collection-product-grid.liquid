@@ -320,7 +320,7 @@
                   {% capture available_products %}
                   {{ available_products }}
                 {% assign lazy_load = false %}
-                {%- if forloop.index > 2 -%}
+                {%- if forloop.index > 4 -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
                 <li  data-product-id="{{ product.id }}"

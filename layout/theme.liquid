@@ -1,7 +1,8 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
-
+<style data-cls-fix>html.location-mumbai .grid__item.location-mumbai.content_hidden,html.location-kolkata .grid__item.location-kolkata.content_hidden,html.location-delhi .grid__item.location-delhi.content_hidden,html.location-gurgaon .grid__item.location-gurgaon.content_hidden,html.location-bangalore .grid__item.location-bangalore.content_hidden,html.location-pune .grid__item.location-pune.content_hidden,html.location-roi .grid__item.location-roi.content_hidden{display:list-item;content-visibility:visible}</style>
+<script data-cls-fix>(function(){try{var l=localStorage.getItem('location');if(!l||localStorage.getItem('warehouseTAT')===null)l='location-mumbai';if(/^location-[a-z]+$/.test(l))document.documentElement.classList.add(l);}catch(e){}})();</script>
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- Other meta tags -->
@@ -180,7 +181,7 @@
     <link rel="canonical" href="{{ request.path | prepend: shop.url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     {% unless template == 'index' %}
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     {% endunless %}
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -403,9 +404,6 @@
         }
       }
     {% endstyle %}
-    {% unless template == 'index' %}
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    {% endunless %}
 
     <link rel="preload" href="{{ 'base.aio.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
@@ -456,16 +454,12 @@
       {{ 'valentines-page.aio.min.css' | asset_url | stylesheet_tag }}
     {% endcomment %}
 
-    {{ 'slick-theme.min.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'slick.aio.min.css' | asset_url | stylesheet_tag: preload: true }}
+    <link rel="stylesheet" href="{{ 'slick-theme.min.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'slick.aio.min.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {% if template.name == 'product' %}
       {{ 'jquery-ui.aio.min.css' | asset_url | stylesheet_tag }}
     {% endif %}
-
-    {{ 'jquery.aio.min.js' | asset_url | preload_tag: as: 'script' }}
-    {{ 'slick-min.aio.min.js' | asset_url | preload_tag: as: 'script' }}
-    {{ 'giftstudio.aio.min.js' | asset_url | preload_tag: as: 'script' }}
 
     {{ 'jquery.js' | asset_url | script_tag }}
 
