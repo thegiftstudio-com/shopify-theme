@@ -828,6 +828,8 @@
                           phoneNumber: rawFormResponse["Phone Number"],
                           city: rawFormResponse["City"],
                           enquiryDetails: rawFormResponse["Enquiry Details"]
+                          priceRange: rawFormResponse["Price Range"]
+                          quantity: rawFormResponse["Quantity"]
                       };
                       // Sending data to GTM for the form response
                       push_concierge_form_query(normalizedFormResponse);
