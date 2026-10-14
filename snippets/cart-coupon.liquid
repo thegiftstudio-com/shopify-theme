@@ -1,0 +1,226 @@
+{% comment %}
+  Cart drawer coupon box — works with Shopify default checkout AND Flexype.
+  - Cart (/cart.js) is the single source of truth for the coupon.
+  - Flexype reads "discount_code" + "_flexy_discount_codes" cookies when its popup
+    opens, so those cookies are reset on every page load and kept in sync with the cart.
+  Render inside <div class="drawer__footer"> in snippets/cart-drawer.liquid:
+    {% render 'cart-coupon' %}
+{% endcomment %}
+
+{%- assign applied_code = '' -%}
+{%- for app in cart.discount_applications -%}
+  {%- if app.type == 'discount_code' -%}{%- assign applied_code = app.title -%}{%- endif -%}
+{%- endfor -%}
+{%- assign total_discount = cart.original_total_price | minus: cart.total_price -%}
+
+<div class="cart-coupon" data-cart-coupon data-applied-code="{{ applied_code | escape }}">
+  <label for="CartCouponInput" class="cart-coupon__label">Have a coupon code?</label>
+
+  <div class="cart-coupon__applied" {% if applied_code == blank %}hidden{% endif %}>
+    <span>Applied: <strong data-coupon-applied>{{ applied_code }}</strong></span>
+    <button type="button" class="cart-coupon__remove" data-coupon-remove>Remove</button>
+  </div>
+
+  <div class="cart-coupon__row" {% if applied_code != blank %}hidden{% endif %}>
+    <input id="CartCouponInput" class="field__input cart-coupon__input" type="text"
+           placeholder="Enter coupon code" autocomplete="off" data-coupon-input>
+    <button type="button" class="button button--secondary cart-coupon__btn" data-coupon-apply>Apply</button>
+  </div>
+
+  <p class="cart-coupon__msg" data-coupon-msg role="status" aria-live="polite"></p>
+
+  {%- if total_discount > 0 -%}
+    <div class="cart-coupon__summary" data-coupon-summary>
+      <div class="cart-coupon__line">
+        <span>Subtotal</span>
+        <span class="cart-coupon__strike">{{ cart.original_total_price | money }}</span>
+      </div>
+      {%- for app in cart.discount_applications -%}
+        {%- if app.total_allocated_amount > 0 -%}
+          <div class="cart-coupon__line cart-coupon__line--discount">
+            <span>Discount ({{ app.title | escape }})</span>
+            <span>-{{ app.total_allocated_amount | money }}</span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="cart-coupon__line cart-coupon__line--saved">
+        <span>You save</span>
+        <span>{{ total_discount | money }}</span>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  .cart-coupon { margin: 0 0 1.5rem; text-align: left; }
+  .cart-coupon__label { display: block; font-size: 1.3rem; margin-bottom: .6rem; }
+  .cart-coupon__row { display: flex; gap: .8rem; }
+  .cart-coupon__row[hidden], .cart-coupon__applied[hidden] { display: none; }
+  .cart-coupon__row .cart-coupon__input { flex: 1; min-height: 4.4rem; padding: 0 1.2rem; border: 1px solid rgba(var(--color-foreground), .3); text-transform: uppercase; }
+  .cart-coupon__btn { min-width: 9rem; min-height: 4.4rem; padding: 0 1.5rem; }
+  .cart-coupon__applied { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1.2rem; border: 1px dashed rgba(var(--color-foreground), .4); font-size: 1.3rem; }
+  .cart-coupon__remove { background: none; border: 0; cursor: pointer; text-decoration: underline; font-size: 1.3rem; color: inherit; }
+  .cart-coupon__msg { font-size: 1.2rem; margin: .5rem 0 0; min-height: 1em; }
+  .cart-coupon__msg.is-error { color: #c0392b; }
+  .cart-coupon__msg.is-success { color: #2e7d32; }
+  .cart-coupon__summary { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(var(--color-foreground), .1); font-size: 1.4rem; }
+  .cart-coupon__line { display: flex; justify-content: space-between; margin: .4rem 0; }
+  .cart-coupon__strike { text-decoration: line-through; opacity: .7; }
+  .cart-coupon__line--discount, .cart-coupon__line--saved { color: #2e7d32; }
+  .cart-coupon__line--total { font-weight: 700; font-size: 1.6rem; margin-top: .8rem; }
+</style>
+
+<script>
+  (function () {
+    if (window.__cartCouponInit) return;   // bind once; drawer HTML gets re-rendered
+    window.__cartCouponInit = true;
+
+    var FLEXY_COOKIES = ['discount_code', '_flexy_discount_codes'];
+
+    /* ---------- cookies ---------- */
+    // Session cookie only (no expiry) – never outlives the browser session
+    function setCookie(name, value) {
+      document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; SameSite=Lax';
+    }
+    // Delete every variant (host-only, root domain, .domain, www)
+    function clearCookie(name) {
+      var host = location.hostname.replace(/^www\./, '');
+      var exp = '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      ['', '; domain=' + host, '; domain=.' + host, '; domain=www.' + host]
+        .forEach(function (d) { document.cookie = name + exp + d; });
+    }
+    function syncFlexype(code) {
+      FLEXY_COOKIES.forEach(function (n) { code ? setCookie(n, code) : clearCookie(n); });
+    }
+
+    /* ---------- cart = single source of truth ---------- */
+    var syncing = null;
+    function syncFromCart() {
+      if (syncing) return syncing;
+      syncing = fetch('/cart.js', { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var dc = (cart.discount_codes || []).filter(function (d) { return d.applicable; })[0];
+          syncFlexype(cart.item_count > 0 && dc ? dc.code : '');
+          return cart;
+        })
+        .catch(function () {})
+        .finally(function () { syncing = null; });
+      return syncing;
+    }
+    window.syncCouponCookies = syncFromCart;
+
+    // 1) PAGE LOAD: reset cookies first, then restore only if cart has a valid code
+    FLEXY_COOKIES.forEach(clearCookie);
+    syncFromCart();
+
+    // 2) after any cart change made by the theme or apps
+    var _fetch = window.fetch;
+    window.fetch = function (input) {
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      var p = _fetch.apply(this, arguments);
+      if (/\/cart\/(add|change|update|clear)/.test(url) && url.indexOf('cart-coupon-skip') === -1) {
+        p.then(function () { setTimeout(syncFromCart, 300); });
+      }
+      return p;
+    };
+
+    // 3) right before Flexype opens (capture phase runs before Flexype's own handler)
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[name="checkout"], [class*="flexy" i], [id*="flexy" i]')) syncFromCart();
+    }, true);
+
+    // 4) back/forward cache + returning to the tab
+    window.addEventListener('pageshow', function (e) { if (e.persisted) syncFromCart(); });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) syncFromCart(); });
+
+    /* ---------- UI ---------- */
+    function msg(box, text, type) {
+      var el = box && box.querySelector('[data-coupon-msg]');
+      if (!el) return;
+      el.textContent = text || '';
+      el.className = 'cart-coupon__msg' + (type ? ' is-' + type : '');
+    }
+
+    // Re-render Dawn cart drawer + cart bubble so the discount & totals update
+    function refreshDrawer() {
+      return _fetch(window.location.pathname + '?sections=cart-drawer,cart-icon-bubble')
+        .then(function (r) { return r.json(); })
+        .then(function (sections) {
+          var parse = function (html, sel) {
+            return new DOMParser().parseFromString(html, 'text/html').querySelector(sel);
+          };
+          if (sections['cart-drawer']) {
+            var drawer = document.querySelector('cart-drawer');
+            var fresh = parse(sections['cart-drawer'], '#CartDrawer');
+            var cur = document.querySelector('#CartDrawer');
+            if (fresh && cur) cur.innerHTML = fresh.innerHTML;
+            if (drawer) {
+              var empty = !!parse(sections['cart-drawer'], 'cart-drawer.is-empty');
+              drawer.classList.toggle('is-empty', empty);
+            }
+          }
+          var bubble = document.getElementById('cart-icon-bubble');
+          var nb = sections['cart-icon-bubble'] && parse(sections['cart-icon-bubble'], '.shopify-section');
+          if (bubble && nb) bubble.innerHTML = nb.innerHTML;
+        })
+        .catch(function () {});
+    }
+
+    function updateDiscount(code) {
+      return _fetch('/cart/update.js?cart-coupon-skip=1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ discount: code })
+      }).then(function (r) { return r.json(); });
+    }
+
+    document.addEventListener('click', function (e) {
+      var applyBtn = e.target.closest('[data-coupon-apply]');
+      var removeBtn = e.target.closest('[data-coupon-remove]');
+      if (!applyBtn && !removeBtn) return;
+      var box = e.target.closest('[data-cart-coupon]');
+
+      if (applyBtn) {
+        var input = box.querySelector('[data-coupon-input]');
+        var code = (input.value || '').trim().toUpperCase();
+        if (!code) { msg(box, 'Please enter a coupon code.', 'error'); return; }
+        applyBtn.disabled = true; msg(box, 'Applying…');
+
+        updateDiscount(code).then(function (cart) {
+          var hit = (cart.discount_codes || []).filter(function (d) {
+            return d.code.toUpperCase() === code;
+          })[0];
+          if (hit && hit.applicable) {
+            syncFlexype(hit.code);
+            return refreshDrawer().then(function () {
+              msg(document.querySelector('[data-cart-coupon]'), 'Coupon "' + hit.code + '" applied.', 'success');
+            });
+          }
+          return updateDiscount('').then(function () {
+            syncFlexype('');
+            msg(box, 'This coupon is invalid or not applicable to your cart.', 'error');
+          });
+        }).catch(function () {
+          msg(box, 'Something went wrong. Please try again.', 'error');
+        }).finally(function () { applyBtn.disabled = false; });
+      }
+
+      if (removeBtn) {
+        removeBtn.disabled = true;
+        updateDiscount('').then(function () {
+          syncFlexype('');
+          return refreshDrawer();
+        }).finally(function () { removeBtn.disabled = false; });
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.matches && e.target.matches('[data-coupon-input]')) {
+        e.preventDefault();
+        var btn = e.target.closest('[data-cart-coupon]').querySelector('[data-coupon-apply]');
+        if (btn) btn.click();
+      }
+    });
+  })();
+</script>
