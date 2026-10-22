@@ -421,26 +421,6 @@
             "text_alignment_mobile": "center"
           }
         },
-        "slide_4qqFcK": {
-          "type": "slide",
-          "settings": {
-            "custom_class": "",
-            "image": "shopify://shop_images/Diwali-WEB_BNR.jpg",
-            "mob_banner": "shopify://shop_images/Diwali-MOB_BNR.jpg",
-            "heading": "",
-            "heading_size": "h1",
-            "subheading": "",
-            "button_label": "",
-            "link": "https://thegiftstudio.com/collections/diwali-gift-hampers",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "image_overlay_opacity": 0,
-            "color_scheme": "background-1",
-            "text_alignment_mobile": "center"
-          }
-        },
         "slide_tkc3pf": {
           "type": "slide",
           "settings": {
@@ -452,6 +432,26 @@
             "subheading": "",
             "button_label": "",
             "link": "https://thegiftstudio.com/collections/limited-edition-hampers",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "slide_4qqFcK": {
+          "type": "slide",
+          "settings": {
+            "custom_class": "",
+            "image": "shopify://shop_images/Diwali-WEB_BNR.jpg",
+            "mob_banner": "shopify://shop_images/Diwali-MOB_BNR.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "https://thegiftstudio.com/collections/diwali-gift-hampers",
             "button_style_secondary": false,
             "box_align": "middle-center",
             "show_text_box": true,
@@ -1554,8 +1554,8 @@
       },
       "block_order": [
         "slide_BQypfe",
-        "slide_4qqFcK",
         "slide_tkc3pf",
+        "slide_4qqFcK",
         "slide_ymY3NY",
         "slide_6TL9Vr",
         "slide_JheEeK",
