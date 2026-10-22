@@ -2738,6 +2738,15 @@
     "70084562-acce-489e-9a47-dc0461d14617": {
       "type": "categories_list_section",
       "blocks": {
+        "text_L4cqpG": {
+          "type": "Text",
+          "settings": {
+            "city_hide": "",
+            "category_img": "shopify://shop_images/WhatsApp_Image_2026-10-01_at_11.58.35_AM.jpg",
+            "category_title": "",
+            "img_url": ""
+          }
+        },
         "text_d4bTGU": {
           "type": "Text",
           "settings": {
@@ -2875,6 +2884,7 @@
         }
       },
       "block_order": [
+        "text_L4cqpG",
         "text_d4bTGU",
         "text_mx8Bpk",
         "text_ffK3Qh",
@@ -2896,7 +2906,7 @@
         "title": "Wall Of Fame",
         "subtitle": "",
         "columns_desktop": 4,
-        "columns_mobile": "1",
+        "columns_mobile": "2",
         "padding_top": 8,
         "padding_bottom": 36
       }
