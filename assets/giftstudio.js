@@ -137,7 +137,6 @@ function setMinDeliveryDate(istTime, selected_warehouse_tat, $datePicker,index,c
       product_Tat += 1;
    }
   }
-    product_Tat += 3;
     minDate.setDate(minDate.getDate() + selected_warehouse_tat + product_Tat);
     if($datePicker!=''){
     // $datePicker.addClass("ui-state-highlight");
