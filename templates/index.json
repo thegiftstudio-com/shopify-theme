@@ -444,6 +444,7 @@
         },
         "slide_4qqFcK": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "custom_class": "",
             "image": "shopify://shop_images/Diwali-WEB_BNR.jpg",
